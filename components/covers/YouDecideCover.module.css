@@ -1,0 +1,48 @@
+.root {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0a111f 0%, #060b14 100%);
+}
+
+.cards {
+  position: relative;
+  width: min(70%, 11rem);
+  aspect-ratio: 1.35;
+}
+
+.card {
+  position: absolute;
+  width: 58%;
+  aspect-ratio: 3 / 4;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+  border-radius: 3px;
+  background: rgba(242, 237, 228, 0.04);
+}
+
+.cardA {
+  left: 0;
+  top: 12%;
+  transform: rotate(-7deg);
+}
+
+.cardB {
+  right: 0;
+  bottom: 8%;
+  transform: rotate(8deg);
+  border-color: rgba(216, 35, 42, 0.35);
+}
+
+.vs {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: rgba(242, 237, 228, 0.75);
+}

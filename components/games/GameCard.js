@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
 import styles from "./GameCard.module.css";
 
 function Cover({ game, live }) {
@@ -15,7 +16,7 @@ function Cover({ game, live }) {
           className={styles.coverImage}
         />
       ) : (
-        <div className={styles.coverFallback} aria-hidden />
+        <GameCoverBySlug slug={game.slug} />
       )}
       <div className={styles.coverScrim} aria-hidden />
     </div>

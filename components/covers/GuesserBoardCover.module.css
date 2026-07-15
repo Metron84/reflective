@@ -1,0 +1,73 @@
+.root {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0a111f 0%, #060b14 100%);
+}
+
+.gridWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(72%, 14rem);
+  aspect-ratio: 1.15;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.compact .grid {
+  gap: 0.25rem;
+  width: min(60%, 8rem);
+}
+
+.tile {
+  aspect-ratio: 4 / 5;
+  border-radius: 2px;
+}
+
+.correct {
+  background: #059669;
+}
+
+.close {
+  background: #fbbf24;
+}
+
+.wrong {
+  background: #060b14;
+  border: 1px solid rgba(242, 237, 228, 0.12);
+}
+
+.silhouette {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at center,
+    rgba(6, 11, 20, 0.55) 0%,
+    rgba(6, 11, 20, 0.15) 55%,
+    transparent 72%
+  );
+}
+
+.question {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1;
+  color: rgba(242, 237, 228, 0.88);
+  text-shadow: 0 0 24px rgba(10, 17, 31, 0.8);
+}
+
+.compact .question {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+}

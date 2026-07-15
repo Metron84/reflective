@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
 import styles from "./GuesserHeroCard.module.css";
 
 export default function GuesserHeroCard({ game }) {
@@ -14,7 +15,7 @@ export default function GuesserHeroCard({ game }) {
             className={styles.coverImage}
           />
         ) : (
-          <div className={styles.coverFallback} aria-hidden />
+          <GameCoverBySlug slug={game.slug} />
         )}
         <div className={styles.coverScrim} aria-hidden />
       </div>

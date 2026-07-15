@@ -7,6 +7,7 @@ import NomineeCard from "./NomineeCard";
 import PostVotePopup from "./PostVotePopup";
 import CompletionState from "./CompletionState";
 import PartialCompletionState from "./PartialCompletionState";
+import ComingShortlyCover from "./ComingShortlyCover";
 import { getFingerprint } from "@/lib/fingerprint";
 
 const POPUP_DISMISSED_KEY = "trf_popup_dismissed";
@@ -242,11 +243,7 @@ export default function VotingBoard({
                 />
               </FadeUp>
 
-              {!isOpen ? (
-                <p className="mt-8 text-sm text-navy/45">
-                  Nominees announced shortly.
-                </p>
-              ) : null}
+              {!isOpen ? <ComingShortlyCover /> : null}
 
               {errors[category.slug] ? (
                 <p className="mt-6 text-sm text-signal">{errors[category.slug]}</p>

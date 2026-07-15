@@ -6,6 +6,7 @@ import {
 import { getNomineesByCategory, getVoteCookieState } from "@/lib/reflections";
 import SectionHeader from "@/components/SectionHeader";
 import VotingBoard from "@/components/reflections/VotingBoard";
+import AwardsLaurelCover from "@/components/covers/AwardsLaurelCover";
 
 export const metadata = {
   title: "The Reflections",
@@ -23,7 +24,11 @@ export default async function ReflectionsPage() {
 
   return (
     <div>
-      <section className="flex min-h-[60vh] flex-col items-center justify-center bg-gradient-to-b from-navy to-navy-deep px-6 py-24 text-center">
+      <section className="relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-navy to-navy-deep px-6 py-24 text-center">
+        <div className="pointer-events-none absolute inset-0 opacity-40">
+          <AwardsLaurelCover subtle />
+        </div>
+        <div className="relative z-10">
         <SectionHeader
           variant="navy"
           eyebrow="Awards. For the Fans."
@@ -37,6 +42,7 @@ export default async function ReflectionsPage() {
         ) : (
           <p className="mt-8 text-sm text-paper/50">{winnersLine}</p>
         )}
+        </div>
       </section>
 
       <VotingBoard

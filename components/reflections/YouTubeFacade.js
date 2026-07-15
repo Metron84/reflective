@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AwardsLaurelCover from "@/components/covers/AwardsLaurelCover";
 
 // Lazy YouTube embed: thumbnail + play button until clicked, then the
 // real iframe. Keeps the page fast with many nominees.
@@ -9,10 +10,8 @@ export default function YouTubeFacade({ youtubeId, title }) {
 
   if (!youtubeId) {
     return (
-      <div className="flex aspect-video w-full items-center justify-center bg-gradient-to-br from-navy to-navy-deep">
-        <span className="text-xs uppercase tracking-widest text-paper/40">
-          Clip coming soon
-        </span>
+      <div className="relative aspect-video w-full overflow-hidden">
+        <AwardsLaurelCover />
       </div>
     );
   }

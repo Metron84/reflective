@@ -1,3 +1,4 @@
+import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
 import styles from "./ComingSoonGameCard.module.css";
 
 export default function ComingSoonGameCard({ game }) {
@@ -8,7 +9,7 @@ export default function ComingSoonGameCard({ game }) {
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={game.cover} alt="" loading="lazy" className={styles.coverImage} />
         ) : (
-          <div className={styles.coverFallback} />
+          <GameCoverBySlug slug={game.slug} />
         )}
       </div>
       <div className={styles.body}>

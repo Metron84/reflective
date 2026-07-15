@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #0a111f 0%, #060b14 100%);
+  color: rgba(242, 237, 228, 0.55);
+}
+
+.art {
+  width: min(88%, 20rem);
+  height: auto;
+}

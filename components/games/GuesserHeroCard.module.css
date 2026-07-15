@@ -39,9 +39,6 @@
 .coverFallback {
   width: 100%;
   height: 100%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(216, 35, 42, 0.18) 0%, transparent 55%),
-    linear-gradient(135deg, #0a111f 0%, #060b14 100%);
 }
 
 .coverScrim {
