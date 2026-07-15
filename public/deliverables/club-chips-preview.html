@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Club chips preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #0a111f;
+        color: #f2ede4;
+        font-family: system-ui, sans-serif;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 12px;
+      }
+      .board {
+        border: 1px solid rgba(242, 237, 228, 0.15);
+        padding: 16px;
+      }
+      .headers,
+      .row {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 2px;
+      }
+      .headers p {
+        font-size: 8px;
+        text-transform: uppercase;
+        color: rgba(242, 237, 228, 0.5);
+        text-align: center;
+        margin: 0 0 4px;
+      }
+      .name {
+        font-size: 12px;
+        font-weight: 600;
+        margin: 0 0 6px;
+      }
+      .tile {
+        aspect-ratio: 4 / 5;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 2px;
+        border: 1px solid rgba(242, 237, 228, 0.1);
+      }
+      .tile.correct {
+        background: #059669;
+        color: #fff;
+      }
+      .tile.wrong {
+        background: #060b14;
+        color: rgba(242, 237, 228, 0.6);
+      }
+      .club-tile {
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        gap: 2px;
+        background: #060b14;
+      }
+      .chip {
+        font-size: 9px;
+        font-weight: 600;
+        padding: 2px 3px;
+        border-radius: 2px;
+        border: 1px solid rgba(242, 237, 228, 0.1);
+      }
+      .chip.correct {
+        background: #059669;
+        color: #fff;
+        border-color: transparent;
+      }
+      .chip.wrong {
+        background: #060b14;
+        color: rgba(242, 237, 228, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="board">
+        <div class="headers">
+          <p>Nat</p>
+          <p>Lge</p>
+          <p>Club</p>
+          <p>Pos</p>
+          <p>Born</p>
+          <p>Shirt</p>
+        </div>
+        <p class="name">David Villa</p>
+        <div class="row">
+          <div class="tile correct">Spain</div>
+          <div class="tile correct">La Liga</div>
+          <div class="tile club-tile">
+            <span class="chip correct">Barcelona</span>
+            <span class="chip wrong">Valencia</span>
+            <span class="chip wrong">Atlético</span>
+          </div>
+          <div class="tile correct">FW</div>
+          <div class="tile wrong">1981</div>
+          <div class="tile wrong">7</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

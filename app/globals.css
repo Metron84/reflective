@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-navy: #0a111f;
+  --color-navy-deep: #060b14;
+  --color-paper: #f2ede4;
+  --color-signal: #d8232a;
+  --font-display: var(--font-bodoni), "Bodoni Moda", serif;
+  --font-body: var(--font-archivo), "Archivo", sans-serif;
+}
+
+/* Cream-first: warm paper base with a barely visible fixed texture.
+   Navy is for typography and footage-led blocks only. */
+body {
+  background-color: var(--color-paper);
+  background-image: url("/brand/texture-cream-site-bg.png");
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--color-navy);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-paper);
+}
+
+@keyframes tile-flip {
+  from {
+    transform: rotateX(90deg);
+    opacity: 0.3;
+  }
+  to {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.tile-flip {
+  animation: tile-flip 0.45s ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-flip {
+    animation: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+}
+
+.fade-up.is-visible {
+  animation: fade-up 0.7s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .fade-up.is-visible {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}
+
+/* Subtle film grain on navy heroes — restrained like the cream texture. */
+.hero-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}

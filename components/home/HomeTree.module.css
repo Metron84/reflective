@@ -1,0 +1,230 @@
+.tree {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #0a111f, #060b14);
+}
+
+.tree::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.65'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-width: 42rem;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 2.75rem 1.25rem 3.25rem;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 3.25rem 1.5rem 3.75rem;
+  }
+}
+
+.axis {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.crestGlow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.crestFrame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+}
+
+.crestGlow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: min(88vw, 22rem);
+  height: min(88vw, 22rem);
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(242, 237, 228, 0.14) 0%,
+    rgba(242, 237, 228, 0.04) 42%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.crestImage {
+  position: relative;
+  z-index: 10;
+  display: block;
+  margin-inline: auto;
+}
+
+.crestShine {
+  position: absolute;
+  inset: -20%;
+  z-index: 20;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    transparent 42%,
+    rgba(242, 237, 228, 0.14) 50%,
+    transparent 58%
+  );
+  transform: translateX(-130%) skewX(-12deg);
+  animation: crestShine 20s ease-in-out infinite;
+}
+
+@keyframes crestShine {
+  0%,
+  92% {
+    transform: translateX(-130%) skewX(-12deg);
+    opacity: 0;
+  }
+
+  94% {
+    opacity: 1;
+  }
+
+  97% {
+    transform: translateX(130%) skewX(-12deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(130%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+.enterCrestHidden {
+  opacity: 0;
+}
+
+.enterCrest {
+  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.tagline {
+  margin-top: 0.75rem;
+  max-width: 16rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: rgba(242, 237, 228, 0.85);
+}
+
+@media (min-width: 640px) {
+  .tagline {
+    font-size: 0.875rem;
+    max-width: 18rem;
+  }
+}
+
+.enterTaglineHidden {
+  opacity: 0;
+}
+
+.enterTagline {
+  animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
+  opacity: 0;
+}
+
+.root {
+  margin-top: 1.125rem;
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 8.2vw, 5.25rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: #f2ede4;
+}
+
+@media (min-width: 640px) {
+  .root {
+    margin-top: 1.375rem;
+    font-size: clamp(2.75rem, 6.5vw, 5.5rem);
+    letter-spacing: 0.04em;
+  }
+}
+
+.enterRootHidden {
+  opacity: 0;
+}
+
+.enterRoot {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.38s forwards;
+  opacity: 0;
+}
+
+.doorsMenu {
+  margin-top: 2.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .doorsMenu {
+    margin-top: 3rem;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crestShine {
+    animation: none;
+    display: none;
+  }
+
+  .enterCrest,
+  .enterTagline,
+  .enterRoot {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .enterCrestHidden,
+  .enterTaglineHidden,
+  .enterRootHidden {
+    opacity: 1;
+  }
+}

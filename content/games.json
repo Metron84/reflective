@@ -1,0 +1,24 @@
+[
+  {
+    "slug": "the-guesser",
+    "title": "The Guesser",
+    "hook": "One player a day. Six guesses. Five clues.",
+    "status": "live",
+    "href": "/guesser",
+    "cover": null
+  },
+  {
+    "slug": "ultimate-fantasy-manager",
+    "title": "Ultimate Fantasy Manager",
+    "hook": "Draft Europe. Ten players, six leagues, one squad.",
+    "status": "coming_soon",
+    "statusLabel": "Coming for the 26/27 season"
+  },
+  {
+    "slug": "you-decide",
+    "title": "You Decide",
+    "hook": "Two moments. You pick the winner.",
+    "status": "coming_soon",
+    "statusLabel": "Coming soon"
+  }
+]

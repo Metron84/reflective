@@ -1,0 +1,300 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import FadeUp from "@/components/FadeUp";
+import NomineeCard from "./NomineeCard";
+import PostVotePopup from "./PostVotePopup";
+import CompletionState from "./CompletionState";
+import PartialCompletionState from "./PartialCompletionState";
+import { getFingerprint } from "@/lib/fingerprint";
+
+const POPUP_DISMISSED_KEY = "trf_popup_dismissed";
+const COMPLETION_ID = "reflections-complete";
+const SCROLL_BEAT_MS = 800;
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function scrollToId(id, instant = false) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({
+    behavior: instant || prefersReducedMotion() ? "auto" : "smooth",
+    block: "start",
+  });
+}
+
+export default function VotingBoard({
+  categories,
+  nomineesByCategory,
+  initialVoted,
+  initialPicks,
+  votingState,
+}) {
+  const [voted, setVoted] = useState(initialVoted);
+  const [picks, setPicks] = useState(initialPicks);
+  const [pendingVote, setPendingVote] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [popupOpen, setPopupOpen] = useState(false);
+  const resumeTargetRef = useRef(null);
+
+  const openCategories = useMemo(
+    () => categories.filter((c) => c.open),
+    [categories]
+  );
+  const openSlugs = useMemo(
+    () => openCategories.map((c) => c.slug),
+    [openCategories]
+  );
+
+  const votingOpen = votingState === "open";
+  const votedOpenCount = openSlugs.filter((s) => voted.includes(s)).length;
+  const allOpenVoted =
+    openSlugs.length > 0 && openSlugs.every((s) => voted.includes(s));
+  const allCategoriesVoted = categories.every((c) => voted.includes(c.slug));
+  const showPartialComplete = allOpenVoted && !allCategoriesVoted;
+  const showFullComplete = allCategoriesVoted;
+
+  function nextUnvotedOpen(votedList) {
+    return openCategories.find((c) => !votedList.includes(c.slug))?.slug ?? null;
+  }
+
+  function resumeTarget(votedList) {
+    if (categories.every((c) => votedList.includes(c.slug))) {
+      return COMPLETION_ID;
+    }
+    if (openSlugs.every((s) => votedList.includes(s))) {
+      return COMPLETION_ID;
+    }
+    return nextUnvotedOpen(votedList);
+  }
+
+  useEffect(() => {
+    if (
+      votingOpen &&
+      initialVoted.length > 0 &&
+      initialVoted.length < openSlugs.length
+    ) {
+      const next = nextUnvotedOpen(initialVoted);
+      if (next) scrollToId(next, true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function advanceAfterBeat(target) {
+    if (!target) return;
+    setTimeout(() => scrollToId(target), SCROLL_BEAT_MS);
+  }
+
+  async function handleVote(categorySlug, nomineeId) {
+    const category = categories.find((c) => c.slug === categorySlug);
+    if (!category?.open) return;
+    if (!votingOpen || voted.includes(categorySlug) || pendingVote) return;
+    setPendingVote({ category: categorySlug, nomineeId });
+    setErrors((prev) => ({ ...prev, [categorySlug]: null }));
+    try {
+      const fingerprint = await getFingerprint();
+      const res = await fetch("/api/reflections/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category: categorySlug,
+          nomineeId,
+          fingerprint,
+          website: "",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        const newVoted = data.voted ?? [...voted, categorySlug];
+        setVoted(newVoted);
+        setPicks(data.picks ?? { ...picks, [categorySlug]: nomineeId });
+
+        const target = resumeTarget(newVoted);
+        if (!sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
+          resumeTargetRef.current = target;
+          setPopupOpen(true);
+        } else {
+          advanceAfterBeat(target);
+        }
+      } else if (res.status === 409) {
+        setVoted(data.voted ?? [...voted, categorySlug]);
+        setErrors((prev) => ({
+          ...prev,
+          [categorySlug]: "You already voted in this category.",
+        }));
+      } else if (data.reason === "category-closed") {
+        setErrors((prev) => ({
+          ...prev,
+          [categorySlug]: "This category is not open for voting yet.",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [categorySlug]: "That vote did not go through. Try again.",
+        }));
+      }
+    } catch {
+      setErrors((prev) => ({
+        ...prev,
+        [categorySlug]: "That vote did not go through. Try again.",
+      }));
+    } finally {
+      setPendingVote(null);
+    }
+  }
+
+  function dismissPopup() {
+    sessionStorage.setItem(POPUP_DISMISSED_KEY, "1");
+    setPopupOpen(false);
+    const target = resumeTargetRef.current;
+    resumeTargetRef.current = null;
+    advanceAfterBeat(target);
+  }
+
+  const progressPct =
+    openSlugs.length > 0 ? (votedOpenCount / openSlugs.length) * 100 : 0;
+
+  return (
+    <>
+      <nav className="sticky top-16 z-30 border-b border-navy/10 bg-paper/95 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
+          {votingOpen && openSlugs.length > 0 ? (
+            <span className="shrink-0 text-xs font-medium uppercase tracking-widest text-navy/60">
+              {votedOpenCount} of {openSlugs.length} votes in
+            </span>
+          ) : null}
+          <div className="flex items-center gap-4 overflow-x-auto">
+            {categories.map((category) => {
+              const isOpen = category.open;
+              const isVoted = voted.includes(category.slug);
+              return (
+                <a
+                  key={category.slug}
+                  href={`#${category.slug}`}
+                  className={`shrink-0 text-sm transition-colors hover:text-navy ${
+                    isVoted
+                      ? "text-signal"
+                      : isOpen
+                        ? "text-navy/70"
+                        : "text-navy/35"
+                  }`}
+                >
+                  {category.name}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+        {votingOpen && openSlugs.length > 0 ? (
+          <div
+            className="h-0.5 bg-signal transition-[width] duration-500"
+            style={{ width: `${progressPct}%` }}
+          />
+        ) : null}
+      </nav>
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {showFullComplete ? (
+          <CompletionState total={categories.length} />
+        ) : showPartialComplete ? (
+          <PartialCompletionState
+            openCount={openSlugs.length}
+            totalCount={categories.length}
+          />
+        ) : null}
+
+        {categories.map((category, index) => {
+          const nominees = nomineesByCategory[category.slug] ?? [];
+          const categoryVoted = voted.includes(category.slug);
+          const categoryPending = pendingVote?.category === category.slug;
+          const isOpen = category.open;
+          const hasNominees = nominees.length > 0;
+
+          return (
+            <section
+              key={category.slug}
+              id={category.slug}
+              className={`scroll-mt-32 border-b py-16 last:border-b-0 ${
+                isOpen ? "border-navy/10" : "border-navy/5 opacity-70"
+              }`}
+            >
+              <FadeUp>
+                <p
+                  className={`text-xs uppercase tracking-[0.3em] ${
+                    isOpen ? "text-navy/40" : "text-navy/30"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")} /{" "}
+                  {String(categories.length).padStart(2, "0")}
+                </p>
+                <h2
+                  className={`mt-2 font-display text-3xl sm:text-4xl ${
+                    isOpen ? "text-navy" : "text-navy/55"
+                  }`}
+                >
+                  {category.name}
+                </h2>
+                <div
+                  className={`mt-4 h-px w-16 ${isOpen ? "bg-signal" : "bg-navy/15"}`}
+                />
+              </FadeUp>
+
+              {!isOpen ? (
+                <p className="mt-8 text-sm text-navy/45">
+                  Nominees announced shortly.
+                </p>
+              ) : null}
+
+              {errors[category.slug] ? (
+                <p className="mt-6 text-sm text-signal">{errors[category.slug]}</p>
+              ) : null}
+
+              {isOpen && hasNominees ? (
+                <>
+                  <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {nominees.map((nominee) => (
+                      <NomineeCard
+                        key={nominee.id}
+                        nominee={nominee}
+                        votingOpen={votingOpen}
+                        categoryVoted={categoryVoted}
+                        isPick={picks[category.slug] === nominee.id}
+                        pending={
+                          categoryPending && pendingVote?.nomineeId === nominee.id
+                        }
+                        disabled={categoryPending}
+                        onVote={() => handleVote(category.slug, nominee.id)}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="mt-8 border border-navy/15 p-5 text-sm text-navy/60">
+                    Live standings are for members.{" "}
+                    <Link
+                      href="/signin?next=/reflections"
+                      className="text-navy underline underline-offset-4 hover:text-signal"
+                    >
+                      Sign in free
+                    </Link>{" "}
+                    to watch the race.
+                  </div>
+                </>
+              ) : null}
+
+              {isOpen && !hasNominees ? (
+                <p className="mt-8 text-sm text-navy/50">
+                  Nominees loading for this category.
+                </p>
+              ) : null}
+            </section>
+          );
+        })}
+      </div>
+
+      {popupOpen ? <PostVotePopup onClose={dismissPopup} /> : null}
+    </>
+  );
+}

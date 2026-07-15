@@ -1,0 +1,109 @@
+{
+  "formats": {
+    "catchmentary": { "grid": true },
+    "podcast": { "grid": true },
+    "explainer": { "grid": true },
+    "compilation": { "grid": true },
+    "short_film": { "grid": false },
+    "promo": { "grid": false }
+  },
+  "clubs": [
+    "Arsenal",
+    "Aston Villa",
+    "Atletico Madrid",
+    "Bayern Munich",
+    "Chelsea",
+    "Crystal Palace",
+    "Everton",
+    "Juventus",
+    "Manchester United",
+    "PSG",
+    "Real Madrid",
+    "West Ham"
+  ],
+  "nations": [
+    "Argentina",
+    "Austria",
+    "Belgium",
+    "Brazil",
+    "Cape Verde",
+    "Croatia",
+    "Egypt",
+    "England",
+    "France",
+    "Germany",
+    "Ghana",
+    "Haiti",
+    "Iraq",
+    "Ivory Coast",
+    "Japan",
+    "Mexico",
+    "Norway",
+    "Portugal",
+    "Scotland",
+    "South Africa",
+    "Spain",
+    "Uruguay",
+    "Yugoslavia",
+    "Zambia"
+  ],
+  "clubAliases": {
+    "AFC": "Arsenal",
+    "AVFC": "Aston Villa",
+    "Chelsea FC": "Chelsea",
+    "Gooners": "Arsenal",
+    "Hammers": "West Ham",
+    "Man United": "Manchester United",
+    "Man Utd": "Manchester United",
+    "The Dubai Hammers": "West Ham",
+    "Villa": "Aston Villa"
+  },
+  "nationAliases": {
+    "Bafana Bafana": "South Africa",
+    "El Tri": "Mexico",
+    "Pharaohs": "Egypt",
+    "Tartan Army": "Scotland"
+  },
+  "venues": [
+    "Belgian Beer Café",
+    "Bla Bla by McGettigan's",
+    "Bla Bla",
+    "Brooklyn Bar",
+    "Garden on 8",
+    "McGettigan's",
+    "Media One Hotel",
+    "Nelson's Bar"
+  ],
+  "competitions": [
+    { "match": "World Cup 2026", "value": "FIFA World Cup 2026" },
+    { "match": "FIFA World Cup 2026", "value": "FIFA World Cup 2026" },
+    { "match": "Champions League", "value": "UEFA Champions League" },
+    { "match": "UEFA Champions League", "value": "UEFA Champions League" },
+    { "match": "Europa League", "value": "UEFA Europa League" },
+    { "match": "Premier League", "value": "Premier League" },
+    { "match": "The Reflections", "value": "The Reflections" }
+  ],
+  "formatRules": {
+    "shortMaxSeconds": 180,
+    "podcast": ["podcast", "set piece", "the set piece", "the reflective"],
+    "catchmentary": [
+      "football documentary",
+      "football doc",
+      "documentary",
+      "uncut session",
+      "uncut sessions",
+      "uncut:",
+      "uncut interview",
+      "fan interview",
+      "fans react",
+      "best soundbites",
+      "extra footage",
+      "completely unedited",
+      "catchmentary",
+      "teaser recap",
+      "garden on 8",
+      "fans in dubai"
+    ],
+    "explainer": ["explaining ", "how to ", "why var", "why does "]
+  }
+}

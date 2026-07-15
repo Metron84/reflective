@@ -1,0 +1,25 @@
+.page {
+  flex: 1;
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 56rem;
+  padding: 2.5rem 1rem 4rem;
+}
+
+.eyebrow {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.5);
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 3rem 1.5rem 5rem;
+  }
+}

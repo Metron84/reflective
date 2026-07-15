@@ -1,0 +1,32 @@
+.scrollCue {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.scrollCueLine {
+  display: block;
+  width: 1px;
+  height: 2rem;
+  background-color: #f2ede4;
+  opacity: 0.3;
+  animation: heroCuePulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollCueLine {
+    animation: none;
+    opacity: 0.3;
+  }
+}
+
+@keyframes heroCuePulse {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+
+  50% {
+    opacity: 0.42;
+  }
+}

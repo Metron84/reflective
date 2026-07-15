@@ -1,0 +1,46 @@
+.header {
+  text-align: center;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  color: #0a111f;
+}
+
+.meta {
+  margin-top: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.clubs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clubs li {
+  border: 1px solid rgba(10, 17, 31, 0.18);
+  padding: 0.25rem 0.65rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.65);
+}
+
+.rule {
+  margin: 1.5rem auto 0;
+  width: min(12rem, 40%);
+  height: 2px;
+  background: #d8232a;
+}

@@ -1,0 +1,19 @@
+# The Reflective Football — Cursor Rules
+
+Before doing ANY task in this repo, read these two files in full. They are the project's law:
+
+1. CLAUDE.md — the standing rulebook: brand, voice, security rules, feature configurations (The Reflections voting, The Guesser game engine, rolling view counter, accounts), engineering rules, and things that must never appear on the site.
+2. docs/TRF_Website_v1_Build_Spec.md — the complete v1 build specification.
+
+Non-negotiables (full detail in CLAUDE.md):
+- The Guesser answer NEVER reaches the client. Server-side checking only.
+- All meaningful state (streaks, votes, plays) lives in Supabase, never in browser storage.
+- Secrets live only in .env.local / Vercel env vars. Never in code, commits, or output.
+- Dev server runs on port 4343 (add http://localhost:4343 to Google OAuth origins for local sign-in).
+- Work in the phases defined in the spec's build order. STOP at the end of each phase for Melo's review. Never deploy to production or give DNS cutover instructions without explicit approval.
+- Enable RLS on every Supabase table before it holds real data.
+- Brand: deep navy #0A111F, warm paper white #F2EDE4, signal red #D8232A, Bodoni Moda display, Archivo UI. Dark, cinematic, footage-led. Never template-like.
+- Copy: short, clear, direct, no em-dashes. Fans are protagonists. Current year is 2026. Never mention "We Are Football" anywhere on the site.
+- Do not invent nominees, players, film details, or metrics. Placeholder data must be clearly marked SAMPLE.
+
+When unsure, ask Melo instead of assuming.
