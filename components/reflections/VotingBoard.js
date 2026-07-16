@@ -28,7 +28,9 @@ function scrollToId(id, instant = false) {
 }
 
 export default function VotingBoard({
-  categories,
+  navCategories,
+  bodyCategories,
+  totalCategoryCount,
   nomineesByCategory,
   initialVoted,
   initialPicks,
@@ -41,9 +43,14 @@ export default function VotingBoard({
   const [popupOpen, setPopupOpen] = useState(false);
   const resumeTargetRef = useRef(null);
 
+  const bodySlugs = useMemo(
+    () => new Set(bodyCategories.map((c) => c.slug)),
+    [bodyCategories]
+  );
+
   const openCategories = useMemo(
-    () => categories.filter((c) => c.open),
-    [categories]
+    () => navCategories.filter((c) => c.open),
+    [navCategories]
   );
   const openSlugs = useMemo(
     () => openCategories.map((c) => c.slug),
@@ -54,7 +61,9 @@ export default function VotingBoard({
   const votedOpenCount = openSlugs.filter((s) => voted.includes(s)).length;
   const allOpenVoted =
     openSlugs.length > 0 && openSlugs.every((s) => voted.includes(s));
-  const allCategoriesVoted = categories.every((c) => voted.includes(c.slug));
+  const allCategoriesVoted =
+    totalCategoryCount > 0 &&
+    navCategories.every((c) => voted.includes(c.slug));
   const showPartialComplete = allOpenVoted && !allCategoriesVoted;
   const showFullComplete = allCategoriesVoted;
 
@@ -63,13 +72,15 @@ export default function VotingBoard({
   }
 
   function resumeTarget(votedList) {
-    if (categories.every((c) => votedList.includes(c.slug))) {
+    if (navCategories.every((c) => votedList.includes(c.slug))) {
       return COMPLETION_ID;
     }
     if (openSlugs.every((s) => votedList.includes(s))) {
       return COMPLETION_ID;
     }
-    return nextUnvotedOpen(votedList);
+    const next = nextUnvotedOpen(votedList);
+    if (next && bodySlugs.has(next)) return next;
+    return null;
   }
 
   useEffect(() => {
@@ -79,7 +90,7 @@ export default function VotingBoard({
       initialVoted.length < openSlugs.length
     ) {
       const next = nextUnvotedOpen(initialVoted);
-      if (next) scrollToId(next, true);
+      if (next && bodySlugs.has(next)) scrollToId(next, true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -90,7 +101,7 @@ export default function VotingBoard({
   }
 
   async function handleVote(categorySlug, nomineeId) {
-    const category = categories.find((c) => c.slug === categorySlug);
+    const category = navCategories.find((c) => c.slug === categorySlug);
     if (!category?.open) return;
     if (!votingOpen || voted.includes(categorySlug) || pendingVote) return;
     setPendingVote({ category: categorySlug, nomineeId });
@@ -168,20 +179,33 @@ export default function VotingBoard({
             </span>
           ) : null}
           <div className="flex items-center gap-4 overflow-x-auto">
-            {categories.map((category) => {
+            {navCategories.map((category) => {
               const isOpen = category.open;
               const isVoted = voted.includes(category.slug);
+              const inBody = bodySlugs.has(category.slug);
+              const className = `shrink-0 text-sm transition-colors ${
+                inBody ? "hover:text-navy" : "cursor-default"
+              } ${
+                isVoted
+                  ? "text-signal"
+                  : isOpen
+                    ? "text-navy/70"
+                    : "text-navy/35"
+              }`;
+
+              if (!inBody) {
+                return (
+                  <span key={category.slug} className={className}>
+                    {category.name}
+                  </span>
+                );
+              }
+
               return (
                 <a
                   key={category.slug}
                   href={`#${category.slug}`}
-                  className={`shrink-0 text-sm transition-colors hover:text-navy ${
-                    isVoted
-                      ? "text-signal"
-                      : isOpen
-                        ? "text-navy/70"
-                        : "text-navy/35"
-                  }`}
+                  className={className}
                 >
                   {category.name}
                 </a>
@@ -199,15 +223,15 @@ export default function VotingBoard({
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {showFullComplete ? (
-          <CompletionState total={categories.length} />
+          <CompletionState total={totalCategoryCount} />
         ) : showPartialComplete ? (
           <PartialCompletionState
             openCount={openSlugs.length}
-            totalCount={categories.length}
+            totalCount={totalCategoryCount}
           />
         ) : null}
 
-        {categories.map((category, index) => {
+        {bodyCategories.map((category, index) => {
           const nominees = nomineesByCategory[category.slug] ?? [];
           const categoryVoted = voted.includes(category.slug);
           const categoryPending = pendingVote?.category === category.slug;
@@ -229,7 +253,7 @@ export default function VotingBoard({
                   }`}
                 >
                   {String(index + 1).padStart(2, "0")} /{" "}
-                  {String(categories.length).padStart(2, "0")}
+                  {String(bodyCategories.length).padStart(2, "0")}
                 </p>
                 <h2
                   className={`mt-2 font-display text-3xl sm:text-4xl ${

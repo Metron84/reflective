@@ -133,9 +133,8 @@ function Legend({ open, onToggle }) {
       {open ? (
         <div className="space-y-4 px-4 pb-4 text-sm text-paper/75">
           <p>
-            Read The Opening clue, then guess the player in six tries. Wrong
-            guesses unlock clue chips. Tap one to read it. Each tile grades one
-            attribute of your guess.
+            Read the opening clue, then guess the player in six tries. Each tile
+            grades one attribute of your guess.
           </p>
           <ul className="space-y-2">
             <li className="flex items-center gap-2">

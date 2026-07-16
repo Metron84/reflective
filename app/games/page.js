@@ -1,6 +1,7 @@
 import GuesserHeroCard from "@/components/games/GuesserHeroCard";
 import ComingSoonGameCard from "@/components/games/ComingSoonGameCard";
 import SectionHeader from "@/components/SectionHeader";
+import { GUESSER_STRAPLINE } from "@/lib/config";
 import { getGames } from "@/lib/games";
 import styles from "./page.module.css";
 
@@ -25,6 +26,7 @@ export default function GamesPage() {
 
         {liveGame ? (
           <section className={styles.heroSection} aria-label="The Guesser">
+            <p className={styles.guesserContext}>{GUESSER_STRAPLINE}</p>
             <GuesserHeroCard game={liveGame} />
           </section>
         ) : null}

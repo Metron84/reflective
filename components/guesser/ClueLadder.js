@@ -1,8 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CLUE_OPENING_LABEL } from "@/lib/guesser/clues";
 
+const CLUE_TAP_HINT_KEY = "trf_clue_tap_hint_seen";
+
 export default function ClueLadder({ opening, chips, onReveal, pendingClue }) {
+  const [showTapHint, setShowTapHint] = useState(false);
+
+  useEffect(() => {
+    if (!localStorage.getItem(CLUE_TAP_HINT_KEY)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowTapHint(true);
+      localStorage.setItem(CLUE_TAP_HINT_KEY, "1");
+    }
+  }, []);
+
   return (
     <div className="mb-6 space-y-4">
       {opening ? (
@@ -16,13 +29,13 @@ export default function ClueLadder({ opening, chips, onReveal, pendingClue }) {
         </blockquote>
       ) : null}
 
-      <p className="text-xs text-paper/55">
-        Wrong guesses unlock clue chips. Tap one to read it.
-      </p>
+      {showTapHint ? (
+        <p className="text-xs text-paper/55">Tap a clue to reveal it.</p>
+      ) : null}
 
       <div className="flex flex-wrap gap-2">
         {chips.map((chip) => {
-          const label = chip.label ?? `Clue ${chip.num}`;
+          const label = chip.label ?? `CLUE ${chip.num}`;
           if (chip.status === "locked") {
             return (
               <span

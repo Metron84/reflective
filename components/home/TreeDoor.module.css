@@ -70,6 +70,13 @@
   transition: color 0.2s ease;
 }
 
+.strapline {
+  font-family: var(--font-body);
+  font-size: max(0.8125rem, 13px);
+  line-height: 1.35;
+  color: rgba(242, 237, 228, 0.68);
+}
+
 .dateLine {
   font-family: var(--font-body);
   font-size: 0.6875rem;

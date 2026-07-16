@@ -19,6 +19,7 @@ import {
 } from "@/lib/guesser/state";
 import { getAuthContext } from "@/lib/auth/session";
 import { getUserPlayedModes } from "@/lib/auth/plays";
+import { GUESSER_STRAPLINE } from "@/lib/config";
 import GuesserBoard from "@/components/guesser/GuesserBoard";
 
 export const metadata = {
@@ -80,6 +81,7 @@ export default async function GuesserPage({ searchParams }) {
         <h1 className="mt-4 font-display text-5xl text-paper sm:text-6xl">
           The Guesser
         </h1>
+        <p className="mt-3 text-base text-paper/70">{GUESSER_STRAPLINE}</p>
         <p className="mt-2 text-sm uppercase tracking-widest text-paper/50">
           {modeConfig.name}
         </p>

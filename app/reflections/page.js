@@ -1,4 +1,6 @@
 import {
+  getReflectionsNavCategories,
+  getReflectionsBodyCategories,
   REFLECTIONS_CATEGORIES,
   getVotingState,
   reflectionsWinnersHeroLine,
@@ -46,7 +48,9 @@ export default async function ReflectionsPage() {
       </section>
 
       <VotingBoard
-        categories={REFLECTIONS_CATEGORIES}
+        navCategories={getReflectionsNavCategories()}
+        bodyCategories={getReflectionsBodyCategories()}
+        totalCategoryCount={REFLECTIONS_CATEGORIES.length}
         nomineesByCategory={nomineesByCategory}
         initialVoted={voted}
         initialPicks={picks}

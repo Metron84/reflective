@@ -11,6 +11,7 @@ const TreeDoor = forwardRef(function TreeDoor(
     href,
     category,
     qualifier,
+    strapline,
     dateLine,
     doorId,
     entranceIndex,
@@ -48,6 +49,7 @@ const TreeDoor = forwardRef(function TreeDoor(
       <span className={styles.textBlock}>
         <span className={styles.category}>{category}</span>
         <span className={styles.qualifier}>{qualifier}</span>
+        {strapline ? <span className={styles.strapline}>{strapline}</span> : null}
         {dateLine ? <span className={styles.dateLine}>{dateLine}</span> : null}
       </span>
       <span className={styles.arrowWrap} aria-hidden="true">

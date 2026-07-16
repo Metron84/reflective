@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { reflectionsWinnersHeroLine } from "@/lib/config";
+import { reflectionsWinnersHeroLine, GUESSER_STRAPLINE } from "@/lib/config";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -26,6 +26,7 @@ const DOORS = [
     href: "/games",
     category: "Games.",
     qualifier: "For the Fun.",
+    strapline: GUESSER_STRAPLINE,
   },
 ];
 
@@ -134,6 +135,7 @@ export default function HomeTree({ showVotingDate }) {
               href={door.href}
               category={door.category}
               qualifier={door.qualifier}
+              strapline={door.strapline}
               dateLine={
                 door.id === "awards" && showVotingDate ? door.dateLine : null
               }

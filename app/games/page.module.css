@@ -16,6 +16,14 @@
   margin-bottom: 2.5rem;
 }
 
+.guesserContext {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 2.5vw, 1.0625rem);
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.72);
+}
+
 .comingSection {
   padding-top: 0.25rem;
 }

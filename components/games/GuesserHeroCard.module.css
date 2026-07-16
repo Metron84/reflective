@@ -70,8 +70,16 @@
   color: #0a111f;
 }
 
+.strapline {
+  margin-top: 0.375rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 2.2vw, 1rem);
+  line-height: 1.4;
+  color: rgba(10, 17, 31, 0.62);
+}
+
 .hook {
-  margin-top: 0.625rem;
+  margin-top: 0.5rem;
   max-width: 36rem;
   font-family: var(--font-body);
   font-size: clamp(0.9375rem, 2.5vw, 1.0625rem);

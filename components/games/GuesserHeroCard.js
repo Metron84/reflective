@@ -1,5 +1,6 @@
 import Link from "next/link";
 import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
+import { GUESSER_STRAPLINE } from "@/lib/config";
 import styles from "./GuesserHeroCard.module.css";
 
 export default function GuesserHeroCard({ game }) {
@@ -21,6 +22,7 @@ export default function GuesserHeroCard({ game }) {
       </div>
       <div className={styles.body}>
         <h2 className={styles.title}>{game.title}</h2>
+        <p className={styles.strapline}>{GUESSER_STRAPLINE}</p>
         <p className={styles.hook}>{game.hook}</p>
         <span className={styles.play}>Play</span>
       </div>
