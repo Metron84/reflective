@@ -13,5 +13,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLbgjGKAdxaNk",
+      "title": "World Cup 2026: Best Fan Soundbites (Groups A-F)"
+    }
+  ]
 }

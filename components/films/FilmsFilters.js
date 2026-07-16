@@ -22,8 +22,9 @@ export default function FilmsFilters({ options }) {
 
   const activeClub = searchParams.get("club") ?? "";
   const activeVenue = searchParams.get("venue") ?? "";
+  const activeCollection = searchParams.get("collection") ?? "";
 
-  const hasActive = Boolean(activeClub || activeVenue);
+  const hasActive = Boolean(activeClub || activeVenue || activeCollection);
 
   const pushParams = useCallback(
     (next) => {
@@ -48,8 +49,12 @@ export default function FilmsFilters({ options }) {
   );
 
   const clearAll = useCallback(() => {
-    router.replace(pathname, { scroll: false });
-  }, [pathname, router]);
+    const next = new URLSearchParams();
+    const tab = searchParams.get("tab");
+    if (tab) next.set("tab", tab);
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [pathname, router, searchParams]);
 
   const groups = useMemo(
     () => [

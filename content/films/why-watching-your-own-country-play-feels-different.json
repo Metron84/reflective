@@ -13,5 +13,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLLEo9DMAhWvo",
+      "title": "Norway in Dubai | World Cup 2026 Fan Documentary"
+    }
+  ]
 }

@@ -20,6 +20,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const FILMS_DIR = path.join(ROOT, "content/films");
+const COLLECTIONS_PATH = path.join(ROOT, "content/collections.json");
 
 const PROTECTED_FILM_FIELDS = [
   "slug",
@@ -111,13 +112,13 @@ async function resolveChannelId(apiKey, handle) {
   return data.items?.[0] ?? null;
 }
 
-async function fetchAllUploadVideoIds(apiKey, uploadsPlaylistId) {
+async function fetchAllPlaylistVideoIds(apiKey, playlistId) {
   const ids = [];
   let pageToken = "";
   do {
     const params = new URLSearchParams({
       part: "contentDetails,snippet",
-      playlistId: uploadsPlaylistId,
+      playlistId,
       maxResults: "50",
       key: apiKey,
     });
@@ -132,6 +133,93 @@ async function fetchAllUploadVideoIds(apiKey, uploadsPlaylistId) {
     pageToken = data.nextPageToken ?? "";
   } while (pageToken);
   return ids;
+}
+
+async function fetchAllUploadVideoIds(apiKey, uploadsPlaylistId) {
+  return fetchAllPlaylistVideoIds(apiKey, uploadsPlaylistId);
+}
+
+async function fetchChannelPlaylists(apiKey, channelId, uploadsPlaylistId) {
+  const playlists = [];
+  let pageToken = "";
+  do {
+    const params = new URLSearchParams({
+      part: "snippet,contentDetails",
+      channelId,
+      maxResults: "50",
+      key: apiKey,
+    });
+    if (pageToken) params.set("pageToken", pageToken);
+    const data = await ytFetch(
+      `https://www.googleapis.com/youtube/v3/playlists?${params}`
+    );
+    for (const item of data.items ?? []) {
+      if (!item.id || item.id === uploadsPlaylistId) continue;
+      playlists.push({
+        id: item.id,
+        title: item.snippet?.title ?? "Untitled playlist",
+        itemCount: Number(item.contentDetails?.itemCount ?? 0),
+      });
+    }
+    pageToken = data.nextPageToken ?? "";
+  } while (pageToken);
+  return playlists;
+}
+
+function loadCollectionsManifest() {
+  if (!existsSync(COLLECTIONS_PATH)) return { collections: [] };
+  return JSON.parse(readFileSync(COLLECTIONS_PATH, "utf8"));
+}
+
+function writeCollectionsManifest(playlists, existing) {
+  const byId = new Map(
+    (existing.collections ?? []).map((entry) => [entry.playlistId, entry])
+  );
+
+  const collections = playlists.map((playlist, index) => {
+    const prev = byId.get(playlist.id);
+    return {
+      playlistId: playlist.id,
+      title: playlist.title,
+      titleOverride: prev?.titleOverride ?? null,
+      sort: prev?.sort ?? index + 1,
+      visible: prev?.visible ?? false,
+    };
+  });
+
+  collections.sort((a, b) => a.sort - b.sort);
+  writeFileSync(
+    COLLECTIONS_PATH,
+    `${JSON.stringify({ collections }, null, 2)}\n`,
+    "utf8"
+  );
+  return collections;
+}
+
+async function buildPlaylistMembership(apiKey, playlists) {
+  const byVideoId = new Map();
+
+  for (const playlist of playlists) {
+    const videoIds = await fetchAllPlaylistVideoIds(apiKey, playlist.id);
+    playlist.resolvedCount = videoIds.length;
+    for (const videoId of videoIds) {
+      const entry = { id: playlist.id, title: playlist.title };
+      const list = byVideoId.get(videoId) ?? [];
+      if (!list.some((item) => item.id === playlist.id)) {
+        list.push(entry);
+        byVideoId.set(videoId, list);
+      }
+    }
+  }
+
+  return byVideoId;
+}
+
+function applyPlaylistMembership(film, playlistsForVideo) {
+  return {
+    ...film,
+    playlists: playlistsForVideo ?? [],
+  };
 }
 
 async function fetchVideoDetails(apiKey, videoIds) {
@@ -188,7 +276,7 @@ function taxonomyComplete(film) {
   );
 }
 
-function buildNewFilm({ videoId, title, date, duration, slug }) {
+function buildNewFilm({ videoId, title, date, duration, slug, playlists = [] }) {
   return {
     videoId,
     title,
@@ -204,6 +292,7 @@ function buildNewFilm({ videoId, title, date, duration, slug }) {
     featured: false,
     embed: false,
     needs_review: true,
+    playlists,
   };
 }
 
@@ -273,6 +362,22 @@ async function main() {
   const details = await fetchVideoDetails(apiKey, videoIds);
   const { byVideoId, bySlug } = loadExistingFilms();
 
+  console.log("Fetching channel playlists…");
+  const channelPlaylists = await fetchChannelPlaylists(
+    apiKey,
+    channel.id,
+    uploadsPlaylistId
+  );
+  const playlistByVideoId = await buildPlaylistMembership(
+    apiKey,
+    channelPlaylists
+  );
+  const existingCollections = loadCollectionsManifest();
+  const collectionsManifest = writeCollectionsManifest(
+    channelPlaylists,
+    existingCollections
+  );
+
   let created = 0;
   let updated = 0;
   const catalog = [];
@@ -284,12 +389,16 @@ async function main() {
     const apiTitle = item.snippet?.title ?? "Untitled";
     const date = (item.snippet?.publishedAt ?? "").slice(0, 10) || null;
     const duration = item.contentDetails?.duration ?? null;
-    const apiFields = { videoId, title: apiTitle, date, duration };
+    const playlists = playlistByVideoId.get(videoId) ?? [];
+    const apiFields = { videoId, title: apiTitle, date, duration, playlists };
 
     const existing = byVideoId.get(videoId);
 
     if (existing) {
-      const merged = mergeFilm(existing.film, apiFields);
+      const merged = applyPlaylistMembership(
+        mergeFilm(existing.film, apiFields),
+        playlists
+      );
       removeStaleFileIfRenamed(existing, merged.slug);
       writeFilm(merged.slug, merged);
       updated += 1;
@@ -302,7 +411,7 @@ async function main() {
       });
     } else {
       const slug = allocateSlug(apiTitle, videoId, bySlug);
-      const film = buildNewFilm({ ...apiFields, slug });
+      const film = buildNewFilm({ ...apiFields, slug, playlists });
       writeFilm(slug, film);
       byVideoId.set(videoId, { film, filePath: path.join(FILMS_DIR, `${slug}.json`) });
       created += 1;
@@ -321,6 +430,21 @@ async function main() {
   console.log("");
   console.log(`Synced ${catalog.length} films (${created} new, ${updated} updated).`);
   console.log(`${catalog.filter((c) => c.needs_review).length} flagged needs_review.`);
+  console.log("");
+  console.log(`Collections manifest: ${COLLECTIONS_PATH}`);
+  console.log(`${collectionsManifest.length} playlists tracked (visible: false by default).`);
+  console.log("");
+  console.log("Playlists found:");
+  console.log("—".repeat(60));
+  for (const playlist of channelPlaylists) {
+    const manifest = collectionsManifest.find(
+      (entry) => entry.playlistId === playlist.id
+    );
+    const visible = manifest?.visible ? "visible" : "hidden";
+    console.log(
+      `${playlist.id}  ${playlist.title}  (${playlist.resolvedCount ?? playlist.itemCount} videos, ${visible})`
+    );
+  }
   console.log("");
   console.log("Catalog (title · videoId):");
   console.log("—".repeat(60));

@@ -3,7 +3,12 @@
   "title": "Best Celebration World Cup 2026 | Scotland, Japan, England or Egypt: Who Had the Best Celebration?",
   "titleOverride": null,
   "slug": "best-celebration-world-cup-2026-scotland-japan-england-or-egypt-who-had-",
-  "clubs": ["Egypt", "England", "Japan", "Scotland"],
+  "clubs": [
+    "Egypt",
+    "England",
+    "Japan",
+    "Scotland"
+  ],
   "venue": null,
   "competition": "FIFA World Cup 2026",
   "format": "compilation",
@@ -13,5 +18,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLdSH0JcJjbEw",
+      "title": "The Reflections | World Cup 2026 Awards"
+    }
+  ]
 }

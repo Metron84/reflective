@@ -16,5 +16,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzbyewAnaQ5p12epXvV9tDbd",
+      "title": "World Cup 2026 - England vs Croatia | Bla Bla by McGettigan’s 🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+    }
+  ]
 }

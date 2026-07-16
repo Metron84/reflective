@@ -3,7 +3,10 @@
   "title": "A Japan Fan's Case for Beating Brazil | World Cup 2026",
   "titleOverride": null,
   "slug": "a-japan-fan-s-case-for-beating-brazil-world-cup-2026",
-  "clubs": ["Brazil", "Japan"],
+  "clubs": [
+    "Brazil",
+    "Japan"
+  ],
   "venue": null,
   "competition": "FIFA World Cup 2026",
   "format": "catchmentary",
@@ -13,5 +16,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLNA0BK_wjz8Q",
+      "title": "Japan & Brazil Fans World Cup 2026 | Garden on 8"
+    }
+  ]
 }

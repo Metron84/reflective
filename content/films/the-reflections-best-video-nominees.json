@@ -13,5 +13,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLdSH0JcJjbEw",
+      "title": "The Reflections | World Cup 2026 Awards"
+    }
+  ]
 }

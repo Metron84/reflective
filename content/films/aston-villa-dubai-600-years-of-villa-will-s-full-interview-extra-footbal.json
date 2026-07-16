@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzbCax_HUlI53407X85rCSQC",
+      "title": "Aston Villa Dubai | Europa League Final | McGettigan's Factory Palm Dubai UAE | The Reflective Football Documentary"
+    }
+  ]
 }

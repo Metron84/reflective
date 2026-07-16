@@ -13,5 +13,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLDWW7sTBsO-g",
+      "title": "World Cup 2026 — Mexico & South Africa | Opening Day at the Coca-Cola FanZone | Bla Bla by McGettigan's"
+    }
+  ]
 }

@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLMLOTWm2xE5U",
+      "title": "Belgium in Dubai | Belgium v Spain, World Cup 2026 | The Reflective Football"
+    }
+  ]
 }

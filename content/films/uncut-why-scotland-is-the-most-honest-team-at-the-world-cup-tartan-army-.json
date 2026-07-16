@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLUlllK6lurLs",
+      "title": "World Cup 2026 — Scotland vs Haiti | Garden on 8 | Dubai"
+    }
+  ]
 }

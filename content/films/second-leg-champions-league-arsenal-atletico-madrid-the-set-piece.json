@@ -16,5 +16,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzYAmJ5_RdrW6-LC4yihwg6r",
+      "title": "The Set Piece | Episode 1 — Full Session"
+    }
+  ]
 }

@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzaakinbaU70avxXkcNA2CPz",
+      "title": "Garden on 8 | A Film Series by The Reflective"
+    }
+  ]
 }

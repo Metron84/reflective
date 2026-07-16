@@ -3,7 +3,10 @@
   "title": "TARTAN ARMY TRIUMPH: Scotland’s Historic 1-0 Victory Over Haiti | FIFA World Cup 2026 🏴󠁧󠁢󠁳󠁣󠁴󠁿",
   "titleOverride": null,
   "slug": "tartan-army-triumph-scotland-s-historic-1-0-victory-over-haiti-fifa-worl",
-  "clubs": ["Haiti", "Scotland"],
+  "clubs": [
+    "Haiti",
+    "Scotland"
+  ],
   "venue": null,
   "competition": "FIFA World Cup 2026",
   "format": "catchmentary",
@@ -13,5 +16,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLUlllK6lurLs",
+      "title": "World Cup 2026 — Scotland vs Haiti | Garden on 8 | Dubai"
+    }
+  ]
 }

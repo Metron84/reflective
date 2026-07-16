@@ -1,7 +1,11 @@
 .archive {
   margin: 0 auto;
   max-width: 72rem;
-  padding: 2rem 1rem 3rem;
+  padding: 0 1rem 3rem;
+}
+
+.controls {
+  padding-top: 1.75rem;
 }
 
 .featuredSection {
@@ -21,6 +25,15 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shortsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
   margin: 2rem 0 0;
   padding: 0;
   list-style: none;
@@ -83,12 +96,17 @@
 
 @media (min-width: 640px) {
   .archive {
-    padding: 2.5rem 1.5rem 3.5rem;
+    padding: 0 1.5rem 3.5rem;
   }
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+  }
+
+  .shortsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 
   .featuredGrid {
@@ -101,6 +119,11 @@
   .grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.75rem;
+  }
+
+  .shortsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 
   .featuredGrid {

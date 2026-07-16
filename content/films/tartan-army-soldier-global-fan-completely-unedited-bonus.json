@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzaiRfF3qWtP_vtA3dXjlqA4",
+      "title": "The Tartan Army Part 2: World Cup Viewing Experience at Garden on 8 vs. Morocco"
+    }
+  ]
 }

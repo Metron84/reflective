@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKzY81jxr8MLkjJuAGZIqHfB8",
+      "title": "The Dubai Hammers: West Ham Fans in the UAE"
+    }
+  ]
 }

@@ -3,8 +3,12 @@ import SectionHeader from "@/components/SectionHeader";
 import ViewsTickerBand from "@/components/ViewsTickerBand";
 import SectionContinue from "@/components/SectionContinue";
 import FilmsArchive from "@/components/films/FilmsArchive";
-import { getGridFilms } from "@/lib/films";
-import { getFilterOptions } from "@/lib/films/filters";
+import {
+  getAllFilms,
+  getFilmsTabFilms,
+  getShortsFilms,
+} from "@/lib/films";
+import { getVisibleCollections } from "@/lib/films/collections";
 import { getViewCounterPayload } from "@/lib/stats/views";
 
 export const metadata = {
@@ -16,8 +20,10 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function FilmsPage() {
-  const films = getGridFilms();
-  const filterOptions = getFilterOptions(films);
+  const allFilms = getAllFilms();
+  const filmsTabFilms = getFilmsTabFilms();
+  const shortsFilms = getShortsFilms();
+  const collections = getVisibleCollections(allFilms);
   const tickerPayload = await getViewCounterPayload();
 
   return (
@@ -31,8 +37,19 @@ export default async function FilmsPage() {
 
       <ViewsTickerBand payload={tickerPayload} />
 
-      <Suspense fallback={<FilmsArchiveFallback count={films.length} />}>
-        <FilmsArchive films={films} filterOptions={filterOptions} />
+      <Suspense
+        fallback={
+          <FilmsArchiveFallback
+            filmsCount={filmsTabFilms.length}
+            shortsCount={shortsFilms.length}
+          />
+        }
+      >
+        <FilmsArchive
+          filmsTabFilms={filmsTabFilms}
+          shortsFilms={shortsFilms}
+          collections={collections}
+        />
       </Suspense>
 
       <SectionContinue
@@ -44,10 +61,10 @@ export default async function FilmsPage() {
   );
 }
 
-function FilmsArchiveFallback({ count }) {
+function FilmsArchiveFallback({ filmsCount, shortsCount }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 text-center text-sm text-navy/50">
-      Loading {count} films…
+      Loading archive ({filmsCount} films, {shortsCount} shorts)…
     </div>
   );
 }

@@ -1,0 +1,51 @@
+.wrap {
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 1.5rem 1rem 0;
+}
+
+.tabs {
+  display: inline-flex;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: rgba(242, 237, 228, 0.6);
+}
+
+.tab {
+  min-width: 6.5rem;
+  border: none;
+  background: transparent;
+  padding: 0.625rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.55);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab + .tab {
+  border-left: 1px solid rgba(10, 17, 31, 0.14);
+}
+
+.tabActive {
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.tab:focus-visible {
+  outline: 2px solid #0a111f;
+  outline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+  .wrap {
+    padding: 1.75rem 1.5rem 0;
+  }
+
+  .tab {
+    min-width: 7.5rem;
+    padding: 0.75rem 1.5rem;
+  }
+}

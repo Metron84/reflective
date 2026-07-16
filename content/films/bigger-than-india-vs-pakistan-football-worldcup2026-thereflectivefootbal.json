@@ -13,5 +13,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLDFZolP_Rxwg",
+      "title": "World Cup 2026 — The Fans of Dubai"
+    }
+  ]
 }

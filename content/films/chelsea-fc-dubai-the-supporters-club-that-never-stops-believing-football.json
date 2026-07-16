@@ -15,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLl2YfuOasKza6UerRsLQLITisCGRJCOVf",
+      "title": "The Chelsea FC Supporters Club Dubai Documentary | Carefree in the UAE"
+    }
+  ]
 }

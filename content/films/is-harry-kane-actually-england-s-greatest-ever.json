@@ -3,7 +3,9 @@
   "title": "Is Harry Kane Actually England’s Greatest Ever?",
   "titleOverride": null,
   "slug": "is-harry-kane-actually-england-s-greatest-ever",
-  "clubs": ["England"],
+  "clubs": [
+    "England"
+  ],
   "venue": null,
   "competition": null,
   "format": "catchmentary",
@@ -13,5 +15,11 @@
   "featured": false,
   "embed": false,
   "needs_review": false,
-  "review_reason": null
+  "review_reason": null,
+  "playlists": [
+    {
+      "id": "PLO2icxro8se8",
+      "title": "England & Belgium: World Cup 2026 Fans Journey Round 32"
+    }
+  ]
 }

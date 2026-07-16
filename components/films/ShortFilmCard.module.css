@@ -1,0 +1,113 @@
+.card {
+  contain: layout style paint;
+}
+
+.link {
+  display: block;
+  overflow: hidden;
+  background: #060b14;
+  box-shadow: 0 12px 40px rgba(10, 17, 31, 0.18);
+  transition: transform 0.3s ease;
+}
+
+.link:hover {
+  transform: translateY(-2px);
+}
+
+.link:active {
+  transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+
+  .link:active {
+    transform: none;
+  }
+}
+
+.thumbWrap {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #0a111f;
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.thumbFallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #0a111f, #060b14);
+}
+
+.thumbOverlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 17, 31, 0.92) 0%,
+    rgba(10, 17, 31, 0.35) 55%,
+    rgba(10, 17, 31, 0.05) 100%
+  );
+}
+
+.body {
+  position: relative;
+  margin-top: -4rem;
+  padding: 0 0.875rem 1rem;
+  z-index: 1;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: #f2ede4;
+}
+
+.clubs {
+  margin-top: 0.4rem;
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.5);
+}
+
+.venue {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  color: rgba(242, 237, 228, 0.4);
+}
+
+.story {
+  margin-top: 0.4rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgba(242, 237, 228, 0.55);
+}
+
+.watch {
+  display: inline-block;
+  margin-top: 0.625rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #d8232a;
+}
