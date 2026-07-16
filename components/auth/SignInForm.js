@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { isGoogleAuthEnabled } from "@/lib/auth/config";
 
@@ -10,6 +10,17 @@ export default function SignInForm({ nextPath = "/" }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const googleEnabled = isGoogleAuthEnabled();
+
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) {
+      console.error("[TRF auth] Sign-in env missing at mount:", {
+        missingUrl: !url,
+        missingAnonKey: !key,
+      });
+    }
+  }, []);
 
   async function sendMagicLink(event) {
     event.preventDefault();
