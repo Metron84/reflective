@@ -2,12 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .groupLabel {
@@ -20,11 +25,13 @@
 
 .chips {
   display: flex;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
+  min-width: 0;
 }
 
 .chip {
@@ -73,11 +80,12 @@
 
   .group {
     flex-direction: row;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 1rem;
   }
 
   .groupLabel {
     flex: 0 0 6.5rem;
+    padding-top: 0.35rem;
   }
 }

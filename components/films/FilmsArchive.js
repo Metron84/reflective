@@ -69,7 +69,9 @@ export default function FilmsArchive({
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.layout}>
-          <FilmsSidebar active={activeNav} onSelect={setActiveNav} />
+          <div className={styles.sidebarSlot}>
+            <FilmsSidebar active={activeNav} onSelect={setActiveNav} />
+          </div>
 
           <div className={styles.main}>
             <div className={styles.controls}>
@@ -77,7 +79,7 @@ export default function FilmsArchive({
               <FilmsFilters options={filterOptions} />
             </div>
 
-            <div id="films-archive-panel">
+            <div id="films-archive-panel" className={styles.panel}>
               {isEmpty ? (
                 <div className={styles.empty}>
                   <p className={styles.emptyCopy}>

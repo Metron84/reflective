@@ -1,5 +1,8 @@
 .section {
   margin-top: 1.75rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .heading {
@@ -18,6 +21,9 @@
   margin: 0;
   padding: 0 0 0.25rem;
   list-style: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
