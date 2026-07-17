@@ -8,6 +8,7 @@ import PostVotePopup from "./PostVotePopup";
 import CompletionState from "./CompletionState";
 import PartialCompletionState from "./PartialCompletionState";
 import ComingShortlyCover from "./ComingShortlyCover";
+import YouTubeFacade from "./YouTubeFacade";
 import { getFingerprint } from "@/lib/fingerprint";
 
 const POPUP_DISMISSED_KEY = "trf_popup_dismissed";
@@ -35,6 +36,7 @@ export default function VotingBoard({
   initialVoted,
   initialPicks,
   votingState,
+  isSignedIn,
 }) {
   const [voted, setVoted] = useState(initialVoted);
   const [picks, setPicks] = useState(initialPicks);
@@ -103,7 +105,8 @@ export default function VotingBoard({
   async function handleVote(categorySlug, nomineeId) {
     const category = navCategories.find((c) => c.slug === categorySlug);
     if (!category?.open) return;
-    if (!votingOpen || voted.includes(categorySlug) || pendingVote) return;
+    if (!votingOpen || pendingVote) return;
+    if (!isSignedIn) return;
     setPendingVote({ category: categorySlug, nomineeId });
     setErrors((prev) => ({ ...prev, [categorySlug]: null }));
     try {
@@ -120,17 +123,23 @@ export default function VotingBoard({
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        const newVoted = data.voted ?? [...voted, categorySlug];
+        const newVoted = data.voted ?? [...new Set([...voted, categorySlug])];
         setVoted(newVoted);
         setPicks(data.picks ?? { ...picks, [categorySlug]: nomineeId });
 
-        const target = resumeTarget(newVoted);
-        if (!sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
+        const isFirstVoteInCategory = !voted.includes(categorySlug);
+        const target = isFirstVoteInCategory ? resumeTarget(newVoted) : null;
+        if (isFirstVoteInCategory && !sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
           resumeTargetRef.current = target;
           setPopupOpen(true);
-        } else {
+        } else if (isFirstVoteInCategory) {
           advanceAfterBeat(target);
         }
+      } else if (res.status === 401 && data.reason === "account-required") {
+        setErrors((prev) => ({
+          ...prev,
+          [categorySlug]: "Sign in free to cast your vote.",
+        }));
       } else if (res.status === 409) {
         setVoted(data.voted ?? [...voted, categorySlug]);
         setErrors((prev) => ({
@@ -221,6 +230,20 @@ export default function VotingBoard({
         ) : null}
       </nav>
 
+      {votingOpen && !isSignedIn ? (
+        <div className="border-b border-navy/10 bg-paper px-4 py-4 sm:px-6">
+          <p className="mx-auto max-w-6xl text-sm text-navy/70">
+            Sign in free to cast your vote.{" "}
+            <Link
+              href="/signin?next=/reflections"
+              className="text-navy underline underline-offset-4 hover:text-signal"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+      ) : null}
+
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {showFullComplete ? (
           <CompletionState total={totalCategoryCount} />
@@ -275,6 +298,15 @@ export default function VotingBoard({
 
               {isOpen && hasNominees ? (
                 <>
+                  {category.category_youtube_id ? (
+                    <div className="mt-8 max-w-3xl">
+                      <YouTubeFacade
+                        youtubeId={category.category_youtube_id}
+                        title={`${category.name} nominees`}
+                      />
+                    </div>
+                  ) : null}
+
                   <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     {nominees.map((nominee) => (
                       <NomineeCard
@@ -287,6 +319,7 @@ export default function VotingBoard({
                           categoryPending && pendingVote?.nomineeId === nominee.id
                         }
                         disabled={categoryPending}
+                        canVote={isSignedIn}
                         onVote={() => handleVote(category.slug, nominee.id)}
                       />
                     ))}

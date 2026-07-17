@@ -84,21 +84,23 @@ export async function POST(request) {
     );
   }
 
-  // Signed cookie short-circuit, first of the three dedupe layers.
+  const user = await getSessionUser();
+  const userId = user?.id ?? null;
+  if (!userId) {
+    return NextResponse.json(
+      { ok: false, reason: "account-required" },
+      { status: 401 }
+    );
+  }
+
   const cookieState = verifyPayload(request.cookies.get(VOTES_COOKIE)?.value) ?? {
     categories: [],
     picks: {},
   };
-  if (cookieState.categories.includes(category)) {
-    return NextResponse.json(
-      { ok: false, reason: "already-voted", voted: cookieState.categories },
-      { status: 409 }
-    );
-  }
 
   const supabase = getServiceClient();
-  const user = await getSessionUser();
-  const userId = user?.id ?? null;
+  const fpHash = saltedHash(fingerprint);
+  const ipHash = saltedHash(ip);
 
   if (supabase) {
     const { data: nominee } = await supabase
@@ -110,25 +112,55 @@ export async function POST(request) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
-    const { error } = await supabase.from("votes").insert({
-      category,
-      nominee_id: nomineeId,
-      user_id: userId,
-      fingerprint_hash: saltedHash(fingerprint),
-      ip_hash: saltedHash(ip),
-    });
+    const { data: byUser } = await supabase
+      .from("votes")
+      .select("id")
+      .eq("category", category)
+      .eq("user_id", userId)
+      .maybeSingle();
 
-    if (error) {
-      // 23505: unique violation, this device or account already voted.
-      if (error.code === "23505") {
-        const voted = [...cookieState.categories, category];
-        const response = NextResponse.json(
-          { ok: false, reason: "already-voted", voted },
+    let existing = byUser;
+
+    if (!existing) {
+      const { data: byFingerprint } = await supabase
+        .from("votes")
+        .select("id, user_id")
+        .eq("category", category)
+        .eq("fingerprint_hash", fpHash)
+        .maybeSingle();
+      if (byFingerprint?.user_id && byFingerprint.user_id !== userId) {
+        return NextResponse.json(
+          { ok: false, reason: "already-voted" },
           { status: 409 }
         );
-        return withVoteCookie(response, { ...cookieState, categories: voted });
       }
-      return NextResponse.json({ ok: false }, { status: 500 });
+      existing = byFingerprint;
+    }
+
+    if (existing) {
+      const { error } = await supabase
+        .from("votes")
+        .update({
+          nominee_id: nomineeId,
+          user_id: userId,
+          fingerprint_hash: fpHash,
+          ip_hash: ipHash,
+        })
+        .eq("id", existing.id);
+      if (error) {
+        return NextResponse.json({ ok: false }, { status: 500 });
+      }
+    } else {
+      const { error } = await supabase.from("votes").insert({
+        category,
+        nominee_id: nomineeId,
+        user_id: userId,
+        fingerprint_hash: fpHash,
+        ip_hash: ipHash,
+      });
+      if (error) {
+        return NextResponse.json({ ok: false }, { status: 500 });
+      }
     }
   } else {
     // No Supabase configured: never accept real votes in production.
@@ -144,7 +176,9 @@ export async function POST(request) {
     }
   }
 
-  const voted = [...cookieState.categories, category];
+  const voted = cookieState.categories.includes(category)
+    ? cookieState.categories
+    : [...cookieState.categories, category];
   const picks = { ...cookieState.picks, [category]: nomineeId };
   const response = NextResponse.json({
     ok: true,

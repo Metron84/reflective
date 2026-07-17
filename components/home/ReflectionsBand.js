@@ -45,7 +45,7 @@ export default function ReflectionsBand({ votedCount, votingState }) {
           <p className="mt-4 text-sm text-paper/60">
             {votingState === "before"
               ? "Voting opens soon."
-              : `Voting is closed. Winners announced ${reflectionsWinnersDay()}.`}
+              : `Voting is closed. Winners revealed ${reflectionsWinnersDay()}.`}
           </p>
         )}
         {open ? (

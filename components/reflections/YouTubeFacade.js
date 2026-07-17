@@ -5,8 +5,12 @@ import AwardsLaurelCover from "@/components/covers/AwardsLaurelCover";
 
 // Lazy YouTube embed: thumbnail + play button until clicked, then the
 // real iframe. Keeps the page fast with many nominees.
-export default function YouTubeFacade({ youtubeId, title }) {
+export default function YouTubeFacade({ youtubeId, title, startSeconds = 0 }) {
   const [playing, setPlaying] = useState(false);
+  const start =
+    Number.isFinite(Number(startSeconds)) && Number(startSeconds) > 0
+      ? Math.floor(Number(startSeconds))
+      : 0;
 
   if (!youtubeId) {
     return (
@@ -20,7 +24,7 @@ export default function YouTubeFacade({ youtubeId, title }) {
     return (
       <iframe
         className="aspect-video w-full"
-        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`}
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1${start ? `&start=${start}` : ""}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

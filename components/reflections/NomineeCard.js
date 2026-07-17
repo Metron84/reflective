@@ -11,6 +11,7 @@ export default function NomineeCard({
   pending,
   disabled,
   onVote,
+  canVote,
 }) {
   const dimmed = categoryVoted && !isPick;
 
@@ -20,7 +21,11 @@ export default function NomineeCard({
         isPick ? "border-signal" : "border-navy/20"
       } ${dimmed ? "opacity-50" : ""}`}
     >
-      <YouTubeFacade youtubeId={nominee.youtube_id} title={nominee.title} />
+      <YouTubeFacade
+        youtubeId={nominee.youtube_id}
+        title={nominee.title}
+        startSeconds={nominee.clip_start_seconds}
+      />
       <div className="flex flex-1 flex-col p-5">
         <h3 className="font-display text-xl text-paper">{nominee.title}</h3>
         {nominee.context_line ? (
@@ -33,7 +38,7 @@ export default function NomineeCard({
             <span className="inline-block rounded-full bg-signal px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-paper">
               Your pick
             </span>
-          ) : votingOpen && !categoryVoted ? (
+          ) : votingOpen && canVote ? (
             <button
               type="button"
               disabled={disabled}
