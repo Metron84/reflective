@@ -33,47 +33,12 @@
   max-width: 100%;
 }
 
-.controls {
-  width: 100%;
-  min-width: 0;
-  padding-top: 0;
-}
-
 .panel {
   width: 100%;
   min-width: 0;
 }
 
-@media (min-width: 640px) {
-  .container {
-    padding: 0 1.5rem;
-  }
-
-  .page {
-    padding-bottom: 3.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .layout {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 2.5rem;
-    padding-top: 2rem;
-  }
-
-  .sidebarSlot {
-    flex: 0 0 16.25rem;
-    width: 16.25rem;
-    max-width: 16.25rem;
-  }
-}
-
-.featuredSection {
-  margin-top: 2.5rem;
-}
-
-.featuredGrid {
+.grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
@@ -82,26 +47,13 @@
   list-style: none;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.25rem;
-  margin: 2rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
 .shortsGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin: 2rem 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.featuredSection + section .grid {
-  margin-top: 2.5rem;
 }
 
 .empty {
@@ -121,10 +73,14 @@
 .clearLink {
   display: inline-block;
   margin-top: 1.25rem;
+  border: none;
+  background: none;
+  padding: 0;
   font-size: 0.875rem;
   color: rgba(10, 17, 31, 0.6);
   text-decoration: underline;
   text-underline-offset: 3px;
+  cursor: pointer;
 }
 
 .clearLink:hover {
@@ -156,6 +112,14 @@
 }
 
 @media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .page {
+    padding-bottom: 3.5rem;
+  }
+
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
@@ -165,14 +129,22 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
   }
-
-  .featuredGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-  }
 }
 
 @media (min-width: 1024px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+    padding-top: 2rem;
+  }
+
+  .sidebarSlot {
+    flex: 0 0 16.25rem;
+    width: 16.25rem;
+    max-width: 16.25rem;
+  }
+
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.75rem;
@@ -181,10 +153,5 @@
   .shortsGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
-  }
-
-  .featuredGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
   }
 }

@@ -8,6 +8,7 @@ import {
   PanelLeftOpen,
   Smartphone,
 } from "lucide-react";
+import FilmsFilterPanel from "./FilmsFilterPanel";
 import styles from "./FilmsSidebar.module.css";
 
 export const FILMS_NAV_ENTIRE = "entire-collection";
@@ -40,8 +41,18 @@ function PrimaryNavButton({ item, isActive, collapsed, onSelect }) {
   );
 }
 
-export default function FilmsSidebar({ active, onSelect }) {
+export default function FilmsSidebar({
+  active,
+  onSelect,
+  filterGroups,
+  activeFilter,
+  onFilterSelect,
+  onFilterClear,
+}) {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const hasFilters = filterGroups?.some((group) => group.items.length > 0);
+  const filterActive = Boolean(activeFilter);
 
   return (
     <div
@@ -65,7 +76,38 @@ export default function FilmsSidebar({ active, onSelect }) {
               </li>
             );
           })}
+          {hasFilters ? (
+            <li className={styles.mobileItem}>
+              <button
+                type="button"
+                aria-expanded={mobileFiltersOpen}
+                className={`${styles.mobilePill} ${
+                  mobileFiltersOpen || filterActive ? styles.mobilePillActive : ""
+                }`}
+                onClick={() => setMobileFiltersOpen((open) => !open)}
+              >
+                Filter
+              </button>
+            </li>
+          ) : null}
         </ul>
+
+        {mobileFiltersOpen && hasFilters ? (
+          <div className={styles.mobileSheet}>
+            <FilmsFilterPanel
+              groups={filterGroups}
+              activeFilter={activeFilter}
+              onSelect={(type, value) => {
+                onFilterSelect(type, value);
+                setMobileFiltersOpen(false);
+              }}
+              onClear={() => {
+                onFilterClear();
+                setMobileFiltersOpen(false);
+              }}
+            />
+          </div>
+        ) : null}
       </nav>
 
       <aside className={styles.desktopShell}>
@@ -84,9 +126,20 @@ export default function FilmsSidebar({ active, onSelect }) {
             </ul>
           </nav>
 
-          <hr className={styles.divider} />
+          {hasFilters ? (
+            <>
+              <hr className={styles.divider} />
 
-          <div className={styles.secondarySection} aria-label="Categories" />
+              <div className={styles.secondarySection} aria-label="Categories">
+                <FilmsFilterPanel
+                  groups={filterGroups}
+                  activeFilter={activeFilter}
+                  onSelect={onFilterSelect}
+                  onClear={onFilterClear}
+                />
+              </div>
+            </>
+          ) : null}
 
           <button
             type="button"

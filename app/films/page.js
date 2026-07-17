@@ -3,12 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import ViewsTickerBand from "@/components/ViewsTickerBand";
 import SectionContinue from "@/components/SectionContinue";
 import FilmsArchive from "@/components/films/FilmsArchive";
-import {
-  getAllFilms,
-  getFilmsTabFilms,
-  getShortsFilms,
-} from "@/lib/films";
-import { getVisibleCollections } from "@/lib/films/collections";
+import { getFilmsTabFilms, getShortsFilms } from "@/lib/films";
 import { getViewCounterPayload } from "@/lib/stats/views";
 
 export const metadata = {
@@ -20,10 +15,8 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function FilmsPage() {
-  const allFilms = getAllFilms();
   const filmsTabFilms = getFilmsTabFilms();
   const shortsFilms = getShortsFilms();
-  const collections = getVisibleCollections(allFilms);
   const tickerPayload = await getViewCounterPayload();
 
   return (
@@ -48,7 +41,6 @@ export default async function FilmsPage() {
         <FilmsArchive
           filmsTabFilms={filmsTabFilms}
           shortsFilms={shortsFilms}
-          collections={collections}
         />
       </Suspense>
 

@@ -51,6 +51,15 @@
   font-weight: 500;
 }
 
+.mobileSheet {
+  margin-top: 0.75rem;
+  border: 1px solid rgba(10, 17, 31, 0.1);
+  border-radius: 0.75rem;
+  background: rgba(255, 252, 247, 0.96);
+  box-shadow: 0 2px 18px rgba(10, 17, 31, 0.06);
+  padding: 0.75rem;
+}
+
 /* —— Desktop: sticky card sidebar —— */
 .desktopShell {
   display: none;
@@ -160,6 +169,8 @@
   .secondarySection {
     flex: 1;
     min-height: 2rem;
+    max-height: calc(100vh - 16rem);
+    overflow-y: auto;
   }
 
   .collapseToggle {
