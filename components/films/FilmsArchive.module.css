@@ -1,11 +1,46 @@
-.archive {
+.page {
+  padding-bottom: 3rem;
+}
+
+.container {
   margin: 0 auto;
   max-width: 72rem;
-  padding: 0 1rem 3rem;
+  padding: 0 1rem;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1.75rem;
+}
+
+.main {
+  min-width: 0;
+  flex: 1;
 }
 
 .controls {
-  padding-top: 1.75rem;
+  padding-top: 0;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .page {
+    padding-bottom: 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+    padding-top: 2rem;
+  }
 }
 
 .featuredSection {
@@ -95,10 +130,6 @@
 }
 
 @media (min-width: 640px) {
-  .archive {
-    padding: 0 1.5rem 3.5rem;
-  }
-
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;

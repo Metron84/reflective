@@ -28,7 +28,7 @@ export default async function FilmsPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="px-4 pt-12 pb-8 sm:px-6 sm:pt-16 sm:pb-10">
+      <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 sm:px-6 sm:pt-16 sm:pb-10">
         <SectionHeader
           eyebrow="Films. From the Fans."
           title="Films"
