@@ -62,6 +62,7 @@ export async function POST(request) {
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
+  try {
   const { mode, guess, personId } = body ?? {};
 
   const modeConfig = getShippableModes().find((m) => m.slug === mode);
@@ -73,6 +74,9 @@ export async function POST(request) {
   ) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
+
+  const user = await getSessionUser();
+  const userId = user?.id ?? null;
   if (!modeConfig.free && !userId) {
     return NextResponse.json(
       { ok: false, reason: "account-required" },
@@ -81,8 +85,6 @@ export async function POST(request) {
   }
 
   const day = gstDay();
-  const user = await getSessionUser();
-  const userId = user?.id ?? null;
   const state = parseGuesserCookie(
     request.cookies.get(GUESSER_COOKIE)?.value,
     day
@@ -174,4 +176,11 @@ export async function POST(request) {
     path: "/",
   });
   return response;
+  } catch (err) {
+    console.error("[TRF guesser]", err);
+    return NextResponse.json(
+      { ok: false, reason: "server-error" },
+      { status: 500 }
+    );
+  }
 }

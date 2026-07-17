@@ -258,10 +258,10 @@ export default function GuesserBoard({
       } else if (data.reason === "account-required") {
         setSignupOpen(true);
       } else {
-        setNotice("That guess did not go through. Try again.");
+        setNotice("Couldn't process your guess — try again.");
       }
     } catch {
-      setNotice("That guess did not go through. Try again.");
+      setNotice("Couldn't process your guess — try again.");
     } finally {
       setPending(false);
     }
