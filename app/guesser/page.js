@@ -111,6 +111,7 @@ export default async function GuesserPage({ searchParams }) {
       </section>
 
       <GuesserBoard
+        key={mode}
         mode={mode}
         modeName={modeConfig.name}
         modeLocked={modeLocked}
