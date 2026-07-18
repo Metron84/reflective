@@ -36,6 +36,10 @@ yarn-error.log*
 # Transfermarkt research extracts (large; regenerate via script)
 /data/transfermarkt_extract/
 
+# Phase 1 selection review (local until Melo approves)
+/data/tm_selection_review.json
+/data/tm_selection_review.md
+
 # vercel
 .vercel
 

@@ -1,0 +1,19 @@
+.wrap {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.summary {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.65);
+}
+
+.next {
+  margin-top: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.5);
+}

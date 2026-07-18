@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 function ClubEditor({ options, selected, onChange }) {
   const [query, setQuery] = useState("");
@@ -58,6 +59,7 @@ export default function SettingsPanel({
   const [name, setName] = useState(initialName);
   const [clubs, setClubs] = useState(initialClubs);
   const [marketing, setMarketing] = useState(initialMarketing);
+  const router = useRouter();
   const [pending, setPending] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -83,6 +85,7 @@ export default function SettingsPanel({
         return;
       }
       setSaved(true);
+      router.refresh();
     } catch {
       setError("Could not save settings.");
     } finally {

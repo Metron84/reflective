@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
+import ProgrammeTodayLine from "@/components/account/ProgrammeTodayLine";
 import GuesserSection from "@/components/account/GuesserSection";
 import ReflectionsBallot from "@/components/account/ReflectionsBallot";
 import HonoursSection from "@/components/account/HonoursSection";
@@ -31,6 +32,7 @@ export default async function AccountPage() {
       <div className={styles.inner}>
         <p className={styles.eyebrow}>My Programme</p>
         <ProgrammeHeader profile={programme.profile} />
+        <ProgrammeTodayLine todayLine={programme.todayLine} />
         <GuesserSection
           modeStats={programme.modeStats}
           shareStats={programme.shareStats}
@@ -38,6 +40,7 @@ export default async function AccountPage() {
         <ReflectionsBallot ballot={programme.ballot} />
         <HonoursSection honours={programme.honours} />
         <SettingsPanel
+          key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
           initialName={programme.profile.preferredName}
           initialClubs={programme.profile.clubs}
           initialMarketing={programme.profile.marketingConsent}

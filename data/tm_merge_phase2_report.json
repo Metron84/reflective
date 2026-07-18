@@ -1,0 +1,111 @@
+{
+  "inserted_per_league": {
+    "premier_league": 58,
+    "la_liga": 60,
+    "serie_a": 60,
+    "bundesliga": 60,
+    "ligue_1": 60
+  },
+  "inserted_total": 298,
+  "seed_row_count_after": 705,
+  "skipped_as_existing": [
+    {
+      "name": "Heung-min Son",
+      "league": "premier_league",
+      "existing_person_id": "son-heung-min",
+      "existing_name": "Son Heung-min"
+    },
+    {
+      "name": "Alisson",
+      "league": "premier_league",
+      "existing_person_id": "alisson-becker",
+      "existing_name": "Alisson Becker"
+    }
+  ],
+  "linked_to_existing_person": [],
+  "namesakes_disambiguated": [],
+  "unplaced": [],
+  "sql_batches": [
+    {
+      "file": "players_batch_tm_01.sql",
+      "rows": 80
+    },
+    {
+      "file": "players_batch_tm_02.sql",
+      "rows": 80
+    },
+    {
+      "file": "players_batch_tm_03.sql",
+      "rows": 80
+    },
+    {
+      "file": "players_batch_tm_04.sql",
+      "rows": 52
+    },
+    {
+      "file": "players_batch_tm_05.sql",
+      "rows": 6
+    }
+  ],
+  "suggestion_list": {
+    "per_mode": {
+      "world_cup": 90,
+      "premier_league": 158,
+      "la_liga": 115,
+      "serie_a": 115,
+      "bundesliga": 112,
+      "ligue_1": 115
+    },
+    "total_entries_all_modes": 705,
+    "unique_persons": 614,
+    "duplicate_person_cards_in_any_mode": [],
+    "ok": true
+  },
+  "guesser_tests": {
+    "command": "GET http://localhost:4343/api/dev/guesser-tests",
+    "passed": 11,
+    "total": 11,
+    "ok": true,
+    "note": "Suite passed after merge. Dev server may cache registry until restart; suggestion counts below are from seed file on disk."
+  },
+  "seed_by_category": {
+    "world_cup": 90,
+    "premier_league": 158,
+    "la_liga": 115,
+    "serie_a": 115,
+    "bundesliga": 112,
+    "ligue_1": 115
+  },
+  "nationality_backfill": [
+    {
+      "name": "Marc Albrighton",
+      "nationality": "England",
+      "league": "premier_league"
+    },
+    {
+      "name": "Samir Handanovic",
+      "nationality": "Bosnia and Herzegovina",
+      "league": "serie_a"
+    },
+    {
+      "name": "Fabio Quagliarella",
+      "nationality": "Italy",
+      "league": "serie_a"
+    },
+    {
+      "name": "Radja Nainggolan",
+      "nationality": "Belgium",
+      "league": "serie_a"
+    },
+    {
+      "name": "Marvin Plattenhardt",
+      "nationality": "Germany",
+      "league": "bundesliga"
+    },
+    {
+      "name": "Julian Baumgartlinger",
+      "nationality": "Austria",
+      "league": "bundesliga"
+    }
+  ]
+}

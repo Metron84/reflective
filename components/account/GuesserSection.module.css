@@ -45,10 +45,39 @@
   opacity: 0.92;
 }
 
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .modeName {
   font-family: var(--font-display);
   font-size: 1.125rem;
   color: #0a111f;
+}
+
+.todayChip {
+  flex-shrink: 0;
+  margin: 0.15rem 0 0;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.45);
+}
+
+.today_not_played {
+  color: rgba(10, 17, 31, 0.45);
+}
+
+.today_won {
+  color: #0a111f;
+}
+
+.today_lost {
+  color: rgba(10, 17, 31, 0.55);
 }
 
 .quietCopy {

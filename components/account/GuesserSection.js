@@ -2,6 +2,12 @@ import Link from "next/link";
 import ShareStatsButton from "./ShareStatsButton";
 import styles from "./GuesserSection.module.css";
 
+const TODAY_LABEL = {
+  not_played: "Not played",
+  won: "Won",
+  lost: "Lost",
+};
+
 function DistributionBar({ distribution }) {
   const total = Object.values(distribution).reduce((a, b) => a + b, 0);
   if (!total) return null;
@@ -27,17 +33,37 @@ function DistributionBar({ distribution }) {
   );
 }
 
+function TodayChip({ status }) {
+  const key = status ?? "not_played";
+  return (
+    <p className={`${styles.todayChip} ${styles[`today_${key}`]}`}>
+      {TODAY_LABEL[key] ?? TODAY_LABEL.not_played}
+    </p>
+  );
+}
+
 function ModeCard({ mode }) {
+  const doneToday =
+    mode.todayStatus === "won" || mode.todayStatus === "lost";
+  const cta = !mode.hasPlayed
+    ? "Play your first"
+    : doneToday
+      ? "Done for today"
+      : "Play today";
+
   if (!mode.hasPlayed) {
     return (
       <div className={`${styles.card} ${styles.cardQuiet}`}>
-        <h3 className={styles.modeName}>{mode.name}</h3>
+        <div className={styles.cardTop}>
+          <h3 className={styles.modeName}>{mode.name}</h3>
+          <TodayChip status={mode.todayStatus} />
+        </div>
         <p className={styles.quietCopy}>No boards yet.</p>
         <Link
           href={`/guesser?mode=${mode.slug}`}
           className={styles.playLink}
         >
-          Play your first
+          {cta}
         </Link>
       </div>
     );
@@ -45,7 +71,10 @@ function ModeCard({ mode }) {
 
   return (
     <div className={styles.card}>
-      <h3 className={styles.modeName}>{mode.name}</h3>
+      <div className={styles.cardTop}>
+        <h3 className={styles.modeName}>{mode.name}</h3>
+        <TodayChip status={mode.todayStatus} />
+      </div>
       <p className={styles.streak}>{mode.currentStreak}</p>
       <p className={styles.streakLabel}>Current streak</p>
       <dl className={styles.statsGrid}>
@@ -68,7 +97,7 @@ function ModeCard({ mode }) {
       </dl>
       <DistributionBar distribution={mode.distribution} />
       <Link href={`/guesser?mode=${mode.slug}`} className={styles.playLink}>
-        Play today
+        {cta}
       </Link>
     </div>
   );
