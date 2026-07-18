@@ -89,7 +89,7 @@ export default function HeaderShell({ auth }) {
           ) : (
             <Link
               href="/signin"
-              className="hidden rounded-full border border-navy/25 px-4 py-1.5 text-navy/90 transition-colors hover:border-navy/60 hover:text-navy sm:block"
+              className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-opacity hover:opacity-90 sm:block"
             >
               Sign in
             </Link>

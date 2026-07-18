@@ -64,7 +64,7 @@ function MenuOverlay({ onClose, auth }) {
           <Link
             href="/signin"
             onClick={onClose}
-            className="block rounded-full border border-paper/30 py-3 text-center text-sm font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
+            className="block rounded-full bg-signal py-3 text-center text-sm font-medium text-paper transition-opacity hover:opacity-90"
           >
             Sign in
           </Link>

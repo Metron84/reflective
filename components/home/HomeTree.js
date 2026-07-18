@@ -1,8 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { reflectionsWinnersHeroLine, GUESSER_STRAPLINE } from "@/lib/config";
+import {
+  reflectionsWinnersHeroLine,
+  GUESSER_STRAPLINE,
+  HOME_HERO_STILL,
+} from "@/lib/config";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -77,7 +82,7 @@ function useHomeTabOrder(doorRefs) {
   }, [doorRefs]);
 }
 
-export default function HomeTree({ showVotingDate }) {
+export default function HomeTree({ showVotingDate, isSignedIn = false }) {
   const { skipEntrance, animate } = useTreeEntrance();
   const doorRefs = useRef([]);
 
@@ -98,12 +103,35 @@ export default function HomeTree({ showVotingDate }) {
     : animate
       ? styles.enterRoot
       : styles.enterRootHidden;
+  const ctaClass = skipEntrance
+    ? ""
+    : animate
+      ? styles.enterCta
+      : styles.enterCtaHidden;
 
   return (
     <section className={`${styles.tree} hero-grain`} aria-label="The Tree">
+      <div className={styles.atmosphere} aria-hidden="true">
+        <div className={styles.floodlightLeft} />
+        <div className={styles.floodlightRight} />
+      </div>
+
+      {HOME_HERO_STILL ? (
+        <div className={styles.footageBand} aria-hidden="true">
+          <Image
+            src={HOME_HERO_STILL}
+            alt=""
+            fill
+            sizes="100vw"
+            className={styles.footageBandImage}
+            priority
+          />
+        </div>
+      ) : null}
+
       <div className={styles.inner}>
         <div className={styles.axis}>
-          <div className={styles.crestGlow}>
+          <div className={styles.crestFrameWrap}>
             <div className={`${styles.crestFrame} ${crestClass}`}>
               <span className={styles.crestShine} aria-hidden="true" />
               <Image
@@ -123,6 +151,20 @@ export default function HomeTree({ showVotingDate }) {
           </p>
 
           <p className={`${styles.root} ${rootClass}`}>Watch. Vote. Play.</p>
+
+          {!isSignedIn ? (
+            <div className={`${styles.heroCta} ${ctaClass}`}>
+              <Link
+                href="/signin"
+                className="inline-flex rounded-full bg-signal px-7 py-2.5 font-body text-sm font-medium text-paper transition-opacity hover:opacity-90"
+              >
+                Sign up free
+              </Link>
+              <p className={styles.heroCtaSubline}>
+                Live results, daily games, your programme.
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <nav className={styles.doorsMenu} aria-label="The Tree doors">
