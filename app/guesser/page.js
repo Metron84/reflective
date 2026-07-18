@@ -35,6 +35,16 @@ export const metadata = {
   title: "The Guesser",
   description:
     "One player a day. Guess the footballer from progressive feedback.",
+  openGraph: {
+    title: "The Guesser | The Reflective Football",
+    description:
+      "One player a day. Six guesses. Wordle for football, free every day.",
+  },
+  twitter: {
+    title: "The Guesser | The Reflective Football",
+    description:
+      "One player a day. Six guesses. Wordle for football, free every day.",
+  },
 };
 
 export const dynamic = "force-dynamic";

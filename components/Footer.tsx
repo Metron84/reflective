@@ -157,7 +157,7 @@ export default function Footer() {
                 <YouTubeIcon />
               </a>
               <a
-                href="https://www.linkedin.com/company/thereflectivefootball"
+                href="https://www.linkedin.com/company/the-reflective-football/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={socialLink}

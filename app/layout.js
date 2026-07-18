@@ -1,6 +1,7 @@
 import { Bodoni_Moda, Archivo } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/config";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -14,12 +15,31 @@ const archivo = Archivo({
 });
 
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "The Reflective Football",
     template: "%s | The Reflective Football",
   },
   description:
     "Fan-first football films from Dubai. Football is nothing without the fans.",
+  alternates: {
+    canonical: "./",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "The Reflective Football",
+    title: "The Reflective Football",
+    description:
+      "Fan-first football films from Dubai. Football is nothing without the fans.",
+    url: "./",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Reflective Football",
+    description:
+      "Fan-first football films from Dubai. Football is nothing without the fans.",
+  },
   icons: {
     icon: "/brand/favicon.ico",
     apple: "/brand/trf-icon-180.png",

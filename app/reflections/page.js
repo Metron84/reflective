@@ -19,6 +19,16 @@ export const metadata = {
   title: "The Reflections",
   description:
     "Eight awards for the fans of the summer. Watch the nominees and cast your vote.",
+  openGraph: {
+    title: "The Reflections | The Reflective Football",
+    description:
+      "Eight awards for the fans of the summer. Watch the nominees and cast your vote.",
+  },
+  twitter: {
+    title: "The Reflections | The Reflective Football",
+    description:
+      "Eight awards for the fans of the summer. Watch the nominees and cast your vote.",
+  },
 };
 
 export const dynamic = "force-dynamic";
