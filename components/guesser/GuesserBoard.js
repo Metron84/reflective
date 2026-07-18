@@ -377,13 +377,20 @@ export default function GuesserBoard({
               </p>
             ) : null}
 
-            <button
-              type="button"
-              onClick={playNextBoard}
-              className="mt-6 rounded-full bg-signal px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-opacity hover:opacity-90"
-            >
-              Play the next board
-            </button>
+            {!isSignedIn || nextModeSlug ? (
+              <button
+                type="button"
+                onClick={playNextBoard}
+                className="mt-6 rounded-full bg-signal px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-opacity hover:opacity-90"
+              >
+                Play the next board
+              </button>
+            ) : (
+              <p className="mt-6 text-sm text-paper/70">
+                All boards played for today. New players arrive at midnight
+                GST.
+              </p>
+            )}
 
             {share ? (
               <button

@@ -39,9 +39,12 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-function nextUnplayedMode(played, modes) {
+function nextUnplayedMode(played, modes, currentMode) {
   const locked = modes.filter((m) => !m.free);
-  return locked.find((m) => !played.includes(m.slug))?.slug ?? null;
+  return (
+    locked.find((m) => !played.includes(m.slug) && m.slug !== currentMode)
+      ?.slug ?? null
+  );
 }
 
 function resolveMode(slug) {
@@ -88,7 +91,7 @@ export default async function GuesserPage({ searchParams }) {
   const cookiePlayed = getPlayedModes(state);
   const dbPlayed = isSignedIn ? await getUserPlayedModes(user.id, state.day) : [];
   const played = [...new Set([...cookiePlayed, ...dbPlayed])];
-  const nextModeSlug = nextUnplayedMode(played, modes);
+  const nextModeSlug = nextUnplayedMode(played, modes, mode);
   const lockedModes = modes.filter((m) => !m.free);
   const signInNext = `/guesser${params?.mode ? `?mode=${params.mode}` : ""}`;
 
