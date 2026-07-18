@@ -72,7 +72,7 @@ Footer: social links (YouTube @TheReflectiveFootball, Instagram @thereflectivefo
 
 ### Share mechanic
 ```
-The Guesser #23 (Classic) 4/6 · 2 clues
+The Guesser #23 (World Cup Legends) 4/6 · 2 clues
 🟩🟨⬛⬜⬛⬛
 ...
 thereflectivefootball.com/guesser

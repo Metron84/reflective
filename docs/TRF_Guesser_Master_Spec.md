@@ -11,16 +11,15 @@
 
 One player per day per mode. Six guesses. Five graded clues. Attribute tiles grade every guess. Midnight GST (UTC+4) rotation, per mode.
 
-**Modes:** Classic (mixed pool, the free anonymous daily) + six member modes: World Cup Legends, Premier League, La Liga, Serie A, Bundesliga, Ligue 1. Each mode has its own daily puzzle and its own streak.
+**Modes (Classic is REMOVED — superseded):** SIX modes total. **World Cup Legends is the free anonymous daily** (the front door: anonymous visitors play it once per day, then the play-next-board funnel offers signup). The five league modes — Premier League, La Liga, Serie A, Bundesliga, Ligue 1 — are member modes. Each mode has its own daily puzzle and its own streak. There is no mixed pool, no canonical-row cross-category comparison, and no Classic pool rule; every mode compares its own rows. All prior references to "Classic" in this document are superseded by World Cup Legends as the free mode.
 
 ---
 
 ## 2. Data model (person-first)
 
 - Every seed row gains `person_id` (shared across all rows of the same human) and `canonical` (boolean; exactly one canonical row per person — their best-known era, e.g. Messi = Barcelona / La Liga).
-- **Matching, suggestions, solve condition, and already-guessed dedupe all operate on `person_id`.** One person = one suggestion card = one guess spent, regardless of how many rows they have.
-- Classic mode: tiles compare the CANONICAL rows of guess and answer. Mode boards: compare that mode's rows.
-- Classic answer pool: only persons whose canonical row has league data (prevents dead League columns on the answer side). All persons remain guessable.
+- **Matching, suggestions, solve condition, and already-guessed dedupe all operate on `person_id`, scoped per mode and GST day.** One person = one suggestion card = one guess spent per board, regardless of how many rows they have.
+- Every mode compares that mode's row for tile grading (no cross-mode or canonical mixing).
 - Clues live on the PERSON (one ladder per person, not per row): `clues` = array of 5 strings, hardest first.
 - Seed file: `data/players_seed.json` (person-model version supplied by Melo/Claude). Import script upserts by id.
 
@@ -75,8 +74,8 @@ Mechanics:
 
 - Share string: `The Guesser #N (Mode) 4/6 · 2 clues` (omit clue clause when zero: `· no clues`). No em-dashes.
 - Emoji grid: 🟩🟨⬛⬜ (⬜ = not recorded). Native share sheet on mobile + one-tap copy. Site URL included.
-- **Play-next-round funnel:** game-over primary CTA = "Play the next board". Members → next unplayed mode. Anonymous → signup popup with BOTH hooks: "Six more boards today, and your streak saved for tomorrow." Secondary actions: share, then The Reflections / films paths (NO DEAD ENDS).
-- `/guesser` honors `?mode=` for all seven modes: locked modes render the board shell + signup popup — never a hardcoded Classic, never a dead link.
+- **Play-next-round funnel:** game-over primary CTA = "Play the next board". Members → next unplayed mode. Anonymous → signup popup with BOTH hooks: "Five more boards today, and your streak saved for tomorrow." Secondary actions: share, then The Reflections / films paths (NO DEAD ENDS).
+- `/guesser` defaults to World Cup Legends. `?mode=` works for all six modes: locked modes render the board shell + signup popup — never a dead link.
 
 ## 9. Security (airtight rules)
 
@@ -95,8 +94,8 @@ Mechanics:
 
 1. Type "messi" + Enter → submits Lionel Messi directly, one guess spent.
 2. Type "ronaldo" → disambiguation with exactly two person cards; picking one submits.
-3. Guess a person once → any of their eras is rejected as already guessed.
-4. Classic day where answer is a WC-legend person: League column on the answer side is never dead (pool rule).
+3. Guess a person once on a board → any of their eras is rejected as already guessed on that board only (dedupe key: mode + GST day + person_id).
+4. Guess Messi in World Cup Legends, then Messi in La Liga same day → both accepted.
 5. Wrong guess → next chip visibly unlocks; tapping reveals; reveal count appears in share string.
 6. Loss → answer revealed in game-over response only; pre-game-over payloads audited clean.
 7. Tap every tile type (green/amber/navy/dash/arrows) → plain-sentence tooltip, desktop + mobile.

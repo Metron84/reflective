@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { resolveSubmission, getAnswerPersons, getGuessSuggestions, getCompareRow } from "@/lib/guesser/registry";
+import {
+  resolveSubmission,
+} from "@/lib/guesser/registry";
 import { getDailyAnswer, shareGrid, compareToAnswer } from "@/lib/guesser/engine";
 import {
   maxUnlockedClue,
@@ -7,7 +9,11 @@ import {
   shareClueSuffix,
 } from "@/lib/guesser/clues";
 import { explainTile, explainClubChip } from "@/lib/guesser/tile-explain";
-import { gstDay } from "@/lib/guesser/config";
+import { gstDay, FREE_MODE_SLUG } from "@/lib/guesser/config";
+import {
+  buildGuessedPersonIdSet,
+  isPersonAlreadyGuessed,
+} from "@/lib/guesser/dedupe";
 
 export const runtime = "nodejs";
 
@@ -21,10 +27,13 @@ export async function GET() {
   }
 
   const results = [];
+  const day = gstDay();
+  const messi = resolveSubmission("world_cup", { guess: "messi" });
+  const messiPid = messi.person?.personId;
 
   // 1
   {
-    const r = resolveSubmission("classic", { guess: "messi" });
+    const r = resolveSubmission("world_cup", { guess: "messi" });
     results.push(
       report(
         1,
@@ -37,7 +46,7 @@ export async function GET() {
 
   // 2
   {
-    const r = resolveSubmission("classic", { guess: "ronaldo" });
+    const r = resolveSubmission("world_cup", { guess: "ronaldo" });
     results.push(
       report(
         2,
@@ -50,40 +59,62 @@ export async function GET() {
     );
   }
 
-  // 3
+  // 3 — same board dedupe
   {
-    const first = resolveSubmission("classic", { guess: "messi" });
-    const pid = first.person?.personId;
-    const messiCards = getGuessSuggestions("classic").filter(
-      (s) => s.name === "Lionel Messi"
-    );
-    const rejected = [{ personId: pid }].some(
-      (g) => g.personId === pid
+    const keys = buildGuessedPersonIdSet("world_cup", day, {
+      cookiePersonIds: messiPid ? [messiPid] : [],
+      dbPersonIds: [],
+    });
+    const rejected = isPersonAlreadyGuessed(
+      "world_cup",
+      day,
+      messiPid,
+      keys
     );
     results.push(
       report(
         3,
-        "Guess a person once, any era rejected as already guessed",
-        first.type === "single" && messiCards.length === 1 && rejected,
-        `${messiCards.length} suggestion card(s); dedupe person_id works`
+        "Guess a person once on a board, same person rejected as already guessed",
+        messi.type === "single" && rejected,
+        `dedupe key=${messiPid ? `world_cup:${day}:${messiPid}` : "n/a"}`
       )
     );
   }
 
-  // 4
+  // A — cross-mode: Messi in world_cup then la_liga same day
   {
-    const pool = getAnswerPersons("classic");
-    const allHaveLeague = pool.every((p) => p.canonical?.league != null);
-    const answer = await getDailyAnswer("classic", gstDay());
-    const leagueTile = answer
-      ? compareToAnswer(answer.row, answer.row).find((f) => f.key === "league")
-      : null;
+    const wcKeys = buildGuessedPersonIdSet("world_cup", day, {
+      cookiePersonIds: messiPid ? [messiPid] : [],
+      dbPersonIds: [],
+    });
+    const laKeys = buildGuessedPersonIdSet("la_liga", day, {
+      cookiePersonIds: [],
+      dbPersonIds: [],
+    });
+    const blockedOnWc = isPersonAlreadyGuessed("world_cup", day, messiPid, wcKeys);
+    const blockedOnLa = isPersonAlreadyGuessed("la_liga", day, messiPid, laKeys);
     results.push(
       report(
-        4,
-        "Classic answer pool: League column on answer side never dead",
-        allHaveLeague && leagueTile?.status === "correct",
-        `Pool ${pool.length}; today league=${answer?.row?.league ?? "null"} status=${leagueTile?.status}`
+        "A",
+        "Messi in world_cup then Messi in la_liga same day: accepted in both",
+        messiPid && blockedOnWc && !blockedOnLa,
+        `world_cup blocked=${blockedOnWc}; la_liga blocked=${blockedOnLa}`
+      )
+    );
+  }
+
+  // B — twice on one board
+  {
+    const keys = buildGuessedPersonIdSet("la_liga", day, {
+      cookiePersonIds: messiPid ? [messiPid] : [],
+      dbPersonIds: [],
+    });
+    results.push(
+      report(
+        "B",
+        "Messi twice on one board: rejected",
+        isPersonAlreadyGuessed("la_liga", day, messiPid, keys),
+        `scope la_liga:${day}:${messiPid}`
       )
     );
   }
@@ -92,7 +123,7 @@ export async function GET() {
   {
     const gameUnlocked = { attempts: 1, solved: false, revealedClues: [] };
     const unlocked = maxUnlockedClue(1, false);
-    const answer = await getDailyAnswer("classic", gstDay());
+    const answer = await getDailyAnswer("world_cup", day);
     const clues = buildClueState(answer, gameUnlocked);
     const chip2 = clues.chips.find((c) => c.num === 2);
     const chip3 = clues.chips.find((c) => c.num === 3);
@@ -113,7 +144,7 @@ export async function GET() {
 
   // 6
   {
-    const answer = await getDailyAnswer("classic", gstDay());
+    const answer = await getDailyAnswer("world_cup", day);
     const clues = buildClueState(answer, {
       attempts: 0,
       solved: false,
@@ -175,21 +206,34 @@ export async function GET() {
 
   // 11 — per-club chip grading
   {
-    const villa = getCompareRow("la_liga", "6127985dc429");
-    const yamal = getCompareRow("la_liga", "0540dd5857b4");
-    const clubTile = compareToAnswer(villa, yamal).find((f) => f.key === "club");
+    const villa = resolveSubmission("la_liga", { guess: "david villa" });
+    const yamal = resolveSubmission("la_liga", { guess: "yamal" });
+    const villaRow = villa.type === "single" ? villa.row : null;
+    const yamalRow = yamal.type === "single" ? yamal.row : null;
+    const clubTile =
+      villaRow && yamalRow
+        ? compareToAnswer(villaRow, yamalRow).find((f) => f.key === "club")
+        : null;
     const barca = clubTile?.clubs?.find((c) => c.name === "Barcelona");
     const valencia = clubTile?.clubs?.find((c) => c.name === "Valencia");
     const atleti = clubTile?.clubs?.find((c) => c.name === "Atletico Madrid");
-    const singleClub = compareToAnswer(yamal, yamal).find((f) => f.key === "club");
+    const singleClub =
+      yamalRow
+        ? compareToAnswer(yamalRow, yamalRow).find((f) => f.key === "club")
+        : null;
     const shareGame = {
       solved: false,
       attempts: 1,
       revealedClues: [],
-      guesses: [{ feedback: compareToAnswer(villa, yamal) }],
+      guesses: [
+        {
+          feedback:
+            villaRow && yamalRow ? compareToAnswer(villaRow, yamalRow) : [],
+        },
+      ],
     };
-    const shareLine = shareGrid("La Liga", shareGame, gstDay()).split("\n")[1];
-    const clubEmoji = shareLine?.[2];
+    const shareLine = shareGrid("La Liga", shareGame, day).split("\n")[1];
+    const clubEmoji = shareLine ? [...shareLine][2] : null;
     const noLeak =
       clubTile?.clubs?.length === 3 &&
       !clubTile.clubs.some((c) => c.name === "Espanyol");
@@ -198,7 +242,9 @@ export async function GET() {
         11,
         "Club column: per-club chips; share emoji green when any chip matches",
         Boolean(
-          barca?.status === "correct" &&
+          villa.type === "single" &&
+            yamal.type === "single" &&
+            barca?.status === "correct" &&
             valencia?.status === "wrong" &&
             atleti?.status === "wrong" &&
             clubTile?.status === "correct" &&
@@ -231,10 +277,12 @@ export async function GET() {
         },
       ],
     };
-    const share = shareGrid("Classic", game, gstDay());
+    const share = shareGrid("World Cup Legends", game, day);
     const hasEmojis = ["🟩", "🟨", "⬛", "⬜"].every((e) => share.includes(e));
     const formatOk =
-      /^The Guesser #\d+ \(Classic\) X\/6 · 2 clues/.test(share.split("\n")[0]);
+      /^The Guesser #\d+ \(World Cup Legends\) X\/6 · 2 clues/.test(
+        share.split("\n")[0]
+      );
     const noEmDash = !share.includes("—") && !share.includes("–");
     results.push(
       report(
@@ -242,6 +290,18 @@ export async function GET() {
         "Share string format exact; four emoji symbols; no em-dash",
         hasEmojis && formatOk && noEmDash,
         share.split("\n")[0]
+      )
+    );
+  }
+
+  // C — free mode is world_cup
+  {
+    results.push(
+      report(
+        "C",
+        "World Cup Legends is the free anonymous daily mode",
+        FREE_MODE_SLUG === "world_cup",
+        `FREE_MODE_SLUG=${FREE_MODE_SLUG}`
       )
     );
   }

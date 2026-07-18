@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { signPayload } from "@/lib/signing";
+import { getSessionUser } from "@/lib/auth/session";
+import { getUserGameProgress } from "@/lib/auth/plays";
 import { gstDay } from "@/lib/guesser/config";
 import { getShippableModes } from "@/lib/guesser/players";
 import { getDailyAnswer } from "@/lib/guesser/engine";
@@ -9,6 +11,7 @@ import {
   GUESSER_COOKIE,
   parseGuesserCookie,
   getGame,
+  mergeGameProgress,
   isGameOver,
   compactGameForCookie,
 } from "@/lib/guesser/state";
@@ -37,7 +40,14 @@ export async function POST(request) {
   const day = gstDay();
   const state = parseGuesserCookie(request.cookies.get(GUESSER_COOKIE)?.value, day);
   if (!state.sid) state.sid = crypto.randomUUID();
-  const game = getGame(state, mode);
+
+  const user = await getSessionUser();
+  const dbProgress = user?.id
+    ? await getUserGameProgress(user.id, mode, day)
+    : null;
+  const game = dbProgress
+    ? mergeGameProgress(getGame(state, mode), dbProgress)
+    : getGame(state, mode);
 
   if (isGameOver(game)) {
     return NextResponse.json({ ok: false, reason: "done-for-today" }, { status: 409 });

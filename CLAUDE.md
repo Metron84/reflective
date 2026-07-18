@@ -54,7 +54,7 @@ thereflectivefootball.com — the website of The Reflective Football (TRF), a fa
 
 **Full spec:** `docs/TRF_Guesser_Master_Spec.md` (supersedes all prior Guesser instructions).
 
-Summary: person-first daily game (Wordle-style attribute grid + TRF clue ladder). One footballer per day per mode. Matching, suggestions, solve, and dedupe operate on `person_id`. Classic compares canonical rows; mode boards compare that mode's row. Share format: `The Guesser #N (Mode) 4/6 · 2 clues` with 🟩🟨⬛⬜ grid. `/guesser?mode=` for all seven modes.
+Summary: person-first daily game (Wordle-style attribute grid + TRF clue ladder). One footballer per day per mode. Matching, suggestions, solve, and dedupe operate on `person_id` scoped per mode and GST day. World Cup Legends is the free anonymous daily; five league modes are member-gated. Every mode compares its own row. Share format: `The Guesser #N (Mode) 4/6 · 2 clues` with 🟩🟨⬛⬜ grid. `/guesser` defaults to World Cup Legends; `?mode=` for all six modes.
 
 ## Accounts
 

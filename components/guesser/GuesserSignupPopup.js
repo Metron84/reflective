@@ -15,11 +15,11 @@ export default function GuesserSignupPopup({ onClose, signInHref = "/signin?next
           Play the next board
         </h2>
         <p className="mt-4 text-sm text-navy/80">
-          Create your free Reflective Football account for six more boards today,
+          Create your free Reflective Football account for five more boards today,
           and your streak saved for tomorrow.
         </p>
         <ul className="mt-3 space-y-2 text-sm text-navy/80">
-          <li>Unlock six more daily modes, each with its own streak</li>
+          <li>Unlock five more daily modes, each with its own streak</li>
           <li>See live results for The Reflections</li>
           <li>Be first to new films, games, and news</li>
         </ul>

@@ -1,5 +1,10 @@
 import { cookies } from "next/headers";
-import { puzzleNumber, MAX_ATTEMPTS, GUESSER_MODES } from "@/lib/guesser/config";
+import {
+  puzzleNumber,
+  MAX_ATTEMPTS,
+  GUESSER_MODES,
+  FREE_MODE_SLUG,
+} from "@/lib/guesser/config";
 import {
   getShippableModes,
   getGuessSuggestions,
@@ -14,11 +19,15 @@ import {
   GUESSER_COOKIE,
   parseGuesserCookie,
   getGame,
+  mergeGameProgress,
   isGameOver,
   getPlayedModes,
 } from "@/lib/guesser/state";
 import { getAuthContext } from "@/lib/auth/session";
-import { getUserPlayedModes } from "@/lib/auth/plays";
+import {
+  getUserPlayedModes,
+  getUserGameProgress,
+} from "@/lib/auth/plays";
 import { GUESSER_STRAPLINE } from "@/lib/config";
 import GuesserBoard from "@/components/guesser/GuesserBoard";
 
@@ -39,22 +48,33 @@ function resolveMode(slug) {
   const modes = getShippableModes();
   const found = modes.find((m) => m.slug === slug);
   if (found) return found;
-  return modes.find((m) => m.slug === "classic") ?? GUESSER_MODES[0];
+  return (
+    modes.find((m) => m.slug === FREE_MODE_SLUG) ??
+    modes[0] ??
+    GUESSER_MODES[0]
+  );
 }
 
 export default async function GuesserPage({ searchParams }) {
   const params = await searchParams;
-  const modeConfig = resolveMode(params?.mode ?? "classic");
+  const modeConfig = resolveMode(params?.mode ?? FREE_MODE_SLUG);
   const mode = modeConfig.slug;
   const { isSignedIn, user } = await getAuthContext();
   const modeLocked = !modeConfig.free && !isSignedIn;
 
   const store = await cookies();
   const state = parseGuesserCookie(store.get(GUESSER_COOKIE)?.value);
-  const rawGame = getGame(state, mode);
+  const cookieGame = getGame(state, mode);
+  const dbProgress =
+    isSignedIn && !modeLocked
+      ? await getUserGameProgress(user.id, mode, state.day)
+      : null;
+  const mergedGame = dbProgress
+    ? mergeGameProgress(cookieGame, dbProgress)
+    : cookieGame;
   const game = modeLocked
-    ? rawGame
-    : await hydrateGameGuesses(mode, rawGame, state.day);
+    ? mergedGame
+    : await hydrateGameGuesses(mode, mergedGame, state.day);
   const modes = getShippableModes();
   const answer = modeLocked ? null : await getDailyAnswer(mode, state.day);
 

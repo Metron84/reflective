@@ -31,7 +31,7 @@ async function main() {
     const res = await fetch(`${BASE}/api/guesser/guess`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode: "classic", guess: "zzzznotaplayer" }),
+      body: JSON.stringify({ mode: "world_cup", guess: "zzzznotaplayer" }),
     });
     const data = await res.json();
     log({
@@ -86,6 +86,30 @@ async function main() {
     log({
       n: 9,
       name: "?mode=la_liga anonymous shows board shell + signup popup",
+      pass: false,
+      detail: e.message,
+    });
+  }
+
+  // D — home /games links
+  try {
+    const home = await (await fetch(`${BASE}/`)).text();
+    const games = await (await fetch(`${BASE}/games`)).text();
+    const guesser = await (await fetch(`${BASE}/guesser`)).text();
+    log({
+      n: "D",
+      name: "Home Games door and /games hero link to Guesser; default is World Cup",
+      pass:
+        home.includes('href="/games"') &&
+        games.includes('href="/guesser"') &&
+        guesser.includes("World Cup Legends") &&
+        !guesser.includes("Classic"),
+      detail: "home→/games, games→/guesser, /guesser hero World Cup Legends",
+    });
+  } catch (e) {
+    log({
+      n: "D",
+      name: "Home Games door and /games hero link to Guesser",
       pass: false,
       detail: e.message,
     });

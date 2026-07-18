@@ -43,9 +43,42 @@ const rows = seed.players.map((p) => ({
 }));
 
 const supabase = createClient(url, key, { auth: { persistSession: false } });
-const { error } = await supabase.from("players").upsert(rows);
+
+const incomingIds = rows.map((r) => r.id);
+const { data: existing, error: fetchErr } = await supabase
+  .from("players")
+  .select("id")
+  .in("id", incomingIds);
+
+if (fetchErr) {
+  console.error("Pre-import fetch failed:", fetchErr.message);
+  process.exit(1);
+}
+
+const existingSet = new Set((existing ?? []).map((r) => r.id));
+const toInsert = rows.filter((r) => !existingSet.has(r.id)).length;
+const toUpdate = rows.length - toInsert;
+
+const { error } = await supabase.from("players").upsert(rows, { onConflict: "id" });
 if (error) {
   console.error("Import failed:", error.message);
   process.exit(1);
 }
-console.log(`Imported ${rows.length} players.`);
+
+const { count, error: countErr } = await supabase
+  .from("players")
+  .select("id", { count: "exact", head: true });
+
+console.log(
+  JSON.stringify(
+    {
+      ok: true,
+      upserted: rows.length,
+      inserted: toInsert,
+      updated: toUpdate,
+      tableTotal: countErr ? null : count,
+    },
+    null,
+    2
+  )
+);

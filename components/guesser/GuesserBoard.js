@@ -417,7 +417,7 @@ export default function GuesserBoard({
         <div className="mt-10">
           <h3 className="font-display text-xl text-navy">More daily modes</h3>
           <p className="mt-1 text-sm text-navy/60">
-            Free members unlock six more boards, each with its own streak.
+            Free members unlock five more boards, each with its own streak.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {lockedModes.map((m) => (
