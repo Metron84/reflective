@@ -43,6 +43,7 @@ export default function VotingBoard({
   const [pendingVote, setPendingVote] = useState(null);
   const [errors, setErrors] = useState({});
   const [popupOpen, setPopupOpen] = useState(false);
+  const [toast, setToast] = useState(null);
   const resumeTargetRef = useRef(null);
 
   const bodySlugs = useMemo(
@@ -129,11 +130,18 @@ export default function VotingBoard({
 
         const isFirstVoteInCategory = !voted.includes(categorySlug);
         const target = isFirstVoteInCategory ? resumeTarget(newVoted) : null;
-        if (isFirstVoteInCategory && !sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
-          resumeTargetRef.current = target;
-          setPopupOpen(true);
-        } else if (isFirstVoteInCategory) {
-          advanceAfterBeat(target);
+        if (isFirstVoteInCategory) {
+          if (!isSignedIn && !sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
+            resumeTargetRef.current = target;
+            setPopupOpen(true);
+          } else {
+            if (isSignedIn) {
+              const count = openSlugs.filter((s) => newVoted.includes(s)).length;
+              setToast(`Vote counted · ${count} of ${openSlugs.length} in`);
+              window.setTimeout(() => setToast(null), 2500);
+            }
+            advanceAfterBeat(target);
+          }
         }
       } else if (res.status === 401 && data.reason === "account-required") {
         setErrors((prev) => ({
@@ -348,6 +356,14 @@ export default function VotingBoard({
         })}
       </div>
 
+      {toast ? (
+        <p
+          role="status"
+          className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-navy/15 bg-paper px-5 py-2.5 text-sm text-navy shadow-lg"
+        >
+          {toast}
+        </p>
+      ) : null}
       {popupOpen ? <PostVotePopup onClose={dismissPopup} /> : null}
     </>
   );
