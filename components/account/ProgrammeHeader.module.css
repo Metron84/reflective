@@ -38,6 +38,23 @@
   color: rgba(10, 17, 31, 0.65);
 }
 
+.adminLink {
+  margin: 1rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+}
+
+.adminLink a {
+  color: rgba(10, 17, 31, 0.55);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  transition: color 0.15s ease;
+}
+
+.adminLink a:hover {
+  color: #d8232a;
+}
+
 .rule {
   margin: 1.5rem auto 0;
   width: min(12rem, 40%);

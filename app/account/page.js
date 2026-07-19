@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
@@ -31,7 +32,11 @@ export default async function AccountPage() {
     <div className={styles.page}>
       <div className={styles.inner}>
         <p className={styles.eyebrow}>My Programme</p>
-        <ProgrammeHeader profile={programme.profile} />
+        <ProgrammeHeader
+          profile={programme.profile}
+          isAdmin={profileIsAdmin(auth.profile)}
+        />
+
         <ProgrammeTodayLine todayLine={programme.todayLine} />
         <GuesserSection
           modeStats={programme.modeStats}
