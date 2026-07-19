@@ -1,6 +1,7 @@
 import { Bodoni_Moda, Archivo } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
@@ -17,6 +18,7 @@ const archivo = Archivo({
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: "The Reflective Football",
   title: {
     default: "The Reflective Football",
     template: "%s | The Reflective Football",
@@ -25,6 +27,14 @@ export const metadata = {
     "Fan-first football films from Dubai. Football is nothing without the fans.",
   alternates: {
     canonical: "./",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "TRF",
+  },
+  formatDetection: {
+    telephone: false,
   },
   openGraph: {
     type: "website",
@@ -47,6 +57,14 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F2EDE4" },
+    { media: "(prefers-color-scheme: dark)", color: "#F2EDE4" },
+  ],
+  colorScheme: "light",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -58,6 +76,7 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
+        <InstallHint />
       </body>
     </html>
   );

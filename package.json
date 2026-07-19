@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4343",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "sync-films": "node scripts/sync-films.mjs",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@google/genai": "^2.12.0",
+    "@serwist/next": "^9.5.11",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.110.2",
     "lucide-react": "^1.25.0",
@@ -25,6 +26,7 @@
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "serwist": "^9.5.11",
     "tailwindcss": "^4"
   }
 }

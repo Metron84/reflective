@@ -17,7 +17,12 @@ function isPublicPath(pathname) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/brand") ||
     pathname.startsWith("/deliverables") ||
-    pathname.startsWith("/api/dev")
+    pathname.startsWith("/api/dev") ||
+    pathname === "/sw.js" ||
+    pathname.startsWith("/swe-worker") ||
+    pathname === "/offline" ||
+    pathname === "/manifest.webmanifest" ||
+    pathname === "/manifest.json"
   ) {
     return true;
   }
