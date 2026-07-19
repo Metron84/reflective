@@ -32,6 +32,8 @@ export default function WriteToMeloCard({
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [nameHint, setNameHint] = useState("");
+  const [emailHint, setEmailHint] = useState("");
 
   const formVisible = !sent && (variant !== "light" || expanded);
 
@@ -58,30 +60,54 @@ export default function WriteToMeloCard({
     };
   }, [formVisible]);
 
+  const trimmedName = name.trim();
+  const trimmedEmail = email.trim();
+  const emailLooksValid = trimmedEmail && isValidEmail(trimmedEmail);
+
   const canSubmit = useMemo(() => {
     if (submitting || sent) return false;
     if (!timingToken) return false;
     if (!message.trim()) return false;
-    if (email.trim() && !isValidEmail(email.trim())) return false;
+    if (!trimmedName) return false;
+    if (!emailLooksValid) return false;
     return true;
-  }, [submitting, sent, timingToken, message, email]);
+  }, [
+    submitting,
+    sent,
+    timingToken,
+    message,
+    trimmedName,
+    emailLooksValid,
+  ]);
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (!canSubmit) return;
-
     const trimmedMessage = message.trim();
     if (!trimmedMessage) {
       setError("Please write a short message.");
       return;
     }
-    if (email.trim() && !isValidEmail(email.trim())) {
-      setError("That email does not look right.");
+    if (!trimmedName) {
+      setNameHint("I need a name so Melo knows who to reply to.");
+      setError("");
       return;
     }
+    if (!trimmedEmail) {
+      setEmailHint("I need an email to reply to you.");
+      setError("");
+      return;
+    }
+    if (!isValidEmail(trimmedEmail)) {
+      setEmailHint("That email does not look right.");
+      setError("");
+      return;
+    }
+    if (!canSubmit) return;
 
     setSubmitting(true);
     setError("");
+    setNameHint("");
+    setEmailHint("");
 
     try {
       const res = await fetch("/api/concierge/handoff", {
@@ -89,8 +115,8 @@ export default function WriteToMeloCard({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           message: trimmedMessage,
-          name: name.trim() || undefined,
-          email: email.trim() || undefined,
+          name: trimmedName,
+          email: trimmedEmail,
           topic,
           source_conversation: sourceConversation,
           website,
@@ -101,8 +127,12 @@ export default function WriteToMeloCard({
       if (!res.ok || !data.ok) {
         if (data.reason === "rate-limited") {
           setError("Too many messages just now. Please try again later.");
+        } else if (data.reason === "name-required") {
+          setNameHint("I need a name so Melo knows who to reply to.");
+        } else if (data.reason === "email-required") {
+          setEmailHint("I need an email to reply to you.");
         } else if (data.reason === "invalid-email") {
-          setError("That email does not look right.");
+          setEmailHint("That email does not look right.");
         } else {
           setError(
             "Could not send. Try again, or email melo@thereflectivefootball.com."
@@ -152,8 +182,8 @@ export default function WriteToMeloCard({
       <p className={styles.eyebrow}>Write to Melo</p>
       <p className={styles.lead}>
         {variant === "light"
-          ? "Tell Melo what you were looking for. He reads every message."
-          : "This one needs a human. Send it through and Melo will take it from here."}
+          ? "Tell Melo what you were looking for. Leave your name and email so he can reply."
+          : "This one needs a human. Leave your name and email, and Melo will take it from here."}
       </p>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <label className={styles.field}>
@@ -184,26 +214,52 @@ export default function WriteToMeloCard({
         </label>
         <div className={styles.row}>
           <label className={styles.field}>
-            <span className={styles.label}>Name (optional)</span>
+            <span className={styles.label}>Name</span>
             <input
               className={styles.input}
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              onBlur={() => {
+                setNameHint(
+                  name.trim()
+                    ? ""
+                    : "I need a name so Melo knows who to reply to."
+                );
+              }}
               autoComplete="name"
+              required
+              maxLength={100}
               disabled={submitting}
             />
+            {nameHint ? <span className={styles.fieldHint}>{nameHint}</span> : null}
           </label>
           <label className={styles.field}>
-            <span className={styles.label}>Email (optional)</span>
+            <span className={styles.label}>Email</span>
             <input
               className={styles.input}
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              onBlur={() => {
+                const v = email.trim();
+                if (!v) setEmailHint("I need an email to reply to you.");
+                else if (!isValidEmail(v))
+                  setEmailHint("That email does not look right.");
+                else setEmailHint("");
+              }}
               autoComplete="email"
+              required
+              maxLength={200}
               disabled={submitting}
             />
+            {emailHint ? (
+              <span className={styles.fieldHint}>{emailHint}</span>
+            ) : null}
           </label>
         </div>
         <div className={styles.honeypot} aria-hidden="true">

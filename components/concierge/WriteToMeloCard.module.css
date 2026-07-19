@@ -117,6 +117,14 @@
   pointer-events: none;
 }
 
+.fieldHint {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: rgba(10, 17, 31, 0.62);
+}
+
 .error {
   margin: 0;
   font-family: var(--font-body);

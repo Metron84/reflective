@@ -67,19 +67,27 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, reason: "invalid-topic" }, { status: 400 });
   }
 
-  const name =
-    typeof body?.name === "string" && body.name.trim()
-      ? body.name.trim().slice(0, 120)
-      : null;
-
-  let email = null;
-  if (typeof body?.email === "string" && body.email.trim()) {
-    const trimmed = body.email.trim().toLowerCase();
-    if (!isValidEmail(trimmed)) {
-      return NextResponse.json({ ok: false, reason: "invalid-email" }, { status: 400 });
-    }
-    email = trimmed.slice(0, 254);
+  const nameRaw = typeof body?.name === "string" ? body.name.trim() : "";
+  if (!nameRaw) {
+    return NextResponse.json({ ok: false, reason: "name-required" }, { status: 400 });
   }
+  if (nameRaw.length > 100) {
+    return NextResponse.json({ ok: false, reason: "name-too-long" }, { status: 400 });
+  }
+  const name = nameRaw.slice(0, 100);
+
+  const emailRaw =
+    typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
+  if (!emailRaw) {
+    return NextResponse.json({ ok: false, reason: "email-required" }, { status: 400 });
+  }
+  if (emailRaw.length > 200) {
+    return NextResponse.json({ ok: false, reason: "email-too-long" }, { status: 400 });
+  }
+  if (!isValidEmail(emailRaw)) {
+    return NextResponse.json({ ok: false, reason: "invalid-email" }, { status: 400 });
+  }
+  const email = emailRaw.slice(0, 200);
 
   const sourceConversation = Array.isArray(body?.source_conversation)
     ? body.source_conversation
