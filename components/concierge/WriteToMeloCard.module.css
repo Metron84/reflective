@@ -105,11 +105,16 @@
   outline-offset: 1px;
 }
 
+/* Off-screen honeypot — not display:none (bots often skip those). */
 .honeypot {
   position: absolute;
-  left: -9999px;
-  height: 0;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .error {

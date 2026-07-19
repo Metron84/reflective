@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./WriteToMeloCard.module.css";
 
 const TOPICS = [
@@ -28,16 +28,43 @@ export default function WriteToMeloCard({
     TOPICS.includes(defaultTopic) ? defaultTopic : "Other"
   );
   const [website, setWebsite] = useState("");
+  const [timingToken, setTimingToken] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
+  const formVisible = !sent && (variant !== "light" || expanded);
+
+  // Fresh timing token whenever the form is shown (mount or light expand).
+  useEffect(() => {
+    if (!formVisible) return undefined;
+
+    let cancelled = false;
+    setTimingToken("");
+
+    fetch("/api/concierge/handoff/token")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && typeof data?.token === "string") {
+          setTimingToken(data.token);
+        }
+      })
+      .catch(() => {
+        /* submit will silent-fail timing if token missing */
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [formVisible]);
+
   const canSubmit = useMemo(() => {
     if (submitting || sent) return false;
+    if (!timingToken) return false;
     if (!message.trim()) return false;
     if (email.trim() && !isValidEmail(email.trim())) return false;
     return true;
-  }, [submitting, sent, message, email]);
+  }, [submitting, sent, timingToken, message, email]);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -67,12 +94,13 @@ export default function WriteToMeloCard({
           topic,
           source_conversation: sourceConversation,
           website,
+          timingToken,
         }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
         if (data.reason === "rate-limited") {
-          setError("Too many messages. Try again shortly.");
+          setError("Too many messages just now. Please try again later.");
         } else if (data.reason === "invalid-email") {
           setError("That email does not look right.");
         } else {
@@ -179,15 +207,16 @@ export default function WriteToMeloCard({
           </label>
         </div>
         <div className={styles.honeypot} aria-hidden="true">
-          <label>
-            Website
-            <input
-              tabIndex={-1}
-              autoComplete="off"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
-          </label>
+          <label htmlFor="concierge-website">Website</label>
+          <input
+            id="concierge-website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
         </div>
         {error ? <p className={styles.error}>{error}</p> : null}
         <button type="submit" className={styles.submit} disabled={!canSubmit}>

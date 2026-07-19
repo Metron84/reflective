@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase";
-import { getClientIp, rateLimited } from "@/lib/concierge/rateLimit";
+import {
+  getClientIp,
+  handoffRateLimited,
+} from "@/lib/concierge/rateLimit";
 import { notifyConciergeMessageAsync } from "@/lib/concierge/notify";
+import { verifyHandoffTimingToken } from "@/lib/concierge/handoffTiming";
 
 export const runtime = "nodejs";
 
@@ -16,6 +20,11 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+/** Silent success used for honeypot / timing spam — no insert, no email. */
+function silentOk() {
+  return NextResponse.json({ ok: true });
+}
+
 export async function POST(request) {
   let body;
   try {
@@ -24,14 +33,24 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, reason: "invalid-request" }, { status: 400 });
   }
 
-  // Honeypot
+  // Layer 1: honeypot
   if (body?.website) {
-    return NextResponse.json({ ok: true });
+    return silentOk();
   }
 
+  // Layer 2: signed timing token (invalid / too-fast / expired → silent ok)
+  const timing = verifyHandoffTimingToken(body?.timingToken);
+  if (!timing.ok) {
+    return silentOk();
+  }
+
+  // Layer 3: handoff-only rate limit (3 / IP / hour)
   const ip = getClientIp(request);
-  if (rateLimited(ip)) {
-    return NextResponse.json({ ok: false, reason: "rate-limited" }, { status: 429 });
+  if (handoffRateLimited(ip)) {
+    return NextResponse.json(
+      { ok: false, reason: "rate-limited" },
+      { status: 429 }
+    );
   }
 
   const message =
