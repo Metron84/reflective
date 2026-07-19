@@ -74,6 +74,50 @@ body {
   }
 }
 
+/* nextjs-toploader: hide bar for ~120ms so instant navigations don't flash. */
+#nprogress .bar {
+  opacity: 0;
+  animation: trf-nprogress-reveal 0s linear 120ms forwards;
+}
+
+@keyframes trf-nprogress-reveal {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Primary pill CTAs — pressed feedback on tap (mobile-first). */
+a.rounded-full.bg-signal,
+button.rounded-full.bg-signal,
+a.rounded-full.bg-navy,
+button.rounded-full.bg-navy {
+  transition:
+    opacity 0.15s ease,
+    transform 0.12s ease;
+}
+
+a.rounded-full.bg-signal:active:not([aria-disabled="true"]),
+button.rounded-full.bg-signal:active:not(:disabled),
+a.rounded-full.bg-navy:active:not([aria-disabled="true"]),
+button.rounded-full.bg-navy:active:not(:disabled) {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.rounded-full.bg-signal:active:not([aria-disabled="true"]),
+  button.rounded-full.bg-signal:active:not(:disabled),
+  a.rounded-full.bg-navy:active:not([aria-disabled="true"]),
+  button.rounded-full.bg-navy:active:not(:disabled) {
+    transform: none;
+  }
+
+  #nprogress .bar {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* Subtle film grain on navy heroes — restrained like the cream texture. */
 .hero-grain::after {
   content: "";

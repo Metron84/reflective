@@ -3,7 +3,12 @@
 import { useState } from "react";
 import styles from "./ChatComposer.module.css";
 
-export default function ChatComposer({ onSend, disabled }) {
+export default function ChatComposer({
+  onSend,
+  disabled,
+  variant = "docked",
+  inputId = "concierge-input",
+}) {
   const [value, setValue] = useState("");
 
   function submit() {
@@ -15,22 +20,24 @@ export default function ChatComposer({ onSend, disabled }) {
 
   return (
     <form
-      className={styles.form}
+      className={`${styles.form} ${
+        variant === "empty" ? styles.formEmpty : styles.formDocked
+      }`}
       onSubmit={(e) => {
         e.preventDefault();
         submit();
       }}
     >
-      <label className={styles.sr} htmlFor="concierge-input">
+      <label className={styles.sr} htmlFor={inputId}>
         Ask The Concierge
       </label>
       <input
-        id="concierge-input"
+        id={inputId}
         className={styles.input}
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Ask about a venue or a film..."
+        placeholder="Ask about a venue, atmosphere, or film moment..."
         disabled={disabled}
         autoComplete="off"
         onKeyDown={(e) => {

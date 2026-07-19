@@ -8,6 +8,12 @@
   text-decoration: none;
   outline: none;
   border-top: 1px solid rgba(242, 237, 228, 0.18);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.row:active {
+  opacity: 0.82;
+  transform: scale(0.985);
 }
 
 .row:first-child {
@@ -150,6 +156,14 @@
   .rowHidden {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .row {
+    transition: opacity 0.12s ease;
+  }
+
+  .row:active {
+    transform: none;
   }
 
   .qualifier,

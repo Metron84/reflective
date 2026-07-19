@@ -1,6 +1,7 @@
 import { Bodoni_Moda, Archivo } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NavigationProgress from "@/components/NavigationProgress";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
 
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
       className={`${bodoni.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <NavigationProgress />
         <Header />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />

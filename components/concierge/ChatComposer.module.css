@@ -2,9 +2,22 @@
   display: flex;
   gap: 0.55rem;
   align-items: stretch;
+  background: transparent;
+  width: 100%;
+  max-width: 28rem;
+}
+
+.formDocked {
+  margin: 0 auto;
+  max-width: none;
   padding: 0.75rem 0 0;
   border-top: 1px solid rgba(10, 17, 31, 0.12);
-  background: transparent;
+}
+
+.formEmpty {
+  margin: 0 auto;
+  padding: 0;
+  border-top: none;
 }
 
 .sr {
@@ -29,6 +42,7 @@
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.35;
+  text-align: left;
 }
 
 .input::placeholder {
@@ -56,14 +70,27 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.12s ease;
 }
 
 .send:hover:not(:disabled) {
-  opacity: 0.9;
+  opacity: 0.92;
+}
+
+.send:active:not(:disabled) {
+  opacity: 0.85;
+  transform: scale(0.97);
 }
 
 .send:disabled {
-  opacity: 0.4;
+  background: rgba(10, 17, 31, 0.28);
+  color: rgba(242, 237, 228, 0.85);
+  opacity: 1;
   cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .send:active:not(:disabled) {
+    transform: none;
+  }
 }

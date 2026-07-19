@@ -12,20 +12,130 @@
   gap: 1rem;
 }
 
-.empty {
+/* Empty: compact centered group in upper-middle of the chat area */
+.emptyShell {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 0.5rem 0 0.25rem;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: min(62vh, 34rem);
+  padding: clamp(1.5rem, 8vh, 4rem) 0 2rem;
+}
+
+.emptyStage {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Option B: faint compass. Scaled/raised on small screens so type stays clear. */
+.compassMark {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  z-index: 0;
+  width: min(17.5rem, 72%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -55%);
+  color: #0a111f;
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+.compassIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Option A fallback when the mark would crowd legibility */
+.hairlineFallback {
+  display: none;
+  width: min(6.5rem, 28%);
+  margin: 0 0 1.1rem;
+  border: none;
+  border-top: 1px solid rgba(10, 17, 31, 0.14);
+}
+
+.emptyGroup {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .compassMark {
+    width: min(11.5rem, 58%);
+    top: 28%;
+    transform: translate(-50%, -70%);
+    opacity: 0.03;
+  }
+}
+
+/* Very tight viewports: drop the mark, use the hairline instead */
+@media (max-width: 360px), (max-height: 560px) {
+  .compassMark {
+    display: none;
+  }
+
+  .hairlineFallback {
+    display: block;
+  }
 }
 
 .emptyLead {
   margin: 0;
-  max-width: 28rem;
+  width: 100%;
+  max-width: 22rem;
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 4.5vw, 1.75rem);
   line-height: 1.25;
   color: #0a111f;
+  text-align: center;
+}
+
+.meloLinkWrap {
+  margin: 0.15rem 0 0;
+}
+
+.meloLink {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.48);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.meloLink:hover {
+  color: #0a111f;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.meloLink:active {
+  opacity: 0.8;
+}
+
+.meloForm {
+  width: 100%;
+  text-align: left;
+  margin-top: 0.25rem;
 }
 
 .error {
@@ -33,6 +143,7 @@
   font-family: var(--font-body);
   font-size: 0.875rem;
   color: #d8232a;
+  text-align: center;
 }
 
 .composerWrap {

@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { IconConcierge } from "@/components/home/DoorIcons";
 import ChatComposer from "./ChatComposer";
 import MessageList from "./MessageList";
 import StarterChips from "./StarterChips";
+import WriteToMeloCard from "./WriteToMeloCard";
 import styles from "./ConciergeChat.module.css";
 
 function toApiMessages(messages) {
@@ -17,6 +19,7 @@ export default function ConciergeChat() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showMelo, setShowMelo] = useState(false);
   const bottomRef = useRef(null);
   const messagesRef = useRef(messages);
   const loadingRef = useRef(loading);
@@ -32,6 +35,7 @@ export default function ConciergeChat() {
     if (!content || loadingRef.current) return;
 
     setError("");
+    setShowMelo(false);
     setLoading(true);
 
     const nextMessages = [
@@ -88,32 +92,75 @@ export default function ConciergeChat() {
     last.handoff !== "full" &&
     (!last.results || last.results.length === 0);
 
+  if (empty) {
+    return (
+      <div className={styles.emptyShell}>
+        <div className={styles.emptyStage}>
+          <span className={styles.compassMark} aria-hidden="true">
+            <IconConcierge className={styles.compassIcon} />
+          </span>
+          <hr className={styles.hairlineFallback} aria-hidden="true" />
+          <div className={styles.emptyGroup}>
+            <p className={styles.emptyLead}>
+              Tell me the night you&apos;re looking for, or the moment you want
+              to find again.
+            </p>
+            <StarterChips onSelect={sendMessage} disabled={loading} />
+            <ChatComposer
+              onSend={sendMessage}
+              disabled={loading}
+              variant="empty"
+              inputId="concierge-input-empty"
+            />
+            {!showMelo ? (
+              <p className={styles.meloLinkWrap}>
+                <button
+                  type="button"
+                  className={styles.meloLink}
+                  onClick={() => setShowMelo(true)}
+                >
+                  Or write to Melo directly
+                </button>
+              </p>
+            ) : (
+              <div className={styles.meloForm}>
+                <WriteToMeloCard
+                  variant="full"
+                  defaultTopic="Other"
+                  prefillMessage=""
+                  sourceConversation={[]}
+                />
+              </div>
+            )}
+            {error ? <p className={styles.error}>{error}</p> : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.shell}>
       <div className={styles.thread}>
-        {empty ? (
-          <div className={styles.empty}>
-            <p className={styles.emptyLead}>
-              Tell me what kind of night you want, or which film moment to find.
-            </p>
-            <StarterChips onSelect={sendMessage} disabled={loading} />
-          </div>
-        ) : (
-          <MessageList
-            messages={messages}
-            loading={loading}
-            onSeeVideos={(venueName) =>
-              sendMessage(`Show me videos from ${venueName}`)
-            }
-            onStarter={sendMessage}
-            showStarters={showChipsAfterNoResults}
-          />
-        )}
+        <MessageList
+          messages={messages}
+          loading={loading}
+          onSeeVideos={(venueName) =>
+            sendMessage(`Show me videos from ${venueName}`)
+          }
+          onStarter={sendMessage}
+          showStarters={showChipsAfterNoResults}
+        />
         {error ? <p className={styles.error}>{error}</p> : null}
         <div ref={bottomRef} />
       </div>
       <div className={styles.composerWrap}>
-        <ChatComposer onSend={sendMessage} disabled={loading} />
+        <ChatComposer
+          onSend={sendMessage}
+          disabled={loading}
+          variant="docked"
+          inputId="concierge-input"
+        />
       </div>
     </div>
   );

@@ -1,0 +1,90 @@
+.shell {
+  flex: 1;
+  width: 100%;
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 48rem;
+  padding: 2.5rem 1rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.eyebrow {
+  width: 4.5rem;
+  height: 0.55rem;
+  border-radius: 1px;
+}
+
+.title {
+  margin-top: 1.15rem;
+  width: min(16rem, 70%);
+  height: 2.75rem;
+  border-radius: 2px;
+}
+
+.context {
+  margin-top: 1.35rem;
+  width: min(22rem, 88%);
+  height: 0.85rem;
+  border-radius: 1px;
+}
+
+.cream {
+  background: transparent;
+}
+
+.cream .eyebrow {
+  background: rgba(10, 17, 31, 0.12);
+}
+
+.cream .title {
+  background: rgba(10, 17, 31, 0.1);
+}
+
+.cream .context {
+  background: rgba(10, 17, 31, 0.08);
+}
+
+.navy {
+  background: #0a111f;
+  min-height: 40vh;
+}
+
+.navy .inner {
+  padding-top: 3.5rem;
+}
+
+.navy .eyebrow {
+  background: rgba(242, 237, 228, 0.18);
+}
+
+.navy .title {
+  background: rgba(242, 237, 228, 0.14);
+}
+
+.navy .context {
+  background: rgba(242, 237, 228, 0.1);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 640px) {
+  .title {
+    height: 3.25rem;
+    width: min(20rem, 55%);
+  }
+}
