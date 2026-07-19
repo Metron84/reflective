@@ -20,14 +20,23 @@ function normalizeMessages(raw) {
   return out.length ? out : null;
 }
 
+const SEARCH_TOOLS = new Set(["search_videos", "search_venues"]);
+
+/**
+ * @returns {{ reply: string, results: object[], handoff: false | "full" | "light" }}
+ */
 function assembleClientPayload(text, toolResultsUsed) {
-  let handoff = false;
+  let relationshipHandoff = false;
+  let searched = false;
   /** @type {Array<object>} */
   let cardResults = [];
 
   for (const used of toolResultsUsed ?? []) {
     const output = used.output ?? {};
-    if (output.handoff) handoff = true;
+    if (SEARCH_TOOLS.has(used.name)) searched = true;
+    if (output.handoff || used.name === "handoff_to_melo") {
+      relationshipHandoff = true;
+    }
     if (Array.isArray(output.results) && output.results.length) {
       cardResults = [...cardResults, ...output.results];
     }
@@ -42,15 +51,25 @@ function assembleClientPayload(text, toolResultsUsed) {
     results.push(item);
   }
 
+  /** @type {false | "full" | "light"} */
+  let handoff = false;
+  if (relationshipHandoff) {
+    handoff = "full";
+  } else if (searched && results.length === 0) {
+    // Light only when search tools ran and assembled cards are empty.
+    // Clarifying turns (no search tools) stay false.
+    handoff = "light";
+  }
+
   const reply =
     (text && String(text).trim()) ||
-    (handoff
+    (handoff === "full"
       ? "That one is for Melo. Write him at melo@thereflectivefootball.com."
-      : "I could not find a clear answer in the archive just now.");
+      : "The archive does not cover that yet. Try another angle, or ask Melo.");
 
   return {
     reply,
-    results: handoff ? [] : results,
+    results: handoff === "full" ? [] : results,
     handoff,
   };
 }

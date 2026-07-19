@@ -11,15 +11,20 @@ export default async function TaggingAdminPage() {
   let venues = [];
   let fanGroups = [];
   let videos = [];
+  let newMessageCount = 0;
 
   if (supabase) {
-    const [v, f, vid] = await Promise.all([
+    const [v, f, vid, newMsgs] = await Promise.all([
       supabase.from("venues").select("*").order("name"),
       supabase.from("fan_groups").select("*").order("name"),
       supabase
         .from("videos")
         .select("*, venues(id, name), video_fan_groups(fan_group_id)")
         .order("published_at", { ascending: false, nullsFirst: false }),
+      supabase
+        .from("concierge_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "new"),
     ]);
     venues = v.data ?? [];
     fanGroups = f.data ?? [];
@@ -30,6 +35,7 @@ export default async function TaggingAdminPage() {
       venues: undefined,
       video_fan_groups: undefined,
     }));
+    newMessageCount = newMsgs.count ?? 0;
   }
 
   return (
@@ -37,6 +43,7 @@ export default async function TaggingAdminPage() {
       initialVenues={venues}
       initialFanGroups={fanGroups}
       initialVideos={videos}
+      newMessageCount={newMessageCount}
     />
   );
 }

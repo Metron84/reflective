@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase";
 import { getClientIp, rateLimited } from "@/lib/concierge/rateLimit";
+import { notifyConciergeMessageAsync } from "@/lib/concierge/notify";
 
 export const runtime = "nodejs";
 
@@ -84,18 +85,30 @@ export async function POST(request) {
     return NextResponse.json({ ok: true, simulated: true });
   }
 
-  const { error } = await supabase.from("concierge_messages").insert({
-    name,
-    email,
-    topic,
-    message,
-    source_conversation: sourceConversation,
-    status: "new",
-  });
+  const { data: row, error } = await supabase
+    .from("concierge_messages")
+    .insert({
+      name,
+      email,
+      topic,
+      message,
+      source_conversation: sourceConversation,
+      status: "new",
+    })
+    .select("id, created_at")
+    .maybeSingle();
 
   if (error) {
     return NextResponse.json({ ok: false, reason: "server-error" }, { status: 500 });
   }
+
+  notifyConciergeMessageAsync({
+    topic,
+    name,
+    email,
+    message,
+    createdAt: row?.created_at ?? new Date().toISOString(),
+  });
 
   return NextResponse.json({ ok: true });
 }

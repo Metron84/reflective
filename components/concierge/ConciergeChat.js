@@ -55,15 +55,22 @@ export default function ConciergeChat() {
         return;
       }
 
+      const handoff =
+        data.handoff === "full" || data.handoff === true
+          ? "full"
+          : data.handoff === "light"
+            ? "light"
+            : false;
+
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
           content:
             data.reply ||
-            "I could not find a clear answer in the archive just now.",
+            "The archive does not cover that yet. Try another angle, or ask Melo.",
           results: Array.isArray(data.results) ? data.results : [],
-          handoff: Boolean(data.handoff),
+          handoff,
         },
       ]);
     } catch {
@@ -78,7 +85,7 @@ export default function ConciergeChat() {
   const showChipsAfterNoResults =
     !loading &&
     last?.role === "assistant" &&
-    !last.handoff &&
+    last.handoff !== "full" &&
     (!last.results || last.results.length === 0);
 
   return (

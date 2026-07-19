@@ -4,6 +4,12 @@ import TypingIndicator from "./TypingIndicator";
 import StarterChips from "./StarterChips";
 import styles from "./MessageList.module.css";
 
+function normalizeHandoff(value) {
+  if (value === "full" || value === true) return "full";
+  if (value === "light") return "light";
+  return false;
+}
+
 export default function MessageList({
   messages,
   loading,
@@ -30,6 +36,8 @@ export default function MessageList({
         const lastUser = [...messages.slice(0, index)]
           .reverse()
           .find((x) => x.role === "user");
+        const handoff = normalizeHandoff(m.handoff);
+        const isLast = index === messages.length - 1;
 
         return (
           <div key={`a-${index}`} className={styles.assistantBlock}>
@@ -39,15 +47,24 @@ export default function MessageList({
               onSeeVideos={onSeeVideos}
               disabled={loading}
             />
-            {m.handoff ? (
+            {handoff === "full" ? (
               <WriteToMeloCard
+                variant="full"
                 prefillMessage={lastUser?.content ?? ""}
                 sourceConversation={conversationForHandoff}
               />
             ) : null}
-            {!m.handoff &&
+            {handoff === "light" ? (
+              <WriteToMeloCard
+                variant="light"
+                defaultTopic="Other"
+                prefillMessage={lastUser?.content ?? ""}
+                sourceConversation={conversationForHandoff}
+              />
+            ) : null}
+            {handoff !== "full" &&
             (!m.results || m.results.length === 0) &&
-            index === messages.length - 1 &&
+            isLast &&
             showStarters ? (
               <div className={styles.chipsAfter}>
                 <StarterChips onSelect={onStarter} disabled={loading} />

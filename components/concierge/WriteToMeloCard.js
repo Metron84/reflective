@@ -17,11 +17,16 @@ function isValidEmail(value) {
 export default function WriteToMeloCard({
   prefillMessage = "",
   sourceConversation = [],
+  variant = "full",
+  defaultTopic = "Partnership",
 }) {
+  const [expanded, setExpanded] = useState(variant !== "light");
   const [message, setMessage] = useState(prefillMessage);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [topic, setTopic] = useState(TOPICS[0]);
+  const [topic, setTopic] = useState(
+    TOPICS.includes(defaultTopic) ? defaultTopic : "Other"
+  );
   const [website, setWebsite] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
@@ -71,14 +76,19 @@ export default function WriteToMeloCard({
         } else if (data.reason === "invalid-email") {
           setError("That email does not look right.");
         } else {
-          setError("Could not send. Try again, or email melo@thereflectivefootball.com.");
+          setError(
+            "Could not send. Try again, or email melo@thereflectivefootball.com."
+          );
         }
         setSubmitting(false);
         return;
       }
       setSent(true);
+      setExpanded(true);
     } catch {
-      setError("Could not send. Try again, or email melo@thereflectivefootball.com.");
+      setError(
+        "Could not send. Try again, or email melo@thereflectivefootball.com."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -95,11 +105,27 @@ export default function WriteToMeloCard({
     );
   }
 
+  if (variant === "light" && !expanded) {
+    return (
+      <p className={styles.lightLine}>
+        <button
+          type="button"
+          className={styles.lightButton}
+          onClick={() => setExpanded(true)}
+        >
+          Can&apos;t find what you need? Ask Melo directly
+        </button>
+      </p>
+    );
+  }
+
   return (
     <div className={styles.card}>
       <p className={styles.eyebrow}>Write to Melo</p>
       <p className={styles.lead}>
-        This one needs a human. Send it through and Melo will take it from here.
+        {variant === "light"
+          ? "Tell Melo what you were looking for. He reads every message."
+          : "This one needs a human. Send it through and Melo will take it from here."}
       </p>
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <label className={styles.field}>
@@ -164,11 +190,7 @@ export default function WriteToMeloCard({
           </label>
         </div>
         {error ? <p className={styles.error}>{error}</p> : null}
-        <button
-          type="submit"
-          className={styles.submit}
-          disabled={!canSubmit}
-        >
+        <button type="submit" className={styles.submit} disabled={!canSubmit}>
           {submitting ? "Sending..." : "Send to Melo"}
         </button>
       </form>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AdminNav from "@/components/admin/AdminNav";
 import VideosTab from "@/components/admin/tagging/VideosTab";
 import VenuesTab from "@/components/admin/tagging/VenuesTab";
 import FanGroupsTab from "@/components/admin/tagging/FanGroupsTab";
@@ -15,6 +16,7 @@ export default function TaggingAdmin({
   initialVenues,
   initialFanGroups,
   initialVideos,
+  newMessageCount = 0,
 }) {
   const [tab, setTab] = useState("videos");
   const [venues, setVenues] = useState(initialVenues);
@@ -23,6 +25,7 @@ export default function TaggingAdmin({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+      <AdminNav active="tagging" newCount={newMessageCount} />
       <div className="flex flex-wrap gap-2 border-b border-navy/10 pb-3">
         {TABS.map((t) => (
           <button
