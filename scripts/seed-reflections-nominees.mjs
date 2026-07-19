@@ -10,6 +10,7 @@ const SEED_FILES = {
   "best-video": "content/reflections/best-video-nominees.json",
   "best-supporters-club": "content/reflections/best-supporters-club-nominees.json",
   "best-celebration": "content/reflections/best-celebration-nominees.json",
+  "best-supporter": "content/reflections/best-supporter-nominees.json",
 };
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

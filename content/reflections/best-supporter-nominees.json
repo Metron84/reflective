@@ -1,0 +1,65 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440301",
+    "category": "best-supporter",
+    "title": "Ayaan (Portugal)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 8,
+    "sort": 1
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440302",
+    "category": "best-supporter",
+    "title": "Carlotta (Spain)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 41,
+    "sort": 2
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440303",
+    "category": "best-supporter",
+    "title": "Ishaan (Japan)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 77,
+    "sort": 3
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440304",
+    "category": "best-supporter",
+    "title": "Janaina (Brazil)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 117,
+    "sort": 4
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440305",
+    "category": "best-supporter",
+    "title": "Lucas (England)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 177,
+    "sort": 5
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440306",
+    "category": "best-supporter",
+    "title": "Magnus (Norway)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 212,
+    "sort": 6
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440307",
+    "category": "best-supporter",
+    "title": "Niels (Belgium)",
+    "youtube_id": "H6rhtaK4FJE",
+    "context_line": null,
+    "clip_start_seconds": 253,
+    "sort": 7
+  }
+]

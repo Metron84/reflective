@@ -315,7 +315,13 @@ export default function VotingBoard({
                     </div>
                   ) : null}
 
-                  <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  <div
+                    className={`mt-8 grid gap-6 sm:grid-cols-2 ${
+                      nominees.length >= 7
+                        ? "lg:grid-cols-3"
+                        : "lg:grid-cols-4"
+                    }`}
+                  >
                     {nominees.map((nominee) => (
                       <NomineeCard
                         key={nominee.id}
