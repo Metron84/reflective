@@ -1,0 +1,122 @@
+.card {
+  margin-top: 0.75rem;
+  padding: 1.15rem 1.1rem 1.25rem;
+  border: 1px solid rgba(10, 17, 31, 0.16);
+  background: rgba(242, 237, 228, 0.72);
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.5);
+}
+
+.lead,
+.confirm {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.25;
+  color: #0a111f;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.textarea,
+.input,
+.select {
+  width: 100%;
+  border: 1px solid rgba(10, 17, 31, 0.22);
+  background: #f2ede4;
+  color: #0a111f;
+  border-radius: 0;
+  padding: 0.65rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 6.5rem;
+}
+
+.textarea:focus,
+.input:focus,
+.select:focus {
+  outline: 2px solid rgba(216, 35, 42, 0.35);
+  outline-offset: 1px;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  height: 0;
+  overflow: hidden;
+}
+
+.error {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: #d8232a;
+}
+
+.submit {
+  appearance: none;
+  align-self: flex-start;
+  border: none;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  padding: 0.7rem 1.35rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

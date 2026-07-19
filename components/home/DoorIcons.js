@@ -74,6 +74,26 @@ export function IconGames({ className }) {
   );
 }
 
+export function IconConcierge({ className }) {
+  return (
+    <svg
+      className={className}
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      aria-hidden="true"
+    >
+      <circle cx={14} cy={14} r={9} {...STROKE} />
+      <circle cx={14} cy={14} r={1.4} fill="currentColor" stroke="none" />
+      <path d="M14 5.5v3.2" {...STROKE} />
+      <path d="M14 19.3v3.2" {...STROKE} />
+      <path d="M5.5 14h3.2" {...STROKE} />
+      <path d="M19.3 14h3.2" {...STROKE} />
+      <path d="M14 14l5.2-3.4" {...STROKE} />
+    </svg>
+  );
+}
+
 export function IconArrow({ className }) {
   return (
     <svg
@@ -93,4 +113,5 @@ export const DOOR_ICONS = {
   films: IconFilms,
   awards: IconAwards,
   games: IconGames,
+  concierge: IconConcierge,
 };

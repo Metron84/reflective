@@ -33,6 +33,12 @@ const DOORS = [
     qualifier: "For the Fun.",
     strapline: GUESSER_STRAPLINE,
   },
+  {
+    id: "concierge",
+    href: "/concierge",
+    category: "Concierge.",
+    qualifier: "Ask. Find. Watch.",
+  },
 ];
 
 function useHomeTabOrder(doorRefs) {

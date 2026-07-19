@@ -7,6 +7,7 @@ export default function sitemap() {
     { path: "/reflections", changeFrequency: "daily", priority: 0.9 },
     { path: "/guesser", changeFrequency: "daily", priority: 0.9 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
+    { path: "/concierge", changeFrequency: "weekly", priority: 0.8 },
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },

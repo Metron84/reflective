@@ -1,0 +1,43 @@
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.45rem 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: rgba(242, 237, 228, 0.82);
+  text-decoration: none;
+  border-top: 1px solid rgba(242, 237, 228, 0.12);
+  transition: color 0.15s ease;
+}
+
+.row:first-child {
+  border-top: none;
+  padding-top: 0.15rem;
+}
+
+.row:hover {
+  color: #f2ede4;
+}
+
+.cue {
+  flex-shrink: 0;
+  color: #d8232a;
+  font-size: 0.75rem;
+}
+
+.time {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: rgba(242, 237, 228, 0.55);
+}
+
+.dash {
+  flex-shrink: 0;
+  color: rgba(242, 237, 228, 0.35);
+}
+
+.label {
+  min-width: 0;
+}

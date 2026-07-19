@@ -1,0 +1,23 @@
+.page {
+  flex: 1;
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 48rem;
+  padding: 2.5rem 1rem 3.5rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.continue {
+  margin-top: 3rem;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 2.75rem 1.25rem 4rem;
+  }
+}

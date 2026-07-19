@@ -1,0 +1,117 @@
+.card {
+  flex: 0 0 min(82vw, 18.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.85rem;
+  background: #0a111f;
+  color: #f2ede4;
+  border-radius: 0;
+}
+
+.mediaLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(242, 237, 228, 0.08);
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.venue {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: rgba(242, 237, 228, 0.72);
+}
+
+.fixture {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(242, 237, 228, 0.5);
+}
+
+.atmosphere {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.atmosphereLabel {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: rgba(242, 237, 228, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+
+.barTrack {
+  flex: 1;
+  height: 3px;
+  background: rgba(242, 237, 228, 0.15);
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  background: #d8232a;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  border: 1px solid rgba(242, 237, 228, 0.28);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.7);
+}
+
+.moments {
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(242, 237, 228, 0.12);
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 0.5rem);
+    max-width: calc(50% - 0.5rem);
+    min-width: 0;
+  }
+}

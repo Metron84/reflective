@@ -69,10 +69,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/films"
+                  href="/concierge"
                   className="text-sm text-paper transition-colors hover:text-signal"
                 >
-                  We Are Football
+                  Concierge
                 </Link>
               </li>
               <li>
