@@ -13,20 +13,33 @@ function isSampleStory(story) {
   return story.trim().startsWith("SAMPLE:");
 }
 
+/** YouTube's missing oardefault is a tiny 120×90 grey JPEG that often still "loads". */
+function isPlaceholderThumb(img) {
+  if (!img?.naturalWidth) return true;
+  return img.naturalWidth <= 120 && img.naturalHeight <= 90;
+}
+
 export default function ShortFilmCard({ film }) {
-  const [thumbSrc, setThumbSrc] = useState(
-    () =>
-      youtubeVerticalThumbnailUrl(film.youtube_id) ??
-      youtubeThumbnailUrl(film.youtube_id)
-  );
+  const landscape = youtubeThumbnailUrl(film.youtube_id);
+  const vertical = youtubeVerticalThumbnailUrl(film.youtube_id);
+  const [thumbSrc, setThumbSrc] = useState(() => vertical ?? landscape);
   const watchUrl = youtubeWatchUrl(film.youtube_id);
   const showStory = !isSampleStory(film.story);
   const clubs = film.clubs ?? [];
 
+  function useLandscapeFallback() {
+    if (landscape && thumbSrc !== landscape) {
+      setThumbSrc(landscape);
+    }
+  }
+
   function handleThumbError() {
-    const fallback = youtubeThumbnailUrl(film.youtube_id);
-    if (fallback && thumbSrc !== fallback) {
-      setThumbSrc(fallback);
+    useLandscapeFallback();
+  }
+
+  function handleThumbLoad(event) {
+    if (thumbSrc === vertical && isPlaceholderThumb(event.currentTarget)) {
+      useLandscapeFallback();
     }
   }
 
@@ -48,6 +61,7 @@ export default function ShortFilmCard({ film }) {
               decoding="async"
               className={styles.thumb}
               onError={handleThumbError}
+              onLoad={handleThumbLoad}
             />
           ) : (
             <div className={styles.thumbFallback} aria-hidden />
