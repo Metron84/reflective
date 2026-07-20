@@ -1,0 +1,66 @@
+# Daily film catalog sync from @TheReflectiveFootball uploads.
+# Opens a PR when content/films or collections change (SAMPLE / needs_review
+# rows stay for Melo to edit before merge).
+#
+# Required GitHub secret (same value as Vercel): YOUTUBE_API_KEY
+# Optional: YOUTUBE_CHANNEL_HANDLE (defaults to TheReflectiveFootball)
+
+name: Sync films
+
+on:
+  schedule:
+    # 05:00 UTC daily ≈ 09:00 GST
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync films from YouTube
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          # Only set if you add this secret; otherwise the script defaults
+          # to TheReflectiveFootball (empty string would override the default).
+          YOUTUBE_CHANNEL_HANDLE: ${{ secrets.YOUTUBE_CHANNEL_HANDLE || 'TheReflectiveFootball' }}
+        run: |
+          if [ -z "$YOUTUBE_API_KEY" ]; then
+            echo "Missing secret YOUTUBE_API_KEY. Add it in GitHub → Settings → Secrets → Actions (same value as Vercel)."
+            exit 1
+          fi
+          node scripts/sync-films.mjs
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: sync films from YouTube"
+          branch: chore/sync-films
+          delete-branch: true
+          title: "chore: sync films from YouTube"
+          body: |
+            Automated catalog sync from the TRF YouTube channel.
+
+            - New / updated rows land in `content/films/`
+            - New films are flagged `needs_review` with SAMPLE story copy
+            - Review editorial lines, then merge to ship to Vercel (and the PWA)
+
+            Triggered by the daily schedule or **Actions → Sync films → Run workflow**.
+          add-paths: |
+            content/films/**
+            content/collections.json
