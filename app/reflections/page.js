@@ -1,7 +1,5 @@
 import {
-  getReflectionsNavCategories,
-  getReflectionsBodyCategories,
-  REFLECTIONS_CATEGORIES,
+  getReflectionsLiveCategories,
   getVotingState,
   reflectionsWinnersHeroLine,
 } from "@/lib/config";
@@ -45,6 +43,7 @@ export default async function ReflectionsPage() {
   const voted = isSignedIn ? dbVotes.categories : cookieState.categories;
   const picks = isSignedIn ? dbVotes.picks : cookieState.picks;
   const winnersLine = reflectionsWinnersHeroLine();
+  const liveCategories = getReflectionsLiveCategories();
 
   return (
     <div>
@@ -72,9 +71,9 @@ export default async function ReflectionsPage() {
       </section>
 
       <VotingBoard
-        navCategories={getReflectionsNavCategories()}
-        bodyCategories={getReflectionsBodyCategories()}
-        totalCategoryCount={REFLECTIONS_CATEGORIES.length}
+        navCategories={liveCategories}
+        bodyCategories={liveCategories}
+        totalCategoryCount={liveCategories.length}
         nomineesByCategory={nomineesByCategory}
         initialVoted={voted}
         initialPicks={picks}

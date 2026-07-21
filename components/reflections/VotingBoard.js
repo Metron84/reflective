@@ -6,7 +6,6 @@ import FadeUp from "@/components/FadeUp";
 import NomineeCard from "./NomineeCard";
 import PostVotePopup from "./PostVotePopup";
 import CompletionState from "./CompletionState";
-import PartialCompletionState from "./PartialCompletionState";
 import ComingShortlyCover from "./ComingShortlyCover";
 import YouTubeFacade from "./YouTubeFacade";
 import { getFingerprint } from "@/lib/fingerprint";
@@ -64,10 +63,7 @@ export default function VotingBoard({
   const votedOpenCount = openSlugs.filter((s) => voted.includes(s)).length;
   const allOpenVoted =
     openSlugs.length > 0 && openSlugs.every((s) => voted.includes(s));
-  const allCategoriesVoted =
-    totalCategoryCount > 0 &&
-    navCategories.every((c) => voted.includes(c.slug));
-  const showPartialComplete = allOpenVoted && !allCategoriesVoted;
+  const allCategoriesVoted = allOpenVoted;
   const showFullComplete = allCategoriesVoted;
 
   function nextUnvotedOpen(votedList) {
@@ -75,9 +71,6 @@ export default function VotingBoard({
   }
 
   function resumeTarget(votedList) {
-    if (navCategories.every((c) => votedList.includes(c.slug))) {
-      return COMPLETION_ID;
-    }
     if (openSlugs.every((s) => votedList.includes(s))) {
       return COMPLETION_ID;
     }
@@ -196,33 +189,15 @@ export default function VotingBoard({
             </span>
           ) : null}
           <div className="flex items-center gap-4 overflow-x-auto">
-            {navCategories.map((category) => {
-              const isOpen = category.open;
+            {openCategories.map((category) => {
               const isVoted = voted.includes(category.slug);
-              const inBody = bodySlugs.has(category.slug);
-              const className = `shrink-0 text-sm transition-colors ${
-                inBody ? "hover:text-navy" : "cursor-default"
-              } ${
-                isVoted
-                  ? "text-signal"
-                  : isOpen
-                    ? "text-navy/70"
-                    : "text-navy/35"
-              }`;
-
-              if (!inBody) {
-                return (
-                  <span key={category.slug} className={className}>
-                    {category.name}
-                  </span>
-                );
-              }
-
               return (
                 <a
                   key={category.slug}
                   href={`#${category.slug}`}
-                  className={className}
+                  className={`shrink-0 text-sm transition-colors hover:text-navy ${
+                    isVoted ? "text-signal" : "text-navy/70"
+                  }`}
                 >
                   {category.name}
                 </a>
@@ -255,11 +230,6 @@ export default function VotingBoard({
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {showFullComplete ? (
           <CompletionState total={totalCategoryCount} />
-        ) : showPartialComplete ? (
-          <PartialCompletionState
-            openCount={openSlugs.length}
-            totalCount={totalCategoryCount}
-          />
         ) : null}
 
         {bodyCategories.map((category, index) => {
