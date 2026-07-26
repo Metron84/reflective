@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 export const metadata = {
   title: "Games",
   description:
-    "Play The Guesser, The Stand, and discover what is next from The Reflective Football.",
+    "Play The Guesser and discover what is next from The Reflective Football.",
 };
 
 export default function GamesPage() {

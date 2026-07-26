@@ -1,11 +1,15 @@
 /**
  * TEMP DEV SCAFFOLDING — delete in Section 6.
  * Fan Card visual preview only. Not linked from StandBoard.
+ * Parked with The Stand — flip STAND_PARKED to restore.
  */
+import { notFound } from "next/navigation";
 import FanCard from "@/components/stand/FanCard";
 import { buildCardState } from "@/lib/stand/card";
 import { getStandChapter } from "@/lib/stand";
 import styles from "./page.module.css";
+
+const STAND_PARKED = true;
 
 export const metadata = {
   title: "Fan Card preview (dev)",
@@ -104,6 +108,8 @@ function fixtureHenryFresh() {
 }
 
 export default function StandCardPreviewPage() {
+  if (STAND_PARKED) notFound();
+
   const fiorentina = fixtureFiorentinaMid();
   const italy = fixtureItalyComplete();
   const henry = fixtureHenryFresh();
