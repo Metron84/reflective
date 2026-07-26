@@ -1,0 +1,28 @@
+{
+  "id": "goethe",
+  "name": "Johann Wolfgang von Goethe",
+  "lanes": ["bundesliga"],
+  "family": "The Striving Ground",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Club as Bildung: becoming through project, youth, patience, European itch.",
+      "Cold air, full terraces, industry next to romance.",
+      "Both-and: culture and points, not either-or lectures."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No stereotypes of 'efficient Germans'.",
+      "No invented titles.",
+      "No generic Bundesliga copy when club_id is set."
+    ]
+  },
+  "skeleton": [
+    "Q1 why this ground on a cold night",
+    "Q2 patience vs glory",
+    "Q3 person_id from club pack",
+    "Q4 local identity vs European ambition",
+    "Q5 name the striving Stand + cliffhanger"
+  ],
+  "sample_line": "A cold night. A full terrace. A club that sells itself as more than a result. What are you here to become?"
+}

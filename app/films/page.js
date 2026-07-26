@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-import SectionHeader from "@/components/SectionHeader";
 import ViewsTickerBand from "@/components/ViewsTickerBand";
 import SectionContinue from "@/components/SectionContinue";
+import FilmsHero from "@/components/films/FilmsHero";
+import FilmsHeroPicks from "@/components/films/FilmsHeroPicks";
 import FilmsArchive from "@/components/films/FilmsArchive";
 import { getFilmsTabFilms, getShortsFilms } from "@/lib/films";
 import { SAMPLE_STORY, youtubeWatchUrl } from "@/lib/films/schema";
@@ -11,7 +12,7 @@ import { SITE_URL } from "@/lib/config";
 export const metadata = {
   title: "Films",
   description:
-    "Fan-first football films from Dubai. Watch the archive on YouTube.",
+    "We connect the football fan community. Fan-first football films from Dubai.",
 };
 
 export const dynamic = "force-dynamic";
@@ -54,14 +55,13 @@ export default async function FilmsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 sm:px-6 sm:pt-16 sm:pb-10">
-        <SectionHeader
-          eyebrow="Films. From the Fans."
-          title="Films"
-        />
-      </div>
 
+      <FilmsHero
+        youtubeViews={tickerPayload.youtubeViews}
+        watchHours={tickerPayload.watchHours}
+      />
       <ViewsTickerBand payload={tickerPayload} />
+      <FilmsHeroPicks />
 
       <Suspense
         fallback={
@@ -80,7 +80,7 @@ export default async function FilmsPage() {
       <SectionContinue
         nextHref="/reflections"
         nextEyebrow="Awards. For the Fans."
-        nextTitle="The Reflections"
+        nextTitle="The Reflectives"
       />
     </div>
   );

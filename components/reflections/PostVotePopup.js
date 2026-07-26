@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-// Copy is fixed by the spec (section 7). Do not edit without Melo.
+/** Kept for rare edge paths. Primary CTA on Reflectives is Sign up free to vote. */
 export default function PostVotePopup({ onClose }) {
   return (
     <div
@@ -13,16 +13,12 @@ export default function PostVotePopup({ onClose }) {
     >
       <div className="w-full max-w-md border border-navy/15 bg-paper p-8 shadow-2xl">
         <h2 id="post-vote-title" className="font-display text-2xl text-navy">
-          Thanks for voting! Your pick is in.
+          Sign up free to vote
         </h2>
         <p className="mt-4 text-sm text-navy/80">
-          Create your free Reflective Football account to:
+          Create your free Reflective Football account to cast your ballot,
+          keep your picks, and open each category&apos;s race after you vote.
         </p>
-        <ul className="mt-3 space-y-2 text-sm text-navy/80">
-          <li>See live results for The Reflections</li>
-          <li>Play The Guesser daily and keep your streak</li>
-          <li>Be first to new films, games, and news</li>
-        </ul>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/signin?next=/reflections"

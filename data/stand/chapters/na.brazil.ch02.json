@@ -1,0 +1,695 @@
+{
+  "id": "na.brazil.ch02",
+  "status": "sample",
+  "lane": "nations",
+  "composer_id": "homer",
+  "family": "Catalogue of Peoples",
+  "primary_entity": {
+    "type": "nation",
+    "id": "nation-brazil"
+  },
+  "secondary_entities": [
+    {
+      "type": "person",
+      "id": "ronaldinho"
+    },
+    {
+      "type": "person",
+      "id": "ronaldo"
+    },
+    {
+      "type": "person",
+      "id": "rivaldo"
+    },
+    {
+      "type": "person",
+      "id": "roberto-carlos"
+    },
+    {
+      "type": "person",
+      "id": "romario"
+    },
+    {
+      "type": "person",
+      "id": "bebeto"
+    },
+    {
+      "type": "person",
+      "id": "cafu"
+    },
+    {
+      "type": "person",
+      "id": "careca"
+    }
+  ],
+  "title": "Brazil: The Catalogue",
+  "logline": "SAMPLE. Auto-generated Brazil: The Catalogue. Entity-bound to players_seed. Editorial pass pending.",
+  "questions_per_day": 5,
+  "pack_persons_from_seed": [
+    "ronaldinho",
+    "ronaldo",
+    "rivaldo",
+    "roberto-carlos",
+    "romario",
+    "bebeto",
+    "cafu",
+    "careca"
+  ],
+  "generated": true,
+  "chapter_number": 2,
+  "questions": [
+    {
+      "order": 1,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Group stage morning. Brazil colours on balconies and phones. The camp rebuilds.",
+      "prompt": "How do you stand?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Sing full. Memory as volume.",
+          "tags": [
+            "loud",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet hand on heart. Belonging without theatre.",
+          "tags": [
+            "patient",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Watch the faces first. Then join when it feels true.",
+          "tags": [
+            "honest",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "The chat argues what Brazil really is: style, fight, or family.",
+      "prompt": "Which Brazil do you carry into the night?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The tournament nation. Flags and one summer at a time.",
+          "tags": [
+            "tournament",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The club nation. Weekend blood first.",
+          "tags": [
+            "club",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. Different ships. Same fleet.",
+          "tags": [
+            "hybrid",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "The square needs a name to warm the cold wait.",
+      "prompt": "Whose name do you give them?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Rivaldo. The first ship.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Roberto Carlos. The second ship.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Romario. The quiet craft.",
+          "tags": [
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        },
+        {
+          "type": "person",
+          "id": "rivaldo"
+        },
+        {
+          "type": "person",
+          "id": "roberto-carlos"
+        },
+        {
+          "type": "person",
+          "id": "romario"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Club colours under the jacket. Brazil colours in the chat header.",
+      "prompt": "If they clash this week, who speaks first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Brazil first. Nation nights rewrite the calendar.",
+          "tags": [
+            "nation",
+            "duty"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Club first. The ordinary love does not pause.",
+          "tags": [
+            "club",
+            "loyal"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "I refuse the clash. Two loves. No ranking tonight.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Day one ends. Name your Brazil Stand for this week.",
+      "prompt": "Which line is closest?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Loud in the square. Soft in the memory.",
+          "tags": [
+            "loud",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet belonging. Deep fleet.",
+          "tags": [
+            "patient",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Club and country. No clean split.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 2. The Catalogue continues for Brazil."
+    },
+    {
+      "order": 6,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "SAMPLE. Next GST day. A clip of Bebeto circles the chat.",
+      "prompt": "What do you honour first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The craft. Seeing the game early.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The fight. Winning the ugly metres.",
+          "tags": [
+            "loud",
+            "effort"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. Beauty without steel is a postcard.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        },
+        {
+          "type": "person",
+          "id": "bebeto"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Cafu lifts talk of leadership.",
+      "prompt": "What kind of captain do you trust?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The organiser. Quiet orders. Loud example.",
+          "tags": [
+            "leadership",
+            "patient"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The warrior. First into the duel.",
+          "tags": [
+            "leadership",
+            "loud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The translator. Club egos into one camp.",
+          "tags": [
+            "leadership",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        },
+        {
+          "type": "person",
+          "id": "cafu"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "A rival fan says Brazil only wakes up for tournaments.",
+      "prompt": "How do you answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Smile. Let the next match speak.",
+          "tags": [
+            "calm",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Correct them with history. Names, not noise.",
+          "tags": [
+            "memory",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Invite them to watch with you. Convert, do not conquer.",
+          "tags": [
+            "collective",
+            "grace"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Someone ranks Careca too low. The chat splits.",
+      "prompt": "Your move?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Argue with tape. Not volume.",
+          "tags": [
+            "honest",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Shrug. Lists are noise. Love is not a ballot.",
+          "tags": [
+            "calm",
+            "grace"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Add the name. Explain why the fleet needs them.",
+          "tags": [
+            "proud",
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        },
+        {
+          "type": "person",
+          "id": "careca"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Day two closes. Second line for your Brazil Stand.",
+      "prompt": "Pick the closer.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Beauty and steel. Same camp.",
+          "tags": [
+            "hybrid",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Captains over celebrities.",
+          "tags": [
+            "leadership",
+            "patient"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "History first. Volume second.",
+          "tags": [
+            "memory",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 3. Diaspora night for Brazil."
+    },
+    {
+      "order": 11,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "SAMPLE. You are not home. The stream lags. The chat does not.",
+      "prompt": "How do you keep the Brazil Stand alive from away?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Full voice on the call. Sing like the square.",
+          "tags": [
+            "loud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Same scarf. Same hour. Quiet ritual.",
+          "tags": [
+            "patient",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Bring a friend who has never cared. Grow the fleet.",
+          "tags": [
+            "collective",
+            "diaspora"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "Someone wants only current players in the Brazil story.",
+      "prompt": "What do you teach?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The catalogue is the map. Without it you wander.",
+          "tags": [
+            "memory",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Honour the past. Demand the present. Both.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Love who wears the shirt now. Memory is dessert.",
+          "tags": [
+            "forward",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "Club football returns tomorrow. Brazil fades for a while.",
+      "prompt": "How do you leave the camp?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Clean switch. Club colours until the next call.",
+          "tags": [
+            "club",
+            "forward"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Keep a thread of nation in the week. Small rituals.",
+          "tags": [
+            "nation",
+            "loyal"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "No leaving. Dual citizenship of the heart.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        },
+        {
+          "type": "person",
+          "id": "ronaldinho"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "One image stays: many ships, one harbour. The danger of a single story of Brazil.",
+      "prompt": "What is Brazil to you in one feeling?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Pride that travels.",
+          "tags": [
+            "proud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Craft under pressure.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Family argument that still sits at the same table.",
+          "tags": [
+            "collective",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "Chapter end. Name your Brazil Stand.",
+      "prompt": "Who were you across these three days?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The loud pilgrim of the square.",
+          "tags": [
+            "loud",
+            "nation",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The catalogue keeper. Names as shelter.",
+          "tags": [
+            "memory",
+            "patient",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The hybrid. Nation and club. No apology.",
+          "tags": [
+            "hybrid",
+            "honest",
+            "chapter_end"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-brazil"
+        }
+      ],
+      "cliffhanger": "Chapter complete. Next: Brazil · The Return."
+    }
+  ],
+  "day_wall": {
+    "headline": "Part complete for today",
+    "body": "You used today's five questions. Your Brazil chapter continues tomorrow at midnight GST.",
+    "resume_copy": "Tomorrow: pick up at the next question. Brazil waits."
+  },
+  "signup": {
+    "headline": "Save your Stand",
+    "body": "Sign up free to keep this chapter, your badges, and your place in the queue. Anonymous progress resets.",
+    "cta_primary": "Sign up free",
+    "cta_secondary": "Maybe later"
+  },
+  "share_template": "The Stand · Brazil · The Catalogue\nDay {day}/3 · \"{stand_line}\"\nthereflectivefootball.com/stand",
+  "next_paths": [
+    "Continue tomorrow (saved if signed in)",
+    "Play The Guesser",
+    "Watch a TRF film"
+  ]
+}

@@ -5,7 +5,12 @@ import AwardsLaurelCover from "@/components/covers/AwardsLaurelCover";
 
 // Lazy YouTube embed: thumbnail + play button until clicked, then the
 // real iframe. Keeps the page fast with many nominees.
-export default function YouTubeFacade({ youtubeId, title, startSeconds = 0 }) {
+export default function YouTubeFacade({
+  youtubeId,
+  title,
+  startSeconds = 0,
+  posterSrc = null,
+}) {
   const [playing, setPlaying] = useState(false);
   const start =
     Number.isFinite(Number(startSeconds)) && Number(startSeconds) > 0
@@ -32,6 +37,9 @@ export default function YouTubeFacade({ youtubeId, title, startSeconds = 0 }) {
     );
   }
 
+  const thumb =
+    posterSrc || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+
   return (
     <button
       type="button"
@@ -41,7 +49,7 @@ export default function YouTubeFacade({ youtubeId, title, startSeconds = 0 }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
+        src={thumb}
         alt={title}
         loading="lazy"
         className="h-full w-full object-cover"

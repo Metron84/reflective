@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import {
-  reflectionsWinnersHeroLine,
   GUESSER_STRAPLINE,
   HOME_HERO_STILL,
 } from "@/lib/config";
@@ -24,7 +23,7 @@ const DOORS = [
     href: "/reflections",
     category: "Awards.",
     qualifier: "For the Fans.",
-    dateLine: reflectionsWinnersHeroLine(),
+    dateLine: "Sign up free to vote.",
   },
   {
     id: "games",
@@ -167,7 +166,7 @@ export default function HomeTree({ showVotingDate, isSignedIn = false }) {
                 Sign up free
               </Link>
               <p className={styles.heroCtaSubline}>
-                Live results, daily games, your programme.
+                Vote in The Reflectives. Play The Guesser. Your programme.
               </p>
             </div>
           ) : null}

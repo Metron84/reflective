@@ -17,7 +17,7 @@ export default function HonoursSection({ honours }) {
       <h2 className={styles.sectionTitle}>Honours</h2>
       {earned.length === 0 && !nextTease ? (
         <p className={styles.empty}>
-          Play The Guesser and vote in The Reflections to start your honours
+          Play The Guesser and vote in The Reflectives to start your honours
           board.
         </p>
       ) : null}

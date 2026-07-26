@@ -52,6 +52,13 @@ export default function NomineeCard({
             >
               {pending ? "Counting your vote" : "Vote"}
             </button>
+          ) : votingOpen && !canVote && !categoryVoted ? (
+            <a
+              href="/signin?next=/reflections"
+              className="inline-block rounded-full border border-paper/35 px-6 py-2.5 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/70"
+            >
+              Sign up free to vote
+            </a>
           ) : null}
         </div>
       </div>

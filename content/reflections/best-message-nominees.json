@@ -1,0 +1,65 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440501",
+    "category": "best-message",
+    "title": "Nicole",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 7,
+    "sort": 1
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440502",
+    "category": "best-message",
+    "title": "Chef Mariano",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 20,
+    "sort": 2
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440503",
+    "category": "best-message",
+    "title": "Magnus",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 84,
+    "sort": 3
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440504",
+    "category": "best-message",
+    "title": "Manu",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 113,
+    "sort": 4
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440505",
+    "category": "best-message",
+    "title": "Stuart",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 130,
+    "sort": 5
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440506",
+    "category": "best-message",
+    "title": "Sara",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 158,
+    "sort": 6
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440507",
+    "category": "best-message",
+    "title": "Lunga & Lavoyo",
+    "youtube_id": "UX56p4YAIR4",
+    "context_line": null,
+    "clip_start_seconds": 187,
+    "sort": 7
+  }
+]

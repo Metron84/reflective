@@ -1,18 +1,29 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import FadeUp from "@/components/FadeUp";
 import NomineeCard from "./NomineeCard";
-import PostVotePopup from "./PostVotePopup";
+import BestVideoSection from "./BestVideoSection";
 import CompletionState from "./CompletionState";
 import ComingShortlyCover from "./ComingShortlyCover";
 import YouTubeFacade from "./YouTubeFacade";
 import { getFingerprint } from "@/lib/fingerprint";
+import styles from "./VotingBoard.module.css";
 
-const POPUP_DISMISSED_KEY = "trf_popup_dismissed";
 const COMPLETION_ID = "reflections-complete";
 const SCROLL_BEAT_MS = 800;
+
+const NAV_SHORT = {
+  "best-video": "Best Video",
+  "best-supporters-club": "Supporters Club",
+  "best-celebration": "Celebration",
+  "best-chant": "Chant",
+  "best-supporter": "Supporter",
+  "best-message": "Message",
+  "best-interview": "Interview",
+  "best-soundbite": "Soundbite",
+};
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,6 +38,50 @@ function scrollToId(id, instant = false) {
   });
 }
 
+function CategoryStandings({ standings, pickId }) {
+  if (!standings?.length) {
+    return (
+      <p className="mt-8 text-sm text-navy/55">
+        Your vote is in. The race fills as more fans vote.
+      </p>
+    );
+  }
+
+  return (
+    <div className="mt-8 border border-navy/15 bg-paper p-5">
+      <p className="text-xs font-medium uppercase tracking-[0.2em] text-navy/45">
+        Live race
+      </p>
+      <ol className="mt-4 space-y-2">
+        {standings.map((row, i) => {
+          const isPick = pickId === row.nominee_id;
+          return (
+            <li
+              key={row.nominee_id}
+              className={`flex items-baseline justify-between gap-3 text-sm ${
+                isPick ? "text-navy" : "text-navy/70"
+              }`}
+            >
+              <span>
+                <span className="tabular-nums text-navy/40">{i + 1}.</span>{" "}
+                {row.title}
+                {isPick ? (
+                  <span className="ml-2 text-xs uppercase tracking-widest text-signal">
+                    Your pick
+                  </span>
+                ) : null}
+              </span>
+              <span className="shrink-0 tabular-nums text-navy/50">
+                {row.votes}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
 export default function VotingBoard({
   navCategories,
   bodyCategories,
@@ -34,16 +89,19 @@ export default function VotingBoard({
   nomineesByCategory,
   initialVoted,
   initialPicks,
+  initialStandings = {},
   votingState,
   isSignedIn,
 }) {
   const [voted, setVoted] = useState(initialVoted);
   const [picks, setPicks] = useState(initialPicks);
+  const [standingsByCategory, setStandingsByCategory] =
+    useState(initialStandings);
   const [pendingVote, setPendingVote] = useState(null);
   const [errors, setErrors] = useState({});
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [toast, setToast] = useState(null);
-  const resumeTargetRef = useRef(null);
+  const [activeSlug, setActiveSlug] = useState(
+    () => navCategories.find((c) => c.open)?.slug ?? navCategories[0]?.slug
+  );
 
   const bodySlugs = useMemo(
     () => new Set(bodyCategories.map((c) => c.slug)),
@@ -60,11 +118,9 @@ export default function VotingBoard({
   );
 
   const votingOpen = votingState === "open";
-  const votedOpenCount = openSlugs.filter((s) => voted.includes(s)).length;
   const allOpenVoted =
     openSlugs.length > 0 && openSlugs.every((s) => voted.includes(s));
-  const allCategoriesVoted = allOpenVoted;
-  const showFullComplete = allCategoriesVoted;
+  const showFullComplete = allOpenVoted;
 
   function nextUnvotedOpen(votedList) {
     return openCategories.find((c) => !votedList.includes(c.slug))?.slug ?? null;
@@ -90,6 +146,28 @@ export default function VotingBoard({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const sections = bodyCategories
+      .map((c) => document.getElementById(c.slug))
+      .filter(Boolean);
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) {
+          setActiveSlug(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.15, 0.35, 0.55] }
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [bodyCategories]);
 
   function advanceAfterBeat(target) {
     if (!target) return;
@@ -120,26 +198,21 @@ export default function VotingBoard({
         const newVoted = data.voted ?? [...new Set([...voted, categorySlug])];
         setVoted(newVoted);
         setPicks(data.picks ?? { ...picks, [categorySlug]: nomineeId });
+        if (Array.isArray(data.standings)) {
+          setStandingsByCategory((prev) => ({
+            ...prev,
+            [categorySlug]: data.standings,
+          }));
+        }
 
         const isFirstVoteInCategory = !voted.includes(categorySlug);
-        const target = isFirstVoteInCategory ? resumeTarget(newVoted) : null;
         if (isFirstVoteInCategory) {
-          if (!isSignedIn && !sessionStorage.getItem(POPUP_DISMISSED_KEY)) {
-            resumeTargetRef.current = target;
-            setPopupOpen(true);
-          } else {
-            if (isSignedIn) {
-              const count = openSlugs.filter((s) => newVoted.includes(s)).length;
-              setToast(`Vote counted · ${count} of ${openSlugs.length} in`);
-              window.setTimeout(() => setToast(null), 2500);
-            }
-            advanceAfterBeat(target);
-          }
+          advanceAfterBeat(resumeTarget(newVoted));
         }
       } else if (res.status === 401 && data.reason === "account-required") {
         setErrors((prev) => ({
           ...prev,
-          [categorySlug]: "Sign in free to cast your vote.",
+          [categorySlug]: "Sign up free to vote.",
         }));
       } else if (res.status === 409) {
         setVoted(data.voted ?? [...voted, categorySlug]);
@@ -168,64 +241,33 @@ export default function VotingBoard({
     }
   }
 
-  function dismissPopup() {
-    sessionStorage.setItem(POPUP_DISMISSED_KEY, "1");
-    setPopupOpen(false);
-    const target = resumeTargetRef.current;
-    resumeTargetRef.current = null;
-    advanceAfterBeat(target);
-  }
-
-  const progressPct =
-    openSlugs.length > 0 ? (votedOpenCount / openSlugs.length) * 100 : 0;
-
   return (
     <>
-      <nav className="sticky top-16 z-30 border-b border-navy/10 bg-paper/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
-          {votingOpen && openSlugs.length > 0 ? (
-            <span className="shrink-0 text-xs font-medium uppercase tracking-widest text-navy/60">
-              {votedOpenCount} of {openSlugs.length} votes in
-            </span>
-          ) : null}
-          <div className="flex items-center gap-4 overflow-x-auto">
-            {openCategories.map((category) => {
-              const isVoted = voted.includes(category.slug);
-              return (
-                <a
-                  key={category.slug}
-                  href={`#${category.slug}`}
-                  className={`shrink-0 text-sm transition-colors hover:text-navy ${
-                    isVoted ? "text-signal" : "text-navy/70"
-                  }`}
-                >
-                  {category.name}
-                </a>
-              );
-            })}
-          </div>
+      <nav className={styles.subnav} aria-label="Award categories">
+        <div className={styles.subnavTrack}>
+          {navCategories.map((category, index) => {
+            const isActive = activeSlug === category.slug;
+            const isVoted = voted.includes(category.slug);
+            const label = NAV_SHORT[category.slug] ?? category.name;
+            return (
+              <a
+                key={category.slug}
+                href={`#${category.slug}`}
+                className={`${styles.subnavLink} ${
+                  isActive ? styles.subnavActive : ""
+                }`}
+                onClick={() => setActiveSlug(category.slug)}
+              >
+                <span className={styles.subnavNum}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>{" "}
+                {label}
+                {isVoted ? <span className={styles.subnavDot} aria-hidden /> : null}
+              </a>
+            );
+          })}
         </div>
-        {votingOpen && openSlugs.length > 0 ? (
-          <div
-            className="h-0.5 bg-signal transition-[width] duration-500"
-            style={{ width: `${progressPct}%` }}
-          />
-        ) : null}
       </nav>
-
-      {votingOpen && !isSignedIn ? (
-        <div className="border-b border-navy/10 bg-paper px-4 py-4 sm:px-6">
-          <p className="mx-auto max-w-6xl text-sm text-navy/70">
-            Sign in free to cast your vote.{" "}
-            <Link
-              href="/signin?next=/reflections"
-              className="text-navy underline underline-offset-4 hover:text-signal"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
-      ) : null}
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {showFullComplete ? (
@@ -238,6 +280,26 @@ export default function VotingBoard({
           const categoryPending = pendingVote?.category === category.slug;
           const isOpen = category.open;
           const hasNominees = nominees.length > 0;
+
+          if (category.slug === "best-video" && isOpen && hasNominees) {
+            return (
+              <BestVideoSection
+                key={category.slug}
+                category={category}
+                nominees={nominees}
+                votingOpen={votingOpen}
+                categoryVoted={categoryVoted}
+                picks={picks}
+                pendingVote={pendingVote}
+                canVote={isSignedIn}
+                standings={standingsByCategory[category.slug]}
+                errors={errors[category.slug]}
+                isSignedIn={isSignedIn}
+                CategoryStandings={CategoryStandings}
+                onVote={(nomineeId) => handleVote(category.slug, nomineeId)}
+              />
+            );
+          }
 
           return (
             <section
@@ -281,6 +343,7 @@ export default function VotingBoard({
                       <YouTubeFacade
                         youtubeId={category.category_youtube_id}
                         title={`${category.name} nominees`}
+                        posterSrc={category.category_poster ?? null}
                       />
                     </div>
                   ) : null}
@@ -309,16 +372,26 @@ export default function VotingBoard({
                     ))}
                   </div>
 
-                  <div className="mt-8 border border-navy/15 p-5 text-sm text-navy/60">
-                    Live standings are for members.{" "}
-                    <Link
-                      href="/signin?next=/reflections"
-                      className="text-navy underline underline-offset-4 hover:text-signal"
-                    >
-                      Sign in free
-                    </Link>{" "}
-                    to watch the race.
-                  </div>
+                  {categoryVoted ? (
+                    <CategoryStandings
+                      standings={standingsByCategory[category.slug]}
+                      pickId={picks[category.slug]}
+                    />
+                  ) : !isSignedIn ? (
+                    <div className="mt-8 border border-navy/15 p-5 text-sm text-navy/60">
+                      <Link
+                        href="/signin?next=/reflections"
+                        className="font-medium text-navy underline underline-offset-4 hover:text-signal"
+                      >
+                        Sign up free to vote
+                      </Link>
+                      . The race for this category opens after your pick.
+                    </div>
+                  ) : (
+                    <p className="mt-8 text-sm text-navy/55">
+                      Vote to open this category&apos;s race.
+                    </p>
+                  )}
                 </>
               ) : null}
 
@@ -331,16 +404,6 @@ export default function VotingBoard({
           );
         })}
       </div>
-
-      {toast ? (
-        <p
-          role="status"
-          className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-navy/15 bg-paper px-5 py-2.5 text-sm text-navy shadow-lg"
-        >
-          {toast}
-        </p>
-      ) : null}
-      {popupOpen ? <PostVotePopup onClose={dismissPopup} /> : null}
     </>
   );
 }

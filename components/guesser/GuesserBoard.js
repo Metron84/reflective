@@ -407,7 +407,7 @@ export default function GuesserBoard({
                 href="/reflections"
                 className="rounded-full border border-paper/30 px-6 py-2.5 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
               >
-                Vote in The Reflections
+                Vote in The Reflectives
               </Link>
               <Link
                 href="/films"

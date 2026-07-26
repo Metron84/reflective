@@ -8,6 +8,15 @@
     "cover": null
   },
   {
+    "slug": "the-stand",
+    "title": "The Stand",
+    "hook": "Club, nation, or player. Five questions a day. Save your chapter.",
+    "status": "live",
+    "href": "/stand",
+    "cover": null,
+    "statusLabel": "SAMPLE preview"
+  },
+  {
     "slug": "ultimate-fantasy-manager",
     "title": "Ultimate Fantasy Manager",
     "hook": "Draft Europe. Ten players, six leagues, one squad.",

@@ -4,7 +4,7 @@ This file is the standing rulebook for every Claude Code session in this repo. R
 
 ## What this project is
 
-thereflectivefootball.com — the website of The Reflective Football (TRF), a fan-first football documentary network based in Dubai. v1 ships three features: Films archive, The Reflections awards voting, and The Guesser daily game with a TRF account system. Full spec: `docs/TRF_Website_v1_Build_Spec.md` (keep the spec in the repo under /docs).
+thereflectivefootball.com — the website of The Reflective Football (TRF), a fan-first football documentary network based in Dubai. v1 ships three features: Films archive, The Reflectives awards voting, and The Guesser daily game with a TRF account system. Full spec: `docs/TRF_Website_v1_Build_Spec.md` (keep the spec in the repo under /docs).
 
 ## Stack
 
@@ -32,23 +32,22 @@ thereflectivefootball.com — the website of The Reflective Football (TRF), a fa
 
 ## Voice & copy rules
 
-- NO DEAD ENDS (site-wide law): every page and every completed action ends with a visible next step. Users are fed clear paths, never left in silence. After a vote: auto-advance to the next unvoted category. After the 8th vote: completion moment with three paths (see live results / play The Guesser / watch the films). After a Guesser result: share + next nudge. Film pages: related films + a nudge. The home page is an index that feeds visitors every product in one scroll.
+- NO DEAD ENDS (site-wide law): every page and every completed action ends with a visible next step. Users are fed clear paths, never left in silence. After a vote: auto-advance to the next unvoted category. After the 8th vote: completion moment with three paths (your ballot / play The Guesser / watch the films). After a Guesser result: share + next nudge. Film pages: related films + a nudge. The home page is an index that feeds visitors every product in one scroll.
 - Fans are protagonists. No disparaging copy anywhere, including nominee context lines and error messages.
 - Copy is short, clear, direct. No em-dashes.
 - Current year is 2026. The Arsenal Champions League Final was May 30, 2026.
 - Do NOT mention or reference "We Are Football" anywhere on the site. Unannounced.
 - English v1; architecture should not block Arabic/French locales later (use next-intl-compatible structure or keep strings centralized).
 
-## The Reflections — configuration
+## The Reflectives — configuration
 
-- Eight categories, in this order: Best Video, Best Soundbite, Best Supporters Club, Best Supporter, Best Celebration, Best Heartbreak, Best Chant, Best Matchday Night.
-- Voting opens at site launch. Voting closes: 2026-08-31 23:59 GST (UTC+4). Winners announced September 1. Public copy shows the winners date only; close is enforced server-side.
+- Eight categories, in this order: Best Video, Best Supporters Club, Best Celebration, Best Chant, Supporter of the Year, Best Message from the Fans, Best Interview, Best Soundbite.
+- Voting opens at site launch. Voting closes: 2026-08-31 23:59 GST (UTC+4). Close is enforced server-side. No public winners announcement on the site; Melo announces winners elsewhere.
 - Categories roll out in stages: each category has an `open` flag in config. Closed categories show "Nominees announced shortly." Progress counts open categories only.
-- No account required to vote. One vote per category, deduped server-side (hashed IP + fingerprint + signed cookie, unique constraints in DB). Rate-limit the endpoint. Honeypot field.
-- Record user_id on votes when signed in. Build the admin tally query with two modes from day one: all votes / authenticated-only (verified tally).
-- Live standings are visible ONLY to signed-in users. No public running totals.
-- Post-vote popup fires once per successful vote, never re-shows in-session:
-  "Thanks for voting! Your pick is in." + free account benefits (live results, The Guesser daily, first to new films/games/news) + [Sign up free] [Maybe later].
+- **Account required to vote.** Anyone can watch nominee videos. One vote per category. Dedupe server-side (hashed IP + fingerprint + signed cookie + user_id unique constraints). Rate-limit the endpoint. Honeypot field.
+- Live standings open **per category only after that member votes in it**. Never show all races to someone who has not voted those categories. Key conversion line: "Sign up free to vote."
+- Admin tally query keeps two modes: all votes / authenticated-only (verified tally).
+- After each vote: auto-advance to the next unvoted category. After the 8th vote: completion with paths (your ballot / The Guesser / films).
 
 ## The Guesser — configuration
 
@@ -60,7 +59,7 @@ Summary: person-first daily game (Wordle-style attribute grid + TRF clue ladder)
 
 - Supabase Auth: email magic link + Google sign-in. Google OAuth client is created (consent screen: "The Reflective Football", External/testing mode). Client ID + secret go into Supabase (Authentication → Providers → Google) and env vars — Melo provides them directly, never via chat. Authorized origins: https://thereflectivefootball.com and http://localhost:4343. Redirect URI: the Supabase auth callback. No passwords.
 - Signup captures: display name, favourite club (optional), marketing consent checkbox (pre-unchecked).
-- /account shows: per-mode Guesser streaks + stats, Reflections votes cast + live standings.
+- /account shows: per-mode Guesser streaks + stats, Reflectives votes cast + live standings.
 
 ## Rolling view counter (home page hero module)
 

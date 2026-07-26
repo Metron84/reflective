@@ -1,0 +1,4201 @@
+[
+  {
+    "id": "bayern-munich",
+    "display_name": "Bayern Munich",
+    "short_name": "Bayern",
+    "aliases": [
+      "Bayern Munich"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "alphonso-davies",
+      "arjen-robben",
+      "arturo-vidal",
+      "bastian-schweinsteiger",
+      "claudio-pizarro",
+      "david-alaba",
+      "dayot-upamecano",
+      "franck-ribery",
+      "giovane-elber",
+      "harry-kane",
+      "jamal-musiala",
+      "jerome-boateng",
+      "jonathan-tah",
+      "joshua-kimmich",
+      "jurgen-klinsmann",
+      "karl-heinz-rummenigge",
+      "kingsley-coman",
+      "leon-goretzka",
+      "leroy-sane",
+      "lothar-matthaus",
+      "lukas-podolski",
+      "manuel-neuer",
+      "marcel-sabitzer",
+      "mario-gotze",
+      "mats-hummels",
+      "mehmet-scholl",
+      "michael-ballack",
+      "miroslav-klose",
+      "mitchell-weiser",
+      "niklas-sule",
+      "oliver-kahn",
+      "philipp-lahm",
+      "raphael-guerreiro",
+      "robert-lewandowski",
+      "roy-makaay",
+      "sebastian-rode",
+      "serge-gnabry",
+      "stefan-effenberg",
+      "thiago-alcantara",
+      "thomas-muller",
+      "toni-kroos",
+      "xabi-alonso",
+      "yann-sommer",
+      "ze-roberto"
+    ],
+    "person_count": 44,
+    "row_count": 51,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "inter-milan",
+    "display_name": "Inter Milan",
+    "short_name": "Inter",
+    "aliases": [
+      "Inter Milan"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andreas-brehme",
+      "antonio-candreva",
+      "borja-valero",
+      "christian-vieri",
+      "clarence-seedorf",
+      "cristiano-biraghi",
+      "danilo-d-ambrosio",
+      "diego-milito",
+      "edin-dzeko",
+      "esteban-cambiasso",
+      "fabio-cannavaro",
+      "francesco-acerbi",
+      "francesco-toldo",
+      "giuseppe-bergomi",
+      "hakan-calhanoglu",
+      "hernan-crespo",
+      "javier-zanetti",
+      "juan-cuadrado",
+      "juan-jesus",
+      "jurgen-klinsmann",
+      "lautaro-martinez",
+      "marcelo-brozovic",
+      "marco-materazzi",
+      "matias-vecino",
+      "matteo-darmian",
+      "matteo-politano",
+      "nicolo-barella",
+      "piotr-zielinski",
+      "radja-nainggolan",
+      "rodrigo-palacio",
+      "romelu-lukaku",
+      "ronaldo",
+      "samir-handanovic",
+      "samuel-etoo",
+      "stefan-de-vrij",
+      "wesley-sneijder",
+      "zlatan-ibrahimovic"
+    ],
+    "person_count": 37,
+    "row_count": 39,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "manchester-united",
+    "display_name": "Manchester United",
+    "short_name": "Man United",
+    "aliases": [
+      "Manchester United"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "alexis-sanchez",
+      "andy-cole",
+      "ashley-young",
+      "bruno-fernandes",
+      "carlos-tevez",
+      "christian-eriksen",
+      "cristiano-ronaldo",
+      "danny-welbeck",
+      "david-beckham",
+      "david-de-gea",
+      "dimitar-berbatov",
+      "dwight-yorke",
+      "edwin-van-der-sar",
+      "eric-cantona",
+      "fabien-barthez",
+      "gary-neville",
+      "harry-maguire",
+      "jaap-stam",
+      "jonny-evans",
+      "luke-shaw",
+      "marcus-rashford",
+      "michael-carrick",
+      "michael-keane",
+      "nemanja-vidic",
+      "ole-gunnar-solskjaer",
+      "paul-scholes",
+      "peter-schmeichel",
+      "rio-ferdinand",
+      "robin-van-persie",
+      "roy-keane",
+      "ruud-van-nistelrooy",
+      "ryan-giggs",
+      "teddy-sheringham",
+      "wayne-rooney",
+      "wilfried-zaha"
+    ],
+    "person_count": 35,
+    "row_count": 35,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "real-madrid",
+    "display_name": "Real Madrid",
+    "short_name": "Real",
+    "aliases": [
+      "Real Madrid"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "angel-di-maria",
+      "asier-illarramendi",
+      "cristiano-ronaldo",
+      "daniel-carvajal",
+      "davor-suker",
+      "emilio-butragueno",
+      "fabio-cannavaro",
+      "federico-valverde",
+      "fernando-hierro",
+      "gareth-bale",
+      "iker-casillas",
+      "isco",
+      "james-rodriguez",
+      "jorge-valdano",
+      "jude-bellingham",
+      "kaka",
+      "karim-benzema",
+      "kylian-mbappe",
+      "lucas-vazquez",
+      "luis-figo",
+      "luka-modric",
+      "marcelo",
+      "marcos-llorente",
+      "nacho-fernandez",
+      "raul",
+      "roberto-carlos",
+      "ronaldo",
+      "santiago-canizares",
+      "sergio-ramos",
+      "thibaut-courtois",
+      "toni-kroos",
+      "vinicius-junior",
+      "willian-jose",
+      "xabi-alonso",
+      "zinedine-zidane"
+    ],
+    "person_count": 35,
+    "row_count": 42,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "ac-milan",
+    "display_name": "AC Milan",
+    "short_name": "Milan",
+    "aliases": [
+      "AC Milan",
+      "Milan"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "adrien-rabiot",
+      "alessandro-florenzi",
+      "alessandro-nesta",
+      "alessio-romagnoli",
+      "andrea-petagna",
+      "andrea-pirlo",
+      "andriy-shevchenko",
+      "bryan-cristante",
+      "cafu",
+      "clarence-seedorf",
+      "filippo-inzaghi",
+      "francesco-acerbi",
+      "franco-baresi",
+      "gennaro-gattuso",
+      "giacomo-bonaventura",
+      "gianluigi-donnarumma",
+      "gonzalo-higuain",
+      "hakan-calhanoglu",
+      "hernan-crespo",
+      "kaka",
+      "leonardo-bonucci",
+      "manuel-locatelli",
+      "mario-pasalic",
+      "olivier-giroud",
+      "paolo-maldini",
+      "rafael-leao",
+      "roberto-baggio",
+      "ronaldo",
+      "stephan-el-shaarawy",
+      "zlatan-ibrahimovic"
+    ],
+    "person_count": 30,
+    "row_count": 32,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "juventus",
+    "display_name": "Juventus",
+    "short_name": "Juventus",
+    "aliases": [
+      "Juventus"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "alessandro-del-piero",
+      "andrea-pirlo",
+      "dino-zoff",
+      "dusan-vlahovic",
+      "fabio-cannavaro",
+      "fabio-quagliarella",
+      "fabrizio-ravanelli",
+      "federico-chiesa",
+      "filippo-inzaghi",
+      "gianluigi-buffon",
+      "giorgio-chiellini",
+      "gonzalo-higuain",
+      "juan-cuadrado",
+      "leonardo-bonucci",
+      "lilian-thuram",
+      "manuel-locatelli",
+      "mattia-perin",
+      "michel-platini",
+      "miralem-pjanic",
+      "paolo-rossi",
+      "paul-pogba",
+      "paulo-dybala",
+      "pavel-nedved",
+      "roberto-baggio",
+      "rolando-mandragora",
+      "salvatore-schillaci",
+      "wojciech-szczesny",
+      "zbigniew-boniek",
+      "zinedine-zidane",
+      "zlatan-ibrahimovic"
+    ],
+    "person_count": 30,
+    "row_count": 34,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "barcelona",
+    "display_name": "Barcelona",
+    "short_name": "Barcelona",
+    "aliases": [
+      "Barcelona"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "andres-iniesta",
+      "carles-puyol",
+      "david-villa",
+      "denis-suarez",
+      "gary-lineker",
+      "gavi",
+      "gerard-pique",
+      "hristo-stoichkov",
+      "inigo-martinez",
+      "ivan-rakitic",
+      "jordi-alba",
+      "lamine-yamal",
+      "lionel-messi",
+      "luis-figo",
+      "luis-suarez",
+      "marc-andre-ter-stegen",
+      "munir-el-haddadi",
+      "neymar",
+      "patrick-kluivert",
+      "pedri",
+      "rivaldo",
+      "robert-lewandowski",
+      "romario",
+      "ronaldinho",
+      "ronaldo",
+      "samuel-etoo",
+      "sergi-roberto",
+      "sergio-busquets",
+      "xavi"
+    ],
+    "person_count": 29,
+    "row_count": 38,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "arsenal",
+    "display_name": "Arsenal",
+    "short_name": "Arsenal",
+    "aliases": [
+      "Arsenal"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "alex-iwobi",
+      "alexis-sanchez",
+      "ashley-cole",
+      "bukayo-saka",
+      "cesc-fabregas",
+      "danny-welbeck",
+      "david-seaman",
+      "declan-rice",
+      "dennis-bergkamp",
+      "emmanuel-adebayor",
+      "freddie-ljungberg",
+      "ian-wright",
+      "lukasz-fabianski",
+      "marc-overmars",
+      "martin-odegaard",
+      "mesut-ozil",
+      "mikel-merino",
+      "nicolas-anelka",
+      "patrick-vieira",
+      "petr-cech",
+      "robert-pires",
+      "robin-van-persie",
+      "sol-campbell",
+      "thierry-henry",
+      "tony-adams",
+      "william-saliba",
+      "willian"
+    ],
+    "person_count": 27,
+    "row_count": 29,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "manchester-city",
+    "display_name": "Manchester City",
+    "short_name": "Man City",
+    "aliases": [
+      "Manchester City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "bernardo-silva",
+      "carlos-tevez",
+      "cole-palmer",
+      "david-seaman",
+      "david-silva",
+      "ederson",
+      "emmanuel-adebayor",
+      "erling-haaland",
+      "fernandinho",
+      "ilkay-gundogan",
+      "jack-grealish",
+      "james-milner",
+      "joe-hart",
+      "john-stones",
+      "kevin-de-bruyne",
+      "kyle-walker",
+      "nathan-ake",
+      "nicolas-anelka",
+      "phil-foden",
+      "raheem-sterling",
+      "riyad-mahrez",
+      "rodri",
+      "samir-nasri",
+      "sergio-aguero",
+      "vincent-kompany",
+      "yaya-toure"
+    ],
+    "person_count": 26,
+    "row_count": 27,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "liverpool",
+    "display_name": "Liverpool",
+    "short_name": "Liverpool",
+    "aliases": [
+      "Liverpool"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adam-lallana",
+      "alexander-isak",
+      "alisson-becker",
+      "andrew-robertson",
+      "christian-benteke",
+      "fernando-torres",
+      "james-milner",
+      "jamie-carragher",
+      "javier-mascherano",
+      "jordan-henderson",
+      "luis-suarez",
+      "michael-owen",
+      "mohamed-salah",
+      "nathaniel-clyne",
+      "peter-crouch",
+      "philippe-coutinho",
+      "raheem-sterling",
+      "robbie-fowler",
+      "robbie-keane",
+      "roberto-firmino",
+      "sadio-mane",
+      "steven-gerrard",
+      "trent-alexander-arnold",
+      "virgil-van-dijk",
+      "xabi-alonso"
+    ],
+    "person_count": 25,
+    "row_count": 26,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "psg",
+    "display_name": "Paris Saint-Germain",
+    "short_name": "PSG",
+    "aliases": [
+      "Paris",
+      "Paris Saint-Germain"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "achraf-hakimi",
+      "angel-di-maria",
+      "bradley-barcola",
+      "claude-makelele",
+      "edinson-cavani",
+      "gianluigi-donnarumma",
+      "hamari-traore",
+      "khvicha-kvaratskhelia",
+      "kylian-mbappe",
+      "lionel-messi",
+      "marco-verratti",
+      "marquinhos",
+      "moses-simon",
+      "neymar",
+      "nicolas-anelka",
+      "ousmane-dembele",
+      "pauleta",
+      "pierre-lees-melou",
+      "ronaldinho",
+      "thiago-silva",
+      "vitinha",
+      "warren-zaire-emery",
+      "youri-djorkaeff",
+      "zlatan-ibrahimovic"
+    ],
+    "person_count": 24,
+    "row_count": 26,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "tottenham",
+    "display_name": "Tottenham Hotspur",
+    "short_name": "Spurs",
+    "aliases": [
+      "Tottenham Hotspur"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "andros-townsend",
+      "ben-davies",
+      "christian-eriksen",
+      "david-ginola",
+      "dimitar-berbatov",
+      "emmanuel-adebayor",
+      "eric-dier",
+      "gareth-bale",
+      "gylfi-sigurdsson",
+      "harry-kane",
+      "hugo-lloris",
+      "jermain-defoe",
+      "kyle-walker",
+      "luka-modric",
+      "michael-carrick",
+      "moussa-sissoko",
+      "paul-gascoigne",
+      "peter-crouch",
+      "pierre-emile-hjbjerg",
+      "richarlison",
+      "robbie-keane",
+      "sol-campbell",
+      "son-heung-min",
+      "teddy-sheringham"
+    ],
+    "person_count": 24,
+    "row_count": 24,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "bayer-leverkusen",
+    "display_name": "Bayer Leverkusen",
+    "short_name": "Leverkusen",
+    "aliases": [
+      "Bayer Leverkusen"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "andre-schurrle",
+      "arturo-vidal",
+      "christoph-kramer",
+      "danny-da-costa",
+      "dominik-kohr",
+      "florian-wirtz",
+      "gonzalo-castro",
+      "granit-xhaka",
+      "jonas-hofmann",
+      "jonathan-tah",
+      "julian-baumgartlinger",
+      "julian-brandt",
+      "karim-bellarabi",
+      "kevin-kampl",
+      "kevin-volland",
+      "lukas-hradecky",
+      "michael-ballack",
+      "mitchell-weiser",
+      "nadiem-amiri",
+      "rudi-voller",
+      "toni-kroos",
+      "victor-boniface",
+      "ze-roberto"
+    ],
+    "person_count": 23,
+    "row_count": 23,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "borussia-dortmund",
+    "display_name": "Borussia Dortmund",
+    "short_name": "Dortmund",
+    "aliases": [
+      "Borussia Dortmund"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "andre-schurrle",
+      "erling-haaland",
+      "gonzalo-castro",
+      "jadon-sancho",
+      "jonas-hofmann",
+      "jude-bellingham",
+      "julian-brandt",
+      "kevin-kampl",
+      "leonardo-bittencourt",
+      "marcel-sabitzer",
+      "marco-reus",
+      "mario-gotze",
+      "marius-wolf",
+      "mats-hummels",
+      "matthias-ginter",
+      "niklas-sule",
+      "ousmane-dembele",
+      "pierre-emerick-aubameyang",
+      "raphael-guerreiro",
+      "robert-lewandowski",
+      "sebastian-rode",
+      "thorgan-hazard",
+      "waldemar-anton"
+    ],
+    "person_count": 23,
+    "row_count": 24,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "napoli",
+    "display_name": "Napoli",
+    "short_name": "Napoli",
+    "aliases": [
+      "Napoli",
+      "SSC Napoli"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "allan",
+      "andrea-petagna",
+      "careca",
+      "diego-maradona",
+      "dries-mertens",
+      "duvan-zapata",
+      "edinson-cavani",
+      "fabio-cannavaro",
+      "gianfranco-zola",
+      "giovanni-di-lorenzo",
+      "giovanni-simeone",
+      "gonzalo-higuain",
+      "jose-callejon",
+      "juan-jesus",
+      "kalidou-koulibaly",
+      "khvicha-kvaratskhelia",
+      "lorenzo-insigne",
+      "marek-hamsik",
+      "matteo-politano",
+      "piotr-zielinski",
+      "romelu-lukaku",
+      "victor-osimhen"
+    ],
+    "person_count": 22,
+    "row_count": 22,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "roma",
+    "display_name": "Roma",
+    "short_name": "Roma",
+    "aliases": [
+      "Associazione Sportiva Roma",
+      "Roma"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "alessandro-florenzi",
+      "alessio-romagnoli",
+      "andrea-belotti",
+      "bryan-cristante",
+      "davide-zappacosta",
+      "edin-dzeko",
+      "falcao",
+      "francesco-totti",
+      "gabriel-batistuta",
+      "gianluca-mancini",
+      "gregoire-defrel",
+      "juan-jesus",
+      "lorenzo-pellegrini",
+      "miralem-pjanic",
+      "mohamed-salah",
+      "paulo-dybala",
+      "radja-nainggolan",
+      "rafael-toloi",
+      "romelu-lukaku",
+      "stephan-el-shaarawy",
+      "wojciech-szczesny"
+    ],
+    "person_count": 21,
+    "row_count": 22,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "lazio",
+    "display_name": "Lazio",
+    "short_name": "Lazio",
+    "aliases": [
+      "Lazio",
+      "Società Sportiva Lazio S.p.A."
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "adam-marusic",
+      "alessandro-nesta",
+      "alessio-romagnoli",
+      "antonio-candreva",
+      "christian-vieri",
+      "ciro-immobile",
+      "danilo-cataldi",
+      "fabrizio-ravanelli",
+      "francesco-acerbi",
+      "giuseppe-signori",
+      "hernan-crespo",
+      "manuel-lazzari",
+      "matias-vecino",
+      "milan-badelj",
+      "miroslav-klose",
+      "pavel-nedved",
+      "roberto-mancini",
+      "senad-lulic",
+      "sergej-milinkovic-savic",
+      "stefan-de-vrij"
+    ],
+    "person_count": 20,
+    "row_count": 20,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "atletico-madrid",
+    "display_name": "Atlético Madrid",
+    "short_name": "Atlético",
+    "aliases": [
+      "Atletico Madrid"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "angel-correa",
+      "antoine-griezmann",
+      "david-villa",
+      "diego-costa",
+      "diego-forlan",
+      "diego-godin",
+      "fernando-torres",
+      "jan-oblak",
+      "jose-maria-gimenez",
+      "julian-alvarez",
+      "kevin-gameiro",
+      "koke",
+      "leo-baptistao",
+      "luis-suarez",
+      "marcos-llorente",
+      "radamel-falcao",
+      "raul-garcia",
+      "saul-niguez",
+      "thibaut-courtois"
+    ],
+    "person_count": 19,
+    "row_count": 21,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "monaco",
+    "display_name": "Monaco",
+    "short_name": "Monaco",
+    "aliases": [
+      "Monaco"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "aleksandr-golovin",
+      "aurelien-tchouameni",
+      "benjamin-lecomte",
+      "bernardo-silva",
+      "david-trezeguet",
+      "djibril-sidibe",
+      "emmanuel-petit",
+      "fabien-barthez",
+      "fabinho",
+      "james-rodriguez",
+      "kylian-mbappe",
+      "pierre-emerick-aubameyang",
+      "radamel-falcao",
+      "ruben-aguilar",
+      "sonny-anderson",
+      "thierry-henry",
+      "valere-germain",
+      "wissam-ben-yedder",
+      "youri-djorkaeff"
+    ],
+    "person_count": 19,
+    "row_count": 19,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "acf-fiorentina",
+    "display_name": "Fiorentina",
+    "short_name": "Fiorentina",
+    "aliases": [
+      "ACF Fiorentina",
+      "Fiorentina"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-belotti",
+      "borja-valero",
+      "cristiano-biraghi",
+      "danilo-cataldi",
+      "dusan-vlahovic",
+      "edin-dzeko",
+      "federico-chiesa",
+      "francesco-toldo",
+      "gabriel-batistuta",
+      "giacomo-bonaventura",
+      "giovanni-simeone",
+      "jose-callejon",
+      "juan-cuadrado",
+      "luis-muriel",
+      "matias-vecino",
+      "milan-badelj",
+      "mohamed-salah",
+      "rolando-mandragora"
+    ],
+    "person_count": 18,
+    "row_count": 19,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "chelsea",
+    "display_name": "Chelsea",
+    "short_name": "Chelsea",
+    "aliases": [
+      "Chelsea"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "ashley-cole",
+      "cesar-azpilicueta",
+      "cesc-fabregas",
+      "cole-palmer",
+      "didier-drogba",
+      "diego-costa",
+      "eden-hazard",
+      "fernando-torres",
+      "frank-lampard",
+      "gianfranco-zola",
+      "john-terry",
+      "nathan-ake",
+      "ngolo-kante",
+      "nicolas-anelka",
+      "petr-cech",
+      "ross-barkley",
+      "ryan-bertrand",
+      "willian"
+    ],
+    "person_count": 18,
+    "row_count": 20,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "lyon",
+    "display_name": "Lyon",
+    "short_name": "Lyon",
+    "aliases": [
+      "Lyon",
+      "Olympique Lyon"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "alexandre-lacazette",
+      "amine-gouiri",
+      "anthony-lopes",
+      "bradley-barcola",
+      "corentin-tolisso",
+      "gregory-coupet",
+      "jimmy-briand",
+      "jordan-ferri",
+      "juninho-pernambucano",
+      "karim-benzema",
+      "martin-terrier",
+      "maxime-gonalons",
+      "memphis-depay",
+      "nabil-fekir",
+      "rayan-cherki",
+      "romain-del-castillo",
+      "sidney-govou",
+      "sonny-anderson"
+    ],
+    "person_count": 18,
+    "row_count": 18,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "west-ham",
+    "display_name": "West Ham United",
+    "short_name": "West Ham",
+    "aliases": [
+      "West Ham United"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "aaron-cresswell",
+      "adama-traore",
+      "callum-wilson",
+      "carlos-tevez",
+      "cheikhou-kouyate",
+      "craig-dawson",
+      "declan-rice",
+      "frank-lampard",
+      "james-ward-prowse",
+      "jarrod-bowen",
+      "javier-mascherano",
+      "jermain-defoe",
+      "joe-hart",
+      "lukasz-fabianski",
+      "mark-noble",
+      "michael-carrick",
+      "michail-antonio",
+      "samir-nasri"
+    ],
+    "person_count": 18,
+    "row_count": 18,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "marseille",
+    "display_name": "Marseille",
+    "short_name": "Marseille",
+    "aliases": [
+      "Marseille"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "amine-gouiri",
+      "andre-pierre-gignac",
+      "claude-makelele",
+      "didier-drogba",
+      "dimitri-payet",
+      "fabien-barthez",
+      "florian-thauvin",
+      "jean-pierre-papin",
+      "mamadou-niang",
+      "mario-balotelli",
+      "morgan-sanson",
+      "pierre-emerick-aubameyang",
+      "remy-cabella",
+      "sonny-anderson",
+      "steve-mandanda",
+      "valentin-rongier",
+      "valere-germain"
+    ],
+    "person_count": 17,
+    "row_count": 17,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "nantes",
+    "display_name": "Nantes",
+    "short_name": "Nantes",
+    "aliases": [
+      "Nantes"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "abdoulaye-toure",
+      "adrien-thomasson",
+      "alban-lafont",
+      "andy-delort",
+      "anthony-lopes",
+      "claude-makelele",
+      "dimitri-payet",
+      "florent-mollet",
+      "frederic-guilbert",
+      "jorge-burruchaga",
+      "lucas-deaux",
+      "ludovic-blas",
+      "marcus-coco",
+      "moses-simon",
+      "remy-cabella",
+      "valentin-rongier",
+      "youssouf-sabaly"
+    ],
+    "person_count": 17,
+    "row_count": 17,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "rennes",
+    "display_name": "Rennes",
+    "short_name": "Rennes",
+    "aliases": [
+      "Rennes",
+      "Stade Rennais"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "amine-gouiri",
+      "arnaud-nordin",
+      "baptiste-santamaria",
+      "benjamin-andre",
+      "benjamin-bourigeaud",
+      "benoit-costil",
+      "eduardo-camavinga",
+      "gaetan-laborde",
+      "hamari-traore",
+      "ludovic-blas",
+      "martin-terrier",
+      "ousmane-dembele",
+      "romain-del-castillo",
+      "steve-mandanda",
+      "valentin-rongier",
+      "vincent-pajot",
+      "wahbi-khazri"
+    ],
+    "person_count": 17,
+    "row_count": 17,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "everton",
+    "display_name": "Everton",
+    "short_name": "Everton",
+    "aliases": [
+      "Everton"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "abdoulaye-doucoure",
+      "alex-iwobi",
+      "andros-townsend",
+      "ashley-young",
+      "dominic-calvert-lewin",
+      "gylfi-sigurdsson",
+      "idrissa-gueye",
+      "james-tarkowski",
+      "john-stones",
+      "jordan-pickford",
+      "lucas-digne",
+      "michael-keane",
+      "richarlison",
+      "ross-barkley",
+      "seamus-coleman",
+      "wayne-rooney"
+    ],
+    "person_count": 16,
+    "row_count": 16,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "montpellier",
+    "display_name": "Montpellier HSC",
+    "short_name": "Montpellier HSC",
+    "aliases": [
+      "Montpellier HSC"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "andy-delort",
+      "arnaud-nordin",
+      "benjamin-lecomte",
+      "florent-mollet",
+      "gaetan-laborde",
+      "hilton",
+      "issiaga-sylla",
+      "jordan-ferri",
+      "joris-chotard",
+      "morgan-sanson",
+      "remy-cabella",
+      "ruben-aguilar",
+      "ryad-boudebouz",
+      "souleymane-camara",
+      "valere-germain",
+      "wahbi-khazri"
+    ],
+    "person_count": 16,
+    "row_count": 16,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "saint-etienne",
+    "display_name": "Saint-Étienne",
+    "short_name": "Saint-Étienne",
+    "aliases": [
+      "Saint-Etienne",
+      "Saint-Étienne"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "arnaud-nordin",
+      "dimitri-payet",
+      "fabien-lemoine",
+      "gregory-coupet",
+      "jonathan-bamba",
+      "kevin-monnet-paquet",
+      "loic-perrin",
+      "nolan-roux",
+      "pierre-emerick-aubameyang",
+      "remy-cabella",
+      "romain-hamouma",
+      "ryad-boudebouz",
+      "stephane-ruffier",
+      "vincent-pajot",
+      "wahbi-khazri",
+      "yunis-abdelhamid"
+    ],
+    "person_count": 16,
+    "row_count": 16,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "aston-villa",
+    "display_name": "Aston Villa",
+    "short_name": "Villa",
+    "aliases": [
+      "Aston Villa"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adama-traore",
+      "ashley-young",
+      "christian-benteke",
+      "david-ginola",
+      "dwight-yorke",
+      "emiliano-martinez",
+      "idrissa-gueye",
+      "jack-grealish",
+      "jordan-ayew",
+      "lucas-digne",
+      "marc-albrighton",
+      "ollie-watkins",
+      "philippe-coutinho",
+      "ross-barkley",
+      "ryan-bertrand"
+    ],
+    "person_count": 15,
+    "row_count": 15,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "lille",
+    "display_name": "Lille",
+    "short_name": "Lille",
+    "aliases": [
+      "LOSC Lille",
+      "Lille"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "benjamin-andre",
+      "dimitri-payet",
+      "djibril-sidibe",
+      "eden-hazard",
+      "florent-balmont",
+      "jonathan-bamba",
+      "jonathan-david",
+      "martin-terrier",
+      "nicolas-de-preville",
+      "nicolas-pepe",
+      "nolan-roux",
+      "pierre-emerick-aubameyang",
+      "remy-cabella",
+      "sofiane-boufal",
+      "victor-osimhen"
+    ],
+    "person_count": 15,
+    "row_count": 15,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "werder-bremen",
+    "display_name": "Werder Bremen",
+    "short_name": "Werder Bremen",
+    "aliases": [
+      "SV Werder Bremen",
+      "Werder Bremen"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "ailton",
+      "claudio-pizarro",
+      "davie-selke",
+      "kevin-de-bruyne",
+      "kevin-vogt",
+      "koen-casteels",
+      "leonardo-bittencourt",
+      "max-kruse",
+      "maximilian-eggestein",
+      "miroslav-klose",
+      "mitchell-weiser",
+      "naby-keita",
+      "niklas-stark",
+      "rudi-voller",
+      "serge-gnabry"
+    ],
+    "person_count": 15,
+    "row_count": 15,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "borussia-monchengladbach",
+    "display_name": "Borussia Mönchengladbach",
+    "short_name": "Gladbach",
+    "aliases": [
+      "Borussia Monchengladbach"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "christoph-kramer",
+      "granit-xhaka",
+      "jonas-hofmann",
+      "lars-stindl",
+      "marco-reus",
+      "matthias-ginter",
+      "max-kruse",
+      "nico-elvedi",
+      "oscar-wendt",
+      "patrick-herrmann",
+      "stefan-effenberg",
+      "thorgan-hazard",
+      "vincenzo-grifo",
+      "yann-sommer"
+    ],
+    "person_count": 14,
+    "row_count": 14,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "torino",
+    "display_name": "Torino",
+    "short_name": "Torino",
+    "aliases": [
+      "Torino"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-belotti",
+      "armando-izzo",
+      "ciro-immobile",
+      "cristiano-biraghi",
+      "danilo-d-ambrosio",
+      "davide-zappacosta",
+      "duvan-zapata",
+      "fabio-quagliarella",
+      "giovanni-simeone",
+      "karol-linetty",
+      "lorenzo-de-silvestri",
+      "matteo-darmian",
+      "roberto-soriano",
+      "rolando-mandragora"
+    ],
+    "person_count": 14,
+    "row_count": 14,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "valencia",
+    "display_name": "Valencia",
+    "short_name": "Valencia",
+    "aliases": [
+      "Valencia"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "dani-parejo",
+      "david-villa",
+      "dimitri-foulquier",
+      "gaizka-mendieta",
+      "joaquin",
+      "jose-gaya",
+      "kevin-gameiro",
+      "munir-el-haddadi",
+      "oleg-salenko",
+      "portu",
+      "romario",
+      "santi-mina",
+      "santiago-canizares",
+      "sergio-canales"
+    ],
+    "person_count": 14,
+    "row_count": 14,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "atalanta",
+    "display_name": "Atalanta",
+    "short_name": "Atalanta",
+    "aliases": [
+      "Atalanta BC"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-petagna",
+      "berat-djimsiti",
+      "bryan-cristante",
+      "davide-zappacosta",
+      "duvan-zapata",
+      "giacomo-bonaventura",
+      "gianluca-mancini",
+      "juan-cuadrado",
+      "luis-muriel",
+      "mario-pasalic",
+      "rafael-toloi",
+      "remo-freuler",
+      "riccardo-orsolini"
+    ],
+    "person_count": 13,
+    "row_count": 13,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "espanyol",
+    "display_name": "RCD Espanyol Barcelona",
+    "short_name": "RCD Espanyol Barcelona",
+    "aliases": [
+      "RCD Espanyol Barcelona"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "adrian-embarba",
+      "borja-iglesias",
+      "cristhian-stuani",
+      "david-lopez",
+      "denis-suarez",
+      "gerard-moreno",
+      "kike-garcia",
+      "leo-baptistao",
+      "lucas-vazquez",
+      "marko-dmitrovic",
+      "pape-diop",
+      "sergi-gomez",
+      "victor-sanchez"
+    ],
+    "person_count": 13,
+    "row_count": 13,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "rb-leipzig",
+    "display_name": "RB Leipzig",
+    "short_name": "RB Leipzig",
+    "aliases": [
+      "RB Leipzig"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "christopher-nkunku",
+      "davie-selke",
+      "dayot-upamecano",
+      "joshua-kimmich",
+      "kevin-kampl",
+      "marcel-sabitzer",
+      "naby-keita",
+      "peter-gulacsi",
+      "rani-khedira",
+      "ridle-baku",
+      "timo-werner",
+      "willi-orban",
+      "yussuf-poulsen"
+    ],
+    "person_count": 13,
+    "row_count": 13,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "sampdoria",
+    "display_name": "Sampdoria",
+    "short_name": "Sampdoria",
+    "aliases": [
+      "Sampdoria",
+      "UC Sampdoria"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "alessio-romagnoli",
+      "andrea-petagna",
+      "antonio-candreva",
+      "clarence-seedorf",
+      "duvan-zapata",
+      "fabio-quagliarella",
+      "gian-marco-ferrari",
+      "gregoire-defrel",
+      "karol-linetty",
+      "lorenzo-de-silvestri",
+      "luis-muriel",
+      "roberto-mancini",
+      "roberto-soriano"
+    ],
+    "person_count": 13,
+    "row_count": 13,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "real-sociedad",
+    "display_name": "Real Sociedad",
+    "short_name": "Real Sociedad",
+    "aliases": [
+      "Real Sociedad"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "alex-remiro",
+      "antoine-griezmann",
+      "asier-illarramendi",
+      "brais-mendez",
+      "igor-zubeldia",
+      "inigo-martinez",
+      "juanmi",
+      "mikel-oyarzabal",
+      "portu",
+      "sergio-canales",
+      "willian-jose",
+      "xabi-alonso"
+    ],
+    "person_count": 12,
+    "row_count": 12,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "sevilla",
+    "display_name": "Sevilla",
+    "short_name": "Sevilla",
+    "aliases": [
+      "Sevilla"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "antonio-puerta",
+      "david-soria",
+      "denis-suarez",
+      "ivan-rakitic",
+      "jesus-navas",
+      "kevin-gameiro",
+      "marko-dmitrovic",
+      "munir-el-haddadi",
+      "saul-niguez",
+      "sergi-gomez",
+      "sergio-ramos",
+      "vicente-iborra"
+    ],
+    "person_count": 12,
+    "row_count": 12,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "southampton",
+    "display_name": "Southampton",
+    "short_name": "Southampton",
+    "aliases": [
+      "Southampton"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adam-lallana",
+      "james-ward-prowse",
+      "jay-rodriguez",
+      "luke-shaw",
+      "matt-le-tissier",
+      "nathan-redmond",
+      "nathaniel-clyne",
+      "pierre-emile-hjbjerg",
+      "ryan-bertrand",
+      "sadio-mane",
+      "shane-long",
+      "virgil-van-dijk"
+    ],
+    "person_count": 12,
+    "row_count": 12,
+    "stand_tier": "A",
+    "championship_ready": false
+  },
+  {
+    "id": "hoffenheim",
+    "display_name": "TSG 1899 Hoffenheim",
+    "short_name": "TSG 1899 Hoffenheim",
+    "aliases": [
+      "TSG 1899 Hoffenheim"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "andrej-kramaric",
+      "john-brooks",
+      "jonathan-schmid",
+      "kevin-vogt",
+      "kevin-volland",
+      "koen-casteels",
+      "leonardo-bittencourt",
+      "nadiem-amiri",
+      "niklas-sule",
+      "oliver-baumann",
+      "vincenzo-grifo"
+    ],
+    "person_count": 11,
+    "row_count": 11,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "leicester",
+    "display_name": "Leicester City",
+    "short_name": "Leicester City",
+    "aliases": [
+      "Leicester City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "chris-wood",
+      "harry-maguire",
+      "jamie-vardy",
+      "jeffrey-schlupp",
+      "jonny-evans",
+      "jordan-ayew",
+      "kasper-schmeichel",
+      "marc-albrighton",
+      "ngolo-kante",
+      "riyad-mahrez",
+      "ryan-bertrand"
+    ],
+    "person_count": 11,
+    "row_count": 11,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "vfb-stuttgart",
+    "display_name": "VfB Stuttgart",
+    "short_name": "VfB Stuttgart",
+    "aliases": [
+      "Stuttgart",
+      "VfB Stuttgart"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "christian-gentner",
+      "dunga",
+      "filip-kostic",
+      "giovane-elber",
+      "gonzalo-castro",
+      "jurgen-klinsmann",
+      "maximilian-mittelstadt",
+      "philipp-lahm",
+      "rani-khedira",
+      "timo-werner",
+      "waldemar-anton"
+    ],
+    "person_count": 11,
+    "row_count": 11,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "eintracht-frankfurt",
+    "display_name": "Eintracht Frankfurt",
+    "short_name": "Eintracht Frankfurt",
+    "aliases": [
+      "Eintracht Frankfurt"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "danny-da-costa",
+      "dominik-kohr",
+      "filip-kostic",
+      "jay-jay-okocha",
+      "kevin-trapp",
+      "lukas-hradecky",
+      "mario-gotze",
+      "marius-wolf",
+      "sebastian-rode",
+      "timothy-chandler"
+    ],
+    "person_count": 10,
+    "row_count": 10,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "sc-freiburg",
+    "display_name": "SC Freiburg",
+    "short_name": "SC Freiburg",
+    "aliases": [
+      "SC Freiburg"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "daniel-caligiuri",
+      "dominique-heintz",
+      "jonathan-schmid",
+      "matthias-ginter",
+      "max-kruse",
+      "maximilian-eggestein",
+      "michael-gregoritsch",
+      "oliver-baumann",
+      "vincenzo-grifo",
+      "vladimir-darida"
+    ],
+    "person_count": 10,
+    "row_count": 10,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "villarreal",
+    "display_name": "Villarreal",
+    "short_name": "Villarreal",
+    "aliases": [
+      "Villarreal"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "dani-parejo",
+      "denis-suarez",
+      "diego-forlan",
+      "diego-godin",
+      "gerard-moreno",
+      "jose-luis-morales",
+      "leo-baptistao",
+      "moi-gomez",
+      "tomas-pina",
+      "vicente-iborra"
+    ],
+    "person_count": 10,
+    "row_count": 10,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "wolfsburg",
+    "display_name": "Wolfsburg",
+    "short_name": "Wolfsburg",
+    "aliases": [
+      "VfL Wolfsburg",
+      "Wolfsburg"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "andre-schurrle",
+      "daniel-caligiuri",
+      "john-brooks",
+      "kevin-de-bruyne",
+      "koen-casteels",
+      "max-kruse",
+      "maximilian-arnold",
+      "ridle-baku",
+      "robin-knoche",
+      "yannick-gerhardt"
+    ],
+    "person_count": 10,
+    "row_count": 10,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "angers",
+    "display_name": "Angers",
+    "short_name": "Angers",
+    "aliases": [
+      "Angers",
+      "Angers SCO"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "angelo-fulgini",
+      "baptiste-santamaria",
+      "ismael-traore",
+      "jonathan-bamba",
+      "nicolas-pepe",
+      "romain-thomas",
+      "sofiane-boufal",
+      "thomas-mangani",
+      "vincent-pajot"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "athletic-bilbao",
+    "display_name": "Athletic Bilbao",
+    "short_name": "Athletic Bilbao",
+    "aliases": [
+      "Athletic Bilbao"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "alex-berenguer",
+      "dani-garcia",
+      "iker-muniain",
+      "inaki-williams",
+      "inigo-martinez",
+      "mikel-balenziaga",
+      "raul-garcia",
+      "unai-lopez",
+      "unai-simon"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "bordeaux",
+    "display_name": "Bordeaux",
+    "short_name": "Bordeaux",
+    "aliases": [
+      "Bordeaux",
+      "Girondins Bordeaux"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "aurelien-tchouameni",
+      "benoit-costil",
+      "frederic-guilbert",
+      "gaetan-laborde",
+      "jimmy-briand",
+      "nicolas-de-preville",
+      "pauleta",
+      "wahbi-khazri",
+      "youssouf-sabaly"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "crystal-palace",
+    "display_name": "Crystal Palace",
+    "short_name": "Crystal Palace",
+    "aliases": [
+      "Crystal Palace"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "andros-townsend",
+      "cheikhou-kouyate",
+      "christian-benteke",
+      "emmanuel-adebayor",
+      "james-mcarthur",
+      "jeffrey-schlupp",
+      "jordan-ayew",
+      "nathaniel-clyne",
+      "wilfried-zaha"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "genoa",
+    "display_name": "Genoa",
+    "short_name": "Genoa",
+    "aliases": [
+      "Genoa",
+      "Genoa CFC"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "armando-izzo",
+      "danilo-cataldi",
+      "darko-lazovic",
+      "davide-zappacosta",
+      "diego-milito",
+      "giovanni-simeone",
+      "mattia-perin",
+      "milan-badelj",
+      "rolando-mandragora"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "getafe",
+    "display_name": "Getafe",
+    "short_name": "Getafe",
+    "aliases": [
+      "Getafe"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "damian-suarez",
+      "david-soria",
+      "dimitri-foulquier",
+      "jorge-molina",
+      "juanmi",
+      "moi-gomez",
+      "munir-el-haddadi",
+      "pedro-leon",
+      "portu"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "newcastle",
+    "display_name": "Newcastle United",
+    "short_name": "Newcastle United",
+    "aliases": [
+      "Newcastle United"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "alan-shearer",
+      "alexander-isak",
+      "andros-townsend",
+      "andy-cole",
+      "callum-wilson",
+      "chris-wood",
+      "david-ginola",
+      "michael-owen",
+      "moussa-sissoko"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "nice",
+    "display_name": "Nice",
+    "short_name": "Nice",
+    "aliases": [
+      "Nice",
+      "OGC Nice"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "amine-gouiri",
+      "andy-delort",
+      "baptiste-santamaria",
+      "dante",
+      "gaetan-laborde",
+      "mario-balotelli",
+      "morgan-sanson",
+      "pierre-lees-melou",
+      "valere-germain"
+    ],
+    "person_count": 9,
+    "row_count": 9,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "augsburg",
+    "display_name": "Augsburg",
+    "short_name": "Augsburg",
+    "aliases": [
+      "Augsburg"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "daniel-caligiuri",
+      "dominik-kohr",
+      "jonathan-schmid",
+      "julian-baumgartlinger",
+      "kevin-vogt",
+      "marius-wolf",
+      "michael-gregoritsch",
+      "rani-khedira"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "bologna",
+    "display_name": "Bologna",
+    "short_name": "Bologna",
+    "aliases": [
+      "Bologna",
+      "Bologna Football Club 1909"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "danilo",
+      "giuseppe-signori",
+      "lorenzo-de-silvestri",
+      "nicola-sansone",
+      "remo-freuler",
+      "riccardo-orsolini",
+      "roberto-soriano",
+      "rodrigo-palacio"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "celta-vigo",
+    "display_name": "Celta Vigo",
+    "short_name": "Celta Vigo",
+    "aliases": [
+      "Celta Vigo",
+      "Celta de Vigo"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "borja-iglesias",
+      "brais-mendez",
+      "denis-suarez",
+      "fran-beltran",
+      "hugo-mallo",
+      "iago-aspas",
+      "santi-mina",
+      "sergi-gomez"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "fc-koln",
+    "display_name": "1. FC Köln",
+    "short_name": "1. FC Köln",
+    "aliases": [
+      "1.FC Köln",
+      "Cologne"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "davie-selke",
+      "dominique-heintz",
+      "jonas-hector",
+      "kevin-vogt",
+      "leonardo-bittencourt",
+      "lukas-podolski",
+      "marius-wolf",
+      "yannick-gerhardt"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "hertha",
+    "display_name": "Hertha BSC",
+    "short_name": "Hertha BSC",
+    "aliases": [
+      "Hertha BSC"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "davie-selke",
+      "john-brooks",
+      "marius-wolf",
+      "marvin-plattenhardt",
+      "maximilian-mittelstadt",
+      "mitchell-weiser",
+      "niklas-stark",
+      "vladimir-darida"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "parma",
+    "display_name": "Parma",
+    "short_name": "Parma",
+    "aliases": [
+      "Parma",
+      "Parma Calcio 1913"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "claudio-taffarel",
+      "fabio-cannavaro",
+      "gianfranco-zola",
+      "gianluigi-buffon",
+      "hernan-crespo",
+      "matteo-darmian",
+      "nicola-sansone",
+      "tomas-brolin"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "real-betis",
+    "display_name": "Real Betis",
+    "short_name": "Real Betis",
+    "aliases": [
+      "Real Betis",
+      "Real Betis Balompié"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "borja-iglesias",
+      "isco",
+      "joaquin",
+      "jorge-molina",
+      "juanmi",
+      "leo-baptistao",
+      "sergio-canales",
+      "willian-jose"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "sassuolo",
+    "display_name": "Sassuolo",
+    "short_name": "Sassuolo",
+    "aliases": [
+      "US Sassuolo"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "domenico-berardi",
+      "francesco-acerbi",
+      "gian-marco-ferrari",
+      "gregoire-defrel",
+      "lorenzo-pellegrini",
+      "manuel-locatelli",
+      "matteo-politano",
+      "nicola-sansone"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "toulouse",
+    "display_name": "Toulouse",
+    "short_name": "Toulouse",
+    "aliases": [
+      "Toulouse"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "alban-lafont",
+      "andre-pierre-gignac",
+      "andy-delort",
+      "djibril-sidibe",
+      "fabien-barthez",
+      "issiaga-sylla",
+      "wissam-ben-yedder",
+      "yannick-cahuzac"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "burnley",
+    "display_name": "Burnley",
+    "short_name": "Burnley",
+    "aliases": [
+      "Burnley"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "chris-wood",
+      "james-tarkowski",
+      "james-ward-prowse",
+      "jay-rodriguez",
+      "joe-hart",
+      "michael-keane",
+      "nathan-redmond"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "cagliari",
+    "display_name": "Cagliari",
+    "short_name": "Cagliari",
+    "aliases": [
+      "Cagliari",
+      "Cagliari Calcio"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-belotti",
+      "andrea-petagna",
+      "gianfranco-zola",
+      "giovanni-simeone",
+      "matias-vecino",
+      "nicolo-barella",
+      "radja-nainggolan"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "guingamp",
+    "display_name": "Guingamp",
+    "short_name": "Guingamp",
+    "aliases": [
+      "EA Guingamp",
+      "Guingamp"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "didier-drogba",
+      "jeremy-sorbon",
+      "jimmy-briand",
+      "lucas-deaux",
+      "ludovic-blas",
+      "marcus-coco",
+      "nolan-roux"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "schalke",
+    "display_name": "Schalke 04",
+    "short_name": "Schalke 04",
+    "aliases": [
+      "Schalke 04"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "ailton",
+      "daniel-caligiuri",
+      "leon-goretzka",
+      "leroy-sane",
+      "manuel-neuer",
+      "michael-gregoritsch",
+      "raul"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "udinese",
+    "display_name": "Udinese",
+    "short_name": "Udinese",
+    "aliases": [
+      "Udinese",
+      "Udinese Calcio"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "allan",
+      "antonio-di-natale",
+      "danilo",
+      "duvan-zapata",
+      "luis-muriel",
+      "piotr-zielinski",
+      "rolando-mandragora"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "union-berlin",
+    "display_name": "1.FC Union Berlin",
+    "short_name": "1.FC Union Berlin",
+    "aliases": [
+      "1.FC Union Berlin"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "christian-gentner",
+      "dominique-heintz",
+      "kevin-vogt",
+      "kevin-volland",
+      "max-kruse",
+      "rani-khedira",
+      "robin-knoche"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "watford",
+    "display_name": "Watford",
+    "short_name": "Watford",
+    "aliases": [
+      "Watford"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "abdoulaye-doucoure",
+      "ben-foster",
+      "craig-dawson",
+      "danny-welbeck",
+      "moussa-sissoko",
+      "nathan-ake",
+      "richarlison"
+    ],
+    "person_count": 7,
+    "row_count": 7,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "hamburger-sv",
+    "display_name": "Hamburger SV",
+    "short_name": "Hamburger SV",
+    "aliases": [
+      "Hamburger SV"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "filip-kostic",
+      "jerome-boateng",
+      "jonathan-tah",
+      "michael-gregoritsch",
+      "yussuf-poulsen",
+      "ze-roberto"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "lens",
+    "display_name": "RC Lens",
+    "short_name": "RC Lens",
+    "aliases": [
+      "RC Lens"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "adrien-thomasson",
+      "angelo-fulgini",
+      "benjamin-bourigeaud",
+      "issiaga-sylla",
+      "ruben-aguilar",
+      "yannick-cahuzac"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "mainz",
+    "display_name": "1.FSV Mainz 05",
+    "short_name": "1.FSV Mainz 05",
+    "aliases": [
+      "1.FSV Mainz 05"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "danny-da-costa",
+      "dominik-kohr",
+      "jonas-hofmann",
+      "julian-baumgartlinger",
+      "nadiem-amiri",
+      "ridle-baku"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "osasuna",
+    "display_name": "CA Osasuna",
+    "short_name": "CA Osasuna",
+    "aliases": [
+      "CA Osasuna"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "alex-berenguer",
+      "ante-budimir",
+      "jon-moncayola",
+      "kike-garcia",
+      "moi-gomez",
+      "ruben-garcia"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "strasbourg",
+    "display_name": "Strasbourg",
+    "short_name": "Strasbourg",
+    "aliases": [
+      "RC Strasbourg Alsace",
+      "Strasbourg"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "adrien-thomasson",
+      "alexander-djiku",
+      "frederic-guilbert",
+      "mamadou-niang",
+      "martin-terrier",
+      "morgan-sanson"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "B",
+    "championship_ready": false
+  },
+  {
+    "id": "ajaccio",
+    "display_name": "Ajaccio",
+    "short_name": "Ajaccio",
+    "aliases": [
+      "Ajaccio",
+      "GFC Ajaccio"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "andy-delort",
+      "benjamin-andre",
+      "issiaga-sylla",
+      "romain-hamouma",
+      "thomas-mangani"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "alaves",
+    "display_name": "Deportivo Alavés",
+    "short_name": "Deportivo Alavés",
+    "aliases": [
+      "Deportivo Alavés"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "denis-suarez",
+      "kike-garcia",
+      "marcos-llorente",
+      "munir-el-haddadi",
+      "tomas-pina"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "bastia",
+    "display_name": "Bastia",
+    "short_name": "Bastia",
+    "aliases": [
+      "Bastia",
+      "SC Bastia"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "alexander-djiku",
+      "florian-thauvin",
+      "ryad-boudebouz",
+      "wahbi-khazri",
+      "yannick-cahuzac"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "eibar",
+    "display_name": "SD Eibar",
+    "short_name": "SD Eibar",
+    "aliases": [
+      "SD Eibar"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "dani-garcia",
+      "kike-garcia",
+      "marko-dmitrovic",
+      "pape-diop",
+      "pedro-leon"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "fulham",
+    "display_name": "Fulham",
+    "short_name": "Fulham",
+    "aliases": [
+      "Fulham"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adama-traore",
+      "alex-iwobi",
+      "dimitar-berbatov",
+      "edwin-van-der-sar",
+      "willian"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "metz",
+    "display_name": "Metz",
+    "short_name": "Metz",
+    "aliases": [
+      "Metz"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "florent-mollet",
+      "ismael-traore",
+      "nicolas-de-preville",
+      "nolan-roux",
+      "vincent-pajot"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "rayo-vallecano",
+    "display_name": "Rayo Vallecano",
+    "short_name": "Rayo Vallecano",
+    "aliases": [
+      "Rayo Vallecano"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "adrian-embarba",
+      "leo-baptistao",
+      "radamel-falcao",
+      "saul-niguez",
+      "unai-lopez"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "west-brom",
+    "display_name": "West Bromwich Albion",
+    "short_name": "West Bromwich Albion",
+    "aliases": [
+      "West Bromwich Albion"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "ben-foster",
+      "craig-dawson",
+      "jay-rodriguez",
+      "jonny-evans",
+      "shane-long"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "bournemouth",
+    "display_name": "AFC Bournemouth",
+    "short_name": "AFC Bournemouth",
+    "aliases": [
+      "AFC Bournemouth"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adam-smith",
+      "callum-wilson",
+      "nathan-ake",
+      "nathaniel-clyne"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "brest",
+    "display_name": "Stade Brestois 29",
+    "short_name": "Stade Brestois 29",
+    "aliases": [
+      "Stade Brestois 29"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "ismael-traore",
+      "joris-chotard",
+      "pierre-lees-melou",
+      "romain-del-castillo"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "brighton",
+    "display_name": "Brighton & Hove Albion",
+    "short_name": "Brighton & Hove Albion",
+    "aliases": [
+      "Brighton & Hove Albion"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adam-lallana",
+      "danny-welbeck",
+      "james-milner",
+      "lewis-dunk"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "empoli",
+    "display_name": "Empoli",
+    "short_name": "Empoli",
+    "aliases": [
+      "Empoli"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "antonio-di-natale",
+      "giovanni-di-lorenzo",
+      "matias-vecino",
+      "piotr-zielinski"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "girona",
+    "display_name": "Girona",
+    "short_name": "Girona",
+    "aliases": [
+      "Girona"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "cristhian-stuani",
+      "david-lopez",
+      "fran-beltran",
+      "portu"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "hannover",
+    "display_name": "Hannover 96",
+    "short_name": "Hannover 96",
+    "aliases": [
+      "Hannover 96"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "lars-stindl",
+      "leonardo-bittencourt",
+      "marius-wolf",
+      "waldemar-anton"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "leeds",
+    "display_name": "Leeds United",
+    "short_name": "Leeds United",
+    "aliases": [
+      "Leeds United"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "dominic-calvert-lewin",
+      "eric-cantona",
+      "rio-ferdinand",
+      "robbie-keane"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "levante",
+    "display_name": "Levante UD",
+    "short_name": "Levante UD",
+    "aliases": [
+      "Levante UD"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "jose-luis-morales",
+      "pape-diop",
+      "ruben-garcia",
+      "vicente-iborra"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "lorient",
+    "display_name": "Lorient",
+    "short_name": "Lorient",
+    "aliases": [
+      "Lorient"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "andre-pierre-gignac",
+      "benjamin-lecomte",
+      "fabien-lemoine",
+      "kevin-monnet-paquet"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "palermo",
+    "display_name": "Palermo",
+    "short_name": "Palermo",
+    "aliases": [
+      "Palermo"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-belotti",
+      "bryan-cristante",
+      "edinson-cavani",
+      "paulo-dybala"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "swansea",
+    "display_name": "Swansea City",
+    "short_name": "Swansea City",
+    "aliases": [
+      "Swansea City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "ben-davies",
+      "gylfi-sigurdsson",
+      "jordan-ayew",
+      "lukasz-fabianski"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "caen",
+    "display_name": "SM Caen",
+    "short_name": "SM Caen",
+    "aliases": [
+      "SM Caen"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "alexander-djiku",
+      "andy-delort",
+      "frederic-guilbert"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "deportivo",
+    "display_name": "Deportivo La Coruña",
+    "short_name": "Deportivo La Coruña",
+    "aliases": [
+      "Deportivo La Coruna",
+      "Deportivo de La Coruña"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "bebeto",
+      "federico-valverde",
+      "rivaldo"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "dijon",
+    "display_name": "Dijon FCO",
+    "short_name": "Dijon FCO",
+    "aliases": [
+      "Dijon FCO"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "florent-balmont",
+      "pierre-lees-melou",
+      "yunis-abdelhamid"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "hull",
+    "display_name": "Hull City",
+    "short_name": "Hull City",
+    "aliases": [
+      "Hull City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "andrew-robertson",
+      "harry-maguire",
+      "shane-long"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "leganes",
+    "display_name": "CD Leganés",
+    "short_name": "CD Leganés",
+    "aliases": [
+      "CD Leganés"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "marko-dmitrovic",
+      "munir-el-haddadi",
+      "unai-lopez"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "mallorca",
+    "display_name": "Mallorca",
+    "short_name": "Mallorca",
+    "aliases": [
+      "Mallorca",
+      "RCD Mallorca"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "ante-budimir",
+      "samuel-etoo",
+      "tomas-pina"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "monza",
+    "display_name": "Monza",
+    "short_name": "Monza",
+    "aliases": [
+      "Monza"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-petagna",
+      "armando-izzo",
+      "danilo-d-ambrosio"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "nimes",
+    "display_name": "Nîmes Olympique",
+    "short_name": "Nîmes Olympique",
+    "aliases": [
+      "Nîmes Olympique"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "jordan-ferri",
+      "lucas-deaux",
+      "nolan-roux"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "nottingham-forest",
+    "display_name": "Nottingham Forest",
+    "short_name": "Forest",
+    "aliases": [
+      "Nottingham Forest"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "cheikhou-kouyate",
+      "chris-wood",
+      "james-ward-prowse"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "nuremberg",
+    "display_name": "1.FC Nuremberg",
+    "short_name": "1.FC Nuremberg",
+    "aliases": [
+      "1.FC Nuremberg"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "marvin-plattenhardt",
+      "niklas-stark",
+      "timothy-chandler"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "pescara",
+    "display_name": "Delfino Pescara 1936",
+    "short_name": "Delfino Pescara 1936",
+    "aliases": [
+      "Delfino Pescara 1936"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "bryan-cristante",
+      "cristiano-biraghi",
+      "mattia-perin"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "reims",
+    "display_name": "Stade Reims",
+    "short_name": "Stade Reims",
+    "aliases": [
+      "Stade Reims"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "hamari-traore",
+      "nicolas-de-preville",
+      "yunis-abdelhamid"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "C",
+    "championship_ready": false
+  },
+  {
+    "id": "almeria",
+    "display_name": "UD Almería",
+    "short_name": "UD Almería",
+    "aliases": [
+      "UD Almería"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "adrian-embarba",
+      "leo-baptistao"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "benevento",
+    "display_name": "Benevento Calcio",
+    "short_name": "Benevento Calcio",
+    "aliases": [
+      "Benevento Calcio"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "berat-djimsiti",
+      "danilo-cataldi"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "brentford",
+    "display_name": "Brentford",
+    "short_name": "Brentford",
+    "aliases": [
+      "Brentford"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "christian-eriksen",
+      "jordan-henderson"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "brescia",
+    "display_name": "Brescia",
+    "short_name": "Brescia",
+    "aliases": [
+      "Brescia"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "marek-hamsik",
+      "roberto-baggio"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "chievo",
+    "display_name": "Chievo Verona",
+    "short_name": "Chievo Verona",
+    "aliases": [
+      "Chievo Verona"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "cristiano-biraghi",
+      "francesco-acerbi"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "crotone",
+    "display_name": "Crotone",
+    "short_name": "Crotone",
+    "aliases": [
+      "Crotone"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "gian-marco-ferrari",
+      "rolando-mandragora"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "evian",
+    "display_name": "Thonon Évian Grand Genève",
+    "short_name": "Thonon Évian Grand Genève",
+    "aliases": [
+      "Thonon Évian Grand Genève"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "adrien-thomasson",
+      "youssouf-sabaly"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "granada",
+    "display_name": "Granada",
+    "short_name": "Granada",
+    "aliases": [
+      "Granada"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "dimitri-foulquier",
+      "jorge-molina"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "hellas-verona",
+    "display_name": "Hellas Verona",
+    "short_name": "Hellas Verona",
+    "aliases": [
+      "Hellas Verona"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "darko-lazovic",
+      "giovanni-simeone"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "kaiserslautern",
+    "display_name": "Kaiserslautern",
+    "short_name": "Kaiserslautern",
+    "aliases": [
+      "Kaiserslautern"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "michael-ballack",
+      "miroslav-klose"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "las-palmas",
+    "display_name": "UD Las Palmas",
+    "short_name": "UD Las Palmas",
+    "aliases": [
+      "UD Las Palmas"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "munir-el-haddadi",
+      "willian-jose"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "luton",
+    "display_name": "Luton Town",
+    "short_name": "Luton Town",
+    "aliases": [
+      "Luton Town"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "andros-townsend",
+      "ross-barkley"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "malaga",
+    "display_name": "Málaga",
+    "short_name": "Málaga",
+    "aliases": [
+      "Malaga",
+      "Málaga"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "isco",
+      "juanmi"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "spal",
+    "display_name": "SPAL",
+    "short_name": "SPAL",
+    "aliases": [
+      "SPAL"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-petagna",
+      "manuel-lazzari"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "sunderland",
+    "display_name": "Sunderland",
+    "short_name": "Sunderland",
+    "aliases": [
+      "Sunderland",
+      "Sunderland AFC"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "jermain-defoe",
+      "jordan-pickford"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "wolves",
+    "display_name": "Wolverhampton Wanderers",
+    "short_name": "Wolverhampton Wanderers",
+    "aliases": [
+      "Wolverhampton Wanderers"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adama-traore",
+      "craig-dawson"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "al-hilal",
+    "display_name": "Al-Hilal",
+    "short_name": "Al-Hilal",
+    "aliases": [
+      "Al-Hilal"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "yassine-bounou"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "al-nassr",
+    "display_name": "Al-Nassr",
+    "short_name": "Al-Nassr",
+    "aliases": [
+      "Al-Nassr"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "cristiano-ronaldo"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "arminia-bielefeld",
+    "display_name": "Arminia Bielefeld",
+    "short_name": "Arminia Bielefeld",
+    "aliases": [
+      "Arminia Bielefeld"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "gonzalo-castro"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "blackburn",
+    "display_name": "Blackburn Rovers",
+    "short_name": "Blackburn Rovers",
+    "aliases": [
+      "Blackburn Rovers"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "alan-shearer"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "bochum",
+    "display_name": "VfL Bochum",
+    "short_name": "VfL Bochum",
+    "aliases": [
+      "VfL Bochum"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "dominique-heintz"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "bolton",
+    "display_name": "Bolton Wanderers",
+    "short_name": "Bolton Wanderers",
+    "aliases": [
+      "Bolton Wanderers"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "nicolas-anelka"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "braunschweig",
+    "display_name": "Eintracht Braunschweig",
+    "short_name": "Eintracht Braunschweig",
+    "aliases": [
+      "Eintracht Braunschweig"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "karim-bellarabi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "cadiz",
+    "display_name": "Cádiz",
+    "short_name": "Cádiz",
+    "aliases": [
+      "Cádiz"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "juanmi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "cardiff",
+    "display_name": "Cardiff City",
+    "short_name": "Cardiff City",
+    "aliases": [
+      "Cardiff City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "wilfried-zaha"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "catania",
+    "display_name": "Catania",
+    "short_name": "Catania",
+    "aliases": [
+      "Catania"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "cristiano-biraghi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "cesena",
+    "display_name": "Cesena",
+    "short_name": "Cesena",
+    "aliases": [
+      "Cesena"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "gregoire-defrel"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "clermont",
+    "display_name": "Clermont Foot 63",
+    "short_name": "Clermont Foot 63",
+    "aliases": [
+      "Clermont Foot 63"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "maxime-gonalons"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "como",
+    "display_name": "Como 1907",
+    "short_name": "Como 1907",
+    "aliases": [
+      "Como 1907"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "andrea-belotti"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "corinthians",
+    "display_name": "Corinthians",
+    "short_name": "Corinthians",
+    "aliases": [
+      "Corinthians"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "socrates"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "coventry",
+    "display_name": "Coventry City",
+    "short_name": "Coventry City",
+    "aliases": [
+      "Coventry City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "robbie-keane"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "elche",
+    "display_name": "Elche",
+    "short_name": "Elche",
+    "aliases": [
+      "Elche"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "damian-suarez"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "flamengo",
+    "display_name": "Flamengo",
+    "short_name": "Flamengo",
+    "aliases": [
+      "Flamengo"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "zico"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "galatasaray",
+    "display_name": "Galatasaray",
+    "short_name": "Galatasaray",
+    "aliases": [
+      "Galatasaray"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "gheorghe-hagi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "huesca",
+    "display_name": "SD Huesca",
+    "short_name": "SD Huesca",
+    "aliases": [
+      "SD Huesca"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "moi-gomez"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "ingolstadt",
+    "display_name": "Ingolstadt 04",
+    "short_name": "Ingolstadt 04",
+    "aliases": [
+      "Ingolstadt 04"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "danny-da-costa"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "inter-miami",
+    "display_name": "Inter Miami",
+    "short_name": "Inter Miami",
+    "aliases": [
+      "Inter Miami"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "lionel-messi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "karlsruhe",
+    "display_name": "Karlsruher SC",
+    "short_name": "Karlsruher SC",
+    "aliases": [
+      "Karlsruher SC"
+    ],
+    "leagues": [
+      "bundesliga"
+    ],
+    "person_ids": [
+      "oliver-kahn"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "le-havre",
+    "display_name": "Le Havre AC",
+    "short_name": "Le Havre AC",
+    "aliases": [
+      "Le Havre AC"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "abdoulaye-toure"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "le-mans",
+    "display_name": "Le Mans",
+    "short_name": "Le Mans",
+    "aliases": [
+      "Le Mans"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "didier-drogba"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "lecce",
+    "display_name": "US Lecce",
+    "short_name": "US Lecce",
+    "aliases": [
+      "US Lecce"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "nicola-sansone"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "middlesbrough",
+    "display_name": "Middlesbrough",
+    "short_name": "Middlesbrough",
+    "aliases": [
+      "Middlesbrough"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "adama-traore"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "nancy",
+    "display_name": "Nancy-Lorraine",
+    "short_name": "Nancy-Lorraine",
+    "aliases": [
+      "Nancy-Lorraine"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "thomas-mangani"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "norwich",
+    "display_name": "Norwich City",
+    "short_name": "Norwich City",
+    "aliases": [
+      "Norwich City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "nathan-redmond"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "perugia",
+    "display_name": "Perugia",
+    "short_name": "Perugia",
+    "aliases": [
+      "Perugia"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "ahn-jung-hwan"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "pisa",
+    "display_name": "Pisa Sporting Club",
+    "short_name": "Pisa Sporting Club",
+    "aliases": [
+      "Pisa Sporting Club"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "juan-cuadrado"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "portsmouth",
+    "display_name": "Portsmouth",
+    "short_name": "Portsmouth",
+    "aliases": [
+      "Portsmouth"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "peter-crouch"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "qpr",
+    "display_name": "Queens Park Rangers",
+    "short_name": "Queens Park Rangers",
+    "aliases": [
+      "Queens Park Rangers"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "andros-townsend"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "racing-club",
+    "display_name": "Racing Club",
+    "short_name": "Racing Club",
+    "aliases": [
+      "Racing Club"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "sergio-goycochea"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "red-star-belgrade",
+    "display_name": "Red Star Belgrade",
+    "short_name": "Red Star Belgrade",
+    "aliases": [
+      "Red Star Belgrade"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "dragan-stojkovic"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "river-plate",
+    "display_name": "River Plate",
+    "short_name": "River Plate",
+    "aliases": [
+      "River Plate"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "enzo-francescoli"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "salernitana",
+    "display_name": "US Salernitana 1919",
+    "short_name": "US Salernitana 1919",
+    "aliases": [
+      "US Salernitana 1919"
+    ],
+    "leagues": [
+      "serie_a"
+    ],
+    "person_ids": [
+      "antonio-candreva"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "sochaux",
+    "display_name": "Sochaux-Montbéliard",
+    "short_name": "Sochaux-Montbéliard",
+    "aliases": [
+      "Sochaux-Montbéliard"
+    ],
+    "leagues": [
+      "ligue_1"
+    ],
+    "person_ids": [
+      "ryad-boudebouz"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "sporting-gijon",
+    "display_name": "Sporting Gijón",
+    "short_name": "Sporting Gijón",
+    "aliases": [
+      "Sporting Gijón"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "moi-gomez"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "stoke",
+    "display_name": "Stoke City",
+    "short_name": "Stoke City",
+    "aliases": [
+      "Stoke City"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "peter-crouch"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "tonnerre-yaounde",
+    "display_name": "Tonnerre Yaounde",
+    "short_name": "Tonnerre Yaounde",
+    "aliases": [
+      "Tonnerre Yaounde"
+    ],
+    "leagues": [],
+    "person_ids": [
+      "roger-milla"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "valladolid",
+    "display_name": "Real Valladolid",
+    "short_name": "Real Valladolid",
+    "aliases": [
+      "Real Valladolid"
+    ],
+    "leagues": [
+      "la_liga"
+    ],
+    "person_ids": [
+      "mikel-balenziaga"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  },
+  {
+    "id": "wigan",
+    "display_name": "Wigan Athletic",
+    "short_name": "Wigan Athletic",
+    "aliases": [
+      "Wigan Athletic"
+    ],
+    "leagues": [
+      "premier_league"
+    ],
+    "person_ids": [
+      "james-mcarthur"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D",
+    "championship_ready": false
+  }
+]

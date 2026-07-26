@@ -1,0 +1,77 @@
+[
+  {
+    "id": "club-the-one-who-stays",
+    "label": "The One Who Stays",
+    "badge_scope": "club",
+    "tags": ["loyal", "local"]
+  },
+  {
+    "id": "club-loud-when-it-hurts",
+    "label": "Loud When It Hurts",
+    "badge_scope": "club",
+    "tags": ["loud", "loyal"]
+  },
+  {
+    "id": "club-keeper-of-names",
+    "label": "Keeper of Names",
+    "badge_scope": "club",
+    "tags": ["memory", "patient"]
+  },
+  {
+    "id": "club-of-two-fires",
+    "label": "Of Two Fires",
+    "badge_scope": "club",
+    "tags": ["hybrid", "honest"]
+  },
+  {
+    "id": "club-grace-for-the-leavers",
+    "label": "Grace for the Leavers",
+    "badge_scope": "club",
+    "tags": ["grace", "forward"]
+  },
+  {
+    "id": "club-of-this-stand",
+    "label": "Of This Stand",
+    "badge_scope": "club",
+    "tags": ["loyal"],
+    "fallback": true
+  },
+  {
+    "id": "nation-of-the-square",
+    "label": "Of the Square",
+    "badge_scope": "nation",
+    "tags": ["nation", "loud"]
+  },
+  {
+    "id": "nation-catalogue-keeper",
+    "label": "Catalogue Keeper",
+    "badge_scope": "nation",
+    "tags": ["memory", "nation"]
+  },
+  {
+    "id": "nation-both-altars",
+    "label": "Both Altars",
+    "badge_scope": "nation",
+    "tags": ["hybrid", "club"]
+  },
+  {
+    "id": "nation-of-the-fleet",
+    "label": "Of the Fleet",
+    "badge_scope": "nation",
+    "tags": ["patient", "diaspora"],
+    "fallback": true
+  },
+  {
+    "id": "player-student-of-the-tape",
+    "label": "Student of the Tape",
+    "badge_scope": "player",
+    "tags": ["memory", "grace"]
+  },
+  {
+    "id": "player-of-the-thread",
+    "label": "Of the Thread",
+    "badge_scope": "player",
+    "tags": ["hybrid", "honest"],
+    "fallback": true
+  }
+]

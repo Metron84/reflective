@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trf-stand-chapter",
+  "title": "The Stand chapter",
+  "description": "Entity-bound identity story chapter. All clubs, nations, and persons must exist in data/stand or players_seed. Mark SAMPLE until Melo approves.",
+  "type": "object",
+  "required": [
+    "id",
+    "status",
+    "lane",
+    "composer_id",
+    "primary_entity",
+    "title",
+    "logline",
+    "questions_per_day",
+    "questions",
+    "day_wall",
+    "signup"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$" },
+    "status": { "enum": ["sample", "draft", "live"] },
+    "lane": {
+      "enum": [
+        "premier_league",
+        "championship",
+        "serie_a",
+        "la_liga",
+        "bundesliga",
+        "nations",
+        "player"
+      ]
+    },
+    "composer_id": { "type": "string" },
+    "primary_entity": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "enum": ["club", "nation", "person"] },
+        "id": { "type": "string" }
+      }
+    },
+    "secondary_entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "id"],
+        "properties": {
+          "type": { "enum": ["club", "nation", "person"] },
+          "id": { "type": "string" }
+        }
+      }
+    },
+    "title": { "type": "string" },
+    "logline": { "type": "string" },
+    "family": { "type": "string" },
+    "questions_per_day": { "const": 5 },
+    "questions": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": { "$ref": "#/$defs/question" }
+    },
+    "day_wall": { "$ref": "#/$defs/dayWall" },
+    "signup": { "$ref": "#/$defs/signup" },
+    "share_template": { "type": "string" },
+    "next_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "choice": {
+      "type": "object",
+      "required": ["id", "label", "tags"],
+      "properties": {
+        "id": { "enum": ["A", "B", "C"] },
+        "label": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["order", "day", "scene", "prompt", "choices"],
+      "properties": {
+        "order": { "type": "integer", "minimum": 1, "maximum": 15 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "badge_lens": {
+          "enum": ["club", "nation", "player", "any"]
+        },
+        "scene": { "type": "string" },
+        "prompt": { "type": "string" },
+        "choices": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/choice" }
+        },
+        "entity_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "id"],
+            "properties": {
+              "type": { "enum": ["club", "nation", "person"] },
+              "id": { "type": "string" }
+            }
+          }
+        },
+        "cliffhanger": { "type": "string" }
+      }
+    },
+    "dayWall": {
+      "type": "object",
+      "required": ["headline", "body", "resume_copy"],
+      "properties": {
+        "headline": { "type": "string" },
+        "body": { "type": "string" },
+        "resume_copy": { "type": "string" }
+      }
+    },
+    "signup": {
+      "type": "object",
+      "required": ["headline", "body", "cta_primary", "cta_secondary"],
+      "properties": {
+        "headline": { "type": "string" },
+        "body": { "type": "string" },
+        "cta_primary": { "type": "string" },
+        "cta_secondary": { "type": "string" }
+      }
+    }
+  }
+}

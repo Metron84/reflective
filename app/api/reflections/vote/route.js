@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { REFLECTIONS_CATEGORIES, getVotingState, isCategoryOpen } from "@/lib/config";
 import { getServiceClient } from "@/lib/supabase";
 import { getSessionUser } from "@/lib/auth/session";
-import { VOTES_COOKIE, findNomineeById } from "@/lib/reflections";
+import {
+  VOTES_COOKIE,
+  findNomineeById,
+  getStandingsForCategories,
+} from "@/lib/reflections";
 import { signPayload, verifyPayload, saltedHash } from "@/lib/signing";
 
 export const runtime = "nodejs";
@@ -180,11 +184,32 @@ export async function POST(request) {
     ? cookieState.categories
     : [...cookieState.categories, category];
   const picks = { ...cookieState.picks, [category]: nomineeId };
+
+  // Prefer DB ballot for signed-in members so other categories stay on the client.
+  let responseVoted = voted;
+  let responsePicks = picks;
+  if (supabase && userId) {
+    const { data: userRows } = await supabase
+      .from("votes")
+      .select("category, nominee_id")
+      .eq("user_id", userId);
+    responsePicks = Object.fromEntries(
+      (userRows ?? []).map((row) => [row.category, row.nominee_id])
+    );
+    responsePicks[category] = nomineeId;
+    responseVoted = Object.keys(responsePicks);
+  }
+
+  const standingsByCategory = await getStandingsForCategories([category]);
   const response = NextResponse.json({
     ok: true,
-    voted,
-    picks,
+    voted: responseVoted,
+    picks: responsePicks,
+    standings: standingsByCategory[category] ?? [],
     simulated: !supabase,
   });
-  return withVoteCookie(response, { categories: voted, picks });
+  return withVoteCookie(response, {
+    categories: responseVoted,
+    picks: responsePicks,
+  });
 }

@@ -1,0 +1,1229 @@
+{
+  "generated": "2026-07-21",
+  "source": "data/players_seed.json",
+  "note": "SAMPLE entity index for The Stand. Championship empty until seeded. Unresolved raw club strings listed for Melo review.",
+  "counts": {
+    "clubs": 167,
+    "nations": 64,
+    "tier_a_clubs": 42,
+    "tier_b_clubs": 36,
+    "unresolved_raw_club_strings": 11,
+    "chapters": 231
+  },
+  "composers": {
+    "premier_league": "zadie-smith",
+    "championship": "geoffrey-chaucer",
+    "serie_a": "dante-alighieri",
+    "la_liga": "cervantes",
+    "bundesliga": "goethe",
+    "ligue_1": "albert-camus",
+    "nations": "homer"
+  },
+  "product_rules": {
+    "questions_per_day": 5,
+    "questions_per_chapter": 15,
+    "days_per_chapter": 3,
+    "signup_to_save_progress": true,
+    "badges": [
+      "club",
+      "nation",
+      "player"
+    ]
+  },
+  "chapters": [
+    "bl.augsburg.ch01",
+    "bl.bayer-leverkusen.ch01",
+    "bl.bayer-leverkusen.ch02",
+    "bl.bayer-leverkusen.ch03",
+    "bl.bayern-munich.ch01",
+    "bl.bayern-munich.ch02",
+    "bl.bayern-munich.ch03",
+    "bl.borussia-dortmund.ch01",
+    "bl.borussia-dortmund.ch02",
+    "bl.borussia-dortmund.ch03",
+    "bl.borussia-monchengladbach.ch01",
+    "bl.borussia-monchengladbach.ch02",
+    "bl.borussia-monchengladbach.ch03",
+    "bl.eintracht-frankfurt.ch01",
+    "bl.fc-koln.ch01",
+    "bl.hamburger-sv.ch01",
+    "bl.hannover.ch01",
+    "bl.hertha.ch01",
+    "bl.hoffenheim.ch01",
+    "bl.mainz.ch01",
+    "bl.nuremberg.ch01",
+    "bl.rb-leipzig.ch01",
+    "bl.rb-leipzig.ch02",
+    "bl.rb-leipzig.ch03",
+    "bl.sc-freiburg.ch01",
+    "bl.schalke.ch01",
+    "bl.union-berlin.ch01",
+    "bl.vfb-stuttgart.ch01",
+    "bl.werder-bremen.ch01",
+    "bl.werder-bremen.ch02",
+    "bl.werder-bremen.ch03",
+    "bl.wolfsburg.ch01",
+    "l1.ajaccio.ch01",
+    "l1.angers.ch01",
+    "l1.bastia.ch01",
+    "l1.bordeaux.ch01",
+    "l1.brest.ch01",
+    "l1.caen.ch01",
+    "l1.dijon.ch01",
+    "l1.guingamp.ch01",
+    "l1.lens.ch01",
+    "l1.lille.ch01",
+    "l1.lille.ch02",
+    "l1.lille.ch03",
+    "l1.lorient.ch01",
+    "l1.lyon.ch01",
+    "l1.lyon.ch02",
+    "l1.lyon.ch03",
+    "l1.marseille.ch01",
+    "l1.marseille.ch02",
+    "l1.marseille.ch03",
+    "l1.metz.ch01",
+    "l1.monaco.ch01",
+    "l1.monaco.ch02",
+    "l1.monaco.ch03",
+    "l1.montpellier.ch01",
+    "l1.montpellier.ch02",
+    "l1.montpellier.ch03",
+    "l1.nantes.ch01",
+    "l1.nantes.ch02",
+    "l1.nantes.ch03",
+    "l1.nice.ch01",
+    "l1.nimes.ch01",
+    "l1.psg.ch01",
+    "l1.psg.ch02",
+    "l1.psg.ch03",
+    "l1.reims.ch01",
+    "l1.rennes.ch01",
+    "l1.rennes.ch02",
+    "l1.rennes.ch03",
+    "l1.saint-etienne.ch01",
+    "l1.saint-etienne.ch02",
+    "l1.saint-etienne.ch03",
+    "l1.strasbourg.ch01",
+    "l1.toulouse.ch01",
+    "ll.alaves.ch01",
+    "ll.athletic-bilbao.ch01",
+    "ll.atletico-madrid.ch01",
+    "ll.atletico-madrid.ch02",
+    "ll.atletico-madrid.ch03",
+    "ll.barcelona.ch01",
+    "ll.barcelona.ch02",
+    "ll.barcelona.ch03",
+    "ll.celta-vigo.ch01",
+    "ll.deportivo.ch01",
+    "ll.eibar.ch01",
+    "ll.espanyol.ch01",
+    "ll.espanyol.ch02",
+    "ll.espanyol.ch03",
+    "ll.getafe.ch01",
+    "ll.girona.ch01",
+    "ll.leganes.ch01",
+    "ll.levante.ch01",
+    "ll.mallorca.ch01",
+    "ll.osasuna.ch01",
+    "ll.rayo-vallecano.ch01",
+    "ll.real-betis.ch01",
+    "ll.real-madrid.ch01",
+    "ll.real-madrid.ch02",
+    "ll.real-madrid.ch03",
+    "ll.real-sociedad.ch01",
+    "ll.real-sociedad.ch02",
+    "ll.real-sociedad.ch03",
+    "ll.sevilla.ch01",
+    "ll.sevilla.ch02",
+    "ll.sevilla.ch03",
+    "ll.valencia.ch01",
+    "ll.valencia.ch02",
+    "ll.valencia.ch03",
+    "ll.villarreal.ch01",
+    "na.argentina.ch01",
+    "na.argentina.ch02",
+    "na.belgium.ch01",
+    "na.belgium.ch02",
+    "na.brazil.ch01",
+    "na.brazil.ch02",
+    "na.brazil.ch03",
+    "na.colombia.ch01",
+    "na.croatia.ch01",
+    "na.denmark.ch01",
+    "na.england.ch01",
+    "na.england.ch02",
+    "na.england.ch03",
+    "na.france.ch01",
+    "na.france.ch02",
+    "na.france.ch03",
+    "na.germany.ch01",
+    "na.germany.ch02",
+    "na.germany.ch03",
+    "na.italy.ch01",
+    "na.italy.ch02",
+    "na.italy.ch03",
+    "na.ivory-coast.ch01",
+    "na.morocco.ch01",
+    "na.netherlands.ch01",
+    "na.netherlands.ch02",
+    "na.nigeria.ch01",
+    "na.poland.ch01",
+    "na.portugal.ch01",
+    "na.senegal.ch01",
+    "na.serbia.ch01",
+    "na.spain.ch01",
+    "na.spain.ch02",
+    "na.spain.ch03",
+    "na.sweden.ch01",
+    "na.uruguay.ch01",
+    "na.uruguay.ch02",
+    "pl.arsenal.ch01",
+    "pl.arsenal.ch02",
+    "pl.arsenal.ch03",
+    "pl.aston-villa.ch01",
+    "pl.aston-villa.ch02",
+    "pl.aston-villa.ch03",
+    "pl.bournemouth.ch01",
+    "pl.brighton.ch01",
+    "pl.burnley.ch01",
+    "pl.chelsea.ch01",
+    "pl.chelsea.ch02",
+    "pl.chelsea.ch03",
+    "pl.crystal-palace.ch01",
+    "pl.everton.ch01",
+    "pl.everton.ch02",
+    "pl.everton.ch03",
+    "pl.fulham.ch01",
+    "pl.hull.ch01",
+    "pl.leeds.ch01",
+    "pl.leicester.ch01",
+    "pl.liverpool.ch01",
+    "pl.liverpool.ch02",
+    "pl.liverpool.ch03",
+    "pl.manchester-city.ch01",
+    "pl.manchester-city.ch02",
+    "pl.manchester-city.ch03",
+    "pl.manchester-united.ch01",
+    "pl.manchester-united.ch02",
+    "pl.manchester-united.ch03",
+    "pl.newcastle.ch01",
+    "pl.nottingham-forest.ch01",
+    "pl.southampton.ch01",
+    "pl.southampton.ch02",
+    "pl.southampton.ch03",
+    "pl.swansea.ch01",
+    "pl.tottenham.ch01",
+    "pl.tottenham.ch02",
+    "pl.tottenham.ch03",
+    "pl.watford.ch01",
+    "pl.west-brom.ch01",
+    "pl.west-ham.ch01",
+    "pl.west-ham.ch02",
+    "pl.west-ham.ch03",
+    "player.thierry-henry.ch01",
+    "sa.ac-milan.ch01",
+    "sa.ac-milan.ch02",
+    "sa.ac-milan.ch03",
+    "sa.acf-fiorentina.ch01",
+    "sa.acf-fiorentina.ch02",
+    "sa.acf-fiorentina.ch03",
+    "sa.atalanta.ch01",
+    "sa.atalanta.ch02",
+    "sa.atalanta.ch03",
+    "sa.bologna.ch01",
+    "sa.cagliari.ch01",
+    "sa.empoli.ch01",
+    "sa.genoa.ch01",
+    "sa.inter-milan.ch01",
+    "sa.inter-milan.ch02",
+    "sa.inter-milan.ch03",
+    "sa.juventus.ch01",
+    "sa.juventus.ch02",
+    "sa.juventus.ch03",
+    "sa.lazio.ch01",
+    "sa.lazio.ch02",
+    "sa.lazio.ch03",
+    "sa.monza.ch01",
+    "sa.napoli.ch01",
+    "sa.napoli.ch02",
+    "sa.napoli.ch03",
+    "sa.palermo.ch01",
+    "sa.parma.ch01",
+    "sa.pescara.ch01",
+    "sa.roma.ch01",
+    "sa.roma.ch02",
+    "sa.roma.ch03",
+    "sa.sampdoria.ch01",
+    "sa.sampdoria.ch02",
+    "sa.sampdoria.ch03",
+    "sa.sassuolo.ch01",
+    "sa.torino.ch01",
+    "sa.torino.ch02",
+    "sa.torino.ch03",
+    "sa.udinese.ch01"
+  ],
+  "pilot_chapter": null,
+  "clubs_by_league": {
+    "premier_league": [
+      {
+        "id": "manchester-united",
+        "display_name": "Manchester United",
+        "person_count": 35,
+        "stand_tier": "A"
+      },
+      {
+        "id": "arsenal",
+        "display_name": "Arsenal",
+        "person_count": 27,
+        "stand_tier": "A"
+      },
+      {
+        "id": "manchester-city",
+        "display_name": "Manchester City",
+        "person_count": 26,
+        "stand_tier": "A"
+      },
+      {
+        "id": "liverpool",
+        "display_name": "Liverpool",
+        "person_count": 25,
+        "stand_tier": "A"
+      },
+      {
+        "id": "tottenham",
+        "display_name": "Tottenham Hotspur",
+        "person_count": 24,
+        "stand_tier": "A"
+      },
+      {
+        "id": "chelsea",
+        "display_name": "Chelsea",
+        "person_count": 18,
+        "stand_tier": "A"
+      },
+      {
+        "id": "west-ham",
+        "display_name": "West Ham United",
+        "person_count": 18,
+        "stand_tier": "A"
+      },
+      {
+        "id": "everton",
+        "display_name": "Everton",
+        "person_count": 16,
+        "stand_tier": "A"
+      },
+      {
+        "id": "aston-villa",
+        "display_name": "Aston Villa",
+        "person_count": 15,
+        "stand_tier": "A"
+      },
+      {
+        "id": "southampton",
+        "display_name": "Southampton",
+        "person_count": 12,
+        "stand_tier": "A"
+      },
+      {
+        "id": "leicester",
+        "display_name": "Leicester City",
+        "person_count": 11,
+        "stand_tier": "B"
+      },
+      {
+        "id": "crystal-palace",
+        "display_name": "Crystal Palace",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "newcastle",
+        "display_name": "Newcastle United",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "burnley",
+        "display_name": "Burnley",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "watford",
+        "display_name": "Watford",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "fulham",
+        "display_name": "Fulham",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "west-brom",
+        "display_name": "West Bromwich Albion",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "bournemouth",
+        "display_name": "AFC Bournemouth",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "brighton",
+        "display_name": "Brighton & Hove Albion",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "leeds",
+        "display_name": "Leeds United",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "swansea",
+        "display_name": "Swansea City",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "hull",
+        "display_name": "Hull City",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "nottingham-forest",
+        "display_name": "Nottingham Forest",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "brentford",
+        "display_name": "Brentford",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "luton",
+        "display_name": "Luton Town",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "sunderland",
+        "display_name": "Sunderland",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "wolves",
+        "display_name": "Wolverhampton Wanderers",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "blackburn",
+        "display_name": "Blackburn Rovers",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "bolton",
+        "display_name": "Bolton Wanderers",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "cardiff",
+        "display_name": "Cardiff City",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "coventry",
+        "display_name": "Coventry City",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "middlesbrough",
+        "display_name": "Middlesbrough",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "norwich",
+        "display_name": "Norwich City",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "portsmouth",
+        "display_name": "Portsmouth",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "qpr",
+        "display_name": "Queens Park Rangers",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "stoke",
+        "display_name": "Stoke City",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "wigan",
+        "display_name": "Wigan Athletic",
+        "person_count": 1,
+        "stand_tier": "D"
+      }
+    ],
+    "serie_a": [
+      {
+        "id": "inter-milan",
+        "display_name": "Inter Milan",
+        "person_count": 37,
+        "stand_tier": "A"
+      },
+      {
+        "id": "ac-milan",
+        "display_name": "AC Milan",
+        "person_count": 30,
+        "stand_tier": "A"
+      },
+      {
+        "id": "juventus",
+        "display_name": "Juventus",
+        "person_count": 30,
+        "stand_tier": "A"
+      },
+      {
+        "id": "napoli",
+        "display_name": "Napoli",
+        "person_count": 22,
+        "stand_tier": "A"
+      },
+      {
+        "id": "roma",
+        "display_name": "Roma",
+        "person_count": 21,
+        "stand_tier": "A"
+      },
+      {
+        "id": "lazio",
+        "display_name": "Lazio",
+        "person_count": 20,
+        "stand_tier": "A"
+      },
+      {
+        "id": "acf-fiorentina",
+        "display_name": "Fiorentina",
+        "person_count": 18,
+        "stand_tier": "A"
+      },
+      {
+        "id": "torino",
+        "display_name": "Torino",
+        "person_count": 14,
+        "stand_tier": "A"
+      },
+      {
+        "id": "atalanta",
+        "display_name": "Atalanta",
+        "person_count": 13,
+        "stand_tier": "A"
+      },
+      {
+        "id": "sampdoria",
+        "display_name": "Sampdoria",
+        "person_count": 13,
+        "stand_tier": "A"
+      },
+      {
+        "id": "genoa",
+        "display_name": "Genoa",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "bologna",
+        "display_name": "Bologna",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "parma",
+        "display_name": "Parma",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "sassuolo",
+        "display_name": "Sassuolo",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "cagliari",
+        "display_name": "Cagliari",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "udinese",
+        "display_name": "Udinese",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "empoli",
+        "display_name": "Empoli",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "palermo",
+        "display_name": "Palermo",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "monza",
+        "display_name": "Monza",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "pescara",
+        "display_name": "Delfino Pescara 1936",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "benevento",
+        "display_name": "Benevento Calcio",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "brescia",
+        "display_name": "Brescia",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "chievo",
+        "display_name": "Chievo Verona",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "crotone",
+        "display_name": "Crotone",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "hellas-verona",
+        "display_name": "Hellas Verona",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "spal",
+        "display_name": "SPAL",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "catania",
+        "display_name": "Catania",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "cesena",
+        "display_name": "Cesena",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "como",
+        "display_name": "Como 1907",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "lecce",
+        "display_name": "US Lecce",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "pisa",
+        "display_name": "Pisa Sporting Club",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "salernitana",
+        "display_name": "US Salernitana 1919",
+        "person_count": 1,
+        "stand_tier": "D"
+      }
+    ],
+    "la_liga": [
+      {
+        "id": "real-madrid",
+        "display_name": "Real Madrid",
+        "person_count": 35,
+        "stand_tier": "A"
+      },
+      {
+        "id": "barcelona",
+        "display_name": "Barcelona",
+        "person_count": 29,
+        "stand_tier": "A"
+      },
+      {
+        "id": "atletico-madrid",
+        "display_name": "Atlético Madrid",
+        "person_count": 19,
+        "stand_tier": "A"
+      },
+      {
+        "id": "valencia",
+        "display_name": "Valencia",
+        "person_count": 14,
+        "stand_tier": "A"
+      },
+      {
+        "id": "espanyol",
+        "display_name": "RCD Espanyol Barcelona",
+        "person_count": 13,
+        "stand_tier": "A"
+      },
+      {
+        "id": "real-sociedad",
+        "display_name": "Real Sociedad",
+        "person_count": 12,
+        "stand_tier": "A"
+      },
+      {
+        "id": "sevilla",
+        "display_name": "Sevilla",
+        "person_count": 12,
+        "stand_tier": "A"
+      },
+      {
+        "id": "villarreal",
+        "display_name": "Villarreal",
+        "person_count": 10,
+        "stand_tier": "B"
+      },
+      {
+        "id": "athletic-bilbao",
+        "display_name": "Athletic Bilbao",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "getafe",
+        "display_name": "Getafe",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "celta-vigo",
+        "display_name": "Celta Vigo",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "real-betis",
+        "display_name": "Real Betis",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "osasuna",
+        "display_name": "CA Osasuna",
+        "person_count": 6,
+        "stand_tier": "B"
+      },
+      {
+        "id": "alaves",
+        "display_name": "Deportivo Alavés",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "eibar",
+        "display_name": "SD Eibar",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "rayo-vallecano",
+        "display_name": "Rayo Vallecano",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "girona",
+        "display_name": "Girona",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "levante",
+        "display_name": "Levante UD",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "deportivo",
+        "display_name": "Deportivo La Coruña",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "leganes",
+        "display_name": "CD Leganés",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "mallorca",
+        "display_name": "Mallorca",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "almeria",
+        "display_name": "UD Almería",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "granada",
+        "display_name": "Granada",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "las-palmas",
+        "display_name": "UD Las Palmas",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "malaga",
+        "display_name": "Málaga",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "cadiz",
+        "display_name": "Cádiz",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "elche",
+        "display_name": "Elche",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "huesca",
+        "display_name": "SD Huesca",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "sporting-gijon",
+        "display_name": "Sporting Gijón",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "valladolid",
+        "display_name": "Real Valladolid",
+        "person_count": 1,
+        "stand_tier": "D"
+      }
+    ],
+    "bundesliga": [
+      {
+        "id": "bayern-munich",
+        "display_name": "Bayern Munich",
+        "person_count": 44,
+        "stand_tier": "A"
+      },
+      {
+        "id": "bayer-leverkusen",
+        "display_name": "Bayer Leverkusen",
+        "person_count": 23,
+        "stand_tier": "A"
+      },
+      {
+        "id": "borussia-dortmund",
+        "display_name": "Borussia Dortmund",
+        "person_count": 23,
+        "stand_tier": "A"
+      },
+      {
+        "id": "werder-bremen",
+        "display_name": "Werder Bremen",
+        "person_count": 15,
+        "stand_tier": "A"
+      },
+      {
+        "id": "borussia-monchengladbach",
+        "display_name": "Borussia Mönchengladbach",
+        "person_count": 14,
+        "stand_tier": "A"
+      },
+      {
+        "id": "rb-leipzig",
+        "display_name": "RB Leipzig",
+        "person_count": 13,
+        "stand_tier": "A"
+      },
+      {
+        "id": "hoffenheim",
+        "display_name": "TSG 1899 Hoffenheim",
+        "person_count": 11,
+        "stand_tier": "B"
+      },
+      {
+        "id": "vfb-stuttgart",
+        "display_name": "VfB Stuttgart",
+        "person_count": 11,
+        "stand_tier": "B"
+      },
+      {
+        "id": "eintracht-frankfurt",
+        "display_name": "Eintracht Frankfurt",
+        "person_count": 10,
+        "stand_tier": "B"
+      },
+      {
+        "id": "sc-freiburg",
+        "display_name": "SC Freiburg",
+        "person_count": 10,
+        "stand_tier": "B"
+      },
+      {
+        "id": "wolfsburg",
+        "display_name": "Wolfsburg",
+        "person_count": 10,
+        "stand_tier": "B"
+      },
+      {
+        "id": "augsburg",
+        "display_name": "Augsburg",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "fc-koln",
+        "display_name": "1. FC Köln",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "hertha",
+        "display_name": "Hertha BSC",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "schalke",
+        "display_name": "Schalke 04",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "union-berlin",
+        "display_name": "1.FC Union Berlin",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "hamburger-sv",
+        "display_name": "Hamburger SV",
+        "person_count": 6,
+        "stand_tier": "B"
+      },
+      {
+        "id": "mainz",
+        "display_name": "1.FSV Mainz 05",
+        "person_count": 6,
+        "stand_tier": "B"
+      },
+      {
+        "id": "hannover",
+        "display_name": "Hannover 96",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "nuremberg",
+        "display_name": "1.FC Nuremberg",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "kaiserslautern",
+        "display_name": "Kaiserslautern",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "arminia-bielefeld",
+        "display_name": "Arminia Bielefeld",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "bochum",
+        "display_name": "VfL Bochum",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "braunschweig",
+        "display_name": "Eintracht Braunschweig",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "ingolstadt",
+        "display_name": "Ingolstadt 04",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "karlsruhe",
+        "display_name": "Karlsruher SC",
+        "person_count": 1,
+        "stand_tier": "D"
+      }
+    ],
+    "ligue_1": [
+      {
+        "id": "psg",
+        "display_name": "Paris Saint-Germain",
+        "person_count": 24,
+        "stand_tier": "A"
+      },
+      {
+        "id": "monaco",
+        "display_name": "Monaco",
+        "person_count": 19,
+        "stand_tier": "A"
+      },
+      {
+        "id": "lyon",
+        "display_name": "Lyon",
+        "person_count": 18,
+        "stand_tier": "A"
+      },
+      {
+        "id": "marseille",
+        "display_name": "Marseille",
+        "person_count": 17,
+        "stand_tier": "A"
+      },
+      {
+        "id": "nantes",
+        "display_name": "Nantes",
+        "person_count": 17,
+        "stand_tier": "A"
+      },
+      {
+        "id": "rennes",
+        "display_name": "Rennes",
+        "person_count": 17,
+        "stand_tier": "A"
+      },
+      {
+        "id": "montpellier",
+        "display_name": "Montpellier HSC",
+        "person_count": 16,
+        "stand_tier": "A"
+      },
+      {
+        "id": "saint-etienne",
+        "display_name": "Saint-Étienne",
+        "person_count": 16,
+        "stand_tier": "A"
+      },
+      {
+        "id": "lille",
+        "display_name": "Lille",
+        "person_count": 15,
+        "stand_tier": "A"
+      },
+      {
+        "id": "angers",
+        "display_name": "Angers",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "bordeaux",
+        "display_name": "Bordeaux",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "nice",
+        "display_name": "Nice",
+        "person_count": 9,
+        "stand_tier": "B"
+      },
+      {
+        "id": "toulouse",
+        "display_name": "Toulouse",
+        "person_count": 8,
+        "stand_tier": "B"
+      },
+      {
+        "id": "guingamp",
+        "display_name": "Guingamp",
+        "person_count": 7,
+        "stand_tier": "B"
+      },
+      {
+        "id": "lens",
+        "display_name": "RC Lens",
+        "person_count": 6,
+        "stand_tier": "B"
+      },
+      {
+        "id": "strasbourg",
+        "display_name": "Strasbourg",
+        "person_count": 6,
+        "stand_tier": "B"
+      },
+      {
+        "id": "ajaccio",
+        "display_name": "Ajaccio",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "bastia",
+        "display_name": "Bastia",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "metz",
+        "display_name": "Metz",
+        "person_count": 5,
+        "stand_tier": "C"
+      },
+      {
+        "id": "brest",
+        "display_name": "Stade Brestois 29",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "lorient",
+        "display_name": "Lorient",
+        "person_count": 4,
+        "stand_tier": "C"
+      },
+      {
+        "id": "caen",
+        "display_name": "SM Caen",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "dijon",
+        "display_name": "Dijon FCO",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "nimes",
+        "display_name": "Nîmes Olympique",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "reims",
+        "display_name": "Stade Reims",
+        "person_count": 3,
+        "stand_tier": "C"
+      },
+      {
+        "id": "evian",
+        "display_name": "Thonon Évian Grand Genève",
+        "person_count": 2,
+        "stand_tier": "D"
+      },
+      {
+        "id": "clermont",
+        "display_name": "Clermont Foot 63",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "le-havre",
+        "display_name": "Le Havre AC",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "le-mans",
+        "display_name": "Le Mans",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "nancy",
+        "display_name": "Nancy-Lorraine",
+        "person_count": 1,
+        "stand_tier": "D"
+      },
+      {
+        "id": "sochaux",
+        "display_name": "Sochaux-Montbéliard",
+        "person_count": 1,
+        "stand_tier": "D"
+      }
+    ],
+    "championship": []
+  },
+  "unresolved_raw_club_strings": [
+    "Al-Hilal",
+    "Al-Nassr",
+    "Corinthians",
+    "Flamengo",
+    "Galatasaray",
+    "Inter Miami",
+    "Perugia",
+    "Racing Club",
+    "Red Star Belgrade",
+    "River Plate",
+    "Tonnerre Yaounde"
+  ]
+}

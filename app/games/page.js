@@ -1,4 +1,4 @@
-import GuesserHeroCard from "@/components/games/GuesserHeroCard";
+import LiveGameCard from "@/components/games/LiveGameCard";
 import ComingSoonGameCard from "@/components/games/ComingSoonGameCard";
 import SectionHeader from "@/components/SectionHeader";
 import { GUESSER_STRAPLINE } from "@/lib/config";
@@ -7,12 +7,13 @@ import styles from "./page.module.css";
 
 export const metadata = {
   title: "Games",
-  description: "Play The Guesser and discover what is next from The Reflective Football.",
+  description:
+    "Play The Guesser, The Stand, and discover what is next from The Reflective Football.",
 };
 
 export default function GamesPage() {
   const games = getGames();
-  const liveGame = games.find((game) => game.status === "live");
+  const liveGames = games.filter((game) => game.status === "live");
   const comingSoon = games.filter((game) => game.status !== "live");
 
   return (
@@ -24,10 +25,20 @@ export default function GamesPage() {
           className={styles.sectionHeader}
         />
 
-        {liveGame ? (
-          <section className={styles.heroSection} aria-label="The Guesser">
-            <p className={styles.guesserContext}>{GUESSER_STRAPLINE}</p>
-            <GuesserHeroCard game={liveGame} />
+        {liveGames.length > 0 ? (
+          <section className={styles.heroSection} aria-label="Live games">
+            <ul className={styles.comingGrid}>
+              {liveGames.map((game) => (
+                <li key={game.slug}>
+                  <LiveGameCard
+                    game={game}
+                    strapline={
+                      game.slug === "the-guesser" ? GUESSER_STRAPLINE : null
+                    }
+                  />
+                </li>
+              ))}
+            </ul>
           </section>
         ) : null}
 

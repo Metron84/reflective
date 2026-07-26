@@ -81,7 +81,7 @@
     { "match": "UEFA Champions League", "value": "UEFA Champions League" },
     { "match": "Europa League", "value": "UEFA Europa League" },
     { "match": "Premier League", "value": "Premier League" },
-    { "match": "The Reflections", "value": "The Reflections" }
+    { "match": "The Reflectives", "value": "The Reflectives" }
   ],
   "formatRules": {
     "shortMaxSeconds": 180,

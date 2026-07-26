@@ -8,7 +8,14 @@
     "start": "next start",
     "lint": "eslint",
     "sync-films": "node scripts/sync-films.mjs",
-    "tag-films": "node scripts/tag-films.mjs"
+    "tag-films": "node scripts/tag-films.mjs",
+    "build:stand-entities": "node scripts/build-stand-entities.mjs",
+    "generate:stand-tier-a": "node scripts/generate-stand-tier-a-chapters.mjs",
+    "generate:stand-chapters": "node scripts/generate-stand-chapters.mjs",
+    "generate:stand-nations": "node scripts/generate-stand-nations.mjs",
+    "validate:stand-chapter": "node scripts/validate-stand-chapter.mjs",
+    "validate:stand-titles": "node scripts/validate-stand-titles.mjs",
+    "validate:stand-all": "node scripts/validate-stand-all.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.12.0",

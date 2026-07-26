@@ -1,0 +1,28 @@
+{
+  "id": "cervantes",
+  "name": "Miguel de Cervantes",
+  "lanes": ["la_liga"],
+  "family": "Knight of the Wrong Score",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Hold romance against the scoreboard. Ideal vision vs what the night gave.",
+      "Let the fan choose: defend the dream, demand the points, or laugh and ride again.",
+      "Warm, wry, never cruel to the dreamer."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No mocking of style-first fans.",
+      "No invented Clasico myths beyond entity pack facts.",
+      "No generic Spanish-club copy when club_id is set."
+    ]
+  },
+  "skeleton": [
+    "Q1 beautiful night, ugly score (or reverse)",
+    "Q2 style vs result argument in the stand",
+    "Q3 person_id memory from club pack",
+    "Q4 regional identity (Basque, Andalusian, Catalan, Madrileño) only when entity supports",
+    "Q5 name the knight Stand + cliffhanger"
+  ],
+  "sample_line": "Your team played the better dream. The board did not. Do you still ride?"
+}

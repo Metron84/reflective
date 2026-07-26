@@ -1,0 +1,1192 @@
+[
+  {
+    "id": "nation-france",
+    "display_name": "France",
+    "person_ids": [
+      "adrien-rabiot",
+      "adrien-thomasson",
+      "alexandre-lacazette",
+      "andre-pierre-gignac",
+      "antoine-griezmann",
+      "arnaud-nordin",
+      "aurelien-tchouameni",
+      "baptiste-santamaria",
+      "benjamin-andre",
+      "benjamin-bourigeaud",
+      "benjamin-lecomte",
+      "benoit-costil",
+      "bradley-barcola",
+      "christopher-nkunku",
+      "claude-makelele",
+      "corentin-tolisso",
+      "david-ginola",
+      "david-trezeguet",
+      "dayot-upamecano",
+      "dimitri-payet",
+      "djibril-sidibe",
+      "eduardo-camavinga",
+      "emmanuel-petit",
+      "eric-cantona",
+      "fabien-barthez",
+      "fabien-lemoine",
+      "florent-balmont",
+      "florent-mollet",
+      "florian-thauvin",
+      "franck-ribery",
+      "frederic-guilbert",
+      "gaetan-laborde",
+      "gregoire-defrel",
+      "gregory-coupet",
+      "hugo-lloris",
+      "jean-pierre-papin",
+      "jeremy-sorbon",
+      "jimmy-briand",
+      "jonathan-schmid",
+      "jordan-ferri",
+      "joris-chotard",
+      "karim-benzema",
+      "kevin-gameiro",
+      "kevin-monnet-paquet",
+      "kingsley-coman",
+      "kylian-mbappe",
+      "lilian-thuram",
+      "loic-perrin",
+      "lucas-deaux",
+      "lucas-digne",
+      "ludovic-blas",
+      "martin-terrier",
+      "maxime-gonalons",
+      "michel-platini",
+      "morgan-sanson",
+      "moussa-sissoko",
+      "nabil-fekir",
+      "ngolo-kante",
+      "nicolas-anelka",
+      "nicolas-de-preville",
+      "nolan-roux",
+      "olivier-giroud",
+      "ousmane-dembele",
+      "patrick-vieira",
+      "paul-pogba",
+      "pierre-lees-melou",
+      "rayan-cherki",
+      "remy-cabella",
+      "robert-pires",
+      "romain-del-castillo",
+      "romain-hamouma",
+      "romain-thomas",
+      "ruben-aguilar",
+      "samir-nasri",
+      "sidney-govou",
+      "stephane-ruffier",
+      "steve-mandanda",
+      "thierry-henry",
+      "thomas-mangani",
+      "valentin-rongier",
+      "valere-germain",
+      "vincent-pajot",
+      "warren-zaire-emery",
+      "william-saliba",
+      "wissam-ben-yedder",
+      "yannick-cahuzac",
+      "youri-djorkaeff",
+      "zinedine-zidane"
+    ],
+    "person_count": 88,
+    "row_count": 99,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-spain",
+    "display_name": "Spain",
+    "person_ids": [
+      "adama-traore",
+      "adrian-embarba",
+      "alex-berenguer",
+      "alex-remiro",
+      "andres-iniesta",
+      "antonio-puerta",
+      "asier-illarramendi",
+      "borja-iglesias",
+      "borja-valero",
+      "brais-mendez",
+      "carles-puyol",
+      "cesar-azpilicueta",
+      "cesc-fabregas",
+      "dani-garcia",
+      "dani-parejo",
+      "daniel-carvajal",
+      "david-de-gea",
+      "david-lopez",
+      "david-silva",
+      "david-soria",
+      "david-villa",
+      "denis-suarez",
+      "diego-costa",
+      "emilio-butragueno",
+      "fernando-hierro",
+      "fernando-torres",
+      "fran-beltran",
+      "gaizka-mendieta",
+      "gavi",
+      "gerard-moreno",
+      "gerard-pique",
+      "hugo-mallo",
+      "iago-aspas",
+      "igor-zubeldia",
+      "iker-casillas",
+      "iker-muniain",
+      "inigo-martinez",
+      "isco",
+      "jesus-navas",
+      "joaquin",
+      "jon-moncayola",
+      "jordi-alba",
+      "jorge-molina",
+      "jose-callejon",
+      "jose-gaya",
+      "jose-luis-morales",
+      "juanmi",
+      "kike-garcia",
+      "koke",
+      "lamine-yamal",
+      "lucas-vazquez",
+      "marcos-llorente",
+      "mikel-balenziaga",
+      "mikel-merino",
+      "mikel-oyarzabal",
+      "moi-gomez",
+      "nacho-fernandez",
+      "pedri",
+      "pedro-leon",
+      "portu",
+      "raul",
+      "raul-garcia",
+      "rodri",
+      "ruben-garcia",
+      "santi-mina",
+      "santiago-canizares",
+      "saul-niguez",
+      "sergi-gomez",
+      "sergi-roberto",
+      "sergio-busquets",
+      "sergio-canales",
+      "sergio-ramos",
+      "thiago-alcantara",
+      "tomas-pina",
+      "unai-lopez",
+      "unai-simon",
+      "vicente-iborra",
+      "victor-sanchez",
+      "xabi-alonso",
+      "xavi"
+    ],
+    "person_count": 80,
+    "row_count": 90,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-england",
+    "display_name": "England",
+    "person_ids": [
+      "aaron-cresswell",
+      "adam-lallana",
+      "adam-smith",
+      "alan-shearer",
+      "andros-townsend",
+      "andy-cole",
+      "ashley-cole",
+      "ashley-young",
+      "ben-foster",
+      "bukayo-saka",
+      "callum-wilson",
+      "cole-palmer",
+      "craig-dawson",
+      "danny-welbeck",
+      "david-beckham",
+      "david-seaman",
+      "declan-rice",
+      "dominic-calvert-lewin",
+      "eric-dier",
+      "frank-lampard",
+      "gary-lineker",
+      "gary-neville",
+      "harry-kane",
+      "harry-maguire",
+      "ian-wright",
+      "jack-grealish",
+      "jadon-sancho",
+      "james-milner",
+      "james-tarkowski",
+      "james-ward-prowse",
+      "jamie-carragher",
+      "jamie-vardy",
+      "jarrod-bowen",
+      "jay-rodriguez",
+      "jermain-defoe",
+      "joe-hart",
+      "john-stones",
+      "john-terry",
+      "jordan-henderson",
+      "jordan-pickford",
+      "jude-bellingham",
+      "kyle-walker",
+      "lewis-dunk",
+      "luke-shaw",
+      "marc-albrighton",
+      "marcus-rashford",
+      "mark-noble",
+      "matt-le-tissier",
+      "michael-carrick",
+      "michael-keane",
+      "michael-owen",
+      "nathan-redmond",
+      "nathaniel-clyne",
+      "ollie-watkins",
+      "paul-gascoigne",
+      "paul-scholes",
+      "peter-crouch",
+      "phil-foden",
+      "raheem-sterling",
+      "rio-ferdinand",
+      "robbie-fowler",
+      "ross-barkley",
+      "ryan-bertrand",
+      "sol-campbell",
+      "steven-gerrard",
+      "teddy-sheringham",
+      "tony-adams",
+      "trent-alexander-arnold",
+      "wayne-rooney"
+    ],
+    "person_count": 69,
+    "row_count": 74,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-germany",
+    "display_name": "Germany",
+    "person_ids": [
+      "andre-schurrle",
+      "andreas-brehme",
+      "bastian-schweinsteiger",
+      "christian-gentner",
+      "christoph-kramer",
+      "danny-da-costa",
+      "davie-selke",
+      "dominik-kohr",
+      "dominique-heintz",
+      "florian-wirtz",
+      "gonzalo-castro",
+      "ilkay-gundogan",
+      "jamal-musiala",
+      "jerome-boateng",
+      "jonas-hector",
+      "jonas-hofmann",
+      "jonathan-tah",
+      "joshua-kimmich",
+      "julian-brandt",
+      "jurgen-klinsmann",
+      "karim-bellarabi",
+      "kevin-trapp",
+      "kevin-vogt",
+      "kevin-volland",
+      "lars-stindl",
+      "leon-goretzka",
+      "leonardo-bittencourt",
+      "leroy-sane",
+      "lothar-matthaus",
+      "lukas-podolski",
+      "manuel-neuer",
+      "marc-andre-ter-stegen",
+      "marco-reus",
+      "mario-gotze",
+      "marius-wolf",
+      "marvin-plattenhardt",
+      "mats-hummels",
+      "matthias-ginter",
+      "max-kruse",
+      "maximilian-arnold",
+      "maximilian-eggestein",
+      "maximilian-mittelstadt",
+      "mehmet-scholl",
+      "mesut-ozil",
+      "michael-ballack",
+      "miroslav-klose",
+      "mitchell-weiser",
+      "nadiem-amiri",
+      "niklas-stark",
+      "niklas-sule",
+      "oliver-baumann",
+      "oliver-kahn",
+      "patrick-herrmann",
+      "philipp-lahm",
+      "ridle-baku",
+      "robin-knoche",
+      "rudi-voller",
+      "sebastian-rode",
+      "serge-gnabry",
+      "stefan-effenberg",
+      "thomas-muller",
+      "timo-werner",
+      "toni-kroos",
+      "waldemar-anton",
+      "yannick-gerhardt"
+    ],
+    "person_count": 65,
+    "row_count": 75,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-italy",
+    "display_name": "Italy",
+    "person_ids": [
+      "alessandro-del-piero",
+      "alessandro-florenzi",
+      "alessandro-nesta",
+      "alessio-romagnoli",
+      "andrea-belotti",
+      "andrea-petagna",
+      "andrea-pirlo",
+      "antonio-candreva",
+      "antonio-di-natale",
+      "armando-izzo",
+      "bryan-cristante",
+      "christian-vieri",
+      "ciro-immobile",
+      "cristiano-biraghi",
+      "daniel-caligiuri",
+      "danilo-cataldi",
+      "danilo-d-ambrosio",
+      "davide-zappacosta",
+      "dino-zoff",
+      "domenico-berardi",
+      "fabio-cannavaro",
+      "fabio-quagliarella",
+      "fabrizio-ravanelli",
+      "federico-chiesa",
+      "filippo-inzaghi",
+      "francesco-acerbi",
+      "francesco-toldo",
+      "francesco-totti",
+      "franco-baresi",
+      "gennaro-gattuso",
+      "giacomo-bonaventura",
+      "gian-marco-ferrari",
+      "gianfranco-zola",
+      "gianluca-mancini",
+      "gianluigi-buffon",
+      "gianluigi-donnarumma",
+      "giorgio-chiellini",
+      "giovanni-di-lorenzo",
+      "giuseppe-bergomi",
+      "giuseppe-signori",
+      "leonardo-bonucci",
+      "lorenzo-de-silvestri",
+      "lorenzo-insigne",
+      "lorenzo-pellegrini",
+      "manuel-lazzari",
+      "manuel-locatelli",
+      "marco-materazzi",
+      "marco-verratti",
+      "mario-balotelli",
+      "matteo-darmian",
+      "matteo-politano",
+      "mattia-perin",
+      "nicola-sansone",
+      "nicolo-barella",
+      "paolo-maldini",
+      "paolo-rossi",
+      "rafael-toloi",
+      "riccardo-orsolini",
+      "roberto-baggio",
+      "roberto-mancini",
+      "roberto-soriano",
+      "rolando-mandragora",
+      "salvatore-schillaci",
+      "stephan-el-shaarawy",
+      "vincenzo-grifo"
+    ],
+    "person_count": 65,
+    "row_count": 75,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-brazil",
+    "display_name": "Brazil",
+    "person_ids": [
+      "ailton",
+      "alisson-becker",
+      "allan",
+      "bebeto",
+      "cafu",
+      "careca",
+      "claudio-taffarel",
+      "danilo",
+      "dante",
+      "dunga",
+      "ederson",
+      "fabinho",
+      "falcao",
+      "fernandinho",
+      "giovane-elber",
+      "hilton",
+      "juan-jesus",
+      "juninho-pernambucano",
+      "kaka",
+      "leo-baptistao",
+      "marcelo",
+      "marquinhos",
+      "neymar",
+      "philippe-coutinho",
+      "richarlison",
+      "rivaldo",
+      "roberto-carlos",
+      "roberto-firmino",
+      "romario",
+      "ronaldinho",
+      "ronaldo",
+      "socrates",
+      "sonny-anderson",
+      "thiago-silva",
+      "vinicius-junior",
+      "willian",
+      "willian-jose",
+      "ze-roberto",
+      "zico"
+    ],
+    "person_count": 39,
+    "row_count": 48,
+    "stand_tier": "A"
+  },
+  {
+    "id": "nation-argentina",
+    "display_name": "Argentina",
+    "person_ids": [
+      "angel-correa",
+      "angel-di-maria",
+      "carlos-tevez",
+      "diego-maradona",
+      "diego-milito",
+      "emiliano-martinez",
+      "esteban-cambiasso",
+      "gabriel-batistuta",
+      "giovanni-simeone",
+      "gonzalo-higuain",
+      "hernan-crespo",
+      "javier-mascherano",
+      "javier-zanetti",
+      "jorge-burruchaga",
+      "jorge-valdano",
+      "julian-alvarez",
+      "lautaro-martinez",
+      "lionel-messi",
+      "paulo-dybala",
+      "rodrigo-palacio",
+      "sergio-aguero",
+      "sergio-goycochea"
+    ],
+    "person_count": 22,
+    "row_count": 26,
+    "stand_tier": "B"
+  },
+  {
+    "id": "nation-netherlands",
+    "display_name": "Netherlands",
+    "person_ids": [
+      "arjen-robben",
+      "clarence-seedorf",
+      "dennis-bergkamp",
+      "edwin-van-der-sar",
+      "jaap-stam",
+      "marc-overmars",
+      "memphis-depay",
+      "nathan-ake",
+      "patrick-kluivert",
+      "robin-van-persie",
+      "roy-makaay",
+      "ruud-van-nistelrooy",
+      "stefan-de-vrij",
+      "virgil-van-dijk",
+      "wesley-sneijder"
+    ],
+    "person_count": 15,
+    "row_count": 18,
+    "stand_tier": "B"
+  },
+  {
+    "id": "nation-belgium",
+    "display_name": "Belgium",
+    "person_ids": [
+      "christian-benteke",
+      "dries-mertens",
+      "eden-hazard",
+      "kevin-de-bruyne",
+      "koen-casteels",
+      "radja-nainggolan",
+      "romelu-lukaku",
+      "thibaut-courtois",
+      "thorgan-hazard",
+      "vincent-kompany"
+    ],
+    "person_count": 10,
+    "row_count": 14,
+    "stand_tier": "B"
+  },
+  {
+    "id": "nation-uruguay",
+    "display_name": "Uruguay",
+    "person_ids": [
+      "cristhian-stuani",
+      "damian-suarez",
+      "diego-forlan",
+      "diego-godin",
+      "edinson-cavani",
+      "enzo-francescoli",
+      "federico-valverde",
+      "jose-maria-gimenez",
+      "luis-suarez",
+      "matias-vecino"
+    ],
+    "person_count": 10,
+    "row_count": 15,
+    "stand_tier": "B"
+  },
+  {
+    "id": "nation-portugal",
+    "display_name": "Portugal",
+    "person_ids": [
+      "anthony-lopes",
+      "bernardo-silva",
+      "bruno-fernandes",
+      "cristiano-ronaldo",
+      "luis-figo",
+      "pauleta",
+      "rafael-leao",
+      "raphael-guerreiro",
+      "vitinha"
+    ],
+    "person_count": 9,
+    "row_count": 12,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-croatia",
+    "display_name": "Croatia",
+    "person_ids": [
+      "andrej-kramaric",
+      "ante-budimir",
+      "davor-suker",
+      "ivan-rakitic",
+      "luka-modric",
+      "marcelo-brozovic",
+      "mario-pasalic",
+      "milan-badelj"
+    ],
+    "person_count": 8,
+    "row_count": 10,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-senegal",
+    "display_name": "Senegal",
+    "person_ids": [
+      "cheikhou-kouyate",
+      "idrissa-gueye",
+      "kalidou-koulibaly",
+      "mamadou-niang",
+      "pape-diop",
+      "sadio-mane",
+      "souleymane-camara",
+      "youssouf-sabaly"
+    ],
+    "person_count": 8,
+    "row_count": 8,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-ivory-coast",
+    "display_name": "Ivory Coast",
+    "person_ids": [
+      "alban-lafont",
+      "didier-drogba",
+      "ismael-traore",
+      "jonathan-bamba",
+      "nicolas-pepe",
+      "wilfried-zaha",
+      "yaya-toure"
+    ],
+    "person_count": 7,
+    "row_count": 8,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-poland",
+    "display_name": "Poland",
+    "person_ids": [
+      "karol-linetty",
+      "lukasz-fabianski",
+      "piotr-zielinski",
+      "robert-lewandowski",
+      "wojciech-szczesny",
+      "zbigniew-boniek"
+    ],
+    "person_count": 6,
+    "row_count": 7,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-serbia",
+    "display_name": "Serbia",
+    "person_ids": [
+      "darko-lazovic",
+      "dusan-vlahovic",
+      "filip-kostic",
+      "marko-dmitrovic",
+      "nemanja-vidic",
+      "sergej-milinkovic-savic"
+    ],
+    "person_count": 6,
+    "row_count": 6,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-colombia",
+    "display_name": "Colombia",
+    "person_ids": [
+      "duvan-zapata",
+      "james-rodriguez",
+      "juan-cuadrado",
+      "luis-muriel",
+      "radamel-falcao"
+    ],
+    "person_count": 5,
+    "row_count": 7,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-denmark",
+    "display_name": "Denmark",
+    "person_ids": [
+      "christian-eriksen",
+      "kasper-schmeichel",
+      "peter-schmeichel",
+      "pierre-emile-hjbjerg",
+      "yussuf-poulsen"
+    ],
+    "person_count": 5,
+    "row_count": 5,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-morocco",
+    "display_name": "Morocco",
+    "person_ids": [
+      "achraf-hakimi",
+      "munir-el-haddadi",
+      "sofiane-boufal",
+      "yassine-bounou",
+      "yunis-abdelhamid"
+    ],
+    "person_count": 5,
+    "row_count": 6,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-nigeria",
+    "display_name": "Nigeria",
+    "person_ids": [
+      "alex-iwobi",
+      "jay-jay-okocha",
+      "moses-simon",
+      "victor-boniface",
+      "victor-osimhen"
+    ],
+    "person_count": 5,
+    "row_count": 6,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-sweden",
+    "display_name": "Sweden",
+    "person_ids": [
+      "alexander-isak",
+      "freddie-ljungberg",
+      "oscar-wendt",
+      "tomas-brolin",
+      "zlatan-ibrahimovic"
+    ],
+    "person_count": 5,
+    "row_count": 6,
+    "stand_tier": "C"
+  },
+  {
+    "id": "nation-algeria",
+    "display_name": "Algeria",
+    "person_ids": [
+      "amine-gouiri",
+      "andy-delort",
+      "riyad-mahrez",
+      "ryad-boudebouz"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-austria",
+    "display_name": "Austria",
+    "person_ids": [
+      "david-alaba",
+      "julian-baumgartlinger",
+      "marcel-sabitzer",
+      "michael-gregoritsch"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-bosnia-and-herzegovina",
+    "display_name": "Bosnia and Herzegovina",
+    "person_ids": [
+      "edin-dzeko",
+      "miralem-pjanic",
+      "samir-handanovic",
+      "senad-lulic"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-ghana",
+    "display_name": "Ghana",
+    "person_ids": [
+      "alexander-djiku",
+      "inaki-williams",
+      "jeffrey-schlupp",
+      "jordan-ayew"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-ireland",
+    "display_name": "Ireland",
+    "person_ids": [
+      "robbie-keane",
+      "roy-keane",
+      "seamus-coleman",
+      "shane-long"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-switzerland",
+    "display_name": "Switzerland",
+    "person_ids": [
+      "granit-xhaka",
+      "nico-elvedi",
+      "remo-freuler",
+      "yann-sommer"
+    ],
+    "person_count": 4,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-czech-republic",
+    "display_name": "Czech Republic",
+    "person_ids": [
+      "pavel-nedved",
+      "petr-cech",
+      "vladimir-darida"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-guinea",
+    "display_name": "Guinea",
+    "person_ids": [
+      "abdoulaye-toure",
+      "issiaga-sylla",
+      "naby-keita"
+    ],
+    "person_count": 3,
+    "row_count": 3,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-norway",
+    "display_name": "Norway",
+    "person_ids": [
+      "erling-haaland",
+      "martin-odegaard",
+      "ole-gunnar-solskjaer"
+    ],
+    "person_count": 3,
+    "row_count": 5,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-wales",
+    "display_name": "Wales",
+    "person_ids": [
+      "ben-davies",
+      "gareth-bale",
+      "ryan-giggs"
+    ],
+    "person_count": 3,
+    "row_count": 4,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-bulgaria",
+    "display_name": "Bulgaria",
+    "person_ids": [
+      "dimitar-berbatov",
+      "hristo-stoichkov"
+    ],
+    "person_count": 2,
+    "row_count": 3,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-cameroon",
+    "display_name": "Cameroon",
+    "person_ids": [
+      "roger-milla",
+      "samuel-etoo"
+    ],
+    "person_count": 2,
+    "row_count": 3,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-canada",
+    "display_name": "Canada",
+    "person_ids": [
+      "alphonso-davies",
+      "jonathan-david"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-chile",
+    "display_name": "Chile",
+    "person_ids": [
+      "alexis-sanchez",
+      "arturo-vidal"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-guadeloupe",
+    "display_name": "Guadeloupe",
+    "person_ids": [
+      "dimitri-foulquier",
+      "marcus-coco"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-hungary",
+    "display_name": "Hungary",
+    "person_ids": [
+      "peter-gulacsi",
+      "willi-orban"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-mali",
+    "display_name": "Mali",
+    "person_ids": [
+      "abdoulaye-doucoure",
+      "hamari-traore"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-russia",
+    "display_name": "Russia",
+    "person_ids": [
+      "aleksandr-golovin",
+      "oleg-salenko"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-scotland",
+    "display_name": "Scotland",
+    "person_ids": [
+      "andrew-robertson",
+      "james-mcarthur"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-slovenia",
+    "display_name": "Slovenia",
+    "person_ids": [
+      "jan-oblak",
+      "kevin-kampl"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-south-korea",
+    "display_name": "South Korea",
+    "person_ids": [
+      "ahn-jung-hwan",
+      "son-heung-min"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-tunisia",
+    "display_name": "Tunisia",
+    "person_ids": [
+      "rani-khedira",
+      "wahbi-khazri"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-united-states",
+    "display_name": "United States",
+    "person_ids": [
+      "john-brooks",
+      "timothy-chandler"
+    ],
+    "person_count": 2,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-albania",
+    "display_name": "Albania",
+    "person_ids": [
+      "berat-djimsiti"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-egypt",
+    "display_name": "Egypt",
+    "person_ids": [
+      "mohamed-salah"
+    ],
+    "person_count": 1,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-finland",
+    "display_name": "Finland",
+    "person_ids": [
+      "lukas-hradecky"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-gabon",
+    "display_name": "Gabon",
+    "person_ids": [
+      "pierre-emerick-aubameyang"
+    ],
+    "person_count": 1,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-georgia",
+    "display_name": "Georgia",
+    "person_ids": [
+      "khvicha-kvaratskhelia"
+    ],
+    "person_count": 1,
+    "row_count": 2,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-iceland",
+    "display_name": "Iceland",
+    "person_ids": [
+      "gylfi-sigurdsson"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-jamaica",
+    "display_name": "Jamaica",
+    "person_ids": [
+      "michail-antonio"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-montenegro",
+    "display_name": "Montenegro",
+    "person_ids": [
+      "adam-marusic"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-new-caledonia",
+    "display_name": "New Caledonia",
+    "person_ids": [
+      "angelo-fulgini"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-new-zealand",
+    "display_name": "New Zealand",
+    "person_ids": [
+      "chris-wood"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-northern-ireland",
+    "display_name": "Northern Ireland",
+    "person_ids": [
+      "jonny-evans"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-peru",
+    "display_name": "Peru",
+    "person_ids": [
+      "claudio-pizarro"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-romania",
+    "display_name": "Romania",
+    "person_ids": [
+      "gheorghe-hagi"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-slovakia",
+    "display_name": "Slovakia",
+    "person_ids": [
+      "marek-hamsik"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-togo",
+    "display_name": "Togo",
+    "person_ids": [
+      "emmanuel-adebayor"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-trinidad-and-tobago",
+    "display_name": "Trinidad and Tobago",
+    "person_ids": [
+      "dwight-yorke"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-turkiye",
+    "display_name": "Türkiye",
+    "person_ids": [
+      "hakan-calhanoglu"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-ukraine",
+    "display_name": "Ukraine",
+    "person_ids": [
+      "andriy-shevchenko"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-west-germany",
+    "display_name": "West Germany",
+    "person_ids": [
+      "karl-heinz-rummenigge"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  },
+  {
+    "id": "nation-yugoslavia",
+    "display_name": "Yugoslavia",
+    "person_ids": [
+      "dragan-stojkovic"
+    ],
+    "person_count": 1,
+    "row_count": 1,
+    "stand_tier": "D"
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "id": "geoffrey-chaucer",
+  "name": "Geoffrey Chaucer",
+  "lanes": ["championship"],
+  "family": "The Pilgrims' Road",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Every stand type gets a voice: the Lifer, the Away-Day, the Promotion Believer.",
+      "Pride in the grind. Midweek cold. Full grounds that the cameras forget.",
+      "Pilgrimage language for the season: road, inn, return."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No 'Premier League lite' framing that insults the Championship.",
+      "No Championship packs until championship rows exist in players_seed (or Melo SAMPLE OK).",
+      "No invented clubs."
+    ]
+  },
+  "skeleton": [
+    "Q1 Tuesday night weather and the road",
+    "Q2 promotion hunger vs dignity",
+    "Q3 local memory",
+    "Q4 'they do not get this' vs open door",
+    "Q5 name the pilgrim Stand + cliffhanger"
+  ],
+  "sample_line": "Rain on the A-road. The ground is loud enough. You are not here for someone else's table.",
+  "blocked_until": "championship seed in players_seed or Melo SAMPLE approval"
+}

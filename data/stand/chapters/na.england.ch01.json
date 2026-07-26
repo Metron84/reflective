@@ -1,0 +1,681 @@
+{
+  "id": "na.england.ch01",
+  "status": "sample",
+  "lane": "nations",
+  "composer_id": "homer",
+  "family": "Catalogue of Peoples",
+  "primary_entity": {
+    "type": "nation",
+    "id": "nation-england"
+  },
+  "secondary_entities": [
+    {
+      "type": "person",
+      "id": "harry-kane"
+    },
+    {
+      "type": "person",
+      "id": "jude-bellingham"
+    },
+    {
+      "type": "person",
+      "id": "michael-owen"
+    },
+    {
+      "type": "person",
+      "id": "gary-lineker"
+    },
+    {
+      "type": "person",
+      "id": "paul-gascoigne"
+    },
+    {
+      "type": "person",
+      "id": "aaron-cresswell"
+    }
+  ],
+  "title": "England: The Camp",
+  "logline": "SAMPLE. Auto-generated nation pack for England. Entity-bound to players_seed.",
+  "questions_per_day": 5,
+  "pack_persons_from_seed": [
+    "harry-kane",
+    "jude-bellingham",
+    "michael-owen",
+    "gary-lineker",
+    "paul-gascoigne",
+    "aaron-cresswell"
+  ],
+  "generated": true,
+  "chapter_number": 1,
+  "questions": [
+    {
+      "order": 1,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Tournament night. England flags in a foreign square. The anthem starts.",
+      "prompt": "How do you stand?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Sing full. Memory as volume.",
+          "tags": [
+            "loud",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet hand on heart. Belonging without theatre.",
+          "tags": [
+            "patient",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Watch the faces first. Then join when it feels true.",
+          "tags": [
+            "honest",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Someone near you only knows England through clubs. Someone else only through tournaments.",
+      "prompt": "Which England do you carry into the night?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The tournament nation. Flags and one summer at a time.",
+          "tags": [
+            "tournament",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The club nation. Weekend blood first.",
+          "tags": [
+            "club",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. Different ships. Same fleet.",
+          "tags": [
+            "hybrid",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "The square needs a name to warm the cold wait.",
+      "prompt": "Whose name do you give them?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Harry Kane. The first ship.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Jude Bellingham. The second ship.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Michael Owen. The quiet craft.",
+          "tags": [
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        },
+        {
+          "type": "person",
+          "id": "harry-kane"
+        },
+        {
+          "type": "person",
+          "id": "jude-bellingham"
+        },
+        {
+          "type": "person",
+          "id": "michael-owen"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Club colours sit under the jacket. Nation colours above.",
+      "prompt": "If they clash this week, who speaks first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "England first. Nation nights rewrite the calendar.",
+          "tags": [
+            "nation",
+            "duty"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Club first. The ordinary love does not pause.",
+          "tags": [
+            "club",
+            "loyal"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "I refuse the clash. Two loves. No ranking tonight.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "day": 1,
+      "badge_lens": "nation",
+      "scene": "Day one ends. Name your England Stand for this week.",
+      "prompt": "Which line is closest?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Loud in the square. Soft in the memory.",
+          "tags": [
+            "loud",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet belonging. Deep fleet.",
+          "tags": [
+            "patient",
+            "nation"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Club and country. No clean split.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 2. The catalogue of England continues."
+    },
+    {
+      "order": 6,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "SAMPLE. Next GST day. A clip of Gary Lineker circles the chat.",
+      "prompt": "What do you honour first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The craft. Seeing the game early.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The fight. Winning the ugly metres.",
+          "tags": [
+            "loud",
+            "effort"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. Beauty without steel is a postcard.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        },
+        {
+          "type": "person",
+          "id": "gary-lineker"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Paul Gascoigne lifts talk of leadership.",
+      "prompt": "What kind of captain do you trust?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The organiser. Quiet orders. Loud example.",
+          "tags": [
+            "leadership",
+            "patient"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The warrior. First into the duel.",
+          "tags": [
+            "leadership",
+            "loud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The translator. Club egos into one camp.",
+          "tags": [
+            "leadership",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        },
+        {
+          "type": "person",
+          "id": "paul-gascoigne"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "A rival fan says England only wakes up for tournaments.",
+      "prompt": "How do you answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Smile. Let the next match speak.",
+          "tags": [
+            "calm",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Correct them with history. Names, not noise.",
+          "tags": [
+            "memory",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Invite them to watch with you. Convert, do not conquer.",
+          "tags": [
+            "collective",
+            "grace"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Someone ranks Aaron Cresswell too low. The chat splits.",
+      "prompt": "Your move?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Argue with tape. Not volume.",
+          "tags": [
+            "honest",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Shrug. Lists are noise. Love is not a ballot.",
+          "tags": [
+            "calm",
+            "grace"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Add the name. Explain why the fleet needs them.",
+          "tags": [
+            "proud",
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        },
+        {
+          "type": "person",
+          "id": "aaron-cresswell"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "day": 2,
+      "badge_lens": "nation",
+      "scene": "Day two closes. Second line for your England Stand.",
+      "prompt": "Pick the closer.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Beauty and steel. Same camp.",
+          "tags": [
+            "hybrid",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Captains over celebrities.",
+          "tags": [
+            "leadership",
+            "patient"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "History first. Volume second.",
+          "tags": [
+            "memory",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 3. Diaspora night for England."
+    },
+    {
+      "order": 11,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "SAMPLE. You are not home. The stream lags. The chat does not.",
+      "prompt": "How do you keep the England Stand alive from away?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Full voice on the call. Sing like the square.",
+          "tags": [
+            "loud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Same scarf. Same hour. Quiet ritual.",
+          "tags": [
+            "patient",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Bring a friend who has never cared. Grow the fleet.",
+          "tags": [
+            "collective",
+            "diaspora"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "A young fan asks why older names still matter.",
+      "prompt": "What do you teach?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The catalogue is the map. Without it you wander.",
+          "tags": [
+            "memory",
+            "nation"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Honour the past. Demand the present. Both.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Love who wears the shirt now. Memory is dessert.",
+          "tags": [
+            "forward",
+            "nation"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "Club football returns tomorrow. England fades for a while.",
+      "prompt": "How do you leave the camp?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Clean switch. Club colours until the next call.",
+          "tags": [
+            "club",
+            "forward"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Keep a thread of nation in the week. Small rituals.",
+          "tags": [
+            "nation",
+            "loyal"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "No leaving. Dual citizenship of the heart.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "One image stays: many ships, one harbour. The danger of a single story of England.",
+      "prompt": "What is England to you in one feeling?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Pride that travels.",
+          "tags": [
+            "proud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Craft under pressure.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Family argument that still sits at the same table.",
+          "tags": [
+            "collective",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "day": 3,
+      "badge_lens": "nation",
+      "scene": "Chapter end. Name your England Stand.",
+      "prompt": "Who were you across these three days?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The loud pilgrim of the square.",
+          "tags": [
+            "loud",
+            "nation",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The catalogue keeper. Names as shelter.",
+          "tags": [
+            "memory",
+            "patient",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The hybrid. Nation and club. No apology.",
+          "tags": [
+            "hybrid",
+            "honest",
+            "chapter_end"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "nation",
+          "id": "nation-england"
+        }
+      ],
+      "cliffhanger": "Chapter complete. Share your Stand. More England packs when commissioned."
+    }
+  ],
+  "day_wall": {
+    "headline": "Part complete for today",
+    "body": "You used today's five questions. Your England chapter continues tomorrow at midnight GST.",
+    "resume_copy": "Tomorrow: pick up at the next question. England waits."
+  },
+  "signup": {
+    "headline": "Save your Stand",
+    "body": "Sign up free to keep this chapter, your badges, and your place in the queue. Anonymous progress resets.",
+    "cta_primary": "Sign up free",
+    "cta_secondary": "Maybe later"
+  },
+  "share_template": "The Stand · England · The Camp\nDay {day}/3 · \"{stand_line}\"\nthereflectivefootball.com/stand",
+  "next_paths": [
+    "Continue tomorrow (saved if signed in)",
+    "Play The Guesser",
+    "Watch a TRF film"
+  ]
+}

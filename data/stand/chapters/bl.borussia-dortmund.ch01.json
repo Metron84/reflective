@@ -1,0 +1,690 @@
+{
+  "id": "bl.borussia-dortmund.ch01",
+  "status": "sample",
+  "lane": "bundesliga",
+  "composer_id": "goethe",
+  "family": "The Striving Ground",
+  "primary_entity": {
+    "type": "club",
+    "id": "borussia-dortmund"
+  },
+  "secondary_entities": [
+    {
+      "type": "person",
+      "id": "erling-haaland"
+    },
+    {
+      "type": "person",
+      "id": "jude-bellingham"
+    },
+    {
+      "type": "person",
+      "id": "mario-gotze"
+    },
+    {
+      "type": "person",
+      "id": "ousmane-dembele"
+    },
+    {
+      "type": "person",
+      "id": "pierre-emerick-aubameyang"
+    },
+    {
+      "type": "club",
+      "id": "bayern-munich"
+    },
+    {
+      "type": "nation",
+      "id": "nation-germany"
+    }
+  ],
+  "title": "Dortmund: Chapter One",
+  "logline": "SAMPLE. Auto-generated Tier A pack for Borussia Dortmund. Entity-bound to players_seed. Editorial pass pending.",
+  "questions_per_day": 5,
+  "pack_persons_from_seed": [
+    "erling-haaland",
+    "jude-bellingham",
+    "mario-gotze",
+    "ousmane-dembele",
+    "pierre-emerick-aubameyang"
+  ],
+  "generated": true,
+  "questions": [
+    {
+      "order": 1,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "Cold night at Dortmund. Full terrace. A club as a project.",
+      "prompt": "What do you do next?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Keep the songs going. Noise is the point.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Hard silence. Let them feel the stare.",
+          "tags": [
+            "patient",
+            "intense"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "One burst, then rebuild. Save the throat.",
+          "tags": [
+            "patient",
+            "tactical"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "Rival noise finds Dortmund. They want a reaction.",
+      "prompt": "How do you answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Louder. Same songs.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Turn as one. Make the pitch the stage.",
+          "tags": [
+            "collective",
+            "intense"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Point at the badge. Let the shirt answer.",
+          "tags": [
+            "proud",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "The night thins. Someone names a Dortmund ghost.",
+      "prompt": "Whose name do you reach for?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Erling Haaland. The first memory.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Jude Bellingham. The second memory.",
+          "tags": [
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Mario Gotze. The local thread.",
+          "tags": [
+            "memory",
+            "local"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        },
+        {
+          "type": "person",
+          "id": "erling-haaland"
+        },
+        {
+          "type": "person",
+          "id": "jude-bellingham"
+        },
+        {
+          "type": "person",
+          "id": "mario-gotze"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "International week brushes the calendar. Club shirt still on.",
+      "prompt": "Where does loyalty sit?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Dortmund first. Ordinary days matter.",
+          "tags": [
+            "club",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Nation or rival pressure first. Club waits.",
+          "tags": [
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both, without apology.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        },
+        {
+          "type": "nation",
+          "id": "nation-germany"
+        },
+        {
+          "type": "club",
+          "id": "bayern-munich"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "Five questions. Name your Dortmund Stand for this week.",
+      "prompt": "Which line is closest?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Loud when it hurts.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet steel. Memory-led.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Hybrid heart. No clean split.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 2. Dortmund continues. Exits, rivals, and the bar after."
+    },
+    {
+      "order": 6,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "SAMPLE. Next GST day. The result is history. The bar is not.",
+      "prompt": "What do you defend first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The effort. They ran.",
+          "tags": [
+            "effort",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The idea of the team.",
+          "tags": [
+            "romance",
+            "identity"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The truth. Love is not silence.",
+          "tags": [
+            "honest",
+            "demanding"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Talk turns to Ousmane Dembele. Careers move. Stands argue.",
+      "prompt": "What is your Stand on exits?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Thank the years. Wish them well.",
+          "tags": [
+            "grace",
+            "forward"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Cold in the other shirt. Warm for the tape.",
+          "tags": [
+            "loyal",
+            "hurt"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Judge the exit, not the person.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        },
+        {
+          "type": "person",
+          "id": "ousmane-dembele"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "A younger fan asks why Pierre-Emerick Aubameyang still matters.",
+      "prompt": "What do you teach?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Showing up is the badge.",
+          "tags": [
+            "loyal",
+            "local"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Captains carry weather.",
+          "tags": [
+            "leadership",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Honour the past. Demand the present.",
+          "tags": [
+            "honest",
+            "forward"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        },
+        {
+          "type": "person",
+          "id": "pierre-emerick-aubameyang"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Bayern talk. Old scars. Fresh noise.",
+      "prompt": "How do you carry rivalry?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Fuel. Keep it sharp.",
+          "tags": [
+            "rival",
+            "loud"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet contempt. Save voice for us.",
+          "tags": [
+            "rival",
+            "patient"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Joke first. Steel second.",
+          "tags": [
+            "rival",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        },
+        {
+          "type": "club",
+          "id": "bayern-munich"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Day two closes. Second line for Dortmund.",
+      "prompt": "Pick the closer.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Grace for leavers. Fire for stayers.",
+          "tags": [
+            "grace",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Truth in the bar. Noise in the end.",
+          "tags": [
+            "honest",
+            "loud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Rivals outside. Memory inside.",
+          "tags": [
+            "rival",
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 3. Diaspora and the last name for your Dortmund Stand."
+    },
+    {
+      "order": 11,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "SAMPLE. You are not at the ground. The stream is late. The chat is early.",
+      "prompt": "How do you keep the Dortmund Stand alive from away?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Full kit energy. Watch like the end.",
+          "tags": [
+            "loud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet ritual. Same hour. Same scarf.",
+          "tags": [
+            "patient",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Bring someone new into the chat.",
+          "tags": [
+            "collective",
+            "diaspora"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "A clip of a Dortmund season rolls through. Then another club. Careers are long.",
+      "prompt": "What do you celebrate in those who passed through?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The joy they left in the stand.",
+          "tags": [
+            "grace",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Only the years they were truly ours.",
+          "tags": [
+            "loyal",
+            "boundary"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The whole arc. Chapters matter.",
+          "tags": [
+            "honest",
+            "forward"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "Project vs glory. Dortmund as Bildung.",
+      "prompt": "Your answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Identity first. Results follow.",
+          "tags": [
+            "identity",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Points first. Romance later.",
+          "tags": [
+            "demanding"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. That is the craft.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "One more craft beat for Dortmund.",
+      "prompt": "What kind of hero do you honour most?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The thunder. Moments that shake the ground.",
+          "tags": [
+            "loud",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The metronome. The team breathes.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The survivor. Weather without leaving.",
+          "tags": [
+            "loyal",
+            "local"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "Chapter end. Name your Dortmund Stand.",
+      "prompt": "Who were you across these three days?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The loud pilgrim. Noise as love.",
+          "tags": [
+            "loud",
+            "loyal",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The memory keeper. Names as shelter.",
+          "tags": [
+            "memory",
+            "patient",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The hybrid. No apology.",
+          "tags": [
+            "hybrid",
+            "honest",
+            "chapter_end"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "borussia-dortmund"
+        }
+      ],
+      "cliffhanger": "Chapter complete. Share your Stand. Next Dortmund chapter when commissioned."
+    }
+  ],
+  "day_wall": {
+    "headline": "Part complete for today",
+    "body": "You used today's five questions. Your Dortmund chapter continues tomorrow at midnight GST.",
+    "resume_copy": "Tomorrow: pick up at the next question. Dortmund waits."
+  },
+  "signup": {
+    "headline": "Save your Stand",
+    "body": "Sign up free to keep this chapter, your badges, and your place in the queue. Anonymous progress resets.",
+    "cta_primary": "Sign up free",
+    "cta_secondary": "Maybe later"
+  },
+  "share_template": "The Stand · Dortmund · Chapter One\nDay {day}/3 · \"{stand_line}\"\nthereflectivefootball.com/stand",
+  "next_paths": [
+    "Continue tomorrow (saved if signed in)",
+    "Play The Guesser",
+    "Watch a TRF film"
+  ]
+}

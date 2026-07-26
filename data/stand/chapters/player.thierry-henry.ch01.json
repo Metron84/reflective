@@ -1,0 +1,678 @@
+{
+  "id": "player.thierry-henry.ch01",
+  "status": "sample",
+  "lane": "player",
+  "composer_id": "zadie-smith",
+  "family": "No Pure Shirt",
+  "primary_entity": {
+    "type": "person",
+    "id": "thierry-henry"
+  },
+  "secondary_entities": [
+    {
+      "type": "club",
+      "id": "arsenal"
+    },
+    {
+      "type": "club",
+      "id": "monaco"
+    },
+    {
+      "type": "nation",
+      "id": "nation-france"
+    },
+    {
+      "type": "club",
+      "id": "acf-fiorentina"
+    }
+  ],
+  "title": "The Henry Thread",
+  "logline": "SAMPLE. Three days with Thierry Henry as badge: Arsenal myth, Monaco root, France nights, and what loyalty to a person means when your club is Fiorentina.",
+  "questions_per_day": 5,
+  "pack_persons_from_seed": [
+    "thierry-henry"
+  ],
+  "questions": [
+    {
+      "order": 1,
+      "day": 1,
+      "badge_lens": "player",
+      "scene": "A still of Henry in Arsenal red and white. Highbury air in the grain of the photo.",
+      "prompt": "What do you love first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The finish. Ice in the box.",
+          "tags": [
+            "striker",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The stride. Time bending on the wing.",
+          "tags": [
+            "style",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The stare. Demanding the stand rise with him.",
+          "tags": [
+            "leadership",
+            "loud"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "arsenal"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "day": 1,
+      "badge_lens": "player",
+      "scene": "Someone says Henry is only an Arsenal story. Monaco is a footnote.",
+      "prompt": "Your Stand?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Arsenal is the cathedral. Start there.",
+          "tags": [
+            "arsenal",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Monaco is the root. Without it the myth is thin.",
+          "tags": [
+            "monaco",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both chapters. No pure shirt. No pure era.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "arsenal"
+        },
+        {
+          "type": "club",
+          "id": "monaco"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "day": 1,
+      "badge_lens": "player",
+      "scene": "France call. Blue shirt. The player badge meets the nation badge.",
+      "prompt": "When Henry wore France, what were you watching?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The same killer. Different altar.",
+          "tags": [
+            "france",
+            "striker"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "A different man. Club aura left at the door.",
+          "tags": [
+            "france",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "A bridge. Diaspora and home in one run.",
+          "tags": [
+            "france",
+            "diaspora"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "nation",
+          "id": "nation-france"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "day": 1,
+      "badge_lens": "any",
+      "scene": "Your club is Fiorentina. Your player badge is Henry. Someone calls that a contradiction.",
+      "prompt": "How do you hold both?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Henry taught me how to love a number nine. I apply it in purple.",
+          "tags": [
+            "hybrid",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Player love is museum. Club love is daily bread.",
+          "tags": [
+            "club",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "No apology. Fans contain multitudes.",
+          "tags": [
+            "hybrid",
+            "proud"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "day": 1,
+      "badge_lens": "player",
+      "scene": "Day one ends. Name your Henry Stand.",
+      "prompt": "Which line is closest?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Ice and stride. Arsenal forever.",
+          "tags": [
+            "arsenal",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Root to cathedral. Whole arc.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Player as teacher. Club as life.",
+          "tags": [
+            "hybrid",
+            "club"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 2. Invincible ghosts, hard exits, and what we owe the players who leave."
+    },
+    {
+      "order": 6,
+      "day": 2,
+      "badge_lens": "player",
+      "scene": "SAMPLE. Talk turns to the Invincibles. Perfection as a kind of pressure.",
+      "prompt": "What should a fan demand of legends?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The standard. Never lower the bar.",
+          "tags": [
+            "demanding",
+            "loud"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Grace. They already paid in gold.",
+          "tags": [
+            "grace",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Honesty. Myth and tape both.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "arsenal"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "day": 2,
+      "badge_lens": "player",
+      "scene": "Players leave. Henry left. The stand argues about loyalty.",
+      "prompt": "Your rule for exits?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Thank the years. Release the shirt.",
+          "tags": [
+            "grace",
+            "forward"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Hurt is allowed. Warmth for the tape only.",
+          "tags": [
+            "loyal",
+            "hurt"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Judge the manner of leaving. Not the fact of leaving.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "day": 2,
+      "badge_lens": "player",
+      "scene": "A kid asks why love a player who never wore your club colours.",
+      "prompt": "What do you say?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Some players teach the whole sport how to dream.",
+          "tags": [
+            "grace",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Because beauty is not owned by one crest.",
+          "tags": [
+            "hybrid",
+            "proud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "I love Fiorentina daily. Henry is the masterclass on the shelf.",
+          "tags": [
+            "club",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "day": 2,
+      "badge_lens": "player",
+      "scene": "Style debate. Efficiency vs theatre. Henry sat in both chairs.",
+      "prompt": "Which chair do you pull forward?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Theatre. Make me feel the run.",
+          "tags": [
+            "style",
+            "romance"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Ice. Points and cold finishes.",
+          "tags": [
+            "striker",
+            "demanding"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both. That is why he sticks.",
+          "tags": [
+            "hybrid",
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "day": 2,
+      "badge_lens": "player",
+      "scene": "Day two closes. Second line for the Henry thread.",
+      "prompt": "Pick the closer.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Grace for exits. Fire for the tape.",
+          "tags": [
+            "grace",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Standards without cruelty.",
+          "tags": [
+            "demanding",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Multitudes. Player and club both.",
+          "tags": [
+            "hybrid",
+            "proud"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 3. How a player badge survives when the highlight reels stop."
+    },
+    {
+      "order": 11,
+      "day": 3,
+      "badge_lens": "player",
+      "scene": "SAMPLE. No match. Only memory. The group chat posts an old Henry goal.",
+      "prompt": "What do you do with the clip?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Watch once. Slow. Full silence.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Spam it. Convert the chat.",
+          "tags": [
+            "loud",
+            "collective"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Send it to a Fiorentina kid who needs a number nine education.",
+          "tags": [
+            "hybrid",
+            "forward"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "day": 3,
+      "badge_lens": "player",
+      "scene": "Someone ranks GOATs. Henry is missing from their ten.",
+      "prompt": "Your move?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Argue with tape. Not volume.",
+          "tags": [
+            "honest",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Shrug. Lists are noise. Love is not a ballot.",
+          "tags": [
+            "calm",
+            "grace"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Add him. Explain the hybrid: club myth and national nights.",
+          "tags": [
+            "proud",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "day": 3,
+      "badge_lens": "any",
+      "scene": "Your Fiorentina Stand and your Henry Stand sit side by side.",
+      "prompt": "Which sentence is true?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Henry is the ideal. Fiorentina is the marriage.",
+          "tags": [
+            "club",
+            "hybrid"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Equal weight. Different rooms in the same house.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Henry made me a better club fan. That is the whole point.",
+          "tags": [
+            "loyal",
+            "forward"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        },
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "day": 3,
+      "badge_lens": "player",
+      "scene": "Last craft question. What should a player badge demand of you as a fan?",
+      "prompt": "Choose.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Attention to craft. Watch closely.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Courage to love across crests.",
+          "tags": [
+            "hybrid",
+            "proud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Standards without erasing joy.",
+          "tags": [
+            "honest",
+            "grace"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "day": 3,
+      "badge_lens": "player",
+      "scene": "Chapter end. The Henry Thread closes. Name your Stand.",
+      "prompt": "Who were you across these three days?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The tape keeper. Arsenal ice and stride.",
+          "tags": [
+            "arsenal",
+            "memory",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The hybrid. Root, cathedral, France.",
+          "tags": [
+            "hybrid",
+            "honest",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The student. Player love teaching club love.",
+          "tags": [
+            "forward",
+            "club",
+            "chapter_end"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "person",
+          "id": "thierry-henry"
+        }
+      ],
+      "cliffhanger": "Chapter complete. Share your Stand. Next: another player pack, or return to Fiorentina / Italy."
+    }
+  ],
+  "day_wall": {
+    "headline": "Part complete for today",
+    "body": "You used today's five questions. The Henry Thread continues tomorrow at midnight GST.",
+    "resume_copy": "Tomorrow: pick up at the next question. Your player chapter waits."
+  },
+  "signup": {
+    "headline": "Save your Stand",
+    "body": "Sign up free to keep this chapter, your badges, and your place in the queue. Anonymous progress resets.",
+    "cta_primary": "Sign up free",
+    "cta_secondary": "Maybe later"
+  },
+  "share_template": "The Stand · Thierry Henry · The Henry Thread\nDay {day}/3 · \"{stand_line}\"\nthereflectivefootball.com/stand",
+  "next_paths": [
+    "Continue tomorrow (saved if signed in)",
+    "Play The Guesser",
+    "Watch a TRF film"
+  ],
+  "generated": false
+}

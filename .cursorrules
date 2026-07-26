@@ -2,7 +2,7 @@
 
 Before doing ANY task in this repo, read these two files in full. They are the project's law:
 
-1. CLAUDE.md — the standing rulebook: brand, voice, security rules, feature configurations (The Reflections voting, The Guesser game engine, rolling view counter, accounts), engineering rules, and things that must never appear on the site.
+1. CLAUDE.md — the standing rulebook: brand, voice, security rules, feature configurations (The Reflectives voting, The Guesser game engine, rolling view counter, accounts), engineering rules, and things that must never appear on the site.
 2. docs/TRF_Website_v1_Build_Spec.md — the complete v1 build specification.
 
 Non-negotiables (full detail in CLAUDE.md):

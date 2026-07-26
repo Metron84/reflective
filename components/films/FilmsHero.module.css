@@ -1,0 +1,205 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bgImage {
+  object-fit: cover;
+  /* Mobile: calm dark upper-left; avoid brightest lower-right */
+  object-position: 18% 22%;
+}
+
+@media (min-width: 768px) {
+  .bgImage {
+    object-position: 35% 40%;
+  }
+}
+
+.bgVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 17, 31, 0.35) 0%,
+    rgba(10, 17, 31, 0.55) 55%,
+    rgba(10, 17, 31, 0.78) 100%
+  );
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2.75rem 1.15rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 3.5rem 1.5rem 3rem;
+  }
+}
+
+.crestWrap {
+  margin: 0 0 1.35rem;
+}
+
+.crest {
+  width: 7.25rem;
+  height: auto;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(242, 237, 228, 0.12);
+}
+
+@media (min-width: 640px) {
+  .crest {
+    width: 8.5rem;
+  }
+}
+
+.headline {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(1.85rem, 6.2vw, 2.65rem);
+  font-weight: 500;
+  line-height: 1.12;
+  color: #f2ede4;
+}
+
+.plaque {
+  margin-top: 1.35rem;
+  width: 100%;
+  max-width: 18rem;
+  padding: 0.85rem 1.1rem 1rem;
+  background: #0a111f;
+  border: 1px solid rgba(242, 237, 228, 0.18);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.plaqueEyebrow {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.5);
+}
+
+.plaqueStats {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+}
+
+.plaqueStat {
+  flex: 1;
+  min-width: 0;
+}
+
+.plaqueNumber {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.55rem;
+  line-height: 1.1;
+  color: #f2ede4;
+  letter-spacing: 0.01em;
+}
+
+.plaqueLabel {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.55);
+}
+
+.plaqueDivider {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.15rem 0.85rem;
+  background: rgba(242, 237, 228, 0.18);
+}
+
+.chips {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem 0.65rem;
+}
+
+@media (min-width: 640px) {
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 0.55rem;
+  }
+}
+
+.chip {
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+  background: rgba(10, 17, 31, 0.35);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(242, 237, 228, 0.78);
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+  .chip {
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+  }
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 18rem;
+  box-sizing: border-box;
+  padding: 0.9rem 1.25rem;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  opacity: 0.9;
+  outline: none;
+}

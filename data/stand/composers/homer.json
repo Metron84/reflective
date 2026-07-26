@@ -1,0 +1,28 @@
+{
+  "id": "homer",
+  "name": "Homer",
+  "lanes": ["nations"],
+  "family": "Catalogue of Peoples",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "A nation is many ships, not one face. Diaspora, anthem, tournament camp.",
+      "Epic scale in short sentences: camp, flag, return home.",
+      "Allow pride without xenophobia. Fans are protagonists."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No single-story nationalism.",
+      "No invented World Cup moments beyond seed-backed persons.",
+      "No disparagement of other nations' fans."
+    ]
+  },
+  "skeleton": [
+    "Q1 how you stand for the anthem",
+    "Q2 diaspora square vs home soil",
+    "Q3 person_id from that nationality",
+    "Q4 club call-up tension when fan also has a club badge",
+    "Q5 name the people's Stand + cliffhanger"
+  ],
+  "sample_line": "Tournament night. Flags in a foreign square. Do you sing as memory, war cry, or quiet belonging?"
+}

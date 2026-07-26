@@ -1,0 +1,709 @@
+{
+  "id": "sa.acf-fiorentina.ch01",
+  "status": "sample",
+  "lane": "serie_a",
+  "composer_id": "dante-alighieri",
+  "family": "Circles of the Season",
+  "primary_entity": {
+    "type": "club",
+    "id": "acf-fiorentina"
+  },
+  "secondary_entities": [
+    {
+      "type": "nation",
+      "id": "nation-italy"
+    },
+    {
+      "type": "person",
+      "id": "gabriel-batistuta"
+    },
+    {
+      "type": "person",
+      "id": "francesco-toldo"
+    },
+    {
+      "type": "person",
+      "id": "federico-chiesa"
+    },
+    {
+      "type": "person",
+      "id": "dusan-vlahovic"
+    },
+    {
+      "type": "person",
+      "id": "cristiano-biraghi"
+    },
+    {
+      "type": "club",
+      "id": "juventus"
+    }
+  ],
+  "title": "The Violet Circle",
+  "logline": "SAMPLE. Three days in the Viola stand: noise when it hurts, memory when it thins, Italy when the call comes, then a name for who you were this week.",
+  "questions_per_day": 5,
+  "pack_persons_from_seed": [
+    "gabriel-batistuta",
+    "francesco-toldo",
+    "federico-chiesa",
+    "dusan-vlahovic",
+    "cristiano-biraghi",
+    "juan-cuadrado",
+    "borja-valero",
+    "mohamed-salah"
+  ],
+  "questions": [
+    {
+      "order": 1,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "Away night. Fiorentina one down. The Viola end is still loud.",
+      "prompt": "What do you do next?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Keep the songs going. Noise is the point.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Drop into a hard silence. Let them feel the stare.",
+          "tags": [
+            "patient",
+            "intense"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "One short burst, then rebuild. Save the throat for the equaliser.",
+          "tags": [
+            "patient",
+            "tactical"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "The home end has found a chant about the purple. They want a reaction.",
+      "prompt": "How do you answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Louder. Same songs. Do not give them a new script.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Turn your back as one. Make the pitch the only stage.",
+          "tags": [
+            "intense",
+            "collective"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Smile and point at the badge. Let the shirt answer.",
+          "tags": [
+            "proud",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "The night thins. Someone near you names a Viola ghost to keep the stand warm.",
+      "prompt": "Whose name do you reach for?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Batistuta. The number nine who made Florence feel inevitable.",
+          "tags": [
+            "memory",
+            "striker"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Toldo. The wall when the season felt like weather.",
+          "tags": [
+            "memory",
+            "keeper"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Chiesa. The home boy who ran like the city was watching.",
+          "tags": [
+            "memory",
+            "local"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "person",
+          "id": "gabriel-batistuta"
+        },
+        {
+          "type": "person",
+          "id": "francesco-toldo"
+        },
+        {
+          "type": "person",
+          "id": "federico-chiesa"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "day": 1,
+      "badge_lens": "any",
+      "scene": "International week is coming. Italy will call. The Viola shirt is still on your back tonight.",
+      "prompt": "Where does your first loyalty sit this week?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Fiorentina first. The club carries the ordinary days.",
+          "tags": [
+            "club",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Italy first when the Azzurri need a body. Club waits.",
+          "tags": [
+            "nation",
+            "duty"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Both, without apology. Different fires. Same fan.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "nation",
+          "id": "nation-italy"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "day": 1,
+      "badge_lens": "club",
+      "scene": "Five questions. One away night. Your Stand for Fiorentina this week needs a line.",
+      "prompt": "Which line is closest?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Loud when it hurts.",
+          "tags": [
+            "loud",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet steel. Memory-led.",
+          "tags": [
+            "patient",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Club and country. No clean split.",
+          "tags": [
+            "hybrid",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 2. The equaliser never came. The bar under the away end is still open."
+    },
+    {
+      "order": 6,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "SAMPLE. Next GST day. The result is already history. The conversation is not.",
+      "prompt": "In the bar, what do you defend first?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The effort. They ran. That still counts here.",
+          "tags": [
+            "loyal",
+            "effort"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The idea of the team. Style even when points fail.",
+          "tags": [
+            "romance",
+            "identity"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The truth. Name what was soft. Love does not mean silence.",
+          "tags": [
+            "honest",
+            "demanding"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Someone mentions a striker who left Florence and made noise elsewhere. Vlahovic. The room splits.",
+      "prompt": "What is your Stand on players who leave?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Thank them for the purple years. Wish them well. Keep walking.",
+          "tags": [
+            "grace",
+            "forward"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Cold when they wear the other shirt. Warm for the memory only.",
+          "tags": [
+            "loyal",
+            "hurt"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Judge the exit, not the person. Business is business. Football is feeling.",
+          "tags": [
+            "honest",
+            "hybrid"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "person",
+          "id": "dusan-vlahovic"
+        },
+        {
+          "type": "club",
+          "id": "juventus"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "A younger fan asks why Biraghi still matters when the timeline moves on.",
+      "prompt": "What do you teach them?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Longevity is a kind of love. Showing up is the badge.",
+          "tags": [
+            "loyal",
+            "local"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Captains carry weather. Not just armbands.",
+          "tags": [
+            "leadership",
+            "memory"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Every era needs a spine. Find yours in the current shirt too.",
+          "tags": [
+            "forward",
+            "honest"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "person",
+          "id": "cristiano-biraghi"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Derby talk drifts in. Juventus. Old scars. Fresh noise.",
+      "prompt": "How do you carry rivalry into the week?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Fuel. Keep it sharp. Matchday only gets louder.",
+          "tags": [
+            "rival",
+            "loud"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet contempt. Save the voice for our own.",
+          "tags": [
+            "rival",
+            "patient"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Joke first. Steel second. Do not let them live in your head.",
+          "tags": [
+            "rival",
+            "calm"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "club",
+          "id": "juventus"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "day": 2,
+      "badge_lens": "club",
+      "scene": "Day two closes. Your Fiorentina Stand has a second line.",
+      "prompt": "Pick the closer.",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Grace for those who leave. Fire for those who stay.",
+          "tags": [
+            "grace",
+            "loyal"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Truth in the bar. Noise in the curva.",
+          "tags": [
+            "honest",
+            "loud"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Rivals outside. Memory inside.",
+          "tags": [
+            "rival",
+            "memory"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ],
+      "cliffhanger": "Tomorrow: Part 3. The last circle. Who you are when Florence is far and the shirt is still close."
+    },
+    {
+      "order": 11,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "SAMPLE. You are not in Florence. The stream is late. The group chat is early.",
+      "prompt": "How do you keep the Stand alive from away?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Full kit energy. Watch like you are in the end.",
+          "tags": [
+            "loud",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Quiet ritual. Same seat. Same scarf. Same hour.",
+          "tags": [
+            "patient",
+            "diaspora"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Bring someone new into the chat. Grow the tribe.",
+          "tags": [
+            "collective",
+            "diaspora"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "A clip of Cuadrado in purple rolls through. Then another club. Careers are long. Loyalty is a choice.",
+      "prompt": "What do you celebrate in a player who passed through?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The joy they left in the stand. That is enough.",
+          "tags": [
+            "grace",
+            "memory"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Only the years they were truly ours.",
+          "tags": [
+            "loyal",
+            "boundary"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The whole arc. Florence was a chapter. Chapters matter.",
+          "tags": [
+            "honest",
+            "forward"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "person",
+          "id": "juan-cuadrado"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "day": 3,
+      "badge_lens": "any",
+      "scene": "Italy play tonight. Someone asks if the Viola fan softens for the Azzurri no matter who wears the shirt.",
+      "prompt": "Your answer?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "Yes. Nation nights are a different altar.",
+          "tags": [
+            "nation",
+            "duty"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "Only if our people are on the pitch. Otherwise I watch cool.",
+          "tags": [
+            "club",
+            "honest"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "I cheer the idea of Italy. I bleed purple the other six days.",
+          "tags": [
+            "hybrid",
+            "loyal"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "nation",
+          "id": "nation-italy"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "One more memory lands: Borja Valero. Control in the middle. Quiet class.",
+      "prompt": "What kind of Viola hero do you honour most?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The thunder. Goals that shake the stone.",
+          "tags": [
+            "striker",
+            "loud"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The metronome. The one who makes the team breathe.",
+          "tags": [
+            "midfield",
+            "patient"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The survivor. Seasons of weather without leaving.",
+          "tags": [
+            "loyal",
+            "local"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        },
+        {
+          "type": "person",
+          "id": "borja-valero"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "day": 3,
+      "badge_lens": "club",
+      "scene": "Chapter end. The Violet Circle closes. Your Stand gets a final name.",
+      "prompt": "Who were you across these three days?",
+      "choices": [
+        {
+          "id": "A",
+          "label": "The loud pilgrim. Noise as love.",
+          "tags": [
+            "loud",
+            "loyal",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "The memory keeper. Names as shelter.",
+          "tags": [
+            "memory",
+            "patient",
+            "chapter_end"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "The hybrid. Purple and Italy. No apology.",
+          "tags": [
+            "hybrid",
+            "honest",
+            "chapter_end"
+          ]
+        }
+      ],
+      "entity_refs": [
+        {
+          "type": "club",
+          "id": "acf-fiorentina"
+        }
+      ],
+      "cliffhanger": "Chapter complete. Share your Stand. Next: sa.fiorentina.ch02 when commissioned, or pick Italy / Henry."
+    }
+  ],
+  "day_wall": {
+    "headline": "Part complete for today",
+    "body": "You used today's five questions. The Violet Circle continues tomorrow at midnight GST.",
+    "resume_copy": "Tomorrow: pick up at the next question. Your Fiorentina chapter waits."
+  },
+  "signup": {
+    "headline": "Save your Stand",
+    "body": "Sign up free to keep this chapter, your badges, and your place in the queue. Anonymous progress resets.",
+    "cta_primary": "Sign up free",
+    "cta_secondary": "Maybe later"
+  },
+  "share_template": "The Stand · Fiorentina · The Violet Circle\nDay {day}/3 · \"{stand_line}\"\nthereflectivefootball.com/stand",
+  "next_paths": [
+    "Continue tomorrow (saved if signed in)",
+    "Play The Guesser",
+    "Watch a TRF film"
+  ],
+  "generated": false
+}

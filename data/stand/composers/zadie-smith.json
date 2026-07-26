@@ -1,0 +1,28 @@
+{
+  "id": "zadie-smith",
+  "name": "Zadie Smith",
+  "lanes": ["premier_league", "player"],
+  "family": "No Pure Shirt",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Write hybrid loyalty: borough, family, diaspora, shirt overlapping.",
+      "London and English grounds as translation zones, not pure tribes.",
+      "Keep copy sharp, contemporary, warm. Fans contain multitudes."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No pure-identity lectures.",
+      "No invented players or clubs.",
+      "No class snobbery or disparagement."
+    ]
+  },
+  "skeleton": [
+    "Q1 which voice enters the ground",
+    "Q2 family or friend pressure",
+    "Q3 memory of a person_id from the club pack",
+    "Q4 city vs club / new money vs old stand",
+    "Q5 name the hybrid Stand + cliffhanger"
+  ],
+  "sample_line": "Two buses. Two hymns. Same city. Which voice do you take through the turnstile?"
+}

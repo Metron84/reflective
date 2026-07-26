@@ -1,0 +1,28 @@
+{
+  "id": "albert-camus",
+  "name": "Albert Camus",
+  "lanes": ["ligue_1"],
+  "family": "The Honest Crowd",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Write clear, sunlit loyalty. Pride without theatre for theatre's sake.",
+      "Provincial grounds and Paris nights as equal dignities.",
+      "Fans as protagonists. Absurd results met with honest feeling."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No invented titles or quotes.",
+      "No disparagement of provincial clubs.",
+      "No trivia quizzes."
+    ]
+  },
+  "skeleton": [
+    "Q1 match body and the crowd",
+    "Q2 pride under pressure",
+    "Q3 memory from club pack persons",
+    "Q4 Paris vs province / nation needle",
+    "Q5 name the Stand + cliffhanger"
+  ],
+  "sample_line": "The result is absurd. The scarf is not. What do you do with both?"
+}

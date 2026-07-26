@@ -1,0 +1,74 @@
+.subnav {
+  position: sticky;
+  top: 4rem;
+  z-index: 30;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  background: rgba(242, 237, 228, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+.subnavTrack {
+  display: flex;
+  gap: 1.25rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@media (min-width: 640px) {
+  .subnavTrack {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+.subnavLink {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.2rem 0 0.45rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: rgba(10, 17, 31, 0.42);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.subnavLink:hover {
+  color: rgba(10, 17, 31, 0.75);
+}
+
+.subnavActive {
+  color: #0a111f;
+}
+
+.subnavActive::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #d8232a;
+}
+
+.subnavNum {
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.subnavDot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: #d8232a;
+  align-self: center;
+}

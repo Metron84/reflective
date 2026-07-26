@@ -20,7 +20,7 @@ export default function GuesserSignupPopup({ onClose, signInHref = "/signin?next
         </p>
         <ul className="mt-3 space-y-2 text-sm text-navy/80">
           <li>Unlock five more daily modes, each with its own streak</li>
-          <li>See live results for The Reflections</li>
+          <li>Vote in The Reflectives</li>
           <li>Be first to new films, games, and news</li>
         </ul>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">

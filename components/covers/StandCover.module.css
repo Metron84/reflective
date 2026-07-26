@@ -1,0 +1,41 @@
+.root,
+.compact {
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+  background: #0a111f;
+  color: #f2ede4;
+  display: grid;
+  align-content: end;
+  gap: 0.4rem;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(216, 35, 42, 0.35), transparent 45%),
+    linear-gradient(160deg, rgba(242, 237, 228, 0.08), transparent 50%);
+}
+
+.badge {
+  position: relative;
+  width: fit-content;
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid rgba(242, 237, 228, 0.35);
+  padding: 0.25rem 0.45rem;
+}
+
+.mark {
+  position: relative;
+  margin: 0.5rem 0 0;
+  font-family: var(--font-bodoni), Georgia, serif;
+  font-size: 1.5rem;
+}

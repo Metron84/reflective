@@ -2,18 +2,17 @@ import Link from "next/link";
 import styles from "./ReflectionsBallot.module.css";
 
 export default function ReflectionsBallot({ ballot }) {
-  const { categories, votedCount, total, votingState, preResultsCopy } = ballot;
+  const { categories, votedCount, total, votingState, ballotNote } = ballot;
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>The Reflections — Your Ballot</h2>
-      {votingState !== "closed" ? (
-        <p className={styles.note}>{preResultsCopy}</p>
-      ) : (
-        <p className={styles.note}>
-          You voted in {votedCount} of {total} categories.
-        </p>
-      )}
+      <h2 className={styles.sectionTitle}>The Reflectives — Your Ballot</h2>
+      <p className={styles.note}>
+        {ballotNote ||
+          (votingState === "closed"
+            ? `You voted in ${votedCount} of ${total} categories.`
+            : "After each vote, that category's race opens for you.")}
+      </p>
 
       <ul className={styles.list}>
         {categories.map((cat) => (
@@ -32,24 +31,30 @@ export default function ReflectionsBallot({ ballot }) {
                 <p className={styles.comingSoon}>Nominees announced shortly.</p>
               )}
             </div>
-            {cat.standings.length > 0 ? (
-              <ol className={styles.standings}>
-                {cat.standings.map((row, i) => (
-                  <li
-                    key={row.nominee_id}
-                    className={
-                      cat.pick?.id === row.nominee_id ? styles.leadingPick : ""
-                    }
-                  >
-                    <span className={styles.rank}>{i + 1}.</span>
-                    <span className={styles.nominee}>{row.title}</span>
-                    <span className={styles.votes}>{row.votes}</span>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className={styles.noStandings}>Standings fill in as fans vote.</p>
-            )}
+            {cat.pick ? (
+              cat.standings.length > 0 ? (
+                <ol className={styles.standings}>
+                  {cat.standings.map((row, i) => (
+                    <li
+                      key={row.nominee_id}
+                      className={
+                        cat.pick?.id === row.nominee_id ? styles.leadingPick : ""
+                      }
+                    >
+                      <span className={styles.rank}>{i + 1}.</span>
+                      <span className={styles.nominee}>{row.title}</span>
+                      <span className={styles.votes}>{row.votes}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className={styles.noStandings}>
+                  The race fills as more fans vote.
+                </p>
+              )
+            ) : cat.open ? (
+              <p className={styles.noStandings}>Vote to open this race.</p>
+            ) : null}
           </li>
         ))}
       </ul>

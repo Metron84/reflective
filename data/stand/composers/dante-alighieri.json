@@ -1,0 +1,29 @@
+{
+  "id": "dante-alighieri",
+  "name": "Dante Alighieri",
+  "lanes": ["serie_a"],
+  "family": "Circles of the Season",
+  "status": "sample",
+  "diction": {
+    "do": [
+      "Frame the season as a journey through moral weather: hurt, loyalty, exile, return.",
+      "Keep scenes short (2 to 3 sentences). Purple, stone, rain, the curva.",
+      "Name only clubs and persons present in data/stand and players_seed.",
+      "Treat the fan as the protagonist. Never mock the stand."
+    ],
+    "dont": [
+      "No em-dashes.",
+      "No invented trophies, scores, or quotes.",
+      "No trivia quizzes. Choices are identity, not IQ.",
+      "No generic 'your Italian club' language when a club_id is set."
+    ]
+  },
+  "skeleton": [
+    "Q1 scene: match state and the stand's body",
+    "Q2 loyalty under pressure (rival noise)",
+    "Q3 memory (person_id from club pack)",
+    "Q4 cross-badge needle (club vs nation when possible)",
+    "Q5 name this week's Stand + cliffhanger"
+  ],
+  "sample_line": "Midway through the ninety, you find yourself in a dark wood of the result. The Viola end is still unfinished."
+}

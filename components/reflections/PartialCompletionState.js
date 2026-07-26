@@ -10,21 +10,21 @@ export default function PartialCompletionState({ openCount, totalCount }) {
       className="scroll-mt-32 border-b border-navy/10 py-20 text-center"
     >
       <p className="text-xs uppercase tracking-[0.3em] text-navy/40">
-        The Reflections
+        The Reflectives
       </p>
       <h2 className="mt-3 font-display text-3xl text-navy sm:text-4xl">
         Your pick is in.
       </h2>
       <p className="mx-auto mt-4 max-w-lg text-sm text-navy/70">
         {coming} more {coming === 1 ? "category is" : "categories are"} coming
-        shortly.
+        shortly. Races you have voted in stay open above.
       </p>
       <div className="mx-auto mt-10 flex max-w-2xl flex-col gap-3 sm:flex-row sm:justify-center">
         <Link
-          href="/signin?next=/reflections"
+          href="/account"
           className="rounded-full bg-signal px-7 py-3 text-sm font-medium uppercase tracking-widest text-paper transition-opacity hover:opacity-90"
         >
-          See live results. Sign up free
+          Your ballot
         </Link>
         <Link
           href="/guesser"

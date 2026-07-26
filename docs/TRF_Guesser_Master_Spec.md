@@ -74,7 +74,7 @@ Mechanics:
 
 - Share string: `The Guesser #N (Mode) 4/6 · 2 clues` (omit clue clause when zero: `· no clues`). No em-dashes.
 - Emoji grid: 🟩🟨⬛⬜ (⬜ = not recorded). Native share sheet on mobile + one-tap copy. Site URL included.
-- **Play-next-round funnel:** game-over primary CTA = "Play the next board". Members → next unplayed mode. Anonymous → signup popup with BOTH hooks: "Five more boards today, and your streak saved for tomorrow." Secondary actions: share, then The Reflections / films paths (NO DEAD ENDS).
+- **Play-next-round funnel:** game-over primary CTA = "Play the next board". Members → next unplayed mode. Anonymous → signup popup with BOTH hooks: "Five more boards today, and your streak saved for tomorrow." Secondary actions: share, then The Reflectives / films paths (NO DEAD ENDS).
 - `/guesser` defaults to World Cup Legends. `?mode=` works for all six modes: locked modes render the board shell + signup popup — never a dead link.
 
 ## 9. Security (airtight rules)

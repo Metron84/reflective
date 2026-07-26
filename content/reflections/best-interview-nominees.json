@@ -1,0 +1,74 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440601",
+    "category": "best-interview",
+    "title": "Chef Mariano",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 10,
+    "sort": 1
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440602",
+    "category": "best-interview",
+    "title": "Sara",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 85,
+    "sort": 2
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440603",
+    "category": "best-interview",
+    "title": "Josh",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 128,
+    "sort": 3
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440604",
+    "category": "best-interview",
+    "title": "Sven & Hilda",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 185,
+    "sort": 4
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440605",
+    "category": "best-interview",
+    "title": "Levon",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 255,
+    "sort": 5
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440606",
+    "category": "best-interview",
+    "title": "Stuart",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 315,
+    "sort": 6
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440607",
+    "category": "best-interview",
+    "title": "Manu & Milan",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 389,
+    "sort": 7
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440608",
+    "category": "best-interview",
+    "title": "Jafar",
+    "youtube_id": "9KE_DfepN3w",
+    "context_line": null,
+    "clip_start_seconds": 445,
+    "sort": 8
+  }
+]
