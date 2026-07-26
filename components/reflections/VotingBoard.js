@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import FadeUp from "@/components/FadeUp";
-import NomineeCard from "./NomineeCard";
-import BestVideoSection from "./BestVideoSection";
+import CategoryBallotSection from "./CategoryBallotSection";
 import CompletionState from "./CompletionState";
 import ComingShortlyCover from "./ComingShortlyCover";
-import YouTubeFacade from "./YouTubeFacade";
 import { getFingerprint } from "@/lib/fingerprint";
 import styles from "./VotingBoard.module.css";
 
@@ -269,7 +265,7 @@ export default function VotingBoard({
         </div>
       </nav>
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className={`mx-auto max-w-6xl px-4 sm:px-6 ${styles.ballot}`}>
         {showFullComplete ? (
           <CompletionState total={totalCategoryCount} />
         ) : null}
@@ -277,15 +273,15 @@ export default function VotingBoard({
         {bodyCategories.map((category, index) => {
           const nominees = nomineesByCategory[category.slug] ?? [];
           const categoryVoted = voted.includes(category.slug);
-          const categoryPending = pendingVote?.category === category.slug;
           const isOpen = category.open;
           const hasNominees = nominees.length > 0;
 
-          if (category.slug === "best-video" && isOpen && hasNominees) {
+          if (isOpen && hasNominees) {
             return (
-              <BestVideoSection
+              <CategoryBallotSection
                 key={category.slug}
                 category={category}
+                index={index}
                 nominees={nominees}
                 votingOpen={votingOpen}
                 categoryVoted={categoryVoted}
@@ -305,96 +301,17 @@ export default function VotingBoard({
             <section
               key={category.slug}
               id={category.slug}
-              className={`scroll-mt-32 border-b py-16 last:border-b-0 ${
-                isOpen ? "border-navy/10" : "border-navy/5 opacity-70"
-              }`}
+              className="scroll-mt-32 border-b border-navy/5 py-16 opacity-70 last:border-b-0"
             >
-              <FadeUp>
-                <p
-                  className={`text-xs uppercase tracking-[0.3em] ${
-                    isOpen ? "text-navy/40" : "text-navy/30"
-                  }`}
-                >
-                  {String(index + 1).padStart(2, "0")} /{" "}
-                  {String(bodyCategories.length).padStart(2, "0")}
-                </p>
-                <h2
-                  className={`mt-2 font-display text-3xl sm:text-4xl ${
-                    isOpen ? "text-navy" : "text-navy/55"
-                  }`}
-                >
-                  {category.name}
-                </h2>
-                <div
-                  className={`mt-4 h-px w-16 ${isOpen ? "bg-signal" : "bg-navy/15"}`}
-                />
-              </FadeUp>
-
+              <p className="text-xs uppercase tracking-[0.3em] text-navy/30">
+                {String(index + 1).padStart(2, "0")} /{" "}
+                {String(bodyCategories.length).padStart(2, "0")}
+              </p>
+              <h2 className="mt-2 font-display text-3xl text-navy/55 sm:text-4xl">
+                {category.name}
+              </h2>
+              <div className="mt-4 h-px w-16 bg-navy/15" />
               {!isOpen ? <ComingShortlyCover /> : null}
-
-              {errors[category.slug] ? (
-                <p className="mt-6 text-sm text-signal">{errors[category.slug]}</p>
-              ) : null}
-
-              {isOpen && hasNominees ? (
-                <>
-                  {category.category_youtube_id ? (
-                    <div className="mt-8 max-w-3xl">
-                      <YouTubeFacade
-                        youtubeId={category.category_youtube_id}
-                        title={`${category.name} nominees`}
-                        posterSrc={category.category_poster ?? null}
-                      />
-                    </div>
-                  ) : null}
-
-                  <div
-                    className={`mt-8 grid gap-6 sm:grid-cols-2 ${
-                      nominees.length >= 7
-                        ? "lg:grid-cols-3"
-                        : "lg:grid-cols-4"
-                    }`}
-                  >
-                    {nominees.map((nominee) => (
-                      <NomineeCard
-                        key={nominee.id}
-                        nominee={nominee}
-                        votingOpen={votingOpen}
-                        categoryVoted={categoryVoted}
-                        isPick={picks[category.slug] === nominee.id}
-                        pending={
-                          categoryPending && pendingVote?.nomineeId === nominee.id
-                        }
-                        disabled={categoryPending}
-                        canVote={isSignedIn}
-                        onVote={() => handleVote(category.slug, nominee.id)}
-                      />
-                    ))}
-                  </div>
-
-                  {categoryVoted ? (
-                    <CategoryStandings
-                      standings={standingsByCategory[category.slug]}
-                      pickId={picks[category.slug]}
-                    />
-                  ) : !isSignedIn ? (
-                    <div className="mt-8 border border-navy/15 p-5 text-sm text-navy/60">
-                      <Link
-                        href="/signin?next=/reflections"
-                        className="font-medium text-navy underline underline-offset-4 hover:text-signal"
-                      >
-                        Sign up free to vote
-                      </Link>
-                      . The race for this category opens after your pick.
-                    </div>
-                  ) : (
-                    <p className="mt-8 text-sm text-navy/55">
-                      Vote to open this category&apos;s race.
-                    </p>
-                  )}
-                </>
-              ) : null}
-
               {isOpen && !hasNominees ? (
                 <p className="mt-8 text-sm text-navy/50">
                   Nominees loading for this category.

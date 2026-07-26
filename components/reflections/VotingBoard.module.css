@@ -72,3 +72,8 @@
   background: #d8232a;
   align-self: center;
 }
+
+.ballot {
+  overflow-x: clip;
+  max-width: 100%;
+}

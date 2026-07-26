@@ -1,7 +1,14 @@
 .section {
   scroll-margin-top: 7rem;
-  padding: 2.75rem 0 3.25rem;
+  padding: 2.25rem 0 2.75rem;
   border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  overflow-x: clip;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 2.75rem 0 3.25rem;
+  }
 }
 
 .header {
