@@ -1,9 +1,8 @@
-import { Suspense } from "react";
 import ViewsTickerBand from "@/components/ViewsTickerBand";
 import SectionContinue from "@/components/SectionContinue";
 import FilmsHero from "@/components/films/FilmsHero";
 import FilmsHeroPicks from "@/components/films/FilmsHeroPicks";
-import FilmsArchive from "@/components/films/FilmsArchive";
+import FilmsWatchWays from "@/components/films/FilmsWatchWays";
 import { getFilmsTabFilms, getShortsFilms } from "@/lib/films";
 import { SAMPLE_STORY, youtubeWatchUrl } from "@/lib/films/schema";
 import { getViewCounterPayload } from "@/lib/stats/views";
@@ -45,6 +44,7 @@ export default async function FilmsPage() {
   const filmsTabFilms = getFilmsTabFilms();
   const shortsFilms = getShortsFilms();
   const tickerPayload = await getViewCounterPayload();
+  // Keep ItemList JSON-LD even though the visible archive grid is parked.
   const structuredData = filmsStructuredData(
     [...filmsTabFilms, ...shortsFilms].filter((f) => f.youtube_id).slice(0, 100)
   );
@@ -62,34 +62,14 @@ export default async function FilmsPage() {
       />
       <ViewsTickerBand payload={tickerPayload} />
       <FilmsHeroPicks />
-
-      <Suspense
-        fallback={
-          <FilmsArchiveFallback
-            filmsCount={filmsTabFilms.length}
-            shortsCount={shortsFilms.length}
-          />
-        }
-      >
-        <FilmsArchive
-          filmsTabFilms={filmsTabFilms}
-          shortsFilms={shortsFilms}
-        />
-      </Suspense>
+      {/* FilmsArchive parked: code kept under components/films/FilmsArchive* */}
+      <FilmsWatchWays />
 
       <SectionContinue
         nextHref="/reflections"
         nextEyebrow="Awards. For the Fans."
         nextTitle="The Reflectives"
       />
-    </div>
-  );
-}
-
-function FilmsArchiveFallback({ filmsCount, shortsCount }) {
-  return (
-    <div className="mx-auto max-w-6xl px-4 py-8 text-center text-sm text-navy/50">
-      Loading archive ({filmsCount} films, {shortsCount} shorts)…
     </div>
   );
 }

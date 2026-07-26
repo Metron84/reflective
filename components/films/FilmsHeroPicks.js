@@ -11,9 +11,13 @@ export default function FilmsHeroPicks() {
       aria-labelledby="films-hero-picks-heading"
     >
       <div className={styles.inner}>
-        <h2 id="films-hero-picks-heading" className={styles.eyebrow}>
-          Three from the run
-        </h2>
+        <header className={styles.header}>
+          <p className={styles.eyebrow}>Three from the run</p>
+          <h2 id="films-hero-picks-heading" className={styles.lede}>
+            Where fans keep watching.
+          </h2>
+        </header>
+
         <ul className={styles.list}>
           {FILMS_HERO_PICKS.map((film) => {
             const thumb = youtubeThumbnailUrl(film.youtubeId);
@@ -41,7 +45,12 @@ export default function FilmsHeroPicks() {
                     )}
                     <span className={styles.market}>{film.market}</span>
                     <span className={styles.play} aria-hidden>
-                      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="22"
+                        height="22"
+                      >
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </span>
