@@ -1,3 +1,22 @@
+.framing {
+  margin: 0;
+  padding: 1.15rem 1.15rem 0.35rem;
+  text-align: center;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(10, 17, 31, 0.5);
+  background: #f2ede4;
+}
+
+@media (min-width: 640px) {
+  .framing {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
 .subnav {
   position: sticky;
   top: 4rem;

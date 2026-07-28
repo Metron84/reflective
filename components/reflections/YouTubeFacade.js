@@ -3,15 +3,16 @@
 import { useState } from "react";
 import AwardsLaurelCover from "@/components/covers/AwardsLaurelCover";
 
-// Lazy YouTube embed: thumbnail + play button until clicked, then the
-// real iframe. Keeps the page fast with many nominees.
+// Lazy YouTube embed: thumbnail + play button until clicked (or autoPlay),
+// then the real iframe. Keeps the page fast with many nominees.
 export default function YouTubeFacade({
   youtubeId,
   title,
   startSeconds = 0,
   posterSrc = null,
+  autoPlay = false,
 }) {
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(Boolean(autoPlay));
   const start =
     Number.isFinite(Number(startSeconds)) && Number(startSeconds) > 0
       ? Math.floor(Number(startSeconds))

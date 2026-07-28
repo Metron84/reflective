@@ -1,68 +1,75 @@
 -- Best Supporter nominees (shared YouTube with clip offsets). Idempotent upsert by fixed id.
-insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds)
+insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds, nation)
 values
   (
     '550e8400-e29b-41d4-a716-446655440301',
     'best-supporter',
-    'Ayaan (Portugal)',
+    'Ayaan',
     'H6rhtaK4FJE',
     null,
     1,
-    8
+    8,
+    'Portugal'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440302',
     'best-supporter',
-    'Carlotta (Spain)',
+    'Carlotta',
     'H6rhtaK4FJE',
     null,
     2,
-    41
+    41,
+    'Spain'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440303',
     'best-supporter',
-    'Ishaan (Japan)',
+    'Ishaan',
     'H6rhtaK4FJE',
     null,
     3,
-    77
+    77,
+    'Japan'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440304',
     'best-supporter',
-    'Janaina (Brazil)',
+    'Janaina',
     'H6rhtaK4FJE',
     null,
     4,
-    117
+    118,
+    'Brazil'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440305',
     'best-supporter',
-    'Lucas (England)',
+    'Lucas',
     'H6rhtaK4FJE',
     null,
     5,
-    177
+    163,
+    'England'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440306',
     'best-supporter',
-    'Magnus (Norway)',
+    'Magnus',
     'H6rhtaK4FJE',
     null,
     6,
-    212
+    212,
+    'Norway'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440307',
     'best-supporter',
-    'Niels (Belgium)',
+    'Niels',
     'H6rhtaK4FJE',
     null,
     7,
-    253
+    253,
+    'Belgium'
   )
 on conflict (id) do update set
   category = excluded.category,
@@ -70,4 +77,5 @@ on conflict (id) do update set
   youtube_id = excluded.youtube_id,
   context_line = excluded.context_line,
   sort = excluded.sort,
-  clip_start_seconds = excluded.clip_start_seconds;
+  clip_start_seconds = excluded.clip_start_seconds,
+  nation = excluded.nation;

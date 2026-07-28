@@ -2,37 +2,41 @@
   {
     "id": "550e8400-e29b-41d4-a716-446655440001",
     "category": "best-celebration",
-    "title": "Scotland",
+    "title": "The Goal After 28 Years",
     "youtube_id": "iZqUA_V0HnM",
-    "context_line": null,
+    "context_line": "The moment Dubai's Tartan Army finally got to scream for a World Cup goal.",
     "clip_start_seconds": 7,
+    "nation": "Scotland",
     "sort": 1
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440002",
     "category": "best-celebration",
-    "title": "Japan",
+    "title": "Shocking Brazil at Half-Time",
     "youtube_id": "iZqUA_V0HnM",
-    "context_line": null,
+    "context_line": "Joy in blue on one side, heartbreak in yellow on the other. Half-time against Brazil.",
     "clip_start_seconds": 123,
+    "nation": "Japan",
     "sort": 2
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440003",
     "category": "best-celebration",
-    "title": "England",
+    "title": "We Still Believe",
     "youtube_id": "iZqUA_V0HnM",
-    "context_line": null,
+    "context_line": "Belief never left the room when the comeback landed against DR Congo.",
     "clip_start_seconds": 163,
+    "nation": "England",
     "sort": 3
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440004",
     "category": "best-celebration",
-    "title": "Egypt",
+    "title": "Pure Pandemonium",
     "youtube_id": "iZqUA_V0HnM",
-    "context_line": null,
+    "context_line": "Flags, hugs, and noise when the penalties went Egypt's way against Australia.",
     "clip_start_seconds": 358,
+    "nation": "Egypt",
     "sort": 4
   }
 ]

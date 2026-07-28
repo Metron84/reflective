@@ -1,5 +1,5 @@
 -- Best Supporters Club nominees (shared YouTube with clip offsets). Idempotent upsert by fixed id.
-insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds)
+insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds, nation)
 values
   (
     '550e8400-e29b-41d4-a716-446655440201',
@@ -8,7 +8,8 @@ values
     'k1b1m6vVQwo',
     null,
     1,
-    6
+    6,
+    'Scotland'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440202',
@@ -17,7 +18,8 @@ values
     'k1b1m6vVQwo',
     null,
     2,
-    51
+    51,
+    'Belgium'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440203',
@@ -26,7 +28,8 @@ values
     'k1b1m6vVQwo',
     null,
     3,
-    97
+    97,
+    'England'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440204',
@@ -35,7 +38,8 @@ values
     'k1b1m6vVQwo',
     null,
     4,
-    138
+    138,
+    'Norway'
   )
 on conflict (id) do update set
   category = excluded.category,
@@ -43,4 +47,5 @@ on conflict (id) do update set
   youtube_id = excluded.youtube_id,
   context_line = excluded.context_line,
   sort = excluded.sort,
-  clip_start_seconds = excluded.clip_start_seconds;
+  clip_start_seconds = excluded.clip_start_seconds,
+  nation = excluded.nation;

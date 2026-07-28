@@ -4,8 +4,9 @@
     "category": "best-message",
     "title": "Nicole",
     "youtube_id": "UX56p4YAIR4",
-    "context_line": null,
+    "context_line": "I believe in you the most",
     "clip_start_seconds": 7,
+    "nation": "England",
     "sort": 1
   },
   {
@@ -15,6 +16,7 @@
     "youtube_id": "UX56p4YAIR4",
     "context_line": null,
     "clip_start_seconds": 20,
+    "nation": "Spain",
     "sort": 2
   },
   {
@@ -22,8 +24,9 @@
     "category": "best-message",
     "title": "Magnus",
     "youtube_id": "UX56p4YAIR4",
-    "context_line": null,
+    "context_line": "Only Norway can stop Norway",
     "clip_start_seconds": 84,
+    "nation": "Norway",
     "sort": 3
   },
   {
@@ -31,8 +34,9 @@
     "category": "best-message",
     "title": "Manu",
     "youtube_id": "UX56p4YAIR4",
-    "context_line": null,
+    "context_line": "11 million people",
     "clip_start_seconds": 113,
+    "nation": "Belgium",
     "sort": 4
   },
   {
@@ -42,6 +46,7 @@
     "youtube_id": "UX56p4YAIR4",
     "context_line": null,
     "clip_start_seconds": 130,
+    "nation": "Scotland",
     "sort": 5
   },
   {
@@ -51,6 +56,7 @@
     "youtube_id": "UX56p4YAIR4",
     "context_line": null,
     "clip_start_seconds": 158,
+    "nation": "Brazil",
     "sort": 6
   },
   {
@@ -60,6 +66,7 @@
     "youtube_id": "UX56p4YAIR4",
     "context_line": null,
     "clip_start_seconds": 187,
+    "nation": "South Africa",
     "sort": 7
   }
 ]

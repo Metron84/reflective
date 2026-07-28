@@ -239,6 +239,10 @@ export default function VotingBoard({
 
   return (
     <>
+      <p className={styles.framing}>
+        Fan moments from the summer. You vote, the crowd decides.
+      </p>
+
       <nav className={styles.subnav} aria-label="Award categories">
         <div className={styles.subnavTrack}>
           {navCategories.map((category, index) => {

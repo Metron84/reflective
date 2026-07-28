@@ -1,20 +1,22 @@
 [
   {
-    "id": "550e8400-e29b-41d4-a716-446655440701",
-    "category": "best-soundbite",
-    "title": "Alex",
-    "youtube_id": "uwauSqa1Qzs",
-    "context_line": "Football will win today",
-    "clip_start_seconds": 6,
-    "sort": 1
-  },
-  {
     "id": "550e8400-e29b-41d4-a716-446655440702",
     "category": "best-soundbite",
     "title": "Simon",
     "youtube_id": "uwauSqa1Qzs",
     "context_line": "Your finger is offside",
     "clip_start_seconds": 12,
+    "nation": "England",
+    "sort": 1
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440701",
+    "category": "best-soundbite",
+    "title": "Alex",
+    "youtube_id": "uwauSqa1Qzs",
+    "context_line": "Football will win today, not corruption",
+    "clip_start_seconds": 6,
+    "nation": "Spain",
     "sort": 2
   },
   {
@@ -22,8 +24,9 @@
     "category": "best-soundbite",
     "title": "Rita",
     "youtube_id": "uwauSqa1Qzs",
-    "context_line": "Our favorite hooligan",
+    "context_line": "Our favourite hooligan, gone by the 85th",
     "clip_start_seconds": 39,
+    "nation": "Belgium",
     "sort": 3
   },
   {
@@ -31,8 +34,9 @@
     "category": "best-soundbite",
     "title": "Faris & Ayaan",
     "youtube_id": "uwauSqa1Qzs",
-    "context_line": "Ronaldo's best achievement is being compared to Messi / The World Cup is rigged",
+    "context_line": "Ronaldo's best achievement? Being compared to Messi",
     "clip_start_seconds": 63,
+    "nation": "Portugal",
     "sort": 4
   },
   {
@@ -40,8 +44,9 @@
     "category": "best-soundbite",
     "title": "Arnaud",
     "youtube_id": "uwauSqa1Qzs",
-    "context_line": "Three generations",
+    "context_line": "Three generations came with the federation",
     "clip_start_seconds": 80,
+    "nation": "France",
     "sort": 5
   },
   {
@@ -49,8 +54,9 @@
     "category": "best-soundbite",
     "title": "Lucas",
     "youtube_id": "uwauSqa1Qzs",
-    "context_line": "We need more shots",
+    "context_line": "We need more shots, don't let it end nil-nil",
     "clip_start_seconds": 98,
+    "nation": "England",
     "sort": 6
   },
   {
@@ -60,6 +66,7 @@
     "youtube_id": "uwauSqa1Qzs",
     "context_line": "We needed more goals",
     "clip_start_seconds": 123,
+    "nation": "England",
     "sort": 7
   }
 ]

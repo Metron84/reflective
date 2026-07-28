@@ -4,8 +4,9 @@
     "category": "best-interview",
     "title": "Chef Mariano",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "Spain vs Cape Verde",
     "clip_start_seconds": 10,
+    "nation": "Spain",
     "sort": 1
   },
   {
@@ -13,8 +14,9 @@
     "category": "best-interview",
     "title": "Sara",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "7-1 Trauma: Why Brazil Will Never Be Over It",
     "clip_start_seconds": 85,
+    "nation": "Brazil",
     "sort": 2
   },
   {
@@ -22,8 +24,9 @@
     "category": "best-interview",
     "title": "Josh",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "Tuchel is the Tactical Mastermind We Need",
     "clip_start_seconds": 128,
+    "nation": "England",
     "sort": 3
   },
   {
@@ -31,8 +34,9 @@
     "category": "best-interview",
     "title": "Sven & Hilda",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "The Real Story Behind Norway's Row Row Chant",
     "clip_start_seconds": 185,
+    "nation": "Norway",
     "sort": 4
   },
   {
@@ -40,8 +44,9 @@
     "category": "best-interview",
     "title": "Levon",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "On Mbappe, Ultras and FIFA",
     "clip_start_seconds": 255,
+    "nation": "France",
     "sort": 5
   },
   {
@@ -49,8 +54,9 @@
     "category": "best-interview",
     "title": "Stuart",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "Why Scotland is the Most Honest Team at the World Cup",
     "clip_start_seconds": 315,
+    "nation": "Scotland",
     "sort": 6
   },
   {
@@ -58,8 +64,9 @@
     "category": "best-interview",
     "title": "Manu & Milan",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "The Belgian Wall",
     "clip_start_seconds": 389,
+    "nation": "Belgium",
     "sort": 7
   },
   {
@@ -67,8 +74,9 @@
     "category": "best-interview",
     "title": "Jafar",
     "youtube_id": "9KE_DfepN3w",
-    "context_line": null,
+    "context_line": "Why Football Belongs to the People",
     "clip_start_seconds": 445,
+    "nation": "Iraq",
     "sort": 8
   }
 ]

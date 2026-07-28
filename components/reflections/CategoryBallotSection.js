@@ -1,6 +1,8 @@
 "use client";
 
+import { useCallback, useRef, useState } from "react";
 import YouTubeFacade from "./YouTubeFacade";
+import NomineeCard from "./NomineeCard";
 import styles from "./CategoryBallotSection.module.css";
 
 function categoryThumbSrc(category) {
@@ -14,6 +16,8 @@ function categoryThumbSrc(category) {
 /**
  * Editorial Reflectives category ballot (Best Video pattern).
  * Reuses existing vote props; does not change voting behavior.
+ * When category.cardVariant is flag/title/quote, renders NomineeCard
+ * that seeks the section compilation reel via remount.
  */
 export default function CategoryBallotSection({
   category,
@@ -35,6 +39,33 @@ export default function CategoryBallotSection({
   const num = String(index + 1).padStart(2, "0");
   const thumb = categoryThumbSrc(category);
   const reelId = category.category_youtube_id;
+  const cardVariant = category.cardVariant;
+  const useNomineeCard =
+    cardVariant === "flag" ||
+    cardVariant === "title" ||
+    cardVariant === "quote";
+
+  const reelRef = useRef(null);
+  const [reelStart, setReelStart] = useState(0);
+  const [reelKey, setReelKey] = useState(0);
+  const [reelAutoPlay, setReelAutoPlay] = useState(false);
+
+  const onWatchMoment = useCallback((seconds) => {
+    const start =
+      Number.isFinite(Number(seconds)) && Number(seconds) > 0
+        ? Math.floor(Number(seconds))
+        : 0;
+    setReelStart(start);
+    setReelAutoPlay(true);
+    setReelKey((k) => k + 1);
+    // Nice-to-have on mobile: bring the section player into view.
+    requestAnimationFrame(() => {
+      reelRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    });
+  }, []);
 
   return (
     <section
@@ -54,11 +85,14 @@ export default function CategoryBallotSection({
       {errors ? <p className={styles.error}>{errors}</p> : null}
 
       {reelId ? (
-        <div className={styles.reel}>
+        <div className={styles.reel} ref={reelRef}>
           <YouTubeFacade
+            key={`${reelId}-${reelKey}`}
             youtubeId={reelId}
             title={`${category.name} nominees`}
             posterSrc={thumb}
+            startSeconds={reelStart}
+            autoPlay={reelAutoPlay}
           />
         </div>
       ) : null}
@@ -70,6 +104,26 @@ export default function CategoryBallotSection({
           const pending =
             categoryPending && pendingVote?.nomineeId === nominee.id;
           const playId = nominee.youtube_id || reelId;
+
+          if (useNomineeCard) {
+            return (
+              <li key={nominee.id}>
+                <NomineeCard
+                  nominee={nominee}
+                  variant={cardVariant}
+                  votingOpen={votingOpen}
+                  categoryVoted={categoryVoted}
+                  isPick={isPick}
+                  pending={pending}
+                  disabled={categoryPending}
+                  canVote={canVote}
+                  onVote={() => onVote(nominee.id)}
+                  onWatchMoment={onWatchMoment}
+                  showQuoteMarks={category.showQuoteMarks !== false}
+                />
+              </li>
+            );
+          }
 
           return (
             <li

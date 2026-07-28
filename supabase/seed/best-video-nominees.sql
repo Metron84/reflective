@@ -1,5 +1,5 @@
 -- Best Video nominees (shared YouTube with clip offsets). Idempotent upsert by fixed id.
-insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds)
+insert into public.nominees (id, category, title, youtube_id, context_line, sort, clip_start_seconds, nation)
 values
   (
     '550e8400-e29b-41d4-a716-446655440101',
@@ -8,7 +8,8 @@ values
     'h4dTMLEXzhw',
     'Norway v Brazil',
     1,
-    8
+    7,
+    'Norway & Brazil'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440102',
@@ -17,25 +18,28 @@ values
     'h4dTMLEXzhw',
     'Egypt v Australia',
     2,
-    44
+    44,
+    'Egypt & Australia'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440103',
     'best-video',
-    'Come Rain or Shine',
+    'Scotland Party',
     'h4dTMLEXzhw',
     'Scotland v Morocco',
     3,
-    70
+    68,
+    'Scotland & Morocco'
   ),
   (
     '550e8400-e29b-41d4-a716-446655440104',
     'best-video',
-    'They Invited Us Home',
+    'At Home with the Fans',
     'h4dTMLEXzhw',
-    'Spain v KSA',
+    'Spain v Saudi Arabia',
     4,
-    114
+    114,
+    'Spain & Saudi Arabia'
   )
 on conflict (id) do update set
   category = excluded.category,
@@ -43,4 +47,5 @@ on conflict (id) do update set
   youtube_id = excluded.youtube_id,
   context_line = excluded.context_line,
   sort = excluded.sort,
-  clip_start_seconds = excluded.clip_start_seconds;
+  clip_start_seconds = excluded.clip_start_seconds,
+  nation = excluded.nation;

@@ -2,37 +2,41 @@
   {
     "id": "550e8400-e29b-41d4-a716-446655440201",
     "category": "best-supporters-club",
-    "title": "Scotland",
+    "title": "Scotland Supporters",
     "youtube_id": "k1b1m6vVQwo",
     "context_line": null,
     "clip_start_seconds": 6,
+    "nation": "Scotland",
     "sort": 1
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440202",
     "category": "best-supporters-club",
-    "title": "Belgium",
+    "title": "Belgium Supporters",
     "youtube_id": "k1b1m6vVQwo",
     "context_line": null,
     "clip_start_seconds": 51,
+    "nation": "Belgium",
     "sort": 2
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440203",
     "category": "best-supporters-club",
-    "title": "England",
+    "title": "England Supporters",
     "youtube_id": "k1b1m6vVQwo",
     "context_line": null,
     "clip_start_seconds": 97,
+    "nation": "England",
     "sort": 3
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440204",
     "category": "best-supporters-club",
-    "title": "Norway",
+    "title": "Norway Supporters",
     "youtube_id": "k1b1m6vVQwo",
     "context_line": null,
     "clip_start_seconds": 138,
+    "nation": "Norway",
     "sort": 4
   }
 ]

@@ -4,8 +4,9 @@
     "category": "best-video",
     "title": "Row or Die",
     "youtube_id": "h4dTMLEXzhw",
-    "context_line": null,
+    "context_line": "Norway v Brazil",
     "clip_start_seconds": 7,
+    "nation": "Norway & Brazil",
     "sort": 1
   },
   {
@@ -13,8 +14,9 @@
     "category": "best-video",
     "title": "The Pharaoh's Legacy",
     "youtube_id": "h4dTMLEXzhw",
-    "context_line": null,
+    "context_line": "Egypt v Australia",
     "clip_start_seconds": 44,
+    "nation": "Egypt & Australia",
     "sort": 2
   },
   {
@@ -22,8 +24,9 @@
     "category": "best-video",
     "title": "Scotland Party",
     "youtube_id": "h4dTMLEXzhw",
-    "context_line": null,
+    "context_line": "Scotland v Morocco",
     "clip_start_seconds": 68,
+    "nation": "Scotland & Morocco",
     "sort": 3
   },
   {
@@ -31,8 +34,9 @@
     "category": "best-video",
     "title": "At Home with the Fans",
     "youtube_id": "h4dTMLEXzhw",
-    "context_line": null,
+    "context_line": "Spain v Saudi Arabia",
     "clip_start_seconds": 114,
+    "nation": "Spain & Saudi Arabia",
     "sort": 4
   }
 ]

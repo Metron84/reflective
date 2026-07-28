@@ -1,0 +1,352 @@
+.card {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: #0a111f;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.cardPick {
+  border-color: #d8232a;
+}
+
+.cardDimmed {
+  opacity: 0.5;
+}
+
+.flagBar {
+  flex: 0 0 6px;
+  display: flex;
+  flex-direction: column;
+  width: 6px;
+  align-self: stretch;
+  box-shadow: inset 0 0 0 0.5px rgba(242, 237, 228, 0.28);
+}
+
+.flagBarCompact {
+  flex: 0 0 5px;
+  display: flex;
+  flex-direction: column;
+  width: 5px;
+  height: 2.4rem;
+  align-self: center;
+  box-shadow: inset 0 0 0 0.5px rgba(10, 17, 31, 0.2);
+}
+
+.flagSegment {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+.flagSegment + .flagSegment {
+  border-top: 1px solid rgba(242, 237, 228, 0.45);
+}
+
+.flagBarCompact .flagSegment + .flagSegment {
+  border-top-color: rgba(10, 17, 31, 0.35);
+}
+
+.flagBand {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  box-shadow: inset 0 -0.5px 0 rgba(242, 237, 228, 0.22);
+}
+
+.flagBarCompact .flagBand {
+  box-shadow: inset 0 -0.5px 0 rgba(10, 17, 31, 0.18);
+}
+
+.flagBand:last-child {
+  box-shadow: none;
+}
+
+.flagBarCompact .flagBand:last-child {
+  box-shadow: none;
+}
+
+.body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.8rem 0.85rem 0.9rem;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .body {
+    padding: 0.9rem 1.05rem 1rem;
+  }
+}
+
+.nation {
+  margin: 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b9b3a6;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #f2ede4;
+}
+
+.titleHero {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: #f2ede4;
+}
+
+.context {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #b9b3a6;
+}
+
+.watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #b9b3a6;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.watch:hover,
+.watch:focus-visible {
+  color: #f2ede4;
+  outline: none;
+}
+
+.watchOnCream {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(10, 17, 31, 0.55);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.watchOnCream:hover,
+.watchOnCream:focus-visible {
+  color: #0a111f;
+  outline: none;
+}
+
+.watchIcon {
+  flex-shrink: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.quoteCard {
+  display: flex;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: #f2ede4;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.quoteBody {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.9rem 0.95rem 1rem;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .quoteBody {
+    padding: 1.05rem 1.15rem 1.15rem;
+  }
+}
+
+.quoteText {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(1.35rem, 3.8vw, 1.75rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.25;
+  color: #0a111f;
+}
+
+.speakerRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.15rem;
+}
+
+.speakerMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.speakerName {
+  margin: 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #0a111f;
+}
+
+.speakerNation {
+  margin: 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.5);
+}
+
+.actions {
+  margin-top: 0.55rem;
+}
+
+.voteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.15rem;
+  border: none;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.voteBtn:hover:not(:disabled),
+.voteBtn:focus-visible:not(:disabled) {
+  opacity: 0.9;
+  outline: none;
+}
+
+.voteBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.yourPick {
+  display: inline-block;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signInLink {
+  font-size: 0.85rem;
+  color: #f2ede4;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.signInLink:hover {
+  color: #d8232a;
+}
+
+/* Legacy / stub layout for non-flag variants (matches CategoryBallotSection). */
+.legacyCard {
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: #f2ede4;
+  padding: 0.65rem;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .legacyCard {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 1.15rem;
+    padding: 0.75rem;
+  }
+}
+
+.legacyMedia {
+  background: #0a111f;
+  overflow: hidden;
+}
+
+.legacyBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.15rem 0.35rem 0.35rem;
+}
+
+.legacyTitle {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #0a111f;
+  line-height: 1.2;
+}
+
+.legacyContext {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.legacySignIn {
+  font-size: 0.85rem;
+  color: #0a111f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legacySignIn:hover {
+  color: #d8232a;
+}
