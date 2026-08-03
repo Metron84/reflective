@@ -1,93 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360" role="img" aria-label="Codemaster: scrambled letters dropping into a grid">
-<rect width="800" height="360" fill="#0A111F"/>
-<g font-family="Archivo, Helvetica, Arial, sans-serif" font-weight="600" font-size="22" text-anchor="middle">
-<rect x="42" y="138" width="44" height="44" rx="3" fill="rgba(216,35,42,0.14)" stroke="#D8232A" stroke-width="1.5"/>
-<text x="64.0" y="168.0" fill="#F2EDE4">N</text>
-<rect x="42" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="64.0" y="120.0" fill="#F2EDE4">L</text>
-<rect x="90" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="112.0" y="168.0" fill="#F2EDE4">G</text>
-<rect x="138" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="160.0" y="168.0" fill="#F2EDE4">I</text>
-<rect x="138" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="160.0" y="120.0" fill="#F2EDE4">O</text>
-<rect x="138" y="42" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="160.0" y="72.0" fill="#F2EDE4">K</text>
-<rect x="234" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="256.0" y="168.0" fill="#F2EDE4">T</text>
-<rect x="234" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="256.0" y="120.0" fill="#F2EDE4">M</text>
-<rect x="282" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="304.0" y="168.0" fill="#F2EDE4">A</text>
-<rect x="330" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="352.0" y="168.0" fill="#F2EDE4">S</text>
-<rect x="330" y="90" width="44" height="44" rx="3" fill="rgba(216,35,42,0.14)" stroke="#D8232A" stroke-width="1.5"/>
-<text x="352.0" y="120.0" fill="#F2EDE4">E</text>
-<rect x="378" y="138" width="44" height="44" rx="3" fill="rgba(216,35,42,0.14)" stroke="#D8232A" stroke-width="1.5"/>
-<text x="400.0" y="168.0" fill="#F2EDE4">R</text>
-<rect x="378" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="400.0" y="120.0" fill="#F2EDE4">N</text>
-<rect x="378" y="42" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="400.0" y="72.0" fill="#F2EDE4">L</text>
-<rect x="426" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="448.0" y="168.0" fill="#F2EDE4">G</text>
-<rect x="522" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="544.0" y="168.0" fill="#F2EDE4">I</text>
-<rect x="522" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="544.0" y="120.0" fill="#F2EDE4">O</text>
-<rect x="570" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="592.0" y="168.0" fill="#F2EDE4">K</text>
-<rect x="618" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="640.0" y="168.0" fill="#F2EDE4">T</text>
-<rect x="618" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="640.0" y="120.0" fill="#F2EDE4">M</text>
-<rect x="618" y="42" width="44" height="44" rx="3" fill="rgba(216,35,42,0.14)" stroke="#D8232A" stroke-width="1.5"/>
-<text x="640.0" y="72.0" fill="#F2EDE4">A</text>
-<rect x="666" y="138" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="688.0" y="168.0" fill="#F2EDE4">S</text>
-<rect x="714" y="138" width="44" height="44" rx="3" fill="rgba(216,35,42,0.14)" stroke="#D8232A" stroke-width="1.5"/>
-<text x="736.0" y="168.0" fill="#F2EDE4">E</text>
-<rect x="714" y="90" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.42)" stroke-width="1.5"/>
-<text x="736.0" y="120.0" fill="#F2EDE4">R</text>
-<rect x="42" y="196" width="716" height="4" fill="#D8232A"/>
-<rect x="42" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="64.0" y="238.0" fill="#0A111F">D</text>
-<rect x="90" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="112.0" y="238.0" fill="#0A111F">E</text>
-<rect x="138" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="160.0" y="238.0" fill="#0A111F">C</text>
-<rect x="186" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="208.0" y="238.0" fill="#0A111F">O</text>
-<rect x="234" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="256.0" y="238.0" fill="#0A111F">D</text>
-<rect x="282" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="304.0" y="238.0" fill="#0A111F">E</text>
-<rect x="330" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.22)"/>
-<rect x="378" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="400.0" y="238.0" fill="#0A111F">T</text>
-<rect x="426" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="448.0" y="238.0" fill="#0A111F">H</text>
-<rect x="474" y="208" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="496.0" y="238.0" fill="#0A111F">E</text>
-<rect x="522" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="570" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="618" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="666" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="714" y="208" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="42" y="256" width="44" height="44" rx="3" fill="#F2EDE4"/>
-<text x="64.0" y="286.0" fill="#0A111F">G</text>
-<rect x="90" y="256" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.45)" stroke-width="1.5"/>
-<rect x="138" y="256" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.45)" stroke-width="1.5"/>
-<rect x="186" y="256" width="44" height="44" rx="3" fill="none" stroke="rgba(242,237,228,0.45)" stroke-width="1.5"/>
-<rect x="234" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="282" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="330" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="378" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="426" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="474" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="522" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="570" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="618" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="666" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
-<rect x="714" y="256" width="44" height="44" rx="3" fill="rgba(242,237,228,0.07)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 368" width="800" height="368" role="img" aria-label="Codemaster: letters waiting above the line to drop into their own column">
+<rect width="800" height="368" fill="#0A111F"/>
+<g font-family="Archivo, Helvetica, Arial, sans-serif" font-weight="600" font-size="30" text-anchor="middle">
+<rect x="70" y="100" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="104.0" y="145.0" fill="#F2EDE4">I</text>
+<rect x="70" y="26" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="104.0" y="71.0" fill="#F2EDE4">F</text>
+<rect x="292" y="100" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="326.0" y="145.0" fill="#F2EDE4">T</text>
+<rect x="440" y="100" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="474.0" y="145.0" fill="#F2EDE4">C</text>
+<rect x="588" y="100" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="622.0" y="145.0" fill="#F2EDE4">L</text>
+<rect x="662" y="100" width="68" height="68" rx="4" fill="none" stroke="rgba(242,237,228,0.5)" stroke-width="2"/>
+<text x="696.0" y="145.0" fill="#F2EDE4">E</text>
+<rect x="70" y="184" width="660" height="4" fill="#D8232A"/>
+<rect x="70" y="200" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
+<rect x="144" y="200" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="178.0" y="245.0" fill="#0A111F">O</text>
+<rect x="218" y="200" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="252.0" y="245.0" fill="#0A111F">O</text>
+<rect x="292" y="200" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
+<rect x="366" y="200" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="400.0" y="245.0" fill="#0A111F">B</text>
+<rect x="440" y="200" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="474.0" y="245.0" fill="#0A111F">A</text>
+<rect x="514" y="200" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="548.0" y="245.0" fill="#0A111F">L</text>
+<rect x="588" y="200" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
+<rect x="662" y="200" width="68" height="68" rx="4" fill="rgba(242,237,228,0.07)"/>
+<rect x="70" y="274" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
+<rect x="144" y="274" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="178.0" y="319.0" fill="#0A111F">S</text>
+<rect x="218" y="274" width="68" height="68" rx="4" fill="rgba(242,237,228,0.22)"/>
+<rect x="292" y="274" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="326.0" y="319.0" fill="#0A111F">A</text>
+<rect x="366" y="274" width="68" height="68" rx="4" fill="rgba(242,237,228,0.22)"/>
+<rect x="440" y="274" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
+<rect x="514" y="274" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="548.0" y="319.0" fill="#0A111F">O</text>
+<rect x="588" y="274" width="68" height="68" rx="4" fill="#F2EDE4"/>
+<text x="622.0" y="319.0" fill="#0A111F">D</text>
+<rect x="662" y="274" width="68" height="68" rx="4" fill="none" stroke="rgba(216,35,42,0.75)" stroke-width="2"/>
 </g></svg>
