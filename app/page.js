@@ -1,4 +1,5 @@
 import HomeTree from "@/components/home/HomeTree";
+import CodemasterAnnouncement from "@/components/codemaster/CodemasterAnnouncement";
 import {
   getVotingState,
   SITE_DESCRIPTION,
@@ -85,6 +86,7 @@ export default async function Home() {
         showVotingDate={getVotingState() === "open"}
         isSignedIn={isSignedIn}
       />
+      <CodemasterAnnouncement />
     </>
   );
 }

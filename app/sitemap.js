@@ -6,6 +6,7 @@ export default function sitemap() {
     { path: "/films", changeFrequency: "daily", priority: 0.9 },
     { path: "/reflections", changeFrequency: "daily", priority: 0.9 },
     { path: "/guesser", changeFrequency: "daily", priority: 0.9 },
+    { path: "/codemaster", changeFrequency: "weekly", priority: 0.8 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
     { path: "/concierge", changeFrequency: "weekly", priority: 0.8 },
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },

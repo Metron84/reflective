@@ -8,6 +8,14 @@
     "cover": null
   },
   {
+    "slug": "codemaster",
+    "title": "Codemaster",
+    "hook": "Decode two decades of football, one grid at a time.",
+    "status": "live",
+    "href": "/codemaster",
+    "cover": "/codemaster/codemaster-card.svg"
+  },
+  {
     "slug": "the-stand",
     "title": "The Stand",
     "hook": "Club, nation, or player. Five questions a day. Save your chapter.",
