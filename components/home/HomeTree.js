@@ -7,6 +7,7 @@ import {
   GUESSER_STRAPLINE,
   HOME_HERO_STILL,
 } from "@/lib/config";
+import ReportRibbon from "@/components/ReportRibbon";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -154,6 +155,8 @@ export default function HomeTree({ showVotingDate, isSignedIn = false }) {
           <p className={`${styles.tagline} ${taglineClass}`}>
             Football is nothing without the fans.
           </p>
+
+          <ReportRibbon />
 
           <p className={`${styles.root} ${rootClass}`}>Watch. Vote. Play.</p>
 

@@ -12,6 +12,7 @@ export const metadata = {
   title: "Films",
   description:
     "We connect the football fan community. Fan-first football films from Dubai.",
+  alternates: { canonical: "/films" },
 };
 
 export const dynamic = "force-dynamic";

@@ -1,6 +1,27 @@
 import HomeTree from "@/components/home/HomeTree";
-import { getVotingState, SITE_URL, SOCIAL_LINKS } from "@/lib/config";
+import {
+  getVotingState,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  SOCIAL_LINKS,
+} from "@/lib/config";
 import { getAuthContext } from "@/lib/auth/session";
+
+export const metadata = {
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    url: "/",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    description: SITE_DESCRIPTION,
+  },
+};
+
+const REPORT_DOI = "https://doi.org/10.5281/zenodo.21713449";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -9,8 +30,10 @@ const structuredData = {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "The Reflective Football",
+      alternateName: "TRF",
       url: SITE_URL,
       logo: `${SITE_URL}/brand/trf-icon-512.png`,
+      description: SITE_DESCRIPTION,
       slogan: "Football is nothing without the fans.",
       email: "melo@thereflectivefootball.com",
       sameAs: [
@@ -24,10 +47,27 @@ const structuredData = {
       "@id": `${SITE_URL}/#website`,
       name: "The Reflective Football",
       url: SITE_URL,
-      description:
-        "Fan-first football films from Dubai. Football is nothing without the fans.",
+      description: SITE_DESCRIPTION,
       publisher: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en",
+    },
+    {
+      "@type": "Report",
+      "@id": `${SITE_URL}/#who-is-football-for`,
+      headline:
+        "Who Is Football For? Fan Testimony from the 2026 FIFA World Cup",
+      name: "Who Is Football For? Fan Testimony from the 2026 FIFA World Cup",
+      identifier: REPORT_DOI,
+      url: REPORT_DOI,
+      datePublished: "2026-07-31",
+      author: {
+        "@type": "Person",
+        name: "Melo Doumani",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "The Reflective Football LLC",
+      },
     },
   ],
 };

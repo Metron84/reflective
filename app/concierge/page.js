@@ -7,6 +7,7 @@ export const metadata = {
   title: "The Concierge",
   description:
     "Ask about venues, atmospheres, and the best fan moments we've filmed.",
+  alternates: { canonical: "/concierge" },
 };
 
 export default function ConciergePage() {

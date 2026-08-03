@@ -35,6 +35,7 @@ export const metadata = {
   title: "The Guesser",
   description:
     "One player a day. Guess the footballer from progressive feedback.",
+  alternates: { canonical: "/guesser" },
   openGraph: {
     title: "The Guesser | The Reflective Football",
     description:

@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
-import { SITE_URL } from "@/lib/config";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -23,8 +23,7 @@ export const metadata = {
     default: "The Reflective Football",
     template: "%s | The Reflective Football",
   },
-  description:
-    "Fan-first football films from Dubai. Football is nothing without the fans.",
+  description: SITE_DESCRIPTION,
   alternates: {
     canonical: "./",
   },
@@ -40,16 +39,23 @@ export const metadata = {
     type: "website",
     siteName: "The Reflective Football",
     title: "The Reflective Football",
-    description:
-      "Fan-first football films from Dubai. Football is nothing without the fans.",
+    description: SITE_DESCRIPTION,
     url: "./",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Reflective Football. Watch. Vote. Play.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "The Reflective Football",
-    description:
-      "Fan-first football films from Dubai. Football is nothing without the fans.",
+    description: SITE_DESCRIPTION,
+    images: ["/og-default.jpg"],
   },
   icons: {
     icon: "/brand/favicon.ico",

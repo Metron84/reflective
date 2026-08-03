@@ -16,6 +16,7 @@ export const metadata = {
   title: "The Reflectives",
   description:
     "Eight awards for the fans of the summer. Watch the nominees. Sign up free to vote.",
+  alternates: { canonical: "/reflections" },
   openGraph: {
     title: "The Reflectives | The Reflective Football",
     description:
