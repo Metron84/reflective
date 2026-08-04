@@ -76,19 +76,27 @@
   transition: color 0.2s ease;
 }
 
-.strapline {
+.statusLine {
+  display: block;
+  max-width: 100%;
+  margin-top: 0.125rem;
   font-family: var(--font-body);
-  font-size: max(0.8125rem, 13px);
+  font-size: max(0.75rem, 12px);
   line-height: 1.35;
-  color: rgba(242, 237, 228, 0.68);
+  color: rgba(242, 237, 228, 0.62);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.dateLine {
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  line-height: 1.35;
-  letter-spacing: 0.06em;
-  color: rgba(242, 237, 228, 0.65);
+.statusNew {
+  color: #d8232a;
+}
+
+@media (min-width: 1024px) {
+  .statusLine {
+    font-size: max(0.8125rem, 13px);
+  }
 }
 
 .arrowWrap {

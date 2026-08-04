@@ -1,0 +1,133 @@
+.section {
+  width: 100%;
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.inner {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 3.5rem;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #f2ede4;
+}
+
+.standfirst {
+  margin: 1rem 0 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: rgba(242, 237, 228, 0.82);
+}
+
+/* Mobile: stack. sm+: always 3 cols (never 2+1). */
+.chips {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+
+@media (min-width: 640px) {
+  .chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem 0.65rem;
+  }
+}
+
+/* Quiet chip (films base style), not pills */
+.chip {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+  background: rgba(10, 17, 31, 0.35);
+  border-radius: 0;
+}
+
+.chipValue {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.1;
+  color: #f2ede4;
+}
+
+.chipLabel {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  color: rgba(242, 237, 228, 0.68);
+}
+
+.findings {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgba(242, 237, 228, 0.82);
+}
+
+.findings p {
+  margin: 0;
+}
+
+.actions {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.35rem;
+  background: #d8232a;
+  color: #f2ede4;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.primary:hover {
+  opacity: 0.9;
+}
+
+.secondary {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: rgba(242, 237, 228, 0.78);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.secondary:hover {
+  color: #f2ede4;
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    max-width: 48rem;
+    padding: 4rem 1.5rem 4.5rem;
+  }
+}

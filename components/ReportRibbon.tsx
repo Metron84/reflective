@@ -1,3 +1,5 @@
+import { REPORT_DOI } from "@/lib/report";
+
 export default function ReportRibbon() {
   return (
     <p className="w-full border-b border-navy/10 bg-paper px-4 py-2.5 text-center font-body text-[13px] leading-snug tracking-[0.01em] text-navy sm:text-sm">
@@ -14,7 +16,7 @@ export default function ReportRibbon() {
         Cup.{" "}
       </span>
       <a
-        href="https://doi.org/10.5281/zenodo.21713449"
+        href={REPORT_DOI}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Read Who Is Football For, fan testimony from the 2026 World Cup, on Zenodo"

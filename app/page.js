@@ -1,12 +1,14 @@
 import HomeTree from "@/components/home/HomeTree";
-import CodemasterAnnouncement from "@/components/codemaster/CodemasterAnnouncement";
+import ReportSection from "@/components/home/ReportSection";
 import {
-  getVotingState,
   SITE_DESCRIPTION,
   SITE_URL,
   SOCIAL_LINKS,
+  getHeroPromoVideoSrc,
 } from "@/lib/config";
 import { getAuthContext } from "@/lib/auth/session";
+import { getHomepageDoorMeta } from "@/lib/homepage-status";
+import { REPORT_DOI } from "@/lib/report";
 
 export const metadata = {
   description: SITE_DESCRIPTION,
@@ -21,8 +23,6 @@ export const metadata = {
     description: SITE_DESCRIPTION,
   },
 };
-
-const REPORT_DOI = "https://doi.org/10.5281/zenodo.21713449";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -75,6 +75,8 @@ const structuredData = {
 
 export default async function Home() {
   const { isSignedIn } = await getAuthContext();
+  const doorMeta = getHomepageDoorMeta();
+  const promoVideoSrc = getHeroPromoVideoSrc();
 
   return (
     <>
@@ -83,10 +85,11 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <HomeTree
-        showVotingDate={getVotingState() === "open"}
+        doorMeta={doorMeta}
+        promoVideoSrc={promoVideoSrc}
         isSignedIn={isSignedIn}
       />
-      <CodemasterAnnouncement />
+      <ReportSection />
     </>
   );
 }

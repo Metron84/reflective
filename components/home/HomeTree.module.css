@@ -199,96 +199,72 @@
   animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.tagline {
-  margin-top: 0.75rem;
-  max-width: 16rem;
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  line-height: 1.35;
-  letter-spacing: 0.04em;
-  color: rgba(242, 237, 228, 0.85);
-}
-
-@media (min-width: 640px) {
-  .tagline {
-    font-size: 0.875rem;
-    max-width: 18rem;
-  }
-}
-
-.enterTaglineHidden {
-  opacity: 0;
-}
-
-.enterTagline {
-  animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
-  opacity: 0;
-}
-
-.root {
-  margin-top: 1.125rem;
-  max-width: 100%;
-  font-family: var(--font-display);
-  font-size: clamp(1.875rem, 8.2vw, 5.25rem);
-  line-height: 0.95;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  color: #f2ede4;
-}
-
-@media (min-width: 640px) {
-  .root {
-    margin-top: 1.375rem;
-    font-size: clamp(2.75rem, 6.5vw, 5.5rem);
-    letter-spacing: 0.04em;
-  }
-}
-
-.enterRootHidden {
-  opacity: 0;
-}
-
-.enterRoot {
-  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.38s forwards;
-  opacity: 0;
-}
-
-.heroCta {
-  margin-top: 1.375rem;
+.heroStage {
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
 }
 
-.heroCtaSubline {
-  max-width: 16rem;
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
-  color: rgba(242, 237, 228, 0.62);
+.heroCopy {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
+.fansHeadline {
+  margin-top: 0.75rem;
+  max-width: 14ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12vw, 4.75rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: #f2ede4;
+  text-wrap: balance;
+}
+
 @media (min-width: 640px) {
-  .heroCta {
-    margin-top: 1.5rem;
-  }
-
-  .heroCtaSubline {
-    font-size: 0.75rem;
-    max-width: 18rem;
+  .fansHeadline {
+    font-size: clamp(3.25rem, 7vw, 6rem);
   }
 }
 
-.enterCtaHidden {
+.enterHeadlineHidden {
   opacity: 0;
 }
 
-.enterCta {
-  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.58s forwards;
+.enterHeadline {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
   opacity: 0;
+}
+
+@media (min-width: 1024px) {
+  .heroStage {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+    margin-top: 0.5rem;
+    text-align: left;
+  }
+
+  .heroCopy {
+    flex: 1;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .fansHeadline {
+    max-width: 12ch;
+    text-align: left;
+  }
+}
+
+.reportSlot {
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
 .doorsMenu {
@@ -321,18 +297,14 @@
   }
 
   .enterCrest,
-  .enterTagline,
-  .enterRoot,
-  .enterCta {
+  .enterHeadline {
     animation: none;
     opacity: 1;
     transform: none;
   }
 
   .enterCrestHidden,
-  .enterTaglineHidden,
-  .enterRootHidden,
-  .enterCtaHidden {
+  .enterHeadlineHidden {
     opacity: 1;
   }
 }

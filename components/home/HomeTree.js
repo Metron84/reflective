@@ -1,13 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
-import {
-  GUESSER_STRAPLINE,
-  HOME_HERO_STILL,
-} from "@/lib/config";
+import { HOME_HERO_STILL } from "@/lib/config";
 import ReportRibbon from "@/components/ReportRibbon";
+import HeroPromoVideo from "./HeroPromoVideo";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -24,14 +21,12 @@ const DOORS = [
     href: "/reflections",
     category: "Awards.",
     qualifier: "For the Fans.",
-    dateLine: "Sign up free to vote.",
   },
   {
     id: "games",
     href: "/games",
     category: "Games.",
     qualifier: "For the Fun.",
-    strapline: GUESSER_STRAPLINE,
   },
   {
     id: "concierge",
@@ -88,7 +83,11 @@ function useHomeTabOrder(doorRefs) {
   }, [doorRefs]);
 }
 
-export default function HomeTree({ showVotingDate, isSignedIn = false }) {
+export default function HomeTree({
+  doorMeta,
+  promoVideoSrc = "/promo/promo.mp4",
+  isSignedIn: _isSignedIn = false,
+}) {
   const { skipEntrance, animate } = useTreeEntrance();
   const doorRefs = useRef([]);
 
@@ -99,21 +98,11 @@ export default function HomeTree({ showVotingDate, isSignedIn = false }) {
     : animate
       ? styles.enterCrest
       : styles.enterCrestHidden;
-  const taglineClass = skipEntrance
+  const headlineClass = skipEntrance
     ? ""
     : animate
-      ? styles.enterTagline
-      : styles.enterTaglineHidden;
-  const rootClass = skipEntrance
-    ? ""
-    : animate
-      ? styles.enterRoot
-      : styles.enterRootHidden;
-  const ctaClass = skipEntrance
-    ? ""
-    : animate
-      ? styles.enterCta
-      : styles.enterCtaHidden;
+      ? styles.enterHeadline
+      : styles.enterHeadlineHidden;
 
   return (
     <section className={`${styles.tree} hero-grain`} aria-label="The Tree">
@@ -145,56 +134,48 @@ export default function HomeTree({ showVotingDate, isSignedIn = false }) {
                 alt="The Reflective Football"
                 width={220}
                 height={220}
-                className={`${styles.crestImage} relative z-10 h-36 w-36 sm:h-44 sm:w-44`}
+                className={`${styles.crestImage} relative z-10 h-20 w-20 sm:h-24 sm:w-24`}
                 priority
               />
             </div>
           </div>
 
-          <h1 className="sr-only">The Reflective Football</h1>
-          <p className={`${styles.tagline} ${taglineClass}`}>
-            Football is nothing without the fans.
-          </p>
-
-          <ReportRibbon />
-
-          <p className={`${styles.root} ${rootClass}`}>Watch. Vote. Play.</p>
-
-          {!isSignedIn ? (
-            <div className={`${styles.heroCta} ${ctaClass}`}>
-              <Link
-                href="/signin"
-                className="inline-flex rounded-full bg-signal px-7 py-2.5 font-body text-sm font-medium text-paper transition-opacity hover:opacity-90"
-              >
-                Sign up free
-              </Link>
-              <p className={styles.heroCtaSubline}>
-                Vote in The Reflectives. Play The Guesser. Your programme.
+          <div className={styles.heroStage}>
+            <div className={styles.heroCopy}>
+              <h1 className="sr-only">The Reflective Football</h1>
+              <p className={`${styles.fansHeadline} ${headlineClass}`}>
+                Football is nothing without the fans.
               </p>
             </div>
-          ) : null}
+            <HeroPromoVideo src={promoVideoSrc} />
+          </div>
+
+          <div className={styles.reportSlot}>
+            <ReportRibbon />
+          </div>
         </div>
 
         <nav className={styles.doorsMenu} aria-label="The Tree doors">
-          {DOORS.map((door, index) => (
-            <TreeDoor
-              key={door.id}
-              ref={(el) => {
-                doorRefs.current[index] = el;
-              }}
-              href={door.href}
-              category={door.category}
-              qualifier={door.qualifier}
-              strapline={door.strapline}
-              dateLine={
-                door.id === "awards" && showVotingDate ? door.dateLine : null
-              }
-              doorId={door.id}
-              entranceIndex={index}
-              skipEntrance={skipEntrance}
-              animate={animate}
-            />
-          ))}
+          {DOORS.map((door, index) => {
+            const meta = doorMeta?.[door.id];
+            return (
+              <TreeDoor
+                key={door.id}
+                ref={(el) => {
+                  doorRefs.current[index] = el;
+                }}
+                href={meta?.href ?? door.href}
+                category={door.category}
+                qualifier={door.qualifier}
+                statusLine={meta?.statusLine ?? null}
+                external={Boolean(meta?.external)}
+                doorId={door.id}
+                entranceIndex={index}
+                skipEntrance={skipEntrance}
+                animate={animate}
+              />
+            );
+          })}
         </nav>
       </div>
     </section>

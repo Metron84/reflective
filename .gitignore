@@ -50,3 +50,7 @@ next-env.d.ts
 # Serwist (generated at build)
 public/sw*
 public/swe-worker*
+
+# Hero promo video (serve from Vercel Blob via HERO_PROMO_VIDEO_URL; keep local for dev)
+public/promo/*.mp4
+public/promo/*.webm

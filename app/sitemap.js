@@ -1,4 +1,4 @@
-import { SITE_URL } from "@/lib/config";
+import { SITE_URL, STAND_ENABLED } from "@/lib/config";
 
 export default function sitemap() {
   const routes = [
@@ -12,6 +12,9 @@ export default function sitemap() {
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
+    ...(STAND_ENABLED
+      ? [{ path: "/stand", changeFrequency: "daily", priority: 0.8 }]
+      : []),
   ];
 
   return routes.map(({ path, changeFrequency, priority }) => ({

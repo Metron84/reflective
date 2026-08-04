@@ -6,13 +6,28 @@ import styles from "./TreeDoor.module.css";
 const ROW_ENTRANCE_BASE_MS = 680;
 const ROW_ENTRANCE_STAGGER_MS = 140;
 
+function StatusLine({ doorId, statusLine }) {
+  if (!statusLine) return null;
+
+  if (doorId === "games" && statusLine.startsWith("New.")) {
+    return (
+      <span className={styles.statusLine}>
+        <span className={styles.statusNew}>New</span>
+        <span>{statusLine.slice(3)}</span>
+      </span>
+    );
+  }
+
+  return <span className={styles.statusLine}>{statusLine}</span>;
+}
+
 const TreeDoor = forwardRef(function TreeDoor(
   {
     href,
     category,
     qualifier,
-    strapline,
-    dateLine,
+    statusLine,
+    external = false,
     doorId,
     entranceIndex,
     skipEntrance,
@@ -42,6 +57,9 @@ const TreeDoor = forwardRef(function TreeDoor(
       id={`tree-door-${doorId}`}
       className={`${styles.row} ${entranceClass}`}
       style={entranceStyle}
+      {...(external
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
     >
       <span className={styles.iconWrap} aria-hidden="true">
         {Icon ? <Icon className={styles.icon} /> : null}
@@ -49,8 +67,7 @@ const TreeDoor = forwardRef(function TreeDoor(
       <span className={styles.textBlock}>
         <span className={styles.category}>{category}</span>
         <span className={styles.qualifier}>{qualifier}</span>
-        {strapline ? <span className={styles.strapline}>{strapline}</span> : null}
-        {dateLine ? <span className={styles.dateLine}>{dateLine}</span> : null}
+        <StatusLine doorId={doorId} statusLine={statusLine} />
       </span>
       <span className={styles.arrowWrap} aria-hidden="true">
         <IconArrow className={styles.arrow} />

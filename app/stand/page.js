@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
 import StandBoard from "@/components/stand/StandBoard";
 import { getAuthContext } from "@/lib/auth/session";
+import { STAND_ENABLED } from "@/lib/config";
 import {
   chapterCatalog,
   getClubOptionsForStand,
@@ -11,9 +11,6 @@ import {
 } from "@/lib/stand";
 import styles from "./page.module.css";
 
-/** Parked: hide from the public site. Flip to false to restore /stand. */
-const STAND_PARKED = true;
-
 export const metadata = {
   title: "The Stand",
   description:
@@ -23,14 +20,14 @@ export const metadata = {
     description:
       "Pick your badges. Play five questions a day. Sign up to save your chapter.",
   },
-  robots: STAND_PARKED ? { index: false, follow: false } : undefined,
+  robots: STAND_ENABLED
+    ? undefined
+    : { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
 
 export default async function StandPage() {
-  if (STAND_PARKED) notFound();
-
   const { isSignedIn } = await getAuthContext();
   const chapterIds = listStandChapters();
   const chaptersById = Object.fromEntries(
