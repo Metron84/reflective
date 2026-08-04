@@ -55,10 +55,22 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
 
     el.muted = true;
 
+    const onPlaying = () => setPlaying(true);
+    const onPause = () => {
+      if (el.ended) return;
+      setPlaying(false);
+    };
+
+    el.addEventListener("playing", onPlaying);
+    el.addEventListener("pause", onPause);
+
     if (reducedMotion) {
       el.pause();
       setPlaying(false);
-      return;
+      return () => {
+        el.removeEventListener("playing", onPlaying);
+        el.removeEventListener("pause", onPause);
+      };
     }
 
     const attempt = el.play();
@@ -72,6 +84,11 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
           }
         });
     }
+
+    return () => {
+      el.removeEventListener("playing", onPlaying);
+      el.removeEventListener("pause", onPause);
+    };
   }, [reducedMotion, src]);
 
   function toggleMute(event) {
@@ -82,7 +99,8 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
     setMuted(el.muted);
   }
 
-  function playFromPoster() {
+  function playFromPoster(event) {
+    event.stopPropagation();
     const el = videoRef.current;
     if (!el) return;
     el.muted = true;
@@ -92,6 +110,7 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
       attempt
         .then(() => setPlaying(true))
         .catch((err) => {
+          setPlaying(false);
           if (process.env.NODE_ENV !== "production") {
             console.warn("[TRF] Hero promo play() failed:", err?.name, err?.message);
           }
@@ -109,13 +128,13 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
         playsInline
         loop
         muted
-        autoPlay
+        autoPlay={!reducedMotion}
         aria-label="The Reflective Football promo"
       >
         <source src={src} type="video/mp4" />
       </video>
 
-      {reducedMotion && !playing ? (
+      {!playing ? (
         <button
           type="button"
           className={styles.control}
