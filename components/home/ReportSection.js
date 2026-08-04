@@ -1,9 +1,5 @@
 import Link from "next/link";
-import {
-  REPORT_DOI,
-  SAMPLE_REPORT_FINDINGS,
-  SAMPLE_REPORT_STATS,
-} from "@/lib/report";
+import { REPORT_DOI, REPORT_FINDINGS, REPORT_STATS } from "@/lib/report";
 import styles from "./ReportSection.module.css";
 
 export default function ReportSection() {
@@ -15,12 +11,12 @@ export default function ReportSection() {
         </h2>
 
         <p className={styles.standfirst}>
-          Around 400 fans interviewed, from May to the World Cup final, in Dubai
-          and beyond.
+          Interviews filmed from May to the World Cup final, in Dubai and
+          beyond.
         </p>
 
         <ul className={styles.chips}>
-          {SAMPLE_REPORT_STATS.map((stat) => (
+          {REPORT_STATS.map((stat) => (
             <li key={stat.label} className={styles.chip}>
               <span className={styles.chipValue}>{stat.value}</span>
               <span className={styles.chipLabel}>{stat.label}</span>
@@ -29,7 +25,7 @@ export default function ReportSection() {
         </ul>
 
         <div className={styles.findings}>
-          {SAMPLE_REPORT_FINDINGS.map((line) => (
+          {REPORT_FINDINGS.map((line) => (
             <p key={line}>{line}</p>
           ))}
         </div>
