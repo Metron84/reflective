@@ -55,13 +55,17 @@
   .frame {
     margin-top: 0;
     justify-content: flex-end;
-    flex: 0 0 auto;
-    width: min(100%, calc(min(72vh, 640px) * 16 / 9));
+    flex: 0 1 45%;
+    max-width: 45%;
+    width: auto;
+    height: auto;
+    max-height: min(72vh, 640px);
+    aspect-ratio: 16 / 9;
   }
 
   .video {
     width: 100%;
-    height: auto;
+    height: 100%;
     max-height: min(72vh, 640px);
     aspect-ratio: 16 / 9;
     object-fit: contain;

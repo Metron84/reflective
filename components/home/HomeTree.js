@@ -126,22 +126,22 @@ export default function HomeTree({
 
       <div className={styles.inner}>
         <div className={styles.axis}>
-          <div className={styles.crestFrameWrap}>
-            <div className={`${styles.crestFrame} ${crestClass}`}>
-              <span className={styles.crestShine} aria-hidden="true" />
-              <Image
-                src="/brand/trf-crest-transparent.png"
-                alt="The Reflective Football"
-                width={220}
-                height={220}
-                className={`${styles.crestImage} relative z-10 h-20 w-20 sm:h-24 sm:w-24`}
-                priority
-              />
-            </div>
-          </div>
-
           <div className={styles.heroStage}>
             <div className={styles.heroCopy}>
+              <div className={styles.crestFrameWrap}>
+                <div className={`${styles.crestFrame} ${crestClass}`}>
+                  <span className={styles.crestShine} aria-hidden="true" />
+                  <Image
+                    src="/brand/trf-crest-transparent.png"
+                    alt="The Reflective Football"
+                    width={220}
+                    height={220}
+                    className={`${styles.crestImage} relative z-10 h-20 w-20 sm:h-24 sm:w-24`}
+                    priority
+                  />
+                </div>
+              </div>
+
               <h1 className="sr-only">The Reflective Football</h1>
               <p className={`${styles.fansHeadline} ${headlineClass}`}>
                 Football is nothing without the fans.

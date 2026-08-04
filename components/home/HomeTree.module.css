@@ -241,24 +241,45 @@
 }
 
 @media (min-width: 1024px) {
+  .axis {
+    min-height: calc(100svh - 4rem);
+    justify-content: center;
+  }
+
   .heroStage {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 2.5rem;
-    margin-top: 0.5rem;
+    gap: clamp(1.5rem, 3.5vw, 4rem);
+    width: 100%;
+    margin-top: 0;
     text-align: left;
+    container-type: inline-size;
   }
 
   .heroCopy {
-    flex: 1;
+    flex: 1 1 55%;
+    max-width: 55%;
     align-items: flex-start;
     text-align: left;
   }
 
+  .crestFrameWrap {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .crestImage {
+    margin-inline: 0;
+  }
+
   .fansHeadline {
-    max-width: 12ch;
+    max-width: min(14ch, 50cqi);
     text-align: left;
+  }
+
+  .ctaSlot {
+    width: 100%;
   }
 }
 
