@@ -37,14 +37,12 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const reduced = mq.matches;
     setReducedMotion(reduced);
-    setReady(true);
 
     const sync = () => setReducedMotion(mq.matches);
     mq.addEventListener("change", sync);
@@ -52,16 +50,29 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
   }, []);
 
   useEffect(() => {
-    if (!ready || reducedMotion) return;
     const el = videoRef.current;
     if (!el) return;
+
     el.muted = true;
-    const attempt = el.play();
-    if (attempt?.catch) {
-      attempt.catch(() => {});
+
+    if (reducedMotion) {
+      el.pause();
+      setPlaying(false);
+      return;
     }
-    setPlaying(true);
-  }, [ready, reducedMotion]);
+
+    const attempt = el.play();
+    if (attempt?.then) {
+      attempt
+        .then(() => setPlaying(true))
+        .catch((err) => {
+          setPlaying(false);
+          if (process.env.NODE_ENV !== "production") {
+            console.warn("[TRF] Hero promo play() failed:", err?.name, err?.message);
+          }
+        });
+    }
+  }, [reducedMotion, src]);
 
   function toggleMute(event) {
     event.stopPropagation();
@@ -77,10 +88,15 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
     el.muted = true;
     setMuted(true);
     const attempt = el.play();
-    if (attempt?.catch) {
-      attempt.catch(() => {});
+    if (attempt?.then) {
+      attempt
+        .then(() => setPlaying(true))
+        .catch((err) => {
+          if (process.env.NODE_ENV !== "production") {
+            console.warn("[TRF] Hero promo play() failed:", err?.name, err?.message);
+          }
+        });
     }
-    setPlaying(true);
   }
 
   return (
@@ -89,11 +105,11 @@ export default function HeroPromoVideo({ src = "/promo/promo.mp4" }) {
         ref={videoRef}
         className={styles.video}
         poster="/promo/promo-poster.jpg"
-        preload="metadata"
+        preload="auto"
         playsInline
         loop
         muted
-        autoPlay={ready && !reducedMotion}
+        autoPlay
         aria-label="The Reflective Football promo"
       >
         <source src={src} type="video/mp4" />
