@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { HOME_HERO_STILL } from "@/lib/config";
-import ReportRibbon from "@/components/ReportRibbon";
+import HeroCta from "./HeroCta";
 import HeroPromoVideo from "./HeroPromoVideo";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
@@ -150,8 +150,8 @@ export default function HomeTree({
             <HeroPromoVideo src={promoVideoSrc} />
           </div>
 
-          <div className={styles.reportSlot}>
-            <ReportRibbon />
+          <div className={styles.ctaSlot}>
+            <HeroCta />
           </div>
         </div>
 

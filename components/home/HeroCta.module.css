@@ -1,0 +1,81 @@
+.ribbon {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--color-paper);
+  outline: none;
+  transition: opacity 0.15s ease;
+}
+
+.ribbon:hover {
+  opacity: 0.92;
+}
+
+.ribbon:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 3px;
+}
+
+.lineShort,
+.lineFull {
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--color-paper);
+  text-align: center;
+}
+
+.lineShort {
+  display: inline;
+}
+
+.lineFull {
+  display: none;
+  max-width: min(100%, 28rem);
+}
+
+@media (min-width: 380px) {
+  .lineShort {
+    display: none;
+  }
+
+  .lineFull {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lineShort,
+  .lineFull {
+    font-size: 1rem;
+  }
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--color-signal);
+  transition: transform 0.15s ease;
+}
+
+.ribbon:hover .arrow,
+.ribbon:focus-visible .arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon,
+  .arrow {
+    transition: none;
+  }
+
+  .ribbon:hover .arrow,
+  .ribbon:focus-visible .arrow {
+    transform: none;
+  }
+}
