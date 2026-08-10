@@ -1,16 +1,23 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getPreviewEntries } from "@/lib/archive/index";
 import { buildSearchIndex } from "@/lib/archive/search";
 import ArchiveIndex from "@/components/archive/ArchiveIndex";
 import ArchiveOfflineNotice from "@/components/archive/ArchiveOfflineNotice";
 import styles from "./page.module.css";
 
-export function generateMetadata() {
+export function generateMetadata(): Metadata {
   return {
     title: "The Beautiful Archive",
     description:
       "Football in books, film, photography, music and art. A curated archive from The Reflective Football.",
     alternates: { canonical: "/archive" },
+    openGraph: {
+      title: "The Beautiful Archive",
+      description:
+        "Football in books, film, photography, music and art. A curated archive from The Reflective Football.",
+      type: "website",
+    },
   };
 }
 

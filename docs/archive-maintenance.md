@@ -27,3 +27,4 @@ Standing rules for keeping The Beautiful Archive accurate after launch.
 - `npm run validate:archive` — schema and integrity checks (runs in build).
 - `npm run export:checklist` — regenerates `exports/archive-checklist.csv` and `exports/museum-worklist.csv` for hand verification.
 - `npm run generate:archive-lenses` — local Ollama drafts only; promote by hand into `content/archive/lenses.json`.
+- Launch threshold helper: `lib/archive/launch.ts` (`isArchiveLaunchReady()` at 100 published). Sitemap, JSON-LD, canonical URLs and Open Graph cards ship ungated below that bar.

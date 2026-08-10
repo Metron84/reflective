@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPreviewEntries } from "@/lib/archive/index";
+import { buildArchiveEntryJsonLd } from "@/lib/archive/jsonld";
 import { getRelatedEntries } from "@/lib/archive/related";
 import { ARCHIVE_MEDIUM_TAGS } from "@/lib/archive/labels";
 import type { ArchiveEntry } from "@/lib/archive/types";
@@ -37,13 +38,14 @@ export async function generateMetadata({
     return { title: "Not found" };
   }
 
-  // TODO: add JSON-LD structured data once entries publish.
   return {
     title: `${entry.title} | The Beautiful Archive`,
     description: entry.logline,
+    alternates: { canonical: `/archive/${entry.id}` },
     openGraph: {
       title: `${entry.title} | The Beautiful Archive`,
       description: entry.logline,
+      type: "website",
     },
     ...(entry.status !== "published"
       ? { robots: { index: false, follow: false } }
@@ -86,15 +88,24 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
   if (!entry) notFound();
 
   const related = getRelatedEntries(entry, pool, 3);
-  const byline = [entry.creator, entry.year == null ? null : String(entry.year), entry.country]
+  const byline = [
+    entry.creator,
+    entry.year == null ? null : String(entry.year),
+    entry.country,
+  ]
     .filter(Boolean)
     .join(" · ");
   const correctionMailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
     `Archive correction: ${entry.title}`,
   )}`;
+  const jsonLd = buildArchiveEntryJsonLd(entry);
 
   return (
     <article className={styles.page}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {entry.status === "holding" ? (
         <div className={styles.banner} role="status">
           Unverified. Not published.

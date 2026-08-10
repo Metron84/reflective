@@ -1,6 +1,9 @@
 import { SITE_URL, STAND_ENABLED } from "@/lib/config";
+import { getAllEntries } from "@/lib/archive/index";
 
 export default function sitemap() {
+  const lastModified = new Date();
+
   const routes = [
     { path: "", changeFrequency: "daily", priority: 1 },
     { path: "/films", changeFrequency: "daily", priority: 0.9 },
@@ -9,6 +12,7 @@ export default function sitemap() {
     { path: "/codemaster", changeFrequency: "weekly", priority: 0.8 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
     { path: "/concierge", changeFrequency: "weekly", priority: 0.8 },
+    { path: "/archive", changeFrequency: "weekly", priority: 0.85 },
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
@@ -17,10 +21,19 @@ export default function sitemap() {
       : []),
   ];
 
-  return routes.map(({ path, changeFrequency, priority }) => ({
+  const staticRoutes = routes.map(({ path, changeFrequency, priority }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
+    lastModified,
     changeFrequency,
     priority,
   }));
+
+  const archiveEntries = getAllEntries().map((entry) => ({
+    url: `${SITE_URL}/archive/${entry.id}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...archiveEntries];
 }
