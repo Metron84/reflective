@@ -6,6 +6,7 @@
     "dev": "next dev -p 4343",
     "validate:archive": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-archive.ts",
     "generate:archive-lenses": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-lenses.ts",
+    "export:checklist": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/export-checklist.ts",
     "build": "npm run validate:archive && next build --webpack",
     "start": "next start",
     "lint": "eslint",

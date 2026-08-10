@@ -60,3 +60,6 @@ content/archive/lenses.draft.json
 
 # Generated Beautiful Archive public JSON mirrors (published only)
 public/archive/data/
+
+# Local archive verification exports (regenerate via npm run export:checklist)
+/exports/
