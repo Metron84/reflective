@@ -69,4 +69,6 @@ export interface ArchiveEntry {
 export interface ArchiveQuarantineItem {
   title: string;
   reason: string;
+  /** Optional context for a later discrete-work pass (e.g. fanbase name). */
+  note?: string;
 }

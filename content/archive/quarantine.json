@@ -94,5 +94,60 @@
   {
     "title": "The American Football Dream",
     "reason": "american_football_not_association_football"
+  },
+  {
+    "title": "Ultras Ahlawy songbook",
+    "reason": "category_not_a_discrete_work",
+    "note": "Ultras Ahlawy (Al Ahly, Egypt)"
+  },
+  {
+    "title": "Persepolis ultras songbook",
+    "reason": "category_not_a_discrete_work",
+    "note": "Persepolis FC ultras (Tehran, Iran)"
+  },
+  {
+    "title": "Ultras White Knights songbook",
+    "reason": "category_not_a_discrete_work",
+    "note": "Ultras White Knights (Zamalek, Egypt)"
+  },
+  {
+    "title": "Esteghlal ultras songbook",
+    "reason": "category_not_a_discrete_work",
+    "note": "Esteghlal FC ultras (Tehran, Iran)"
+  },
+  {
+    "title": "ultrAslan / Cimbom terrace book",
+    "reason": "category_not_a_discrete_work",
+    "note": "ultrAslan / Cimbom (Galatasaray, Turkey)"
+  },
+  {
+    "title": "Gaviões da Fiel samba repertoire",
+    "reason": "category_not_a_discrete_work",
+    "note": "Gaviões da Fiel (Corinthians, Brazil)"
+  },
+  {
+    "title": "Panathinaikos Gate 13 repertoire",
+    "reason": "category_not_a_discrete_work",
+    "note": "Gate 13 (Panathinaikos, Greece)"
+  },
+  {
+    "title": "PAOK Gate 4 repertoire",
+    "reason": "category_not_a_discrete_work",
+    "note": "Gate 4 (PAOK Thessaloniki, Greece)"
+  },
+  {
+    "title": "Super Eagles fan anthems (tournament cycles)",
+    "reason": "category_not_a_discrete_work",
+    "note": "Super Eagles fans / Nigeria national-team campaign songs"
+  },
+  {
+    "title": "Lions of Teranga fan soundtrack",
+    "reason": "category_not_a_discrete_work",
+    "note": "Lions of Teranga fans (Senegal national team)"
+  },
+  {
+    "title": "You'll Never Walk Alone (Südtribüne practice)",
+    "reason": "category_not_a_discrete_work",
+    "note": "Borussia Dortmund Südtribüne (YNWA adoption)"
   }
 ]
