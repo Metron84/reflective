@@ -14,6 +14,23 @@ export function getAllEntries(): ArchiveEntry[] {
   return entries.filter((entry) => entry.status === "published");
 }
 
+/**
+ * Published entries normally. In local preview only, also include holding.
+ * Holding never appears when NODE_ENV is production.
+ */
+export function getPreviewEntries(): ArchiveEntry[] {
+  const published = getAllEntries();
+  const previewEnabled =
+    process.env.NEXT_PUBLIC_ARCHIVE_PREVIEW === "true" &&
+    process.env.NODE_ENV !== "production";
+
+  if (previewEnabled) {
+    return [...published, ...getHoldingEntries()];
+  }
+
+  return published;
+}
+
 export function getEntryById(id: string): ArchiveEntry | undefined {
   return getAllEntries().find((entry) => entry.id === id);
 }
