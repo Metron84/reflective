@@ -1,17 +1,22 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ArchiveEntry, ArchiveMedium, ArchiveRegion } from "@/lib/archive/types";
 import {
   ARCHIVE_MEDIUM_LABELS,
   ARCHIVE_MEDIUM_ORDER,
 } from "@/lib/archive/labels";
+import {
+  matchesQuery,
+  type ArchiveSearchRecord,
+} from "@/lib/archive/search";
 import ArchiveCard from "./ArchiveCard";
 import styles from "./ArchiveIndex.module.css";
 
 type ArchiveIndexProps = {
   entries: ArchiveEntry[];
+  searchIndex: ArchiveSearchRecord[];
 };
 
 function parseMedium(value: string | null): ArchiveMedium | "all" {
@@ -39,13 +44,28 @@ function parseRegion(value: string | null): ArchiveRegion | "all" {
   return "all";
 }
 
-export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
+export default function ArchiveIndex({ entries, searchIndex }: ArchiveIndexProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const activeMedium = parseMedium(searchParams.get("medium"));
   const activeRegion = parseRegion(searchParams.get("region"));
+  const activeQuery = searchParams.get("q")?.trim() ?? "";
+
+  const [draftQuery, setDraftQuery] = useState(activeQuery);
+
+  useEffect(() => {
+    setDraftQuery(activeQuery);
+  }, [activeQuery]);
+
+  const haystackById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const record of searchIndex) {
+      map.set(record.id, record.haystack);
+    }
+    return map;
+  }, [searchIndex]);
 
   const mediumOptions = useMemo(() => {
     const present = new Set(entries.map((entry) => entry.medium));
@@ -57,7 +77,26 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
     return [...present].sort((a, b) => a.localeCompare(b));
   }, [entries]);
 
+  const filtersActive =
+    activeMedium !== "all" || activeRegion !== "all" || activeQuery.length > 0;
+
+  const filtered = useMemo(() => {
+    return entries.filter((entry) => {
+      if (activeMedium !== "all" && entry.medium !== activeMedium) return false;
+      if (activeRegion !== "all" && entry.region !== activeRegion) return false;
+      if (activeQuery) {
+        const haystack = haystackById.get(entry.id) ?? "";
+        if (!matchesQuery(haystack, activeQuery)) return false;
+      }
+      return true;
+    });
+  }, [entries, activeMedium, activeRegion, activeQuery, haystackById]);
+
   const countsLine = useMemo(() => {
+    if (filtersActive) {
+      return `${filtered.length} of ${entries.length}`;
+    }
+
     const byMedium = new Map<ArchiveMedium, number>();
     for (const entry of entries) {
       byMedium.set(entry.medium, (byMedium.get(entry.medium) ?? 0) + 1);
@@ -71,23 +110,12 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
       parts.push(`${count} ${ARCHIVE_MEDIUM_LABELS[medium]}`);
     }
     return parts.join(" · ");
-  }, [entries]);
+  }, [entries, filtered.length, filtersActive]);
 
-  const filtered = useMemo(() => {
-    return entries.filter((entry) => {
-      if (activeMedium !== "all" && entry.medium !== activeMedium) return false;
-      if (activeRegion !== "all" && entry.region !== activeRegion) return false;
-      return true;
-    });
-  }, [entries, activeMedium, activeRegion]);
-
-  const setParams = useCallback(
-    (nextMedium: ArchiveMedium | "all", nextRegion: ArchiveRegion | "all") => {
+  const replaceParams = useCallback(
+    (mutate: (params: URLSearchParams) => void) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (nextMedium === "all") params.delete("medium");
-      else params.set("medium", nextMedium);
-      if (nextRegion === "all") params.delete("region");
-      else params.set("region", nextRegion);
+      mutate(params);
       const query = params.toString();
       router.replace(query ? `${pathname}?${query}` : pathname, {
         scroll: false,
@@ -96,39 +124,95 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
     [pathname, router, searchParams],
   );
 
+  const setMediumRegion = useCallback(
+    (nextMedium: ArchiveMedium | "all", nextRegion: ArchiveRegion | "all") => {
+      replaceParams((params) => {
+        if (nextMedium === "all") params.delete("medium");
+        else params.set("medium", nextMedium);
+        if (nextRegion === "all") params.delete("region");
+        else params.set("region", nextRegion);
+      });
+    },
+    [replaceParams],
+  );
+
+  const clearAll = useCallback(() => {
+    router.replace(pathname, { scroll: false });
+  }, [pathname, router]);
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      const next = draftQuery.trim();
+      const current = activeQuery;
+      if (next === current) return;
+      replaceParams((params) => {
+        if (!next) params.delete("q");
+        else params.set("q", next);
+      });
+    }, 200);
+    return () => window.clearTimeout(handle);
+  }, [draftQuery, activeQuery, replaceParams]);
+
   if (entries.length === 0) {
     return null;
   }
 
   return (
     <div className={styles.index}>
-      <p className={styles.counts}>{countsLine}</p>
+      <div className={styles.countsRow}>
+        <p className={styles.counts} aria-live="polite">
+          {countsLine}
+        </p>
+        {filtersActive ? (
+          <button type="button" className={styles.clearAll} onClick={clearAll}>
+            Clear all
+          </button>
+        ) : null}
+      </div>
 
       <div className={styles.filters}>
-        <div
-          className={styles.mediumRow}
-          role="group"
-          aria-label="Filter by medium"
-        >
-          <button
-            type="button"
-            className={styles.pill}
-            aria-pressed={activeMedium === "all"}
-            onClick={() => setParams("all", activeRegion)}
+        <div className={styles.filterTop}>
+          <div className={styles.searchField}>
+            <label htmlFor="archive-search" className={styles.srOnly}>
+              Search by title, creator or subject
+            </label>
+            <input
+              id="archive-search"
+              type="search"
+              className={styles.searchInput}
+              placeholder="Search by title, creator or subject"
+              value={draftQuery}
+              onChange={(event) => setDraftQuery(event.target.value)}
+              autoComplete="off"
+              enterKeyHint="search"
+            />
+          </div>
+
+          <div
+            className={styles.mediumRow}
+            role="group"
+            aria-label="Filter by medium"
           >
-            All
-          </button>
-          {mediumOptions.map((medium) => (
             <button
-              key={medium}
               type="button"
               className={styles.pill}
-              aria-pressed={activeMedium === medium}
-              onClick={() => setParams(medium, activeRegion)}
+              aria-pressed={activeMedium === "all"}
+              onClick={() => setMediumRegion("all", activeRegion)}
             >
-              {ARCHIVE_MEDIUM_LABELS[medium]}
+              All
             </button>
-          ))}
+            {mediumOptions.map((medium) => (
+              <button
+                key={medium}
+                type="button"
+                className={styles.pill}
+                aria-pressed={activeMedium === medium}
+                onClick={() => setMediumRegion(medium, activeRegion)}
+              >
+                {ARCHIVE_MEDIUM_LABELS[medium]}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className={styles.regionBlock}>
@@ -141,7 +225,7 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
             className={styles.regionSelect}
             value={activeRegion}
             onChange={(event) =>
-              setParams(
+              setMediumRegion(
                 activeMedium,
                 parseRegion(event.target.value || "all"),
               )
@@ -164,7 +248,7 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
               type="button"
               className={styles.pill}
               aria-pressed={activeRegion === "all"}
-              onClick={() => setParams(activeMedium, "all")}
+              onClick={() => setMediumRegion(activeMedium, "all")}
             >
               All regions
             </button>
@@ -174,7 +258,7 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
                 type="button"
                 className={styles.pill}
                 aria-pressed={activeRegion === region}
-                onClick={() => setParams(activeMedium, region)}
+                onClick={() => setMediumRegion(activeMedium, region)}
               >
                 {region}
               </button>
@@ -184,7 +268,14 @@ export default function ArchiveIndex({ entries }: ArchiveIndexProps) {
       </div>
 
       {filtered.length === 0 ? (
-        <p className={styles.noMatches}>No entries match these filters.</p>
+        <div className={styles.noMatches}>
+          <p className={styles.noMatchesText}>Nothing matches that.</p>
+          {filtersActive ? (
+            <button type="button" className={styles.clearAll} onClick={clearAll}>
+              Clear all
+            </button>
+          ) : null}
+        </div>
       ) : (
         <ul className={styles.grid}>
           {filtered.map((entry) => (

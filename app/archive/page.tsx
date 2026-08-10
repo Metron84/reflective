@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { getAllEntries, getPreviewEntries } from "@/lib/archive/index";
+import { buildSearchIndex } from "@/lib/archive/search";
 import ArchiveIndex from "@/components/archive/ArchiveIndex";
 import styles from "./page.module.css";
 
@@ -20,6 +21,7 @@ export function generateMetadata() {
 
 export default function ArchivePage() {
   const entries = getPreviewEntries();
+  const searchIndex = buildSearchIndex(entries);
 
   return (
     <div className={styles.page}>
@@ -42,7 +44,7 @@ export default function ArchivePage() {
           <Suspense
             fallback={<p className={styles.loading}>Loading archive…</p>}
           >
-            <ArchiveIndex entries={entries} />
+            <ArchiveIndex entries={entries} searchIndex={searchIndex} />
           </Suspense>
         )}
       </div>
