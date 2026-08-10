@@ -55,6 +55,7 @@ const TONES = new Set([
 const DIFFICULTIES = new Set(["newcomer", "familiar", "deep"]);
 const CONFIDENCES = new Set(["high", "medium", "low"]);
 const STATUSES = new Set(["published", "holding"]);
+const LENS_VOICES = new Set(["historian", "psychologist", "sceptic"]);
 
 function loadJson(filePath: string) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -134,13 +135,77 @@ function validateEntry(
   }
 }
 
+function validateLenses(
+  lenses: Record<string, unknown>[],
+  knownIds: Set<string>,
+  errors: string[],
+) {
+  const seenEntryIds = new Set<string>();
+
+  for (const record of lenses) {
+    const entryId = String(record.entryId ?? "");
+    if (!entryId) {
+      errors.push("lens record missing entryId");
+      continue;
+    }
+    if (!knownIds.has(entryId)) {
+      errors.push(
+        `lenses ${entryId}: entryId not found in entries.json or holding.json`,
+      );
+    }
+    if (seenEntryIds.has(entryId)) {
+      errors.push(`lenses ${entryId}: duplicate lens record for entryId`);
+    }
+    seenEntryIds.add(entryId);
+
+    const passages = record.lenses;
+    if (!Array.isArray(passages)) {
+      errors.push(`lenses ${entryId}: lenses must be an array`);
+      continue;
+    }
+
+    const voicesSeen = new Set<string>();
+    for (const passage of passages) {
+      const voice = String((passage as { voice?: string }).voice ?? "");
+      const text = String((passage as { text?: string }).text ?? "");
+
+      if (!LENS_VOICES.has(voice)) {
+        errors.push(
+          `lenses ${entryId}: invalid voice ${JSON.stringify(voice)}`,
+        );
+      }
+      if (voicesSeen.has(voice)) {
+        errors.push(
+          `lenses ${entryId}: more than one lens for voice '${voice}'`,
+        );
+      }
+      voicesSeen.add(voice);
+
+      const words = wordCount(text);
+      if (!text.trim()) {
+        errors.push(`lenses ${entryId} (${voice}): text is empty`);
+      } else if (words > 60) {
+        errors.push(
+          `lenses ${entryId} (${voice}): text has ${words} words (max 60)`,
+        );
+      }
+    }
+  }
+}
+
 function main() {
   const errors: string[] = [];
   const entriesPath = path.join(ARCHIVE_DIR, "entries.json");
   const holdingPath = path.join(ARCHIVE_DIR, "holding.json");
   const quarantinePath = path.join(ARCHIVE_DIR, "quarantine.json");
+  const lensesPath = path.join(ARCHIVE_DIR, "lenses.json");
 
-  for (const filePath of [entriesPath, holdingPath, quarantinePath]) {
+  for (const filePath of [
+    entriesPath,
+    holdingPath,
+    quarantinePath,
+    lensesPath,
+  ]) {
     if (!fs.existsSync(filePath)) {
       errors.push(`missing ${filePath}`);
     }
@@ -153,12 +218,14 @@ function main() {
   const entries = loadJson(entriesPath) as Record<string, unknown>[];
   const holding = loadJson(holdingPath) as Record<string, unknown>[];
   const quarantine = loadJson(quarantinePath) as Record<string, unknown>[];
+  const lenses = loadJson(lensesPath) as Record<string, unknown>[];
 
   if (!Array.isArray(entries)) errors.push("entries.json must be an array");
   if (!Array.isArray(holding)) errors.push("holding.json must be an array");
   if (!Array.isArray(quarantine)) {
     errors.push("quarantine.json must be an array");
   }
+  if (!Array.isArray(lenses)) errors.push("lenses.json must be an array");
 
   const allEntries = [...entries, ...holding];
   const seen = new Map<string, string>();
@@ -187,9 +254,11 @@ function main() {
     }
   }
 
+  validateLenses(lenses, new Set(seen.keys()), errors);
+
   const holdingCount = holding.length;
   console.log(
-    `[archive] holding=${holdingCount} published=${entries.length} quarantine=${quarantine.length}`,
+    `[archive] holding=${holdingCount} published=${entries.length} quarantine=${quarantine.length} lenses=${lenses.length}`,
   );
 
   if (errors.length) {

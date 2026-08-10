@@ -54,3 +54,9 @@ public/swe-worker*
 # Hero promo video (serve from Vercel Blob via HERO_PROMO_VIDEO_URL; keep local for dev)
 public/promo/*.mp4
 public/promo/*.webm
+
+# Archive lens drafts (local Ollama output; promote by hand to lenses.json)
+content/archive/lenses.draft.json
+
+# Generated Beautiful Archive public JSON mirrors (published only)
+public/archive/data/

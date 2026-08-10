@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getAllEntries, getPreviewEntries } from "@/lib/archive/index";
 import { buildSearchIndex } from "@/lib/archive/search";
 import ArchiveIndex from "@/components/archive/ArchiveIndex";
+import ArchiveOfflineNotice from "@/components/archive/ArchiveOfflineNotice";
 import styles from "./page.module.css";
 
 export function generateMetadata() {
@@ -19,13 +20,17 @@ export function generateMetadata() {
   };
 }
 
-export default function ArchivePage() {
+export default async function ArchivePage({ searchParams }) {
+  const params = await searchParams;
+  const forceOfflineNotice = params?.offline === "1";
   const entries = getPreviewEntries();
   const searchIndex = buildSearchIndex(entries);
 
   return (
     <div className={styles.page}>
       <div className={styles.inner}>
+        <ArchiveOfflineNotice force={forceOfflineNotice} />
+
         <header className={styles.header}>
           <h1 className={styles.title}>The Beautiful Archive</h1>
           <p className={styles.standfirst}>
