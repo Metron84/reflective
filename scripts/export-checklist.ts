@@ -2,7 +2,7 @@
 /**
  * Export Beautiful Archive holding rows for hand verification.
  * Run: npm run export:checklist
- * Writes exports/archive-checklist.csv
+ * Writes exports/archive-checklist.csv and exports/museum-worklist.csv
  * Not wired into build.
  */
 
@@ -64,6 +64,20 @@ const CHECKLIST_HEADERS = [
   "availabilityOk",
   "decision",
   "correctionNeeded",
+  "notes",
+] as const;
+
+const MUSEUM_HEADERS = [
+  "id",
+  "title",
+  "country",
+  "year",
+  "whereToFind",
+  "availabilityNote",
+  "sourceUrl",
+  "confirmedYear",
+  "confirmedLocation",
+  "currentlyOpen",
   "notes",
 ] as const;
 
@@ -182,14 +196,49 @@ function writeChecklist(holding: HoldingEntry[]) {
   return { outPath, count: sorted.length };
 }
 
+function writeMuseumWorklist(holding: HoldingEntry[]) {
+  const museums = holding
+    .filter((entry) => entry.medium === "museum")
+    .sort((a, b) =>
+      a.country.localeCompare(b.country, "en", { sensitivity: "base" }),
+    );
+
+  const lines = [MUSEUM_HEADERS.join(",")];
+  for (const entry of museums) {
+    lines.push(
+      rowToCsv([
+        entry.id,
+        entry.title,
+        entry.country,
+        entry.year,
+        entry.whereToFind ?? "",
+        entry.availabilityNote ?? "",
+        entry.sourceUrl,
+        "",
+        "",
+        "",
+        "",
+      ]),
+    );
+  }
+
+  const outPath = path.join(EXPORTS_DIR, "museum-worklist.csv");
+  fs.writeFileSync(outPath, `${lines.join("\n")}\n`);
+  return { outPath, count: museums.length };
+}
+
 function main() {
   const holding = loadHolding();
   fs.mkdirSync(EXPORTS_DIR, { recursive: true });
 
   const checklist = writeChecklist(holding);
+  const museums = writeMuseumWorklist(holding);
 
   console.log(
     `[export:checklist] wrote ${checklist.count} rows → ${path.relative(ROOT, checklist.outPath)}`,
+  );
+  console.log(
+    `[export:checklist] wrote ${museums.count} museums → ${path.relative(ROOT, museums.outPath)}`,
   );
 }
 
