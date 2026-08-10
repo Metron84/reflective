@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4343",
-    "build": "next build --webpack",
+    "validate:archive": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-archive.ts",
+    "build": "npm run validate:archive && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "sync-films": "node scripts/sync-films.mjs",
