@@ -1,1 +1,495 @@
-[]
+[
+  {
+    "entryId": "escape-to-victory-1981",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "John Huston's wartime football film freezes a Hollywood myth: Allied prisoners taking on their captors on the pitch. Real pros stand beside movie stars, so the match footage preserves a peculiar 1980s crossover of football craft and wartime entertainment."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The POW team becomes a fantasy of agency under total control. Fans borrow the same relief: for ninety minutes the scoreboard answers when nothing else will. Belonging arrives as a strip, a plan, and a chance to hurt the jailer without leaving the yard."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Hollywood star power and a tidy escape plot turn captivity into adventure. The film sells defiance more than it shows what prison camps actually did to bodies and time. Football becomes a prop for Allied swagger rather than a record of wartime sport."
+      }
+    ]
+  },
+  {
+    "entryId": "bend-it-like-beckham-2002",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Gurinder Chadha's comedy put a British-Indian girl footballer at the centre of a mainstream hit. It preserves early-2000s London as a place where women's football, Sikh family duty, and Beckham-era celebrity shared the same living room argument."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Jess's secret training is desire staged as disobedience. The pitch offers a belonging her parents' rules cannot name. Jules and the team become the substitute family that lets her keep loving both the game and home without choosing one forever."
+      },
+      {
+        "voice": "sceptic",
+        "text": "The film resolves culture clash with warmth and a happy ending that softens class, racism, and the grind of women's football pathways. Beckham's cameo flatters celebrity England. Tradition loses the argument a little too neatly for comfort."
+      }
+    ]
+  },
+  {
+    "entryId": "the-damned-united-2009",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Hooper's film locks onto Brian Clough's brief, bitter 1974 spell at Leeds after Don Revie's departure. It preserves the feud as English football folklore: two managers, one club, and a dressing room that would not bend."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Clough's swagger reads as hunger for proof. Leeds becomes the stage where wounded pride tries to rewrite an enemy's house. Fans recognise the attachment: loyalty to a manager's myth can outrun loyalty to results."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Adapted from a novel already contested by people who lived the story, the film privileges Clough's charisma over Leeds' own version of those weeks. Rivalry becomes entertainment. Structural mess at the club shrinks into a personality duel."
+      }
+    ]
+  },
+  {
+    "entryId": "shaolin-soccer-2001",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Stephen Chow's Hong Kong comedy welded kung fu spectacle to football farce just as East Asian popular cinema was finding a wider export path. It preserves a local joke about monks, money, and the pitch made for global screens."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The monks' impossible goals are wish fulfilment made slapstick. Viewers borrow the thrill of skill without limits. Belonging arrives as a ragtag squad that turns spiritual discipline into the ultimate set piece."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Martial-arts gags and CGI goals leave little room for ordinary football labour. Tradition becomes costume. The film flatters the underdog fantasy while treating temple culture as a gag reel for the stadium."
+      }
+    ]
+  },
+  {
+    "entryId": "offside-2006",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Panahi shoots young Iranian women risking arrest to watch a World Cup qualifier from which they are barred. The film preserves stadium exclusion as lived policy, not abstract debate, in the mid-2000s Tehran moment."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Disguise is belonging by theft. The women want the same roar men are allowed to own. The bus and the holding pen become a temporary club where fear and jokes share the same nervous laugh."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Comedy and camaraderie can make the ban look briefly surmountable. The film cannot show every woman who never reaches the gate. Middle-class daring may stand in for lives with less room to risk a costume."
+      }
+    ]
+  },
+  {
+    "entryId": "the-miracle-of-bern-2003",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Wortmann ties a POW father's return to West Germany's 1954 World Cup win in Bern. The film preserves how that final entered German memory as a private family repair and a public national story at once."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The boy's longing for his father and the crowd's longing for a win feed each other. Football becomes the ritual that lets a household and a country practise hope after shame. Attachment travels through the radio."
+      },
+      {
+        "voice": "sceptic",
+        "text": "National rebirth through one match is a seductive frame. The film softens the mess of postwar return and the politics around that squad. Feel-good memory can outrun harder histories of the 1950s."
+      }
+    ]
+  },
+  {
+    "entryId": "looking-for-eric-2009",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Ken Loach places a Manchester postman beside an imagined Eric Cantona. The film preserves Cantona as working-class folklore: not only a United idol, but a voice fans still summon when ordinary life frays."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Eric arrives as the friend grief and loneliness invent. Fans know the move: an idol's calm becomes the script for courage you cannot write alone. Attachment turns into advice, then into a reason to stay."
+      },
+      {
+        "voice": "sceptic",
+        "text": "A celebrity phantom risks making poverty and family collapse look solvable with swagger. Loach's social eye sits beside a fantasy device that flatters United myth. Real help gets less screen time than the kung-fu kick of charisma."
+      }
+    ]
+  },
+  {
+    "entryId": "the-cup-1999",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Khyentse Norbu's Bhutanese comedy follows young monks scheming for a satellite dish to watch the 1998 World Cup final. It preserves a small Himalayan monastery meeting televised football at the century's end."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The dish is desire for a shared night with the world. Ritual life bends toward the tournament because belonging now includes knowing the score. The monks' mischief is attachment wearing a novice's robe."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Western tournament fever becomes the engine of the plot. Monastery life risks turning into charming backdrop for a global broadcast. The film laughs with modernity more than it interrogates who sells the signal."
+      }
+    ]
+  },
+  {
+    "entryId": "youll-never-walk-alone-1963",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "A Rodgers and Hammerstein theatre song, carried into Merseybeat by Gerry and the Pacemakers, became Liverpool's Kop hymn from 1963. The recording preserves how one chart hit fused with a terrace until the club and the chorus were hard to separate."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The lyric promises company in grief and in glory. Sung together it turns strangers into a single breath. Fans use it as attachment made audible: you will not face the next ninety minutes alone."
+      },
+      {
+        "voice": "sceptic",
+        "text": "What began as Broadway comfort is now club property and global merchandise. Origin stories blur between theatre, chart pop, and the Kop. The anthem's warmth can hide how thoroughly football commerce has claimed it."
+      }
+    ]
+  },
+  {
+    "entryId": "world-in-motion-1990",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "New Order's England song for Italia 90 put indie electronics beside squad vocals and John Barnes's rap. It preserves a brief window when a World Cup track could sound like club culture rather than brass-band duty."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The groove invites fans to feel modern and chosen at once. Barnes's verse gives the squad a human face inside the machine. Belonging arrives as dancefloor confidence borrowed for a national summer."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Official tournament music is still a commission. Indie prestige and a football cast make the sell smoother. The record flatters cool England while remaining a product timed to a campaign."
+      }
+    ]
+  },
+  {
+    "entryId": "three-lions-1996",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Baddiel, Skinner and the Lightning Seeds wrote England's Euro 96 earworm. The track preserves a mid-90s mood: tournament hosting, terrace wit, and a chorus that outlived the matches that inspired it."
+      },
+      {
+        "voice": "psychologist",
+        "text": "It's coming home is longing dressed as certainty. Fans sing a future they cannot guarantee. The chant manages disappointment by rehearsing hope in public, together, every tournament cycle."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Nostalgia for past near-misses can become the whole national story. The song flatters English self-myth while soft-pedalling present failure. Comedy panel voices helped brand a feeling that marketing still renews."
+      }
+    ]
+  },
+  {
+    "entryId": "blue-is-the-colour-1972",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Chelsea's 1972 squad single ahead of the League Cup final is an early English club anthem on record. It preserves players singing their own colours into the charts before terrace songs were routine product."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Hearing the team sing is intimacy by proxy. Fans borrow the dressing-room circle as their own. The tune turns club colours into a shared childhood chant that still cues belonging at the Bridge."
+      },
+      {
+        "voice": "sceptic",
+        "text": "A novelty single can be mistaken for deep tradition. Squad vocals flatter unity that contracts and wages may not match. Later club anthem culture owes as much to marketing as to this cheerful record."
+      }
+    ]
+  },
+  {
+    "entryId": "uefa-champions-league-anthem-1992",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Tony Britten's adaptation of Handel became the sonic badge of the Champions League from 1992. It preserves how European club football claimed classical grandeur as its weekly ceremony."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Those opening bars cue ritual before a ball is kicked. Fans feel ushered into an elite night even from a sofa. Attachment locks to a soundmark that means this is the big one."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Borrowed coronation music dresses a commercial tournament in sacred cloth. Recognition may prove branding more than musical invention. The anthem flatters hierarchy: only this competition gets the cathedral entrance."
+      }
+    ]
+  },
+  {
+    "entryId": "waka-waka-2010",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Shakira's official song for the 2010 South Africa World Cup, with Freshlyground, became the tournament's global pop souvenir. It preserves how a host continent's sound was packaged for a worldwide summer."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The beat invites strangers to move as one crowd. Fans chase the feeling of being inside the festival even far from the stadium. Belonging is sold as dance-floor optimism."
+      },
+      {
+        "voice": "sceptic",
+        "text": "An official FIFA soundtrack is always a brand brief. South African collaboration sits inside a global pop star's campaign. Celebration can outshine questions about who owns the image of an African World Cup."
+      }
+    ]
+  },
+  {
+    "entryId": "wavin-flag-2010",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "K'naan's track, remade as Coca-Cola's 2010 World Cup anthem, carried a Somali-Canadian voice into the tournament's commercial bloodstream. It preserves how diaspora storytelling met global soft-drink sponsorship."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Flags and choruses offer a portable homeland. Listeners pour their own journeys into the hook. For a summer, grief and pride share a beat that feels like marching together."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Corporate remix can sand down a sharper original. The anthem's warmth arrives stamped with a soft-drink logo. Whose struggle remains audible once the campaign ends is an open question."
+      }
+    ]
+  },
+  {
+    "entryId": "the-ball-is-round-a-global-history-of-football-2006",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "David Goldblatt's single-volume history traces football from Victorian rules to a planetary industry. It preserves a rare attempt to hold clubs, labour, politics and spectacle in one continuous timeline."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Readers find their own club inside a world map of obsession. The book feeds the need to know why this game captured you. Belonging gains a past tense: you join a long human habit."
+      },
+      {
+        "voice": "sceptic",
+        "text": "A global survey must choose which cities get chapters. Anglo and European archives can still crowd the frame. Sweep makes authority; it can also flatten local arguments that refuse one narrative."
+      }
+    ]
+  },
+  {
+    "entryId": "inverting-the-pyramid-the-history-of-football-tactics-2008",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Jonathan Wilson follows formations from the old pyramid toward pressing and the modern coach's chalkboard. The book preserves tactical change as intellectual history, not only as matchday fashion."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Tactics offer fans a language for control in a chaotic game. Studying shapes becomes a way to feel clever beside the pitch. Attachment shifts from players alone to systems you can argue about."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Formation charts can overclaim clean progress. Coaches, money and rule changes hide behind tidy diagrams. A Anglophone canon of innovators may leave other footballing schools underdrawn."
+      }
+    ]
+  },
+  {
+    "entryId": "soccer-in-sun-and-shadow-1995",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Eduardo Galeano's vignettes braid football beauty with theft, dictatorship and carnival. The book preserves a Latin American way of writing the game as folklore and indictment at once."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Short scenes work like memory flashes: joy, then the bill. Fans recognise how love of the ball survives betrayal. Belonging here includes mourning what power takes from the pitch."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Lyric fragments can charm more than they prove. Anecdote may stand in for hard institutional history. Romance of the poor man's ballet can blur who profits from the show."
+      }
+    ]
+  },
+  {
+    "entryId": "football-against-the-enemy-1994",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Simon Kuper's early-90s travel book links football to nationalism, war and state power across many countries. It preserves a reporter's method: the match as a door into politics."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Kuper watches how crowds use the game to stage loyalty and hate. Readers confront their own projections onto shirts and borders. Attachment looks less innocent once stadiums double as rallies."
+      },
+      {
+        "voice": "sceptic",
+        "text": "A tour of many countries risks postcard depth. Clever links between pitch and politics can outrun local expertise. The book's pace flatters the visiting observer more than any single scene's complexity."
+      }
+    ]
+  },
+  {
+    "entryId": "how-soccer-explains-the-world-2004",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Franklin Foer uses clubs and fan cultures to narrate globalization's winners and losers. The book preserves an early-2000s American attempt to read the world through football tribes."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Foer's fans cling to clubs as shelters against a borderless economy. Tribal warmth answers anxiety about scale. Belonging looks like a scarf held tighter as the market widens."
+      },
+      {
+        "voice": "sceptic",
+        "text": "The title overpromises. Football cannot explain everything, and case studies can cherry-pick drama. An American magazine frame may flatter readable conflict over quieter structural truth."
+      }
+    ]
+  },
+  {
+    "entryId": "fear-and-loathing-in-la-liga-barcelona-vs-real-madrid-2013",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Sid Lowe's Clasico history braids sporting rivalry with Catalan and Spanish politics. It preserves how Barcelona and Real Madrid became shorthand for arguments larger than league points."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Hate and love for the other shirt organise identity. Fans pour regional grief into ninety minutes. Attachment to one club can feel like citizenship when other routes feel blocked."
+      },
+      {
+        "voice": "sceptic",
+        "text": "A rivalry book can centre Madrid and Barcelona until the rest of Spain thins out. Political reading risks becoming the only reading. Access journalism may still flatter the clubs that open doors."
+      }
+    ]
+  },
+  {
+    "entryId": "diego-maradona-2019",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Asif Kapadia's archive-led film centres Maradona's Napoli years: genius, pressure and collapse under a city's gaze. It preserves rare footage of a footballer becoming a southern Italian civic religion."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Napoli's hunger and Maradona's need for love lock together. Fans see how worship can save and trap the same body. Attachment here is mutual: city and player keep scoring on each other's wounds."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Found footage can aestheticise addiction and chaos. The edit chooses which sins stay visible. Transcendence talk may soften accountability for harm done off the pitch."
+      }
+    ]
+  },
+  {
+    "entryId": "sunderland-til-i-die-2018",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "The Netflix series follows Sunderland's drop through the divisions with cameras in boardroom and stands. It preserves a contemporary English decline story: Premier League glow fading into League One grind."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Fans stay through humiliation because the club is autobiography. Grief arrives as another relegation chant. Belonging means refusing to leave a story that keeps ending badly."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Access television needs characters and arcs. Owners and executives may perform for the lens. Structural money problems can shrink into personality drama the streamer can sell."
+      }
+    ]
+  },
+  {
+    "entryId": "the-two-escobars-2010",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "This ESPN film braids Pablo Escobar's football patronage with the murder of Colombia captain Andrés Escobar after USA 94. It preserves how narco power and national-team tragedy shared one violent decade."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Two surnames force fans to sit with love of the game beside terror. Attachment to the national shirt collides with fear of who funds the clubs. Grief becomes a public ritual after an own goal."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Parallel lives make a clean documentary shape that history may not grant. Causation between the two Escobars can feel tighter than evidence. Crime spectacle risks overshadowing quieter football labour."
+      }
+    ]
+  },
+  {
+    "entryId": "going-to-the-match-1953",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "L.S. Lowry's 1953 painting holds the industrial-city ritual of walking to the ground. Matchstick crowds and mill chimneys preserve mid-century English matchday as ordinary working life, not VIP spectacle."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The stream of tiny figures is belonging made visible. Individuals vanish into a shared direction. Fans still know that walk: the body leaning toward the ground before the whistle."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Distance and sameness can aestheticise labour. Faces disappear into pattern. The painting may please collectors more than it speaks for the people it reduces to marks."
+      }
+    ]
+  },
+  {
+    "entryId": "dynamism-of-a-soccer-player-1913",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Umberto Boccioni's Futurist canvas shatters a footballer into planes of force. It preserves 1913 modernism grabbing the new mass sport as proof that speed and the machine age belonged on the easel."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Movement without a clear face lets viewers pour in their own sprint. The body becomes pure surge. Fans recognise the wish to feel like motion itself rather than a person who can miss."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Futurist celebration of velocity can erase the player as a worker. Abstraction flatters theory. The canvas sells dynamism while leaving tactics, fouls and fatigue out of frame."
+      }
+    ]
+  },
+  {
+    "entryId": "the-football-players-1908",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Henri Rousseau paints early footballers in his flat, dreamlike manner. The work preserves how a self-taught painter claimed the new sport for modern art before stadium culture hardened into industry."
+      },
+      {
+        "voice": "psychologist",
+        "text": "The quiet pitch feels like childhood memory more than reportage. Viewers project ease onto a game already turning serious. Belonging here is gentle: play before the crowd becomes a market."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Naive charm can refuse the sport's emerging roughness. Rousseau's calm may be outsider fantasy. The painting risks prettifying football into a Sunday illustration."
+      }
+    ]
+  },
+  {
+    "entryId": "bobby-moore-statue-2007",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "Philip Jackson's bronze of England's 1966 captain stands at Wembley's entrance. It preserves Moore as the official face greeting every visitor to the rebuilt national stadium."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Fans touch the past before they enter the present. The statue offers a body to thank and a standard to measure. Belonging passes through a handshake with bronze."
+      },
+      {
+        "voice": "sceptic",
+        "text": "National stadium monumentalism picks one captain and one summer. Other English stories stay off the plinth. The work flatters FA heritage as much as it remembers a man."
+      }
+    ]
+  },
+  {
+    "entryId": "united-trinity-2008",
+    "lenses": [
+      {
+        "voice": "historian",
+        "text": "The bronze of Best, Law and Charlton freezes Manchester United's 1968 European Cup generation in an embrace. It preserves the club's preferred image of that trinity outside Old Trafford."
+      },
+      {
+        "voice": "psychologist",
+        "text": "Three legends locked together model the family fans want the club to be. Nostalgia softens into belonging you can photograph. Attachment leans on a hug that never ages."
+      },
+      {
+        "voice": "sceptic",
+        "text": "Club-commissioned glory flattens harder biographies into one smile. Commercial pilgrimage routes pass the statue daily. The embrace sells continuity while club ownership stories stay off the plaque."
+      }
+    ]
+  }
+]
