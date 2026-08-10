@@ -1,22 +1,16 @@
 import { Suspense } from "react";
-import { getAllEntries, getPreviewEntries } from "@/lib/archive/index";
+import { getPreviewEntries } from "@/lib/archive/index";
 import { buildSearchIndex } from "@/lib/archive/search";
 import ArchiveIndex from "@/components/archive/ArchiveIndex";
 import ArchiveOfflineNotice from "@/components/archive/ArchiveOfflineNotice";
 import styles from "./page.module.css";
 
 export function generateMetadata() {
-  const publishedCount = getAllEntries().length;
-
   return {
     title: "The Beautiful Archive",
     description:
       "Football in books, film, photography, music and art. A curated archive from The Reflective Football.",
     alternates: { canonical: "/archive" },
-    // TODO: remove noindex when the first entries publish (entries.json non-empty).
-    ...(publishedCount === 0
-      ? { robots: { index: false, follow: false } }
-      : {}),
   };
 }
 

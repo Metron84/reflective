@@ -34,6 +34,12 @@ const DOORS = [
     category: "Concierge.",
     qualifier: "Ask. Find. Watch.",
   },
+  {
+    id: "archive",
+    href: "/archive",
+    category: "Archive.",
+    qualifier: "Books. Film. Art.",
+  },
 ];
 
 function useHomeTabOrder(doorRefs) {
@@ -156,7 +162,10 @@ export default function HomeTree({
         </div>
 
         <nav className={styles.doorsMenu} aria-label="The Tree doors">
-          {DOORS.map((door, index) => {
+          {DOORS.filter((door) => {
+            const meta = doorMeta?.[door.id];
+            return meta?.visible !== false;
+          }).map((door, index) => {
             const meta = doorMeta?.[door.id];
             return (
               <TreeDoor

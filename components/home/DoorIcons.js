@@ -94,6 +94,22 @@ export function IconConcierge({ className }) {
   );
 }
 
+export function IconArchive({ className }) {
+  return (
+    <svg
+      className={className}
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      aria-hidden="true"
+    >
+      <rect x={5} y={6} width={18} height={5} rx={1} {...STROKE} />
+      <path d="M7 11v10.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V11" {...STROKE} />
+      <path d="M11 15.5h6" {...STROKE} />
+    </svg>
+  );
+}
+
 export function IconArrow({ className }) {
   return (
     <svg
@@ -114,4 +130,5 @@ export const DOOR_ICONS = {
   awards: IconAwards,
   games: IconGames,
   concierge: IconConcierge,
+  archive: IconArchive,
 };
