@@ -26,7 +26,7 @@ export const ARCHIVE_MEDIUM_TAGS: Record<ArchiveMedium, string> = {
   exhibition: "Exhibition",
 };
 
-/** Display order for medium filters and count lines. */
+/** Display order for medium filters and count lines (eight public mediums). */
 export const ARCHIVE_MEDIUM_ORDER: ArchiveMedium[] = [
   "documentary",
   "docuseries",
@@ -36,5 +36,4 @@ export const ARCHIVE_MEDIUM_ORDER: ArchiveMedium[] = [
   "music",
   "artwork",
   "museum",
-  "exhibition",
 ];

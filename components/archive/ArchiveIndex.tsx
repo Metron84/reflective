@@ -67,9 +67,13 @@ export default function ArchiveIndex({ entries, searchIndex }: ArchiveIndexProps
     return map;
   }, [searchIndex]);
 
-  const mediumOptions = useMemo(() => {
-    const present = new Set(entries.map((entry) => entry.medium));
-    return ARCHIVE_MEDIUM_ORDER.filter((medium) => present.has(medium));
+  const mediumCounts = useMemo(() => {
+    const byMedium = new Map<ArchiveMedium, number>();
+    for (const medium of ARCHIVE_MEDIUM_ORDER) byMedium.set(medium, 0);
+    for (const entry of entries) {
+      byMedium.set(entry.medium, (byMedium.get(entry.medium) ?? 0) + 1);
+    }
+    return byMedium;
   }, [entries]);
 
   const regionOptions = useMemo(() => {
@@ -97,20 +101,15 @@ export default function ArchiveIndex({ entries, searchIndex }: ArchiveIndexProps
       return `${filtered.length} of ${entries.length}`;
     }
 
-    const byMedium = new Map<ArchiveMedium, number>();
-    for (const entry of entries) {
-      byMedium.set(entry.medium, (byMedium.get(entry.medium) ?? 0) + 1);
-    }
     const parts = [
       `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`,
     ];
     for (const medium of ARCHIVE_MEDIUM_ORDER) {
-      const count = byMedium.get(medium);
-      if (!count) continue;
+      const count = mediumCounts.get(medium) ?? 0;
       parts.push(`${count} ${ARCHIVE_MEDIUM_LABELS[medium]}`);
     }
     return parts.join(" · ");
-  }, [entries, filtered.length, filtersActive]);
+  }, [entries.length, filtered.length, filtersActive, mediumCounts]);
 
   const replaceParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
@@ -201,17 +200,32 @@ export default function ArchiveIndex({ entries, searchIndex }: ArchiveIndexProps
             >
               All
             </button>
-            {mediumOptions.map((medium) => (
-              <button
-                key={medium}
-                type="button"
-                className={styles.pill}
-                aria-pressed={activeMedium === medium}
-                onClick={() => setMediumRegion(medium, activeRegion)}
-              >
-                {ARCHIVE_MEDIUM_LABELS[medium]}
-              </button>
-            ))}
+            {ARCHIVE_MEDIUM_ORDER.map((medium) => {
+              const count = mediumCounts.get(medium) ?? 0;
+              if (count === 0) {
+                return (
+                  <span
+                    key={medium}
+                    className={styles.pillSoon}
+                    aria-disabled="true"
+                    aria-label={`${ARCHIVE_MEDIUM_LABELS[medium]} coming soon`}
+                  >
+                    Soon
+                  </span>
+                );
+              }
+              return (
+                <button
+                  key={medium}
+                  type="button"
+                  className={styles.pill}
+                  aria-pressed={activeMedium === medium}
+                  onClick={() => setMediumRegion(medium, activeRegion)}
+                >
+                  {ARCHIVE_MEDIUM_LABELS[medium]}
+                </button>
+              );
+            })}
           </div>
         </div>
 

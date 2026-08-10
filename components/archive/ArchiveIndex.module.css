@@ -121,6 +121,21 @@
   color: #f2ede4;
 }
 
+.pillSoon {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(10, 17, 31, 0.18);
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  opacity: 0.4;
+  cursor: default;
+  user-select: none;
+}
+
 .pill:focus-visible {
   outline: 2px solid #d8232a;
   outline-offset: 2px;
