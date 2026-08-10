@@ -1,0 +1,249 @@
+.page {
+  flex: 1;
+  background: #f2ede4;
+  color: #0a111f;
+}
+
+.banner {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #d8232a;
+  background: #f2ede4;
+  border-bottom: 1px solid rgba(216, 35, 42, 0.22);
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 680px;
+  padding: 1.75rem 1rem 3.5rem;
+}
+
+.back {
+  display: inline-block;
+  margin: 0 0 1.75rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.7);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: #0a111f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.medium {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #d8232a;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 9vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #0a111f;
+}
+
+.originalTitle {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 5.4vw, 2.1rem); /* ~60% of title */
+  font-style: italic;
+  line-height: 1.15;
+  color: rgba(10, 17, 31, 0.78);
+}
+
+.byline {
+  margin: 1.15rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.7);
+}
+
+.logline {
+  margin: 2rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4.2vw, 1.55rem);
+  line-height: 1.35;
+  color: #0a111f;
+}
+
+.rule {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid rgba(10, 17, 31, 0.15);
+}
+
+.why {
+  margin: 1.75rem 0 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: #0a111f;
+}
+
+.facts {
+  margin: 2.25rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.15rem 1rem;
+}
+
+.fact {
+  margin: 0;
+  min-width: 0;
+}
+
+.fact dt {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.fact dd {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #0a111f;
+}
+
+.where {
+  margin: 2.25rem 0 0;
+}
+
+.whereBody {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #0a111f;
+}
+
+.availability {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.7);
+}
+
+.source {
+  margin: 1.75rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.sourceLink {
+  color: #0a111f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sourceLink:hover {
+  color: #d8232a;
+}
+
+.sourceSep {
+  color: rgba(10, 17, 31, 0.4);
+}
+
+.sourceHost {
+  color: rgba(10, 17, 31, 0.55);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.accuracy {
+  margin: 2.75rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.accuracyLink {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.accuracyLink:hover {
+  color: #0a111f;
+}
+
+.related {
+  margin: 3rem 0 0;
+}
+
+.relatedHeading {
+  margin: 0 0 1rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.5);
+}
+
+.relatedGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 2.5rem 1.5rem 4.5rem;
+  }
+
+  .facts {
+    gap: 1.35rem 1.25rem;
+  }
+
+  .relatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .inner {
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .relatedGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

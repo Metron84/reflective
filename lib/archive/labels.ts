@@ -13,6 +13,19 @@ export const ARCHIVE_MEDIUM_LABELS: Record<ArchiveMedium, string> = {
   exhibition: "Exhibitions",
 };
 
+/** Singular medium tags for entry pages. */
+export const ARCHIVE_MEDIUM_TAGS: Record<ArchiveMedium, string> = {
+  documentary: "Documentary",
+  docuseries: "Series",
+  film: "Film",
+  book: "Book",
+  photography: "Photography",
+  music: "Music",
+  artwork: "Art",
+  museum: "Museum",
+  exhibition: "Exhibition",
+};
+
 /** Display order for medium filters and count lines. */
 export const ARCHIVE_MEDIUM_ORDER: ArchiveMedium[] = [
   "documentary",
