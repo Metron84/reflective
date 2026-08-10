@@ -37,8 +37,8 @@ const DOORS = [
   {
     id: "archive",
     href: "/archive",
-    category: "Archive.",
-    qualifier: "Books. Film. Art.",
+    category: "The Archive",
+    qualifier: "",
   },
 ];
 
@@ -177,6 +177,7 @@ export default function HomeTree({
                 category={door.category}
                 qualifier={door.qualifier}
                 statusLine={meta?.statusLine ?? null}
+                statusLineShort={meta?.statusLineShort ?? null}
                 external={Boolean(meta?.external)}
                 doorId={door.id}
                 entranceIndex={index}

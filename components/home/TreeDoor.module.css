@@ -52,6 +52,7 @@
 }
 
 .textBlock {
+  position: relative;
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -89,12 +90,40 @@
   text-overflow: ellipsis;
 }
 
+.statusLineWrap {
+  display: -webkit-box;
+  max-width: 100%;
+  margin-top: 0.125rem;
+  font-family: var(--font-body);
+  font-size: max(0.75rem, 12px);
+  line-height: 1.35;
+  color: rgba(242, 237, 228, 0.62);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.statusMeasure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: max(0.75rem, 12px);
+  line-height: 1.35;
+  white-space: normal;
+}
+
 .statusNew {
   color: #d8232a;
 }
 
 @media (min-width: 1024px) {
-  .statusLine {
+  .statusLine,
+  .statusLineWrap,
+  .statusMeasure {
     font-size: max(0.8125rem, 13px);
   }
 }
