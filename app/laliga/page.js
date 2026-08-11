@@ -1,13 +1,14 @@
 import InterestForm from "@/components/laliga/InterestForm";
 import LaligaFilms from "@/components/laliga/LaligaFilms";
+import { LALIGA_CAMPAIGN_ENABLED } from "@/lib/config";
 import styles from "./page.module.css";
 
 export const metadata = {
   title: "LaLiga Nights Dubai",
   description:
     "Tell us your club. We are building LaLiga Nights in Dubai.",
-  // Remove noindex once the campaign is live.
-  robots: { index: false },
+  alternates: { canonical: "/laliga" },
+  robots: LALIGA_CAMPAIGN_ENABLED ? undefined : { index: false },
 };
 
 const PROOF = [

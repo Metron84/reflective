@@ -1,4 +1,4 @@
-import { SITE_URL, STAND_ENABLED } from "@/lib/config";
+import { LALIGA_CAMPAIGN_ENABLED, SITE_URL, STAND_ENABLED } from "@/lib/config";
 import { getAllEntries } from "@/lib/archive/index";
 
 export default function sitemap() {
@@ -18,6 +18,9 @@ export default function sitemap() {
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
     ...(STAND_ENABLED
       ? [{ path: "/stand", changeFrequency: "daily", priority: 0.8 }]
+      : []),
+    ...(LALIGA_CAMPAIGN_ENABLED
+      ? [{ path: "/laliga", changeFrequency: "weekly", priority: 0.8 }]
       : []),
   ];
 
