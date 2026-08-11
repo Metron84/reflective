@@ -142,8 +142,27 @@ async function main() {
   }
 
   const draft: LensRecord[] = [];
+  if (fs.existsSync(DRAFT_PATH)) {
+    try {
+      const existing = loadJson<LensRecord[]>(DRAFT_PATH);
+      if (Array.isArray(existing)) {
+        for (const record of existing) {
+          if (record?.entryId && Array.isArray(record.lenses)) {
+            draft.push(record);
+          }
+        }
+      }
+    } catch {
+      // Ignore corrupt draft; regenerate.
+    }
+  }
+  const drafted = new Set(draft.map((record) => record.entryId));
+  const remaining = targets.filter((entry) => !drafted.has(entry.id));
+  console.log(
+    `[generate-lenses] draftExisting=${drafted.size} remaining=${remaining.length}`,
+  );
 
-  for (const entry of targets) {
+  for (const entry of remaining) {
     console.log(`[generate-lenses] ${entry.id}`);
     const lenses: LensPassage[] = [];
     for (const voice of VOICES) {
@@ -151,9 +170,9 @@ async function main() {
       lenses.push({ voice, text });
     }
     draft.push({ entryId: entry.id, lenses });
+    fs.writeFileSync(DRAFT_PATH, `${JSON.stringify(draft, null, 2)}\n`);
   }
 
-  fs.writeFileSync(DRAFT_PATH, `${JSON.stringify(draft, null, 2)}\n`);
   console.log(`[generate-lenses] wrote ${draft.length} record(s) to ${DRAFT_PATH}`);
 }
 
