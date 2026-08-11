@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { HOME_HERO_STILL } from "@/lib/config";
+import { HOME_HERO_STILL, LALIGA_CAMPAIGN_ENABLED } from "@/lib/config";
 import HeroCta from "./HeroCta";
 import HeroPromoVideo from "./HeroPromoVideo";
+import LaLigaRibbon from "./LaLigaRibbon";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -157,6 +158,7 @@ export default function HomeTree({
           </div>
 
           <div className={styles.ctaSlot}>
+            {LALIGA_CAMPAIGN_ENABLED ? <LaLigaRibbon /> : null}
             <HeroCta />
           </div>
         </div>

@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 
 const SESSION_KEY = "trf-tree-entered";
 
+const SERVER_ENTRANCE = {
+  skipEntrance: true,
+  animate: false,
+  shouldMarkPlayed: false,
+};
+
 function prefersReducedMotion() {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -17,7 +23,7 @@ function isBackNavigation() {
 
 function resolveEntranceState() {
   if (typeof window === "undefined") {
-    return { skipEntrance: true, animate: false, shouldMarkPlayed: false };
+    return SERVER_ENTRANCE;
   }
 
   const reduced = prefersReducedMotion();
@@ -32,13 +38,15 @@ function resolveEntranceState() {
 }
 
 export function useTreeEntrance() {
-  const [{ skipEntrance, animate, shouldMarkPlayed }] = useState(resolveEntranceState);
+  const [{ skipEntrance, animate }, setEntrance] = useState(SERVER_ENTRANCE);
 
   useEffect(() => {
-    if (shouldMarkPlayed) {
+    const next = resolveEntranceState();
+    setEntrance(next);
+    if (next.shouldMarkPlayed) {
       sessionStorage.setItem(SESSION_KEY, "1");
     }
-  }, [shouldMarkPlayed]);
+  }, []);
 
   return { skipEntrance, animate };
 }

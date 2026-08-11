@@ -1,0 +1,194 @@
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fieldset > legend {
+  float: none;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 0.45rem;
+}
+
+.labelBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-navy);
+}
+
+.hint {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(from var(--color-navy) r g b / 0.55);
+}
+
+.textarea,
+.input,
+.select {
+  width: 100%;
+  border: 1px solid rgba(from var(--color-navy) r g b / 0.22);
+  background: var(--color-paper);
+  color: var(--color-navy);
+  border-radius: 0;
+  padding: 0.65rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 6.5rem;
+}
+
+.textarea:focus,
+.input:focus,
+.select:focus {
+  outline: 2px solid rgba(from var(--color-signal) r g b / 0.35);
+  outline-offset: 1px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+}
+
+.option,
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--color-navy);
+  cursor: pointer;
+}
+
+.option input,
+.check input {
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--color-signal);
+}
+
+.checkCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.checkEn {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(from var(--color-navy) r g b / 0.7);
+}
+
+/* Off-screen honeypot — not display:none (bots often skip those). */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.error {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-signal);
+}
+
+.submit {
+  appearance: none;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-signal);
+  color: var(--color-paper);
+  padding: 0.85rem 1.35rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.confirm {
+  text-align: left;
+}
+
+.confirmTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 7vw, 2.75rem);
+  line-height: 1.1;
+  color: var(--color-navy);
+}
+
+.confirmBody {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: rgba(from var(--color-navy) r g b / 0.78);
+}
+
+.confirmLink {
+  margin: 1.25rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.confirmLink a {
+  color: var(--color-navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.confirmLink a:hover {
+  color: var(--color-signal);
+}
