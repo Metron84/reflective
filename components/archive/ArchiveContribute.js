@@ -4,7 +4,7 @@ const MAILTO = `mailto:concierge@thereflectivefootball.com?subject=${encodeURICo
   "Archive suggestion",
 )}`;
 
-export default function ArchiveContribute({ children }) {
+export default function ArchiveContribute({ children = null }) {
   return (
     <section
       className={styles.block}
