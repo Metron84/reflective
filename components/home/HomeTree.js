@@ -37,8 +37,8 @@ const DOORS = [
   {
     id: "archive",
     href: "/archive",
-    category: "The Archive",
-    qualifier: "",
+    category: "The Archive.",
+    qualifier: "Read. Watch. Listen.",
   },
 ];
 
