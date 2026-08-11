@@ -4,11 +4,13 @@ import type { Metadata } from "next";
 import { getPreviewEntries } from "@/lib/archive/index";
 import { buildArchiveEntryJsonLd } from "@/lib/archive/jsonld";
 import { getRelatedEntries } from "@/lib/archive/related";
-import { ARCHIVE_MEDIUM_TAGS } from "@/lib/archive/labels";
 import type { ArchiveEntry } from "@/lib/archive/types";
 import { CONTACT_EMAIL } from "@/lib/site";
 import ArchiveCard from "@/components/archive/ArchiveCard";
+import ArchiveContribute from "@/components/archive/ArchiveContribute";
+import ArchiveEmbed from "@/components/archive/ArchiveEmbed";
 import ArchiveLens from "@/components/archive/ArchiveLens";
+import ArchiveVisual from "@/components/archive/ArchiveVisual";
 import styles from "./page.module.css";
 
 export const dynamicParams = false;
@@ -117,9 +119,12 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
           All entries
         </Link>
 
-        <p className={styles.medium}>{ARCHIVE_MEDIUM_TAGS[entry.medium]}</p>
+        {entry.embed ? (
+          <ArchiveEmbed entry={entry} />
+        ) : (
+          <ArchiveVisual entry={entry} />
+        )}
 
-        <h1 className={styles.title}>{entry.title}</h1>
         {entry.originalTitle ? (
           <p className={styles.originalTitle}>{entry.originalTitle}</p>
         ) : null}
@@ -159,7 +164,9 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
             {sourceHostname(entry.sourceUrl)}
           </span>
         </p>
+      </div>
 
+      <ArchiveContribute>
         <p className={styles.accuracy}>
           Entries are compiled and edited by hand. If something here is wrong,{" "}
           <a href={correctionMailto} className={styles.accuracyLink}>
@@ -167,8 +174,10 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
           </a>{" "}
           and we will correct it.
         </p>
+      </ArchiveContribute>
 
-        {related.length > 0 ? (
+      {related.length > 0 ? (
+        <div className={styles.relatedWrap}>
           <section className={styles.related} aria-labelledby="related-heading">
             <h2 id="related-heading" className={styles.relatedHeading}>
               Related
@@ -181,8 +190,8 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
               ))}
             </ul>
           </section>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </article>
   );
 }

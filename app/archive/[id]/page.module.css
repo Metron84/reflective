@@ -180,11 +180,11 @@
 }
 
 .accuracy {
-  margin: 2.75rem 0 0;
+  margin: 0;
   font-family: var(--font-body);
   font-size: 0.8125rem;
   line-height: 1.5;
-  color: rgba(10, 17, 31, 0.55);
+  color: rgba(242, 237, 228, 0.55);
 }
 
 .accuracyLink {
@@ -194,7 +194,13 @@
 }
 
 .accuracyLink:hover {
-  color: #0a111f;
+  color: #f2ede4;
+}
+
+.relatedWrap {
+  margin: 0 auto;
+  max-width: 680px;
+  padding: 0 1rem 3.5rem;
 }
 
 .related {
@@ -225,6 +231,10 @@
     padding: 2.5rem 1.5rem 4.5rem;
   }
 
+  .relatedWrap {
+    padding: 0 1.5rem 4.5rem;
+  }
+
   .facts {
     gap: 1.35rem 1.25rem;
   }
@@ -237,6 +247,10 @@
 @media (min-width: 1024px) {
   .inner {
     padding: 3rem 1.5rem 5rem;
+  }
+
+  .relatedWrap {
+    padding: 0 1.5rem 5rem;
   }
 
   .facts {

@@ -55,6 +55,7 @@ const TONES = new Set([
 const DIFFICULTIES = new Set(["newcomer", "familiar", "deep"]);
 const CONFIDENCES = new Set(["high", "medium", "low"]);
 const STATUSES = new Set(["published", "holding"]);
+const EMBED_PROVIDERS = new Set(["youtube", "spotify"]);
 const LENS_VOICES = new Set(["historian", "psychologist", "sceptic"]);
 
 function loadJson(filePath: string) {
@@ -132,6 +133,29 @@ function validateEntry(
     errors.push(
       `${prefix}: sourceUrl must be a valid http(s) URL (got ${JSON.stringify(sourceUrl)})`,
     );
+  }
+
+  if ("embed" in entry && entry.embed != null) {
+    const embed = entry.embed;
+    if (typeof embed !== "object" || Array.isArray(embed)) {
+      errors.push(`${prefix}: embed must be { provider, id }`);
+    } else {
+      const record = embed as Record<string, unknown>;
+      const provider = record.provider;
+      const embedId = record.id;
+
+      if (provider == null || provider === "") {
+        errors.push(`${prefix}: embed.provider is missing`);
+      } else if (!EMBED_PROVIDERS.has(String(provider))) {
+        errors.push(
+          `${prefix}: embed.provider must be "youtube" or "spotify" (got ${JSON.stringify(provider)})`,
+        );
+      }
+
+      if (embedId == null || String(embedId).trim() === "") {
+        errors.push(`${prefix}: embed.id is empty`);
+      }
+    }
   }
 }
 

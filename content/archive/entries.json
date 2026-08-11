@@ -527,7 +527,11 @@
     "sourceUrl": "https://www.festival-cannes.com/en/2019/asif-kapadia-on-the-trail-of-diego-maradona/",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "Pmm7r4ynyIQ"
+    }
   },
   {
     "id": "sunderland-til-i-die-2018",
@@ -872,7 +876,11 @@
     "sourceUrl": "https://watch.plex.tv/movie/made-in-senegal",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "03RIVo7fZQ8"
+    }
   },
   {
     "id": "green-lions-2022",
@@ -1013,7 +1021,11 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Take_Us_Home:_Leeds_United",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "EY5Slz1-_90"
+    }
   },
   {
     "id": "maitanam-the-story-of-football-in-kerala-2022",
@@ -1198,7 +1210,11 @@
     "sourceUrl": "https://www.soccer-king.jp/news/japan/national/20260626/2177424.html",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "sV1e7swGFds"
+    }
   },
   {
     "id": "the-other-final-2003",
@@ -1219,30 +1235,6 @@
     "whereToFind": "Limited streaming; available via some documentary archives and festivals",
     "availabilityNote": "Limited availability",
     "sourceUrl": "https://en.wikipedia.org/wiki/List_of_association_football_films",
-    "confidence": "high",
-    "verified": true,
-    "status": "published"
-  },
-  {
-    "id": "behind-the-curtain-travels-in-eastern-european-football-2006",
-    "medium": "book",
-    "title": "Behind the Curtain: Travels in Eastern European Football",
-    "creator": "Jonathan Wilson",
-    "year": 2006,
-    "country": "UK",
-    "language": "English",
-    "runtimeOrLength": "336 pp",
-    "subject": "culture",
-    "subjectName": "Football in post-communist Eastern Europe",
-    "region": "Europe",
-    "tone": "investigative",
-    "difficulty": "familiar",
-    "logline": "A travelogue through Eastern Europe's football culture as it transformed after communism's collapse.",
-    "whyItMatters": "One of the few English-language books to give sustained attention to Eastern European football.",
-    "whereToFind": "Orion; paperback and ebook",
-    "availabilityNote": "In print",
-    "awards": "Nominated, NSC Football Book of the Year",
-    "sourceUrl": "https://outsidewrite.co.uk/book-review-behind-the-curtain/",
     "confidence": "high",
     "verified": true,
     "status": "published"
@@ -1473,30 +1465,6 @@
     "whereToFind": "Hurst Publishers/Oxford University Press; hardback",
     "availabilityNote": "In print",
     "sourceUrl": "https://www.jadaliyya.com/Details/44418",
-    "confidence": "high",
-    "verified": true,
-    "status": "published"
-  },
-  {
-    "id": "feet-of-the-chameleon-the-story-of-african-football-2009",
-    "medium": "book",
-    "title": "Feet of the Chameleon: The Story of African Football",
-    "creator": "Ian Hawkey",
-    "year": 2009,
-    "country": "UK/South Africa",
-    "language": "English",
-    "runtimeOrLength": "312 pp",
-    "subject": "culture",
-    "subjectName": "History of African football",
-    "region": "Africa",
-    "tone": "serious",
-    "difficulty": "familiar",
-    "logline": "Traces African football's development through colonialism, independence struggles and star players.",
-    "whyItMatters": "The most comprehensive English-language history of African football, published ahead of the 2010 World Cup.",
-    "whereToFind": "Portico/Anova Books; paperback",
-    "availabilityNote": "In print",
-    "awards": "Best Football Book, British Sports Book Awards",
-    "sourceUrl": "https://www.independent.co.uk/arts-entertainment/books/reviews/feet-of",
     "confidence": "high",
     "verified": true,
     "status": "published"
@@ -2098,7 +2066,11 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/List_of_association_football_films",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "g5s6D1lOTQM"
+    }
   },
   {
     "id": "two-half-times-in-hell-1961",
@@ -2284,7 +2256,11 @@
     "sourceUrl": "https://www.mensxp.com/ampstories/entertainment/bollywood/159318-bollywood-movies-based-on-football-before-maidaan.html",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "-CB4_-asx7w"
+    }
   },
   {
     "id": "blue-moon-1990",
@@ -3510,7 +3486,11 @@
     "sourceUrl": "https://www.screenaustralia.gov.au/screen-guide/matildas-the-world-at-our-feet-40436/",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "AFCEL-1ckNw"
+    }
   },
   {
     "id": "trailblazers-2024",
@@ -3532,7 +3512,11 @@
     "sourceUrl": "https://vicscreen.vic.gov.au/news/a-football-teams-fight-for-fairness",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "2Pv3AmLCzuc"
+    }
   },
   {
     "id": "copa-71-2023",
@@ -3555,7 +3539,11 @@
     "sourceUrl": "https://www.bbfc.co.uk/release/copa-71-q29sbgvjdglvbjpwwc0xmde3ntqx",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "8fNGjWVrePw"
+    }
   },
   {
     "id": "this-is-football-belief-2019",
@@ -3579,7 +3567,11 @@
     "sourceUrl": "https://www.imdb.com/title/tt10578796/",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "bMrZ-LaOqAY"
+    }
   },
   {
     "id": "girls-on-fire-2021",
@@ -3673,7 +3665,11 @@
     "sourceUrl": "https://cnnpressroom.blogs.cnn.com/2021/08/06/cnn-films-brings-television-premiere-of-lfg-to-cnn-monday-sept-6-at-900pm-et/",
     "confidence": "high",
     "verified": true,
-    "status": "published"
+    "status": "published",
+    "embed": {
+      "provider": "youtube",
+      "id": "VolBxZomw28"
+    }
   },
   {
     "id": "a-womans-game-the-rise-fall-and-rise-again-of-womens-football-2022",
@@ -4243,28 +4239,6 @@
     "status": "published"
   },
   {
-    "id": "matildas-fifa-womens-world-cup-2023-bronze-bas-relief-2024",
-    "medium": "artwork",
-    "title": "Matildas FIFA Women's World Cup 2023 Bronze Bas Relief",
-    "creator": "Urban Art Projects",
-    "year": 2024,
-    "country": "Australia",
-    "language": "N/A",
-    "subject": "nation",
-    "subjectName": "Australia women's national team at the 2023 World Cup",
-    "region": "Oceania",
-    "tone": "celebratory",
-    "difficulty": "newcomer",
-    "logline": "A cast-bronze bas relief commemorates the Matildas' 2023 World Cup campaign and cultural impact.",
-    "whyItMatters": "It is a rare permanent stadium monument dedicated collectively to a women's football team rather than an individual male legend.",
-    "whereToFind": "Suncorp Stadium, Brisbane, Queensland",
-    "availabilityNote": "Publicly sited permanent work; installation and access details may be updated by the stadium.",
-    "sourceUrl": "https://statements.qld.gov.au/statements/99910",
-    "confidence": "high",
-    "verified": true,
-    "status": "published"
-  },
-  {
     "id": "trailblazers-exhibition-poster-2022",
     "medium": "artwork",
     "title": "Trailblazers Exhibition Poster",
@@ -4421,7 +4395,11 @@
     "status": "published",
     "originalTitle": "பிகில்",
     "awards": "Zee Cine Awards Tamil, Best Film",
-    "runtimeOrLength": "179 min"
+    "runtimeOrLength": "179 min",
+    "embed": {
+      "provider": "youtube",
+      "id": "GR-Ui8-V2M0"
+    }
   },
   {
     "id": "gracie-2007",
@@ -4541,7 +4519,11 @@
     "verified": true,
     "status": "published",
     "originalTitle": "Une belle équipe",
-    "runtimeOrLength": "95 min"
+    "runtimeOrLength": "95 min",
+    "embed": {
+      "provider": "youtube",
+      "id": "aBW9pX1d_Mk"
+    }
   },
   {
     "id": "kung-fu-soccer-2026",
@@ -4564,6 +4546,10 @@
     "confidence": "high",
     "verified": true,
     "status": "published",
-    "originalTitle": "功夫女足"
+    "originalTitle": "功夫女足",
+    "embed": {
+      "provider": "youtube",
+      "id": "x-HE-g5YwZE"
+    }
   }
 ]

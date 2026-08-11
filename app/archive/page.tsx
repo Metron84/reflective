@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getPreviewEntries } from "@/lib/archive/index";
 import { buildSearchIndex } from "@/lib/archive/search";
+import ArchiveContribute from "@/components/archive/ArchiveContribute";
 import ArchiveIndex from "@/components/archive/ArchiveIndex";
 import ArchiveOfflineNotice from "@/components/archive/ArchiveOfflineNotice";
 import styles from "./page.module.css";
@@ -54,6 +55,8 @@ export default async function ArchivePage({ searchParams }) {
           </Suspense>
         )}
       </div>
+
+      <ArchiveContribute />
     </div>
   );
 }

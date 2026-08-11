@@ -40,6 +40,13 @@ export type ArchiveTone =
 
 export type ArchiveDifficulty = "newcomer" | "familiar" | "deep";
 
+export type ArchiveEmbedProvider = "youtube" | "spotify";
+
+export interface ArchiveEmbed {
+  provider: ArchiveEmbedProvider;
+  id: string;
+}
+
 export interface ArchiveEntry {
   id: string; // kebab-case slug of title + year
   medium: ArchiveMedium;
@@ -64,6 +71,7 @@ export interface ArchiveEntry {
   confidence: "high" | "medium" | "low";
   verified: boolean; // default false, set true only by hand
   status: "published" | "holding";
+  embed?: ArchiveEmbed;
 }
 
 export interface ArchiveQuarantineItem {
