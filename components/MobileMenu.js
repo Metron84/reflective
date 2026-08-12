@@ -35,7 +35,7 @@ function MenuOverlay({ onClose, auth }) {
             key={item.href}
             href={item.href}
             onClick={onClose}
-            className="font-display text-3xl text-paper transition-opacity hover:opacity-80"
+            className="font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
           >
             {item.label}
           </Link>

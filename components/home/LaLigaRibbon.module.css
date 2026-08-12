@@ -9,11 +9,16 @@
   color: var(--color-paper);
   outline: none;
   border-bottom: 1px solid rgba(from var(--color-paper) r g b / 0.2);
-  transition: opacity 0.15s ease;
+  transition: opacity 0.12s ease, transform 0.12s ease;
 }
 
 .ribbon:hover {
   opacity: 0.92;
+}
+
+.ribbon:active {
+  opacity: 0.8;
+  transform: scale(0.992);
 }
 
 .ribbon:focus-visible {
@@ -83,6 +88,10 @@
   .ribbon,
   .arrow {
     transition: none;
+  }
+
+  .ribbon:active {
+    transform: none;
   }
 
   .ribbon:hover .arrow,

@@ -79,7 +79,7 @@ export default function HeaderShell({ auth }) {
             <Link
               key={item.href}
               href={item.href}
-              className="hidden text-navy/70 transition-colors hover:text-navy sm:block"
+              className="hidden text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 sm:block motion-reduce:active:scale-100"
             >
               {item.label}
             </Link>
@@ -89,7 +89,7 @@ export default function HeaderShell({ auth }) {
           ) : (
             <Link
               href="/signin"
-              className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-opacity hover:opacity-90 sm:block"
+              className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-[opacity,transform] duration-100 hover:opacity-90 active:scale-[0.98] active:opacity-80 sm:block motion-reduce:active:scale-100"
             >
               Sign in
             </Link>

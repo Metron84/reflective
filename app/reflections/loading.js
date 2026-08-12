@@ -1,6 +1,5 @@
-import PageLoadingShell from "@/components/PageLoadingShell";
+import RouteSkeleton from "@/components/skeletons/RouteSkeleton";
 
-/** Awards (/reflections) — navy-first section. */
 export default function Loading() {
-  return <PageLoadingShell variant="navy" />;
+  return <RouteSkeleton variant="reflections" />;
 }

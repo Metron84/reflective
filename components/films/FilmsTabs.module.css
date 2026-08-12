@@ -22,7 +22,12 @@
   text-transform: uppercase;
   color: rgba(10, 17, 31, 0.55);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, opacity 0.12s ease, transform 0.12s ease;
+}
+
+.tab:active {
+  opacity: 0.78;
+  transform: scale(0.985);
 }
 
 .tab + .tab {
@@ -37,6 +42,16 @@
 .tab:focus-visible {
   outline: 2px solid #0a111f;
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: background 0.2s, color 0.2s, opacity 0.12s ease;
+  }
+
+  .tab:active {
+    transform: none;
+  }
 }
 
 @media (min-width: 640px) {

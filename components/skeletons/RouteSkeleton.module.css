@@ -1,0 +1,203 @@
+.shell {
+  flex: 1;
+  width: 100%;
+  min-height: 50vh;
+}
+
+.block {
+  background: rgba(10, 17, 31, 0.1);
+  border-radius: 2px;
+}
+
+.pulse {
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 0.92;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Films — crest / headline / plaque / chips */
+.filmsFold {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2.75rem 1.15rem 2.5rem;
+  text-align: center;
+}
+
+.filmsCrest {
+  width: 7.25rem;
+  height: 7.25rem;
+  border-radius: 50%;
+  background: rgba(10, 17, 31, 0.12);
+}
+
+.filmsTitle {
+  margin-top: 1.35rem;
+  width: min(18rem, 85%);
+  height: 2.6rem;
+}
+
+.filmsPlaque {
+  margin-top: 1.5rem;
+  width: min(16rem, 78%);
+  height: 4.5rem;
+  border-radius: 3px;
+}
+
+.filmsChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.35rem;
+  width: 100%;
+}
+
+.chip {
+  width: 4.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+}
+
+/* Games — section header + hero card */
+.gamesFold {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3.5rem;
+}
+
+.gamesEyebrow {
+  width: 8rem;
+  height: 0.55rem;
+}
+
+.gamesTitle {
+  margin-top: 1rem;
+  width: min(12rem, 55%);
+  height: 2.75rem;
+}
+
+.gamesCard {
+  margin-top: 2rem;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: 14rem;
+  border-radius: 2px;
+  background: rgba(10, 17, 31, 0.12);
+}
+
+/* Codemaster — title + rank strip */
+.codemasterFold {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+.codemasterEyebrow {
+  width: 11rem;
+  height: 0.55rem;
+}
+
+.codemasterTitle {
+  margin-top: 0.75rem;
+  width: min(16rem, 70%);
+  height: 3.5rem;
+}
+
+.codemasterLede {
+  margin-top: 1.25rem;
+  width: min(28rem, 95%);
+  height: 3.25rem;
+}
+
+.codemasterRank {
+  margin-top: 2rem;
+  width: 100%;
+  height: 6.5rem;
+  border-radius: 3px;
+  background: rgba(10, 17, 31, 0.14);
+}
+
+/* Reflections — awards hero copy block on cream */
+.reflectionsFold {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.15rem 3rem;
+}
+
+.reflectionsEyebrow {
+  width: 9rem;
+  height: 0.55rem;
+}
+
+.reflectionsTitle {
+  margin-top: 0.85rem;
+  width: min(18rem, 80%);
+  height: 3rem;
+}
+
+.reflectionsLede {
+  margin-top: 1rem;
+  width: min(28rem, 95%);
+  height: 2.75rem;
+}
+
+.reflectionsCta {
+  margin-top: 1.5rem;
+  width: 9.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+}
+
+@media (min-width: 640px) {
+  .filmsFold {
+    padding: 3.5rem 1.5rem 3rem;
+  }
+
+  .filmsCrest {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+
+  .gamesFold {
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  .codemasterFold {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .reflectionsFold {
+    padding: 4.5rem 1.5rem 3.25rem;
+  }
+}

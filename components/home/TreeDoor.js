@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { forwardRef, useEffect, useRef, useState } from "react";
+import DoorPendingLine from "@/components/nav/DoorPendingLine";
 import { DOOR_ICONS, IconArrow } from "./DoorIcons";
 import styles from "./TreeDoor.module.css";
 
@@ -124,7 +125,10 @@ const TreeDoor = forwardRef(function TreeDoor(
             href={href}
             className={styles.filmsLabelLink}
           >
-            <span className={styles.category}>{category}</span>
+            <span className={styles.categoryWrap}>
+              <span className={styles.category}>{category}</span>
+              <DoorPendingLine />
+            </span>
             <span className={styles.arrowWrap} aria-hidden="true">
               <IconArrow className={styles.arrow} />
             </span>
@@ -165,7 +169,10 @@ const TreeDoor = forwardRef(function TreeDoor(
         {Icon ? <Icon className={styles.icon} /> : null}
       </span>
       <span className={styles.textBlock}>
-        <span className={styles.category}>{category}</span>
+        <span className={styles.categoryWrap}>
+          <span className={styles.category}>{category}</span>
+          {external ? null : <DoorPendingLine />}
+        </span>
         {qualifier ? (
           <span className={styles.qualifier}>{qualifier}</span>
         ) : null}

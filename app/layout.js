@@ -77,6 +77,13 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${bodoni.variable} ${archivo.variable} h-full antialiased`}
     >
+      <head>
+        {/* Film-of-the-day / YouTube taps: skip DNS + TLS handshake cost. */}
+        <link rel="preconnect" href="https://www.youtube.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="dns-prefetch" href="https://www.youtube.com" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+      </head>
       <body className="flex min-h-full flex-col">
         <NavigationProgress />
         <Header />

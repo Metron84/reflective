@@ -61,6 +61,12 @@
   gap: 0.85rem;
   text-decoration: none;
   color: inherit;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.card:active {
+  opacity: 0.85;
+  transform: scale(0.985);
 }
 
 .card:hover .title,
@@ -152,4 +158,14 @@
   font-size: 0.85rem;
   line-height: 1.45;
   color: rgba(10, 17, 31, 0.58);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: opacity 0.12s ease;
+  }
+
+  .card:active {
+    transform: none;
+  }
 }

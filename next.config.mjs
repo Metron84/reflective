@@ -76,8 +76,20 @@ const withSerwist = withSerwistInit({
   reloadOnOnline: true,
   cacheOnNavigation: false,
   // Never glob all of /public (banners/textures are huge). Precache only what
-  // the offline shell needs; other /brand/* assets use CacheFirst at runtime.
+  // the offline shell needs; other /brand/* assets use runtime SWR.
   globPublicPatterns: [],
+  // Keep large self-hosted promo video out of the install precache.
+  exclude: [/\.mp4$/i, /\/promo\//],
+  maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
+  manifestTransforms: [
+    async (manifestEntries) => ({
+      manifest: manifestEntries.filter((entry) => {
+        const url = typeof entry === "string" ? entry : entry.url;
+        return !/\.mp4(?:$|\?)/i.test(url) && !url.includes("/promo/");
+      }),
+      warnings: [],
+    }),
+  ],
   additionalPrecacheEntries: [
     { url: "/offline", revision },
     { url: "/brand/trf-crest-transparent.png", revision },

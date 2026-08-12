@@ -1,5 +1,5 @@
-import PageLoadingShell from "@/components/PageLoadingShell";
+import RouteSkeleton from "@/components/skeletons/RouteSkeleton";
 
 export default function Loading() {
-  return <PageLoadingShell variant="cream" />;
+  return <RouteSkeleton variant="films" />;
 }
