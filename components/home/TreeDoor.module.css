@@ -171,6 +171,95 @@
   outline-offset: 4px;
 }
 
+/* Films: split label (/films) and status (film-of-the-day watch). */
+.filmsRow {
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-items: start;
+}
+
+.filmsBody {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.filmsLabelLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+.filmsLabelLink .arrowWrap {
+  margin-left: auto;
+}
+
+.filmsLabelLink:hover .arrowWrap,
+.filmsLabelLink:active .arrowWrap,
+.filmsLabelLink:focus-visible .arrowWrap {
+  color: #f2ede4;
+  transform: translateX(4px);
+}
+
+.filmsLabelLink:focus-visible {
+  outline: 2px solid #f2ede4;
+  outline-offset: 4px;
+}
+
+.filmsWatchLink {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  min-height: 44px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.2rem 0;
+  font-family: var(--font-body);
+  font-size: max(0.75rem, 12px);
+  line-height: 1.35;
+  color: rgba(242, 237, 228, 0.62);
+  text-decoration: none;
+  outline: none;
+}
+
+.filmsWatchText {
+  min-width: 0;
+}
+
+.watchCue {
+  flex-shrink: 0;
+  color: #d8232a;
+  font-weight: 500;
+}
+
+.filmsWatchLink:hover,
+.filmsWatchLink:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  color: rgba(242, 237, 228, 0.85);
+}
+
+.filmsWatchLink:focus-visible {
+  outline: 2px solid #f2ede4;
+  outline-offset: 4px;
+}
+
+@media (min-width: 1024px) {
+  .filmsWatchLink {
+    font-size: max(0.8125rem, 13px);
+  }
+}
+
 @keyframes rowFadeUp {
   from {
     opacity: 0;
@@ -211,7 +300,10 @@
 
   .row:hover .arrowWrap,
   .row:active .arrowWrap,
-  .row:focus-visible .arrowWrap {
+  .row:focus-visible .arrowWrap,
+  .filmsLabelLink:hover .arrowWrap,
+  .filmsLabelLink:active .arrowWrap,
+  .filmsLabelLink:focus-visible .arrowWrap {
     transform: none;
   }
 }

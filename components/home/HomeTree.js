@@ -180,6 +180,7 @@ export default function HomeTree({
                 qualifier={door.qualifier}
                 statusLine={meta?.statusLine ?? null}
                 statusLineShort={meta?.statusLineShort ?? null}
+                statusHref={meta?.statusHref ?? null}
                 external={Boolean(meta?.external)}
                 doorId={door.id}
                 entranceIndex={index}

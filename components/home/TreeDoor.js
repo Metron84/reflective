@@ -84,6 +84,7 @@ const TreeDoor = forwardRef(function TreeDoor(
     qualifier,
     statusLine,
     statusLineShort = null,
+    statusHref = null,
     external = false,
     doorId,
     entranceIndex,
@@ -106,6 +107,48 @@ const TreeDoor = forwardRef(function TreeDoor(
       : {
           animationDelay: `${ROW_ENTRANCE_BASE_MS + entranceIndex * ROW_ENTRANCE_STAGGER_MS}ms`,
         };
+
+  if (doorId === "films") {
+    return (
+      <div
+        id={`tree-door-${doorId}`}
+        className={`${styles.row} ${styles.filmsRow} ${entranceClass}`}
+        style={entranceStyle}
+      >
+        <span className={styles.iconWrap} aria-hidden="true">
+          {Icon ? <Icon className={styles.icon} /> : null}
+        </span>
+        <div className={styles.filmsBody}>
+          <Link
+            ref={ref}
+            href={href}
+            className={styles.filmsLabelLink}
+          >
+            <span className={styles.category}>{category}</span>
+            <span className={styles.arrowWrap} aria-hidden="true">
+              <IconArrow className={styles.arrow} />
+            </span>
+          </Link>
+          {qualifier ? (
+            <span className={styles.qualifier}>{qualifier}</span>
+          ) : null}
+          {statusHref && statusLine ? (
+            <a
+              href={statusHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.filmsWatchLink}
+            >
+              <span className={styles.filmsWatchText}>{statusLine}</span>
+              <span className={styles.watchCue}>Watch</span>
+            </a>
+          ) : statusLine ? (
+            <span className={styles.statusLine}>{statusLine}</span>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Link
