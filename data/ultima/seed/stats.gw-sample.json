@@ -1,0 +1,54 @@
+{
+  "gameweek": 12,
+  "window_start": "2026-03-13T00:00:00+04:00",
+  "window_end": "2026-03-19T23:59:59+04:00",
+  "league_open_at": {
+    "laliga": "2026-03-13T17:00:00+04:00",
+    "pl": "2026-03-14T08:30:00+04:00",
+    "seriea": "2026-03-14T14:00:00+04:00"
+  },
+  "fixtures": [
+    {
+      "provider_id": "sample-fix-ll-1",
+      "players": [
+        { "provider_id": "sample-ll-d", "goals": 0, "assists": 2, "rating": 7.9 },
+        { "provider_id": "sample-ll-e", "goals": 2, "assists": 0, "rating": 8.3 },
+        { "provider_id": "sample-ll-f", "goals": 0, "assists": 1, "rating": 7.2 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-pl-1",
+      "players": [
+        { "provider_id": "sample-pl-a", "goals": 1, "assists": 1, "rating": 8.1 },
+        { "provider_id": "sample-pl-b", "goals": 0, "assists": 0, "rating": 6.8 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-pl-2",
+      "players": [
+        { "provider_id": "sample-pl-c", "goals": 1, "assists": 0, "rating": 7.6 },
+        { "provider_id": "sample-pl-j", "goals": 0, "assists": 1, "rating": 6.9 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-sa-1",
+      "players": [
+        { "provider_id": "sample-sa-g", "goals": 1, "assists": 0, "rating": 7.4 },
+        { "provider_id": "sample-sa-h", "goals": 1, "assists": 1, "rating": 7.7 },
+        { "provider_id": "sample-sa-i", "goals": 0, "assists": 0, "rating": 7.1 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-ll-2a",
+      "players": [
+        { "provider_id": "sample-ll-k", "goals": 1, "assists": 0, "rating": 7.5 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-ll-2b",
+      "players": [
+        { "provider_id": "sample-ll-k", "goals": 0, "assists": 0, "rating": 6.6 }
+      ]
+    }
+  ]
+}

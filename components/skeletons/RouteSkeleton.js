@@ -2,7 +2,7 @@ import styles from "./RouteSkeleton.module.css";
 
 /**
  * Static cream route skeletons — no fetch, opacity pulse only.
- * @param {{ variant: "films" | "games" | "codemaster" | "reflections" }} props
+ * @param {{ variant: "films" | "games" | "codemaster" | "reflections" | "ultima" }} props
  */
 export default function RouteSkeleton({ variant }) {
   return (
@@ -16,6 +16,7 @@ export default function RouteSkeleton({ variant }) {
       {variant === "games" ? <GamesFold /> : null}
       {variant === "codemaster" ? <CodemasterFold /> : null}
       {variant === "reflections" ? <ReflectionsFold /> : null}
+      {variant === "ultima" ? <UltimaFold /> : null}
       <span className={styles.sr}>Loading</span>
     </div>
   );
@@ -80,6 +81,17 @@ function ReflectionsFold() {
       <div
         className={`${styles.block} ${styles.pulse} ${styles.reflectionsCta}`}
       />
+    </div>
+  );
+}
+
+function UltimaFold() {
+  return (
+    <div className={styles.ultimaFold}>
+      <div className={`${styles.block} ${styles.pulse} ${styles.ultimaEyebrow}`} />
+      <div className={`${styles.block} ${styles.pulse} ${styles.ultimaTitle}`} />
+      <div className={`${styles.block} ${styles.pulse} ${styles.ultimaDoor}`} />
+      <div className={`${styles.block} ${styles.pulse} ${styles.ultimaDoor}`} />
     </div>
   );
 }

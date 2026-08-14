@@ -1,0 +1,41 @@
+[
+  {
+    "provider_id": "sample-sa-g",
+    "name": "Player G",
+    "club": "SAMPLE Milan",
+    "league": "seriea",
+    "active": true,
+    "goals_rate": 0.32,
+    "assists_rate": 0.06,
+    "rating_avg": 7.3,
+    "rating_consistency": 0.21,
+    "minutes_reliability": 0.86,
+    "club_strength": 0.72
+  },
+  {
+    "provider_id": "sample-sa-h",
+    "name": "Player H",
+    "club": "SAMPLE Inter",
+    "league": "seriea",
+    "active": true,
+    "goals_rate": 0.38,
+    "assists_rate": 0.22,
+    "rating_avg": 7.5,
+    "rating_consistency": 0.26,
+    "minutes_reliability": 0.9,
+    "club_strength": 0.84
+  },
+  {
+    "provider_id": "sample-sa-i",
+    "name": "Player I",
+    "club": "SAMPLE Napoli",
+    "league": "seriea",
+    "active": true,
+    "goals_rate": 0.15,
+    "assists_rate": 0.04,
+    "rating_avg": 7.0,
+    "rating_consistency": 0.19,
+    "minutes_reliability": 0.78,
+    "club_strength": 0.68
+  }
+]

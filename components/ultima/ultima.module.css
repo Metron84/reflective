@@ -1,0 +1,265 @@
+.ultimaPage {
+  flex: 1;
+  width: 100%;
+  background: #f2ede4;
+  background-image: url("/brand/texture-cream-site-bg.png");
+  background-size: 512px 512px;
+  color: #0a111f;
+}
+
+.inner {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.15rem 3.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.65);
+  margin: 0;
+}
+
+.title {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(2.25rem, 8vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0.5rem 0 0;
+}
+
+.lede {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  margin: 1rem 0 0;
+  max-width: 36rem;
+}
+
+.rule {
+  border: none;
+  border-top: 1px solid rgba(10, 17, 31, 0.15);
+  margin: 1.75rem 0;
+}
+
+.hub {
+  margin-top: 1.5rem;
+}
+
+.hubNote {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+  color: rgba(10, 17, 31, 0.85);
+}
+
+.hubCta {
+  margin-bottom: 1.5rem;
+}
+
+.doorList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(10, 17, 31, 0.12);
+}
+
+.door {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+  text-decoration: none;
+  color: inherit;
+  min-height: 44px;
+}
+
+.door:active {
+  opacity: 0.72;
+}
+
+.doorMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.doorLabel {
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.doorStatus {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.65);
+  line-height: 1.4;
+}
+
+.doorArrow {
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  opacity: 0.55;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1.35rem;
+  background: #d8232a;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.primaryBtn:active {
+  opacity: 0.88;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1.35rem;
+  border: 1px solid #0a111f;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.quietLink {
+  color: #0a111f;
+  text-underline-offset: 2px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.field label {
+  display: block;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1rem;
+  border: 1px solid rgba(10, 17, 31, 0.2);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  color: #0a111f;
+}
+
+.colourGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.colourChip {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
+.colourChipSelected {
+  border-color: #0a111f;
+}
+
+.message {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.messageError {
+  color: #d8232a;
+}
+
+.messageOk {
+  color: #0a111f;
+}
+
+.rulesSection {
+  margin-top: 1.75rem;
+}
+
+.rulesSection h2 {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.35rem;
+  margin: 0 0 0.5rem;
+}
+
+.rulesSection p,
+.rulesSection li {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.rulesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+}
+
+.rulesTable th,
+.rulesTable td {
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+  padding: 0.5rem 0.35rem;
+  text-align: left;
+}
+
+.phaseNote {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  color: rgba(10, 17, 31, 0.7);
+  margin-top: 1rem;
+}
+
+.navyRoom {
+  background: #0a111f;
+  color: #f2ede4;
+  min-height: 50vh;
+  padding: 2rem 1.15rem;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 3rem 1.5rem 4rem;
+  }
+}

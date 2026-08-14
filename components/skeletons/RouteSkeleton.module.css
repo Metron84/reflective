@@ -179,6 +179,30 @@
   border-radius: 999px;
 }
 
+.ultimaFold {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.15rem 3rem;
+}
+
+.ultimaEyebrow {
+  width: 9rem;
+  height: 0.55rem;
+}
+
+.ultimaTitle {
+  margin-top: 0.85rem;
+  width: min(14rem, 65%);
+  height: 3rem;
+}
+
+.ultimaDoor {
+  margin-top: 1rem;
+  width: 100%;
+  height: 3.25rem;
+  border-radius: 2px;
+}
+
 @media (min-width: 640px) {
   .filmsFold {
     padding: 3.5rem 1.5rem 3rem;

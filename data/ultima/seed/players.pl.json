@@ -1,0 +1,54 @@
+[
+  {
+    "provider_id": "sample-pl-a",
+    "name": "Player A",
+    "club": "SAMPLE FC",
+    "league": "pl",
+    "active": true,
+    "goals_rate": 0.45,
+    "assists_rate": 0.2,
+    "rating_avg": 7.4,
+    "rating_consistency": 0.3,
+    "minutes_reliability": 0.9,
+    "club_strength": 0.7
+  },
+  {
+    "provider_id": "sample-pl-b",
+    "name": "Player B",
+    "club": "SAMPLE United",
+    "league": "pl",
+    "active": true,
+    "goals_rate": 0.1,
+    "assists_rate": 0.05,
+    "rating_avg": 6.8,
+    "rating_consistency": 0.2,
+    "minutes_reliability": 0.85,
+    "club_strength": 0.6
+  },
+  {
+    "provider_id": "sample-pl-c",
+    "name": "Player C",
+    "club": "SAMPLE City",
+    "league": "pl",
+    "active": true,
+    "goals_rate": 0.35,
+    "assists_rate": 0.1,
+    "rating_avg": 7.2,
+    "rating_consistency": 0.25,
+    "minutes_reliability": 0.88,
+    "club_strength": 0.85
+  },
+  {
+    "provider_id": "sample-pl-j",
+    "name": "Player J",
+    "club": "SAMPLE Rovers",
+    "league": "pl",
+    "active": true,
+    "goals_rate": 0.08,
+    "assists_rate": 0.15,
+    "rating_avg": 6.9,
+    "rating_consistency": 0.18,
+    "minutes_reliability": 0.75,
+    "club_strength": 0.4
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "provider_id": "sample-ll-d",
+    "name": "Player D",
+    "club": "SAMPLE Madrid",
+    "league": "laliga",
+    "active": true,
+    "goals_rate": 0.12,
+    "assists_rate": 0.35,
+    "rating_avg": 7.5,
+    "rating_consistency": 0.22,
+    "minutes_reliability": 0.92,
+    "club_strength": 0.9
+  },
+  {
+    "provider_id": "sample-ll-e",
+    "name": "Player E",
+    "club": "SAMPLE Barcelona",
+    "league": "laliga",
+    "active": true,
+    "goals_rate": 0.55,
+    "assists_rate": 0.12,
+    "rating_avg": 7.8,
+    "rating_consistency": 0.28,
+    "minutes_reliability": 0.87,
+    "club_strength": 0.88
+  },
+  {
+    "provider_id": "sample-ll-f",
+    "name": "Player F",
+    "club": "SAMPLE Sevilla",
+    "league": "laliga",
+    "active": true,
+    "goals_rate": 0.05,
+    "assists_rate": 0.18,
+    "rating_avg": 7.0,
+    "rating_consistency": 0.2,
+    "minutes_reliability": 0.8,
+    "club_strength": 0.55
+  },
+  {
+    "provider_id": "sample-ll-k",
+    "name": "Player K",
+    "club": "SAMPLE Bilbao",
+    "league": "laliga",
+    "active": true,
+    "goals_rate": 0.28,
+    "assists_rate": 0.08,
+    "rating_avg": 7.1,
+    "rating_consistency": 0.24,
+    "minutes_reliability": 0.82,
+    "club_strength": 0.5
+  }
+]

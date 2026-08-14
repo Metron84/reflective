@@ -1,0 +1,47 @@
+[
+  {
+    "provider_id": "sample-fix-ll-1",
+    "league": "laliga",
+    "kickoff": "2026-03-13T17:00:00+04:00",
+    "status": "finished",
+    "home_club": "SAMPLE Madrid",
+    "away_club": "SAMPLE Sevilla",
+    "gameweek": 12
+  },
+  {
+    "provider_id": "sample-fix-pl-1",
+    "league": "pl",
+    "kickoff": "2026-03-14T08:30:00+04:00",
+    "status": "finished",
+    "home_club": "SAMPLE FC",
+    "away_club": "SAMPLE United",
+    "gameweek": 12
+  },
+  {
+    "provider_id": "sample-fix-pl-2",
+    "league": "pl",
+    "kickoff": "2026-03-14T11:00:00+04:00",
+    "status": "finished",
+    "home_club": "SAMPLE City",
+    "away_club": "SAMPLE Rovers",
+    "gameweek": 12
+  },
+  {
+    "provider_id": "sample-fix-sa-1",
+    "league": "seriea",
+    "kickoff": "2026-03-14T14:00:00+04:00",
+    "status": "finished",
+    "home_club": "SAMPLE Milan",
+    "away_club": "SAMPLE Napoli",
+    "gameweek": 12
+  },
+  {
+    "provider_id": "sample-fix-ll-2",
+    "league": "laliga",
+    "kickoff": "2026-03-15T20:00:00+04:00",
+    "status": "finished",
+    "home_club": "SAMPLE Bilbao",
+    "away_club": "SAMPLE Barcelona",
+    "gameweek": 12
+  }
+]
