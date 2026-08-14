@@ -25,10 +25,11 @@
     "statusLabel": "Parked — SAMPLE preview"
   },
   {
-    "slug": "ultimate-fantasy-manager",
-    "title": "Ultimate Fantasy Manager",
-    "hook": "Draft Europe. Ten players, six leagues, one squad.",
-    "status": "coming_soon",
+    "slug": "ultima",
+    "title": "Ultima",
+    "hook": "Draft PL, LaLiga, and Serie A. 25 players. Invite only.",
+    "status": "parked",
+    "href": "/ultima",
     "statusLabel": "Coming for the 26/27 season"
   },
   {

@@ -9,6 +9,7 @@ export default function GameCoverBySlug({ slug, compact = false }) {
       return <GuesserBoardCover compact={compact} />;
     case "the-stand":
       return <StandCover compact={compact} />;
+    case "ultima":
     case "ultimate-fantasy-manager":
       return <FantasyManagerCover />;
     case "you-decide":

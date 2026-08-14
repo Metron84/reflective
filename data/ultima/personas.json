@@ -1,0 +1,209 @@
+[
+  {
+    "id": "the_accountant",
+    "name": "The Accountant",
+    "risk": 0.1,
+    "horizon": 0.9,
+    "discipline": 0.9,
+    "wobble": 0.05,
+    "weights": {
+      "goals_rate": 0.4,
+      "assists_rate": 0.3,
+      "rating_avg": 0.8,
+      "rating_consistency": 0.9,
+      "minutes_reliability": 1.0,
+      "club_strength": 0.5,
+      "fixtures_next": 0.4,
+      "draft_round": 0.2
+    },
+    "rationale_lines": [
+      "Proven minutes. No drama.",
+      "Steady returns beat headlines.",
+      "The floor fills itself."
+    ]
+  },
+  {
+    "id": "the_banker",
+    "name": "The Banker",
+    "risk": 0.2,
+    "horizon": 0.8,
+    "discipline": 0.5,
+    "wobble": 0.1,
+    "weights": {
+      "goals_rate": 0.5,
+      "assists_rate": 0.3,
+      "rating_avg": 0.5,
+      "rating_consistency": 0.4,
+      "minutes_reliability": 0.6,
+      "club_strength": 1.0,
+      "fixtures_next": 0.3,
+      "draft_round": 0.3
+    },
+    "rationale_lines": [
+      "Big club. Big name.",
+      "Everyone knows this one.",
+      "Safe on paper."
+    ]
+  },
+  {
+    "id": "the_analyst",
+    "name": "The Analyst",
+    "risk": 0.3,
+    "horizon": 1.0,
+    "discipline": 1.0,
+    "wobble": 0.04,
+    "weights": {
+      "goals_rate": 0.7,
+      "assists_rate": 0.6,
+      "rating_avg": 0.9,
+      "rating_consistency": 0.8,
+      "minutes_reliability": 0.9,
+      "club_strength": 0.4,
+      "fixtures_next": 0.7,
+      "draft_round": 0.5
+    },
+    "rationale_lines": [
+      "The numbers say yes.",
+      "Season average wins here.",
+      "Floor handled on schedule."
+    ]
+  },
+  {
+    "id": "the_pragmatist",
+    "name": "The Pragmatist",
+    "risk": 0.4,
+    "horizon": 0.6,
+    "discipline": 0.7,
+    "wobble": 0.08,
+    "weights": {
+      "goals_rate": 0.6,
+      "assists_rate": 0.5,
+      "rating_avg": 0.6,
+      "rating_consistency": 0.5,
+      "minutes_reliability": 0.7,
+      "club_strength": 0.5,
+      "fixtures_next": 0.5,
+      "draft_round": 0.4
+    },
+    "rationale_lines": [
+      "Obvious pick. Moving on.",
+      "Nothing clever. Just correct.",
+      "LaLiga floor ticked."
+    ]
+  },
+  {
+    "id": "the_streaker",
+    "name": "The Streaker",
+    "risk": 0.5,
+    "horizon": 0.1,
+    "discipline": 0.4,
+    "wobble": 0.15,
+    "weights": {
+      "goals_rate": 1.0,
+      "assists_rate": 0.8,
+      "rating_avg": 0.3,
+      "rating_consistency": -0.2,
+      "minutes_reliability": 0.2,
+      "club_strength": 0.2,
+      "fixtures_next": 0.9,
+      "draft_round": 0.7
+    },
+    "rationale_lines": [
+      "He scored last week.",
+      "Hot right now.",
+      "Form over everything."
+    ]
+  },
+  {
+    "id": "the_contrarian",
+    "name": "The Contrarian",
+    "risk": 0.6,
+    "horizon": 0.5,
+    "discipline": 0.6,
+    "wobble": 0.12,
+    "weights": {
+      "goals_rate": 0.5,
+      "assists_rate": 0.4,
+      "rating_avg": 0.4,
+      "rating_consistency": 0.3,
+      "minutes_reliability": 0.5,
+      "club_strength": -0.3,
+      "fixtures_next": 0.4,
+      "draft_round": 0.8
+    },
+    "rationale_lines": [
+      "Room wanted him. I did not.",
+      "Different lane.",
+      "Not the obvious name."
+    ]
+  },
+  {
+    "id": "the_scout",
+    "name": "The Scout",
+    "risk": 0.8,
+    "horizon": 0.7,
+    "discipline": 0.8,
+    "wobble": 0.1,
+    "weights": {
+      "goals_rate": 0.6,
+      "assists_rate": 0.5,
+      "rating_avg": 0.5,
+      "rating_consistency": 0.4,
+      "minutes_reliability": 0.6,
+      "club_strength": 0.2,
+      "fixtures_next": 0.6,
+      "draft_round": 1.0
+    },
+    "rationale_lines": [
+      "Late rounds are where winners live.",
+      "Nobody else saw him.",
+      "Patience pays off."
+    ]
+  },
+  {
+    "id": "the_gambler",
+    "name": "The Gambler",
+    "risk": 0.9,
+    "horizon": 0.2,
+    "discipline": 0.3,
+    "wobble": 0.18,
+    "weights": {
+      "goals_rate": 1.0,
+      "assists_rate": 0.4,
+      "rating_avg": 0.2,
+      "rating_consistency": -0.3,
+      "minutes_reliability": 0.1,
+      "club_strength": 0.1,
+      "fixtures_next": 0.3,
+      "draft_round": 0.6
+    },
+    "rationale_lines": [
+      "Nobody has heard of him yet.",
+      "This is the one.",
+      "Boring is worse than wrong."
+    ]
+  },
+  {
+    "id": "the_panicker",
+    "name": "The Panicker",
+    "risk": 0.7,
+    "horizon": 0.3,
+    "discipline": 0.1,
+    "wobble": 0.22,
+    "weights": {
+      "goals_rate": 0.8,
+      "assists_rate": 0.3,
+      "rating_avg": 0.2,
+      "rating_consistency": -0.4,
+      "minutes_reliability": 0.3,
+      "club_strength": 0.3,
+      "fixtures_next": 0.8,
+      "draft_round": 0.9
+    },
+    "rationale_lines": [
+      "Need LaLiga. Anyone will do.",
+      "Clock is running.",
+      "Forced pick. Sorry."
+    ]
+  }
+]

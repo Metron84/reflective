@@ -55,6 +55,12 @@ thereflectivefootball.com — the website of The Reflective Football (TRF), a fa
 
 Summary: person-first daily game (Wordle-style attribute grid + TRF clue ladder). One footballer per day per mode. Matching, suggestions, solve, and dedupe operate on `person_id` scoped per mode and GST day. World Cup Legends is the free anonymous daily; five league modes are member-gated. Every mode compares its own row. Share format: `The Guesser #N (Mode) 4/6 · 2 clues` with 🟩🟨⬛⬜ grid. `/guesser` defaults to World Cup Legends; `?mode=` for all six modes.
 
+## Ultima — configuration
+
+**Full spec:** `docs/TRF_Ultima_Master_Spec.md` (v4, August 2026). Single source of truth for the invite-only fantasy league.
+
+Summary: one competition, 10 seats, live snake draft (25 rounds), 25-man squad, weekly XI of 11 across Premier League, LaLiga, and Serie A only. Mock provider first (`data/ultima/seed/`); Sportmonks at Phase F. Feature flag: `ULTIMA_ENABLED` in `lib/config.js`. Games manifest slug: `ultima`, route `/ultima`. Work in phases per spec section 21; stop for Melo review at each phase gate.
+
 ## Accounts
 
 - Supabase Auth: email magic link + Google sign-in. Google OAuth client is created (consent screen: "The Reflective Football", External/testing mode). Client ID + secret go into Supabase (Authentication → Providers → Google) and env vars — Melo provides them directly, never via chat. Authorized origins: https://thereflectivefootball.com and http://localhost:4343. Redirect URI: the Supabase auth callback. No passwords.
