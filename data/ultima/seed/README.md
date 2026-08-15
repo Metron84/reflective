@@ -9,8 +9,10 @@ Placeholder directory for the mock stats provider. Full contract: `docs/TRF_Ulti
 | `players.pl.json` | ~500 draftable Premier League players |
 | `players.laliga.json` | ~500 draftable LaLiga players |
 | `players.seriea.json` | ~500 draftable Serie A players |
+| `players.bundesliga.json` | SAMPLE Bundesliga players |
+| `players.ligue1.json` | SAMPLE Ligue 1 players |
 | `fixtures.json` | Scheduled and completed fixtures |
-| `stats.gw-sample.json` | One completed gameweek per league (Appendix A shape) |
+| `stats.gw-sample.json` | One completed gameweek (Appendix A v5: 15 slots, five leagues) |
 | `rankings.json` | Manual draft ranking, one ordered list per league |
 
 ## Player fields

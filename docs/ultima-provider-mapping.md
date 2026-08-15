@@ -47,6 +47,14 @@ Confirm against Sportmonks docs for your plan. Defaults in code use common type 
 
 One completed gameweek re-scored through Sportmonks matches mock structure. If rating sources differ, validate structure only and note in handover.
 
+Run calibration (read-only):
+
+```bash
+node scripts/ultima-calibrate-sportmonks.mjs --league pl --from 2026-03-13 --to 2026-03-19
+```
+
+Commissioner **Sync active gameweek** (`/ultima/admin`) pulls fixtures and stats into Supabase during live play. The lineup-lock cron runs the same pipeline every five minutes.
+
 ## v5 product rules
 
 - Five leagues, 30-man squad, 15 starters (3 per league), 30 draft rounds (300 picks).

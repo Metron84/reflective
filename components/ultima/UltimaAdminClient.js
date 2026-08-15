@@ -43,6 +43,16 @@ export default function UltimaAdminClient({ seasonLabel }) {
           <button type="button" className={styles.secondaryBtn} onClick={() => act("resume_draft")}>
             Resume draft
           </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            onClick={() => {
+              const when = prompt("Draft start time (ISO, e.g. 2026-08-20T18:00:00+04:00):");
+              if (when) act("schedule_draft", { scheduled_at: when });
+            }}
+          >
+            Schedule draft
+          </button>
         </div>
       </section>
 
@@ -55,10 +65,15 @@ export default function UltimaAdminClient({ seasonLabel }) {
       </section>
 
       <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Bootstrap</h2>
-        <button type="button" className={styles.secondaryBtn} onClick={() => act("bootstrap")}>
-          Sync players and sample GW12
-        </button>
+        <h2 className={styles.sectionTitle}>Bootstrap and sync</h2>
+        <div className={styles.adminActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => act("bootstrap")}>
+            Sync players and sample GW12
+          </button>
+          <button type="button" className={styles.secondaryBtn} onClick={() => act("sync_gameweek")}>
+            Sync active gameweek
+          </button>
+        </div>
       </section>
 
       <section className={styles.adminSection}>

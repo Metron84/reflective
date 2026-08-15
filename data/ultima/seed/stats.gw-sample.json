@@ -4,20 +4,37 @@
   "window_end": "2026-03-19T23:59:59+04:00",
   "league_open_at": {
     "laliga": "2026-03-13T17:00:00+04:00",
+    "bundesliga": "2026-03-13T19:30:00+04:00",
+    "ligue1": "2026-03-13T22:00:00+04:00",
     "pl": "2026-03-14T08:30:00+04:00",
     "seriea": "2026-03-14T14:00:00+04:00"
   },
   "fixtures": [
     {
       "provider_id": "sample-fix-ll-1",
+      "league": "laliga",
       "players": [
         { "provider_id": "sample-ll-d", "goals": 0, "assists": 2, "rating": 7.9 },
-        { "provider_id": "sample-ll-e", "goals": 2, "assists": 0, "rating": 8.3 },
-        { "provider_id": "sample-ll-f", "goals": 0, "assists": 1, "rating": 7.2 }
+        { "provider_id": "sample-ll-e", "goals": 2, "assists": 0, "rating": 8.3 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-ll-2a",
+      "league": "laliga",
+      "players": [
+        { "provider_id": "sample-ll-k", "goals": 1, "assists": 0, "rating": 7.5 }
+      ]
+    },
+    {
+      "provider_id": "sample-fix-ll-2b",
+      "league": "laliga",
+      "players": [
+        { "provider_id": "sample-ll-k", "goals": 0, "assists": 0, "rating": 6.6 }
       ]
     },
     {
       "provider_id": "sample-fix-pl-1",
+      "league": "pl",
       "players": [
         { "provider_id": "sample-pl-a", "goals": 1, "assists": 1, "rating": 8.1 },
         { "provider_id": "sample-pl-b", "goals": 0, "assists": 0, "rating": 6.8 }
@@ -25,13 +42,14 @@
     },
     {
       "provider_id": "sample-fix-pl-2",
+      "league": "pl",
       "players": [
-        { "provider_id": "sample-pl-c", "goals": 1, "assists": 0, "rating": 7.6 },
-        { "provider_id": "sample-pl-j", "goals": 0, "assists": 1, "rating": 6.9 }
+        { "provider_id": "sample-pl-c", "goals": 1, "assists": 0, "rating": 7.6 }
       ]
     },
     {
       "provider_id": "sample-fix-sa-1",
+      "league": "seriea",
       "players": [
         { "provider_id": "sample-sa-g", "goals": 1, "assists": 0, "rating": 7.4 },
         { "provider_id": "sample-sa-h", "goals": 1, "assists": 1, "rating": 7.7 },
@@ -39,15 +57,21 @@
       ]
     },
     {
-      "provider_id": "sample-fix-ll-2a",
+      "provider_id": "sample-fix-bl-1",
+      "league": "bundesliga",
       "players": [
-        { "provider_id": "sample-ll-k", "goals": 1, "assists": 0, "rating": 7.5 }
+        { "provider_id": "sample-bl-a", "goals": 0, "assists": 0, "rating": 6.5 },
+        { "provider_id": "sample-bl-b", "goals": 0, "assists": 0, "rating": 6.4 },
+        { "provider_id": "sample-bl-c", "goals": 0, "assists": 0, "rating": 6.3 }
       ]
     },
     {
-      "provider_id": "sample-fix-ll-2b",
+      "provider_id": "sample-fix-l1-1",
+      "league": "ligue1",
       "players": [
-        { "provider_id": "sample-ll-k", "goals": 0, "assists": 0, "rating": 6.6 }
+        { "provider_id": "sample-l1-a", "goals": 0, "assists": 0, "rating": 6.5 },
+        { "provider_id": "sample-l1-b", "goals": 0, "assists": 0, "rating": 6.4 },
+        { "provider_id": "sample-l1-c", "goals": 0, "assists": 0, "rating": 6.3 }
       ]
     }
   ]

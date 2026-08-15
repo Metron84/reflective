@@ -26,7 +26,8 @@
 |------|--------|
 | `0019_ultima.sql` | Applied |
 | `0020_ultima_personas_seed.sql` | Run if not done |
-| `0021_ultima_v5_leagues.sql` | **Run next** (5 leagues, 15 slots, 300 picks) |
+| `0021_ultima_v5_leagues.sql` | Applied |
+| `0022_ultima_notifications.sql` | **Run next** (notification dedupe + draft schedule) |
 
 ---
 
@@ -41,11 +42,8 @@
 | `CRON_SECRET` | Yes for cron routes |
 | `SPORTMONKS_API_KEY` | Yes for live data |
 | `ULTIMA_PROVIDER` | Set to `sportmonks` |
-| `SPORTMONKS_LEAGUE_ID_PL` | From Sportmonks dashboard |
-| `SPORTMONKS_LEAGUE_ID_LALIGA` | From dashboard |
-| `SPORTMONKS_LEAGUE_ID_SERIEA` | From dashboard |
-| `SPORTMONKS_LEAGUE_ID_BUNDESLIGA` | From dashboard |
-| `SPORTMONKS_LEAGUE_ID_LIGUE1` | From dashboard |
+| `SPORTMONKS_LEAGUE_ID_*` (5 leagues) | From Sportmonks dashboard |
+| `RESEND_API_KEY` | Yes for Ultima emails (reuse Concierge key) |
 
 Never commit keys. See `docs/ultima-provider-mapping.md`.
 
@@ -53,42 +51,56 @@ Never commit keys. See `docs/ultima-provider-mapping.md`.
 
 ## Commissioner workflow
 
-1. Run migrations 0020 + 0021 in Supabase.
+1. Run migration **0022** in Supabase.
 2. Set all env vars above.
-3. `/ultima/admin` → **Bootstrap** (sync players + sample GW if mock).
-4. **Sync players** uses Sportmonks when provider is active.
-5. Issue invites → Start draft.
+3. `/ultima/admin` → **Bootstrap** (sync players + sample GW12 mock).
+4. **Schedule draft** (ISO datetime) for 24h/1h reminder emails.
+5. **Start draft** when seats are full.
+6. Create live gameweek → **Sync active gameweek** during matchdays.
 
 Dev: `http://localhost:4343/api/dev/test-sign-in?next=/ultima&ultima=1`
 
 ---
 
-## Cron routes (wire in Vercel)
+## Cron routes (vercel.json)
 
-| Route | Purpose |
-|-------|---------|
-| `/api/cron/ultima/trade-expiry` | Trade review expiry + draft timer auto-pick |
-| `/api/cron/ultima/lineup-lock` | League lock events + bot auto-XI |
+| Route | Schedule | Purpose |
+|-------|----------|---------|
+| `/api/cron/ultima/trade-expiry` | Hourly | Trade review expiry + draft auto-pick |
+| `/api/cron/ultima/reminders` | Hourly | Draft 24h/1h reminders |
+| `/api/cron/ultima/lineup-lock` | Every 5 min | League locks, bot XI, Sportmonks sync, XI reminders |
+
+---
+
+## Appendix A (v5)
+
+15 slots, five leagues. Expected totals: **base 39, Bolt +2, total 41**.
+
+```bash
+node scripts/ultima-verify-appendix.mjs
+node scripts/ultima-calibrate-sportmonks.mjs --league pl
+npm run build
+```
+
+---
+
+## Email notifications (Resend)
+
+| Trigger | Implemented |
+|---------|-------------|
+| On the clock (timer ≥ 5 min) | Yes |
+| Auto-pick on expiry | Yes |
+| Draft 24h / 1h before | Yes (requires Schedule draft) |
+| XI not set (3h before first lock) | Yes |
+| Trade proposed | Yes |
+| Gameweek final | In-app SSE only |
 
 ---
 
 ## Still open for Melo
 
-- [ ] Confirm Sportmonks league IDs in env
-- [ ] Run migration 0021
-- [ ] Rating calibration for 5 leagues
+- [ ] Run migration 0022
+- [ ] Rating calibration sign-off (`node scripts/ultima-calibrate-sportmonks.mjs`)
 - [ ] Full acceptance test pass (spec §22, v5 numbers)
-- [ ] Resend email notifications (optional launch)
 - [ ] Open decisions: draft date, GW1, public standings, prize name
 - [ ] Production deploy approval
-
----
-
-## Verify
-
-```bash
-node scripts/ultima-verify-appendix.mjs   # v4 sample still PASS (3-league appendix)
-npm run build
-```
-
-Note: Appendix A is still the 3-league / 11-slot worked example until a v5 appendix is authored.

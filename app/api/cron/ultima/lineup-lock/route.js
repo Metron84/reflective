@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import { autoStartBotsForGameweek } from "@/lib/ultima/bots/lineup";
-import { recomputeGameweekScores } from "@/lib/ultima/server/scoring-run";
 import { publishUltimaEvent } from "@/lib/ultima/server/events";
 import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
+import { runGameweekSync, getActiveGameweek } from "@/lib/ultima/server/sync";
+import { runLineupReminders } from "@/lib/ultima/server/reminders";
 
 export const dynamic = "force-dynamic";
 
@@ -21,18 +22,10 @@ export async function GET(request) {
   const competition = await getActiveCompetition();
   if (!competition) return NextResponse.json({ ok: true, skipped: true });
 
-  const db = getUltimaDb();
-  const { data: gameweek } = await db
-    .from("ultima_gameweeks")
-    .select("*")
-    .eq("competition_id", competition.id)
-    .in("state", ["upcoming", "live", "provisional"])
-    .order("number", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
+  const gameweek = await getActiveGameweek(competition.id);
   if (!gameweek) return NextResponse.json({ ok: true, skipped: true });
 
+  const db = getUltimaDb();
   const now = Date.now();
   const locked = [];
 
@@ -47,8 +40,20 @@ export async function GET(request) {
 
   if (locked.length) {
     await autoStartBotsForGameweek(competition.id, gameweek.id);
-    await recomputeGameweekScores(competition.id, gameweek.id);
   }
 
-  return NextResponse.json({ ok: true, locked, gameweek: gameweek.number });
+  const sync = await runGameweekSync(competition.id, {
+    ...gameweek,
+    state: gameweek.state,
+  });
+
+  const reminders = await runLineupReminders(competition.id);
+
+  return NextResponse.json({
+    ok: true,
+    locked,
+    gameweek: gameweek.number,
+    sync,
+    reminders,
+  });
 }

@@ -11,6 +11,11 @@ import {
   commissionerScoreOverride,
   commissionerIssueInvite,
   commissionerBootstrap,
+  commissionerScheduleDraft,
+  commissionerSyncGameweek,
+  commissionerCreateGameweek,
+  commissionerSyncFixtures,
+  commissionerSyncStats,
   generateInviteCode,
   requireCommissioner,
 } from "@/lib/ultima/server/admin";
@@ -92,6 +97,21 @@ export async function POST(request) {
     }
     case "bootstrap":
       result = await commissionerBootstrap(competition.id, user.id);
+      break;
+    case "schedule_draft":
+      result = await commissionerScheduleDraft(competition.id, user.id, body.scheduled_at);
+      break;
+    case "sync_gameweek":
+      result = await commissionerSyncGameweek(competition.id, user.id);
+      break;
+    case "create_gameweek":
+      result = await commissionerCreateGameweek(competition.id, user.id, body);
+      break;
+    case "sync_fixtures":
+      result = await commissionerSyncFixtures(competition.id, user.id, body.gameweek_id);
+      break;
+    case "sync_stats":
+      result = await commissionerSyncStats(competition.id, user.id, body.gameweek_id);
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });
