@@ -10,7 +10,7 @@
 }
 
 .inner {
-  max-width: 42rem;
+  max-width: 52rem;
   margin: 0 auto;
   padding: 2.5rem 1.15rem 3.5rem;
   padding-left: max(1.15rem, env(safe-area-inset-left));
@@ -1424,7 +1424,62 @@
 
 .newsBoard,
 .chatBoard {
-  margin: 1.75rem 0 0;
+  margin: 0;
+}
+
+.newsCentre {
+  margin-top: 0.25rem;
+}
+
+.hubStatus {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  margin: 0 0 1.5rem;
+  color: rgba(10, 17, 31, 0.85);
+}
+
+.newsCentreGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+.tradeDesk {
+  margin: 0 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+}
+
+.tradeDeskList {
+  list-style: none;
+  margin: 0.75rem 0 0.85rem;
+  padding: 0;
+}
+
+.tradeDeskCard {
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(10, 17, 31, 0.1);
+}
+
+.tradeDeskMeta {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+  opacity: 0.65;
+}
+
+.tradeDeskTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.tradeDeskActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .newsList,
@@ -1451,7 +1506,8 @@
 }
 
 .chatList {
-  max-height: 16rem;
+  max-height: 22rem;
+  min-height: 12rem;
   overflow: auto;
   border: 1px solid rgba(10, 17, 31, 0.12);
   padding: 0.65rem 0.85rem;
@@ -1546,6 +1602,12 @@
   .shellMain {
     flex: 1;
     min-width: 0;
+  }
+
+  .newsCentreGrid {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: start;
+    gap: 2.5rem;
   }
 }
 
