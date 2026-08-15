@@ -36,11 +36,11 @@ export default function UltimaRulesBody() {
         </tbody>
       </table>
 
-      <h2>Squad and XI floors</h2>
+      <h2>Squad and XV floors (v5)</h2>
       <ul>
-        <li>25-man squad. Minimum 4 players from each league.</li>
-        <li>Starting XI of 11. Minimum 3 from each league, plus 2 free slots.</li>
-        <li>Only the XI scores. Bench players score zero.</li>
+        <li>30-man squad. Minimum 3 players from each of the five leagues.</li>
+        <li>Starting XV of 15. Exactly 3 from each league. All fifteen score.</li>
+        <li>Bench players score zero.</li>
       </ul>
 
       <h2>Locking</h2>
@@ -50,7 +50,10 @@ export default function UltimaRulesBody() {
       </p>
 
       <h2>Leagues</h2>
-      <p>Premier League, LaLiga, and Serie A only. Invite only. Ten seats.</p>
+      <p>
+        Premier League, LaLiga, Serie A, Bundesliga, and Ligue 1. Invite only. Ten seats.
+        Thirty draft rounds.
+      </p>
 
       <p className={styles.phaseNote}>
         Rating thresholds may be calibrated per league once the season study is signed off.

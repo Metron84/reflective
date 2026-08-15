@@ -1,0 +1,41 @@
+[
+  {
+    "provider_id": "sample-bl-a",
+    "name": "Player BL-A",
+    "club": "SAMPLE Berlin",
+    "league": "bundesliga",
+    "active": true,
+    "goals_rate": 0.4,
+    "assists_rate": 0.15,
+    "rating_avg": 7.3,
+    "rating_consistency": 0.28,
+    "minutes_reliability": 0.88,
+    "club_strength": 0.75
+  },
+  {
+    "provider_id": "sample-bl-b",
+    "name": "Player BL-B",
+    "club": "SAMPLE Munich",
+    "league": "bundesliga",
+    "active": true,
+    "goals_rate": 0.5,
+    "assists_rate": 0.2,
+    "rating_avg": 7.5,
+    "rating_consistency": 0.25,
+    "minutes_reliability": 0.9,
+    "club_strength": 0.9
+  },
+  {
+    "provider_id": "sample-bl-c",
+    "name": "Player BL-C",
+    "club": "SAMPLE Dortmund",
+    "league": "bundesliga",
+    "active": true,
+    "goals_rate": 0.35,
+    "assists_rate": 0.12,
+    "rating_avg": 7.1,
+    "rating_consistency": 0.22,
+    "minutes_reliability": 0.85,
+    "club_strength": 0.8
+  }
+]

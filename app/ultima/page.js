@@ -3,15 +3,14 @@ import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
-import {
-  getActiveCompetition,
-  getManagerForUser,
-} from "@/lib/ultima/server/db";
+import { getActiveCompetition, getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
+import { getHubStatus } from "@/lib/ultima/server/admin";
+import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima",
   description:
-    "Draft PL, LaLiga, and Serie A. 25 players. Invite only. The Reflective Football fantasy league.",
+    "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only. The Reflective Football fantasy league.",
   alternates: { canonical: "/ultima" },
   robots: ULTIMA_ENABLED ? undefined : { index: false, follow: false },
 };
@@ -19,11 +18,29 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaPage() {
-  const auth = await getAuthContext();
+  const auth = await safeResolve(getAuthContext(), {
+    user: null,
+    profile: null,
+    isSignedIn: false,
+  });
   const competition = await getActiveCompetition();
-  const manager = auth.isSignedIn
-    ? await getManagerForUser(auth.user.id)
-    : null;
+  const manager =
+    auth.isSignedIn && auth.user
+      ? await getManagerForUser(auth.user.id)
+      : null;
+
+  let hubStatus = null;
+  let draftState = "lobby";
+  if (competition && manager) {
+    hubStatus = await getHubStatus(competition.id, manager.id);
+    const db = getUltimaDb();
+    const { data: ds } = await db
+      .from("ultima_draft_state")
+      .select("state")
+      .eq("competition_id", competition.id)
+      .maybeSingle();
+    draftState = ds?.state ?? "lobby";
+  }
 
   return (
     <div className={styles.ultimaPage}>
@@ -31,7 +48,7 @@ export default async function UltimaPage() {
         <p className={styles.eyebrow}>GAMES · ULTIMA</p>
         <h1 className={styles.title}>Ultima</h1>
         <p className={styles.lede}>
-          Draft Premier League, LaLiga, and Serie A. Twenty-five players. Ten seats. Invite only.
+          Draft Europe's top five. Thirty players. Fifteen score each week. Ten seats. Invite only.
         </p>
         {!ULTIMA_ENABLED ? (
           <p className={styles.phaseNote}>
@@ -45,6 +62,8 @@ export default async function UltimaPage() {
         <UltimaHub
           isSignedIn={auth.isSignedIn}
           manager={manager}
+          draftState={draftState}
+          hubStatus={hubStatus}
         />
         <p className={styles.hubNote}>
           <Link href="/ultima/rules" className={styles.quietLink}>

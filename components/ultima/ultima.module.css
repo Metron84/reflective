@@ -263,3 +263,425 @@
     padding: 3rem 1.5rem 4rem;
   }
 }
+
+/* Draft room (Phase C) */
+.draftRoom {
+  background: #0a111f;
+  color: #f2ede4;
+  min-height: 100vh;
+  padding: 1.5rem 1.15rem 3rem;
+}
+
+.draftHeader {
+  margin-bottom: 1.25rem;
+}
+
+.draftEyebrow {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 0.75rem 0 0;
+}
+
+.draftTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.75rem;
+  margin: 0.35rem 0;
+}
+
+.onClock {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.redProgress {
+  height: 2px;
+  background: #d8232a;
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.floorLine {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  opacity: 0.85;
+  margin: 0.5rem 0 0;
+}
+
+.navyText {
+  font-family: var(--font-archivo), sans-serif;
+  color: #f2ede4;
+}
+
+.navyTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  color: #f2ede4;
+  font-size: 1.75rem;
+}
+
+.quietLinkLight {
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+}
+
+.draftTabs,
+.leagueTabs,
+.squadTabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.tab,
+.tabCream,
+.leagueTab,
+.leagueTabCream {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(242, 237, 228, 0.25);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.tabActive,
+.leagueTabActive {
+  border-color: #f2ede4;
+  background: rgba(242, 237, 228, 0.12);
+}
+
+.tabActiveCream,
+.leagueTabActiveCream {
+  border-color: #0a111f;
+  background: rgba(10, 17, 31, 0.06);
+}
+
+.tabCream,
+.leagueTabCream {
+  border-color: rgba(10, 17, 31, 0.2);
+  color: #0a111f;
+}
+
+.playerList,
+.playerListCream {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.playerRow,
+.playerRowCream {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.12);
+}
+
+.playerRowCream {
+  border-bottom-color: rgba(10, 17, 31, 0.1);
+}
+
+.playerMeta {
+  display: block;
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}
+
+.playerActions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.draftBtn {
+  background: #d8232a;
+  color: #f2ede4;
+  border: none;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.queueBtn {
+  background: transparent;
+  border: 1px solid rgba(242, 237, 228, 0.4);
+  color: #f2ede4;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.feedRow {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.08);
+}
+
+.feedBot {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.feedForced {
+  color: #d8232a;
+  font-size: 0.75rem;
+}
+
+.pausedBanner {
+  background: rgba(242, 237, 228, 0.1);
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Squad (Phase D) */
+.squadPage {
+  margin-top: 1rem;
+}
+
+.squadHeader {
+  position: sticky;
+  top: 0;
+  background: #f2ede4;
+  padding-bottom: 0.75rem;
+  z-index: 2;
+}
+
+.xiList,
+.squadList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.xiRow,
+.xiRowLocked,
+.squadRow {
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+}
+
+.xiRowLocked {
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.xiSlotBtn {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-archivo), sans-serif;
+  color: inherit;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.xiSlotLabel {
+  display: inline-block;
+  min-width: 3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.65;
+}
+
+.liveStrip {
+  background: #0a111f;
+  color: #f2ede4;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 17, 31, 0.45);
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet {
+  background: #f2ede4;
+  width: 100%;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1.25rem 1.15rem 2rem;
+  border-radius: 12px 12px 0 0;
+}
+
+.sheetTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  margin: 0 0 0.75rem;
+}
+
+.sheetRow {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-archivo), sans-serif;
+  min-height: 44px;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.08);
+  cursor: pointer;
+}
+
+.disabledReason {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  opacity: 0.7;
+  margin-top: 0.35rem;
+}
+
+/* Market, trades, standings */
+.marketPage,
+.tradeBuilder,
+.adminPage {
+  margin-top: 1rem;
+}
+
+.boltTag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #d8232a;
+  margin-left: 0.35rem;
+}
+
+.emptyState {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  opacity: 0.75;
+}
+
+.fieldSelect {
+  width: 100%;
+  min-height: 44px;
+  margin: 0.5rem 0 1rem;
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.sectionTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.15rem;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.standingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  margin: 1rem 0;
+}
+
+.standingsTable th,
+.standingsTable td {
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+  padding: 0.5rem 0.35rem;
+  text-align: left;
+}
+
+.colourDot {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.tradeList,
+.logList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.tradeRow,
+.logRow {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.tradeFooter {
+  position: sticky;
+  bottom: 0;
+  background: #f2ede4;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(10, 17, 31, 0.12);
+}
+
+.tradeActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.adminSection {
+  margin: 1.5rem 0;
+}
+
+.adminActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.destructiveBtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.65rem 1.35rem;
+  border: 1px solid #d8232a;
+  color: #d8232a;
+  background: transparent;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.logTime {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.65;
+}
+

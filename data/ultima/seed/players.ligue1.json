@@ -1,0 +1,41 @@
+[
+  {
+    "provider_id": "sample-l1-a",
+    "name": "Player L1-A",
+    "club": "SAMPLE Paris",
+    "league": "ligue1",
+    "active": true,
+    "goals_rate": 0.55,
+    "assists_rate": 0.18,
+    "rating_avg": 7.6,
+    "rating_consistency": 0.26,
+    "minutes_reliability": 0.92,
+    "club_strength": 0.95
+  },
+  {
+    "provider_id": "sample-l1-b",
+    "name": "Player L1-B",
+    "club": "SAMPLE Lyon",
+    "league": "ligue1",
+    "active": true,
+    "goals_rate": 0.3,
+    "assists_rate": 0.1,
+    "rating_avg": 7.0,
+    "rating_consistency": 0.2,
+    "minutes_reliability": 0.82,
+    "club_strength": 0.65
+  },
+  {
+    "provider_id": "sample-l1-c",
+    "name": "Player L1-C",
+    "club": "SAMPLE Marseille",
+    "league": "ligue1",
+    "active": true,
+    "goals_rate": 0.25,
+    "assists_rate": 0.14,
+    "rating_avg": 6.9,
+    "rating_consistency": 0.18,
+    "minutes_reliability": 0.78,
+    "club_strength": 0.6
+  }
+]

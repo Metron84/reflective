@@ -1,9 +1,10 @@
+import Link from "next/link";
 import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
 import styles from "./ComingSoonGameCard.module.css";
 
 export default function ComingSoonGameCard({ game }) {
-  return (
-    <div className={styles.card}>
+  const inner = (
+    <>
       <div className={styles.cover} aria-hidden>
         {game.cover ? (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -17,6 +18,16 @@ export default function ComingSoonGameCard({ game }) {
         <p className={styles.hook}>{game.hook}</p>
         <p className={styles.status}>{game.statusLabel}</p>
       </div>
-    </div>
+    </>
   );
+
+  if (game.href) {
+    return (
+      <Link href={game.href} className={styles.card}>
+        {inner}
+      </Link>
+    );
+  }
+
+  return <div className={styles.card}>{inner}</div>;
 }

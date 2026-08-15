@@ -57,9 +57,9 @@ Summary: person-first daily game (Wordle-style attribute grid + TRF clue ladder)
 
 ## Ultima — configuration
 
-**Full spec:** `docs/TRF_Ultima_Master_Spec.md` (v4, August 2026). Single source of truth for the invite-only fantasy league.
+**Full spec:** `docs/TRF_Ultima_Master_Spec.md` (v5, August 2026). Single source of truth for the invite-only fantasy league.
 
-Summary: one competition, 10 seats, live snake draft (25 rounds), 25-man squad, weekly XI of 11 across Premier League, LaLiga, and Serie A only. Mock provider first (`data/ultima/seed/`); Sportmonks at Phase F. Feature flag: `ULTIMA_ENABLED` in `lib/config.js`. Games manifest slug: `ultima`, route `/ultima`. Work in phases per spec section 21; stop for Melo review at each phase gate.
+Summary: one competition, 10 seats, live snake draft (30 rounds), 30-man squad, weekly starting XV of 15 (3 per league) across Premier League, LaLiga, Serie A, Bundesliga, and Ligue 1. Sportmonks via `ULTIMA_PROVIDER=sportmonks` and env league IDs; mock fallback in `data/ultima/seed/`. Feature flag: `ULTIMA_ENABLED` in `lib/config.js`. Games manifest slug: `ultima`, route `/ultima`. Stop for Melo review at each phase gate.
 
 ## Accounts
 

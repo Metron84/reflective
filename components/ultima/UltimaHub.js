@@ -8,37 +8,51 @@ const STATIC_DOORS = [
   { href: "/games", label: "Games", status: "The Guesser, Codemaster, and more." },
 ];
 
+function draftStatusLine(draftState, hubStatus) {
+  if (hubStatus?.draft === "live") return "Live. Check the draft room.";
+  if (draftState === "complete") return "Complete";
+  if (draftState === "paused") return "Paused by the commissioner";
+  if (draftState === "live") return "Live";
+  return "Opens when the commissioner starts the draft";
+}
+
 export default function UltimaHub({
   isSignedIn,
   manager,
   draftState = "lobby",
+  hubStatus = null,
 }) {
   const managerDoors = manager
     ? [
         {
           href: "/ultima/draft",
           label: "Draft room",
-          status:
-            draftState === "complete"
-              ? "Complete"
-              : draftState === "live"
-                ? "Live"
-                : "Opens when the commissioner starts the draft",
+          status: draftStatusLine(draftState, hubStatus),
         },
         {
           href: "/ultima/squad",
           label: "My squad",
           status: manager.profile_complete
-            ? "Set your XI before the first kickoff"
+            ? hubStatus?.standings?.includes("You are")
+              ? hubStatus.standings
+              : "Set your XI before the first kickoff"
             : "Complete your profile first",
         },
-        { href: "/ultima/market", label: "Market", status: "Free agents after the draft" },
+        {
+          href: "/ultima/market",
+          label: "Market",
+          status: hubStatus?.market ?? "Free agents after the draft",
+        },
         {
           href: "/ultima/trades",
           label: "Trades",
-          status: "Trades open at gameweek 4",
+          status: hubStatus?.trades ?? "Trades open at gameweek 4",
         },
-        { href: "/ultima/standings", label: "Standings", status: "Season table and Bolt board" },
+        {
+          href: "/ultima/standings",
+          label: "Standings",
+          status: hubStatus?.standings ?? "Season table and Bolt board",
+        },
         { href: "/ultima/log", label: "Commissioner log", status: "Public audit trail" },
       ]
     : [];
@@ -51,6 +65,17 @@ export default function UltimaHub({
           <Link href="/signin?next=/ultima" className={styles.quietLink}>
             Sign in
           </Link>
+          {process.env.NODE_ENV === "development" ? (
+            <>
+              {" · "}
+              <a
+                href="/api/dev/test-sign-in?next=/ultima&ultima=1"
+                className={styles.quietLink}
+              >
+                Dev preview
+              </a>
+            </>
+          ) : null}
         </p>
       ) : null}
 

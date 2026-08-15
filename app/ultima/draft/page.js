@@ -1,6 +1,7 @@
 import Link from "next/link";
-import UltimaPhaseShell from "@/components/ultima/UltimaPhaseShell";
+import UltimaDraftRoom from "@/components/ultima/UltimaDraftRoom";
 import { requireUltimaManager } from "@/lib/ultima/gates";
+import styles from "@/components/ultima/ultima.module.css";
 
 export const metadata = {
   title: "Ultima · Draft",
@@ -12,21 +13,20 @@ export const dynamic = "force-dynamic";
 export default async function UltimaDraftPage() {
   const { manager } = await requireUltimaManager("/ultima/draft");
 
-  return (
-    <UltimaPhaseShell
-      title="Draft room"
-      phase="C"
-      lede={
-        manager?.profile_complete
-          ? "Live snake draft, floor counter, and feed land in Phase C."
-          : "Complete your profile before the draft room opens."
-      }
-    >
-      {!manager?.profile_complete ? (
-        <p>
-          <Link href="/ultima/profile">Complete profile</Link>
-        </p>
-      ) : null}
-    </UltimaPhaseShell>
-  );
+  if (!manager?.profile_complete) {
+    return (
+      <div className={styles.ultimaPage}>
+        <div className={styles.inner}>
+          <p className={styles.eyebrow}>GAMES · ULTIMA</p>
+          <h1 className={styles.title}>Draft room</h1>
+          <p className={styles.lede}>Complete your profile before the draft room opens.</p>
+          <Link href="/ultima/profile" className={styles.primaryBtn}>
+            Complete profile
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return <UltimaDraftRoom managerId={manager.id} />;
 }
