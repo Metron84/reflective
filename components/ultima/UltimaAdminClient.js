@@ -342,6 +342,7 @@ function SyncReport({ report }) {
               {!reasons[league] && typeof rated === "number" ? (
                 <span className={styles.syncReason}>
                   {rated} rated, {Math.max(count - rated, 0)} on league average
+                  {coverage[league]?.error ? `. ${coverage[league].error}` : ""}
                 </span>
               ) : null}
             </li>
