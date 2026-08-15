@@ -738,6 +738,57 @@
   color: #0a111f;
 }
 
+.syncReport {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(10, 17, 31, 0.15);
+  background: rgba(10, 17, 31, 0.03);
+}
+
+.syncList {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+}
+
+.syncRow {
+  display: grid;
+  grid-template-columns: 10rem 3rem 1fr;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.08);
+}
+
+@media (max-width: 480px) {
+  .syncRow {
+    grid-template-columns: 1fr 3rem;
+  }
+
+  .syncReason {
+    grid-column: 1 / -1;
+  }
+}
+
+.syncOk {
+  font-variant-numeric: tabular-nums;
+  color: #0a111f;
+  font-weight: 600;
+}
+
+.syncBad {
+  font-variant-numeric: tabular-nums;
+  color: #d8232a;
+  font-weight: 600;
+}
+
+.syncReason {
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.7);
+}
+
 .adminForm {
   display: flex;
   flex-direction: column;

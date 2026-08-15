@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ULTIMA_TIMER_OPTIONS, formatUltimaTimer } from "@/lib/ultima/constants";
+import {
+  ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_LABELS,
+  ULTIMA_MIN_POOL_PER_LEAGUE,
+  ULTIMA_MIN_POOL_TOTAL,
+  ULTIMA_TIMER_OPTIONS,
+  formatUltimaTimer,
+} from "@/lib/ultima/constants";
 import styles from "./ultima.module.css";
 
 export default function UltimaAdminClient({
@@ -25,10 +32,13 @@ export default function UltimaAdminClient({
   const [gwNumber, setGwNumber] = useState("");
   const [gwStart, setGwStart] = useState("");
   const [gwEnd, setGwEnd] = useState("");
+  const [syncReport, setSyncReport] = useState(null);
+  const [busy, setBusy] = useState("");
 
   async function act(action, extra = {}) {
     setMessage("");
     setError("");
+    setBusy(action);
     try {
       const res = await fetch("/api/ultima/admin", {
         method: "POST",
@@ -38,6 +48,7 @@ export default function UltimaAdminClient({
       const data = await res.json();
       if (!res.ok) setError(data.message ?? "Action failed.");
       else {
+        if (data.sync) setSyncReport(data.sync);
         if (data.timer_seconds) {
           setClock(data.timer_seconds);
           setMessage(`Clock set to ${formatUltimaTimer(data.timer_seconds)}.`);
@@ -48,6 +59,8 @@ export default function UltimaAdminClient({
       }
     } catch {
       setError("Connection lost.");
+    } finally {
+      setBusy("");
     }
   }
 
@@ -254,13 +267,19 @@ export default function UltimaAdminClient({
       <section className={styles.adminSection}>
         <h2 className={styles.sectionTitle}>Bootstrap and sync</h2>
         <div className={styles.adminActions}>
-          <button type="button" className={styles.secondaryBtn} onClick={() => act("bootstrap")}>
-            Sync players and sample GW12
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={busy === "bootstrap"}
+            onClick={() => act("bootstrap")}
+          >
+            {busy === "bootstrap" ? "Syncing five leagues…" : "Sync players"}
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={() => act("sync_gameweek")}>
             Sync active gameweek
           </button>
         </div>
+        {syncReport ? <SyncReport report={syncReport} /> : null}
       </section>
 
       <section className={styles.adminSection}>
@@ -284,6 +303,47 @@ export default function UltimaAdminClient({
       <Link href="/ultima" className={styles.quietLink}>
         Back to hub
       </Link>
+    </div>
+  );
+}
+
+function SyncReport({ report }) {
+  const byLeague = report.byLeague ?? {};
+  const reasons = report.reasons ?? {};
+  const total = ULTIMA_LEAGUES.reduce((sum, l) => sum + (byLeague[l] ?? 0), 0);
+  const ready =
+    total >= ULTIMA_MIN_POOL_TOTAL &&
+    ULTIMA_LEAGUES.every((l) => (byLeague[l] ?? 0) >= ULTIMA_MIN_POOL_PER_LEAGUE);
+
+  return (
+    <div className={styles.syncReport}>
+      <p className={styles.adminHint}>
+        Provider: {report.provider === "sportmonks" ? "Sportmonks" : "Mock seed"}. {total} players
+        in the pool.
+      </p>
+      <ul className={styles.syncList}>
+        {ULTIMA_LEAGUES.map((league) => {
+          const count = byLeague[league] ?? 0;
+          return (
+            <li key={league} className={styles.syncRow}>
+              <span>{ULTIMA_LEAGUE_LABELS[league]}</span>
+              <span
+                className={count >= ULTIMA_MIN_POOL_PER_LEAGUE ? styles.syncOk : styles.syncBad}
+              >
+                {count}
+              </span>
+              {reasons[league] ? (
+                <span className={styles.syncReason}>{reasons[league]}</span>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
+      <p className={ready ? styles.messageOk : styles.messageError}>
+        {ready
+          ? "Pool is big enough for a full draft."
+          : `Not enough to draft. A full draft needs ${ULTIMA_MIN_POOL_TOTAL} players and at least ${ULTIMA_MIN_POOL_PER_LEAGUE} in every league.`}
+      </p>
     </div>
   );
 }
