@@ -3,23 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  ULTIMA_LEAGUES,
-  ULTIMA_LEAGUE_COLOURS,
-  ULTIMA_LEAGUE_SHORT,
   ULTIMA_TIMER_OPTIONS,
   ULTIMA_TOTAL_PICKS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
 import UltimaDraftBoard from "./UltimaDraftBoard";
+import UltimaDraftPicker from "./UltimaDraftPicker";
 import styles from "./ultima.module.css";
-
-const LEAGUE_TABS = [
-  { id: "all", label: "All" },
-  ...ULTIMA_LEAGUES.map((id) => ({
-    id,
-    label: ULTIMA_LEAGUE_SHORT[id] ?? id,
-  })),
-];
 
 export default function UltimaDraftRoom({
   managerId,
@@ -29,7 +19,6 @@ export default function UltimaDraftRoom({
   const isPractice = variant === "practice";
   const [state, setState] = useState(null);
   const [available, setAvailable] = useState([]);
-  const [league, setLeague] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [tab, setTab] = useState("board");
@@ -37,6 +26,7 @@ export default function UltimaDraftRoom({
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
   const advancing = useRef(false);
+  const [poolLoading, setPoolLoading] = useState(false);
 
   const fetchState = useCallback(async () => {
     try {
@@ -52,6 +42,7 @@ export default function UltimaDraftRoom({
   }, [isPractice, roomCode]);
 
   const fetchAvailable = useCallback(async () => {
+    setPoolLoading(true);
     try {
       const url = isPractice
         ? `/api/ultima/practice/available?code=${encodeURIComponent(roomCode)}`
@@ -61,6 +52,8 @@ export default function UltimaDraftRoom({
       if (res.ok) setAvailable(data.available ?? []);
     } catch {
       /* keep the last list */
+    } finally {
+      setPoolLoading(false);
     }
   }, [isPractice, roomCode]);
 
@@ -120,27 +113,20 @@ export default function UltimaDraftRoom({
   ]);
 
   useEffect(() => {
-    if (tab !== "players") return;
+    if (state?.state !== "live" && state?.state !== "paused") return;
+    if (available.length) return;
     fetchAvailable();
-  }, [tab, fetchAvailable, state?.current_pick]);
+  }, [available.length, fetchAvailable, state?.state]);
 
   const draftedIds = useMemo(
     () => new Set((state?.picks ?? []).map((p) => p.player?.id).filter(Boolean)),
     [state?.picks],
   );
 
-  const sortedAvailable = useMemo(() => {
-    const rows = available.filter((p) => !draftedIds.has(p.id));
-    return [...rows].sort((a, b) => {
-      const ratingGap = (b.seed_metrics?.rating_avg ?? 0) - (a.seed_metrics?.rating_avg ?? 0);
-      if (ratingGap) return ratingGap;
-
-      const goalGap = (b.seed_metrics?.goals_rate ?? 0) - (a.seed_metrics?.goals_rate ?? 0);
-      if (goalGap) return goalGap;
-
-      return String(a.name ?? "").localeCompare(String(b.name ?? ""));
-    });
-  }, [available, draftedIds]);
+  const pool = useMemo(
+    () => available.filter((p) => !draftedIds.has(p.id)),
+    [available, draftedIds],
+  );
 
   async function forcePickPlayer(playerId) {
     if (isPractice || !state?.is_commissioner) return;
@@ -189,19 +175,26 @@ export default function UltimaDraftRoom({
     }
   }
 
-  async function queuePlayer(playerId) {
-    const current = state?.queue?.map((q) => q.player_id) ?? [];
-    if (current.includes(playerId)) return;
+  async function saveQueue(playerIds) {
     await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
-        isPractice
-          ? { player_ids: [...current, playerId], code: roomCode }
-          : { player_ids: [...current, playerId] },
+        isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
       ),
     });
     fetchState();
+  }
+
+  async function queuePlayer(playerId) {
+    const current = state?.queue?.map((q) => q.player_id) ?? [];
+    if (current.includes(playerId)) return;
+    await saveQueue([...current, playerId]);
+  }
+
+  async function unqueuePlayer(playerId) {
+    const current = state?.queue?.map((q) => q.player_id) ?? [];
+    await saveQueue(current.filter((id) => id !== playerId));
   }
 
   async function toggleAutoDraft() {
@@ -307,11 +300,6 @@ export default function UltimaDraftRoom({
     );
   }
 
-  const filtered =
-    league === "all"
-      ? sortedAvailable
-      : sortedAvailable.filter((p) => p.league === league);
-
   const canForcePick =
     !isPractice &&
     state.is_commissioner &&
@@ -403,13 +391,6 @@ export default function UltimaDraftRoom({
       <div className={styles.draftTabs}>
         <button
           type="button"
-          className={tab === "players" ? styles.tabActive : styles.tab}
-          onClick={() => setTab("players")}
-        >
-          Players
-        </button>
-        <button
-          type="button"
           className={tab === "board" ? styles.tabActive : styles.tab}
           onClick={() => setTab("board")}
         >
@@ -424,13 +405,7 @@ export default function UltimaDraftRoom({
         </button>
       </div>
 
-      {tab === "board" ? (
-        <UltimaDraftBoard
-          managers={state.managers ?? []}
-          picks={state.picks ?? []}
-          currentPick={state.current_pick}
-        />
-      ) : tab === "feed" ? (
+      {tab === "feed" ? (
         <div className={styles.feedList}>
           {[...state.picks].reverse().map((p) => (
             <div key={p.pick_number} className={styles.feedRow}>
@@ -444,74 +419,25 @@ export default function UltimaDraftRoom({
         </div>
       ) : (
         <>
-          <div className={styles.leagueTabs}>
-            {LEAGUE_TABS.map((t) => {
-              const fill = t.id === "all" ? null : ULTIMA_LEAGUE_COLOURS[t.id];
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  className={
-                    fill
-                      ? league === t.id
-                        ? styles.leagueChipActive
-                        : styles.leagueChip
-                      : league === t.id
-                        ? styles.leagueTabActive
-                        : styles.leagueTab
-                  }
-                  style={fill ? { background: fill } : undefined}
-                  onClick={() => setLeague(t.id)}
-                >
-                  {t.label}
-                </button>
-              );
-            })}
-          </div>
-
+          <UltimaDraftBoard
+            managers={state.managers ?? []}
+            picks={state.picks ?? []}
+            currentPick={state.current_pick}
+          />
           {error ? <p className={styles.messageError}>{error}</p> : null}
-
-          <ul className={styles.playerList}>
-            {filtered.map((p) => (
-              <li key={p.id} className={styles.playerRow}>
-                <div>
-                  <strong>{p.name}</strong>
-                  <span className={styles.playerMeta}>
-                    {p.club} · {ULTIMA_LEAGUE_SHORT[p.league] ?? p.league}
-                  </span>
-                </div>
-                <div className={styles.playerActions}>
-                  {state.is_your_turn ? (
-                    <button
-                      type="button"
-                      className={styles.draftBtn}
-                      disabled={loading}
-                      onClick={() => draftPlayer(p.id)}
-                    >
-                      Draft
-                    </button>
-                  ) : null}
-                  {canForcePick ? (
-                    <button
-                      type="button"
-                      className={styles.draftBtn}
-                      disabled={loading}
-                      onClick={() => forcePickPlayer(p.id)}
-                    >
-                      Force pick
-                    </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    className={styles.queueBtn}
-                    onClick={() => queuePlayer(p.id)}
-                  >
-                    Queue
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <UltimaDraftPicker
+            available={pool}
+            queue={state.queue ?? []}
+            loadingPool={poolLoading}
+            isYourTurn={state.is_your_turn}
+            canForcePick={canForcePick}
+            pickBusy={loading}
+            onDraft={draftPlayer}
+            onForce={forcePickPlayer}
+            onQueue={queuePlayer}
+            onUnqueue={unqueuePlayer}
+            onClearQueue={() => saveQueue([])}
+          />
         </>
       )}
     </div>

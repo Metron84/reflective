@@ -504,6 +504,193 @@
   cursor: pointer;
 }
 
+.queueBtnOn {
+  background: rgba(242, 237, 228, 0.12);
+  border: 1px solid #f2ede4;
+  color: #f2ede4;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.picker {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  margin: 1rem -1.15rem 0;
+  margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
+  margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
+  padding: 0.85rem max(1.15rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom))
+    max(1.15rem, env(safe-area-inset-left));
+  background: #0a111f;
+  border-top: 1px solid rgba(242, 237, 228, 0.18);
+  max-height: 48vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.pickerHead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pickerSearchLabel {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.pickerSearch {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1rem;
+  color: #0a111f;
+  background: #f2ede4;
+  border: 1px solid #f2ede4;
+}
+
+.pickerHint {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  opacity: 0.75;
+  margin: 0;
+}
+
+.queueStrip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.queueStripLabel {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+  opacity: 0.7;
+}
+
+.queueChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.queueChip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.65rem;
+  background: rgba(242, 237, 228, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+}
+
+.queueChipRemove,
+.queueClear,
+.pickerMore {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  color: #f2ede4;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  min-height: 32px;
+}
+
+.pickerScroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  flex: 1;
+}
+
+.pickerTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+}
+
+.pickerTable th,
+.pickerTable td {
+  padding: 0.4rem 0.45rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.1);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.pickerNameCol,
+.pickerNameCell {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #0a111f;
+  min-width: 11rem;
+}
+
+.pickerNameCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: normal;
+}
+
+.pickerSwatch {
+  width: 0.35rem;
+  height: 2rem;
+  flex: 0 0 auto;
+}
+
+.pickerPlayer {
+  display: block;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.pickerMeta {
+  display: block;
+  font-size: 0.6875rem;
+  opacity: 0.7;
+}
+
+.pickerSort,
+.pickerActionHead {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f2ede4;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pickerActionHead {
+  cursor: default;
+}
+
+@media (min-width: 800px) {
+  .picker {
+    max-height: 42vh;
+  }
+}
+
 .boardWrap {
   margin-top: 0.5rem;
 }
@@ -541,6 +728,10 @@
   max-height: 70vh;
   -webkit-overflow-scrolling: touch;
   border: 1px solid rgba(242, 237, 228, 0.14);
+}
+
+.draftRoom .boardScroll {
+  max-height: 36vh;
 }
 
 .boardGrid {
