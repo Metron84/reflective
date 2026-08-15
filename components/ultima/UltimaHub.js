@@ -61,27 +61,22 @@ export default function UltimaHub({
     <div className={styles.hub}>
       {!isSignedIn ? (
         <p className={styles.hubNote}>
-          Sign in to redeem an invite.{" "}
-          <Link href="/signin?next=/ultima" className={styles.quietLink}>
-            Sign in
+          Invite only.{" "}
+          <Link href="/signin?next=/ultima/join" className={styles.quietLink}>
+            Sign in to join
           </Link>
-          {process.env.NODE_ENV === "development" ? (
-            <>
-              {" · "}
-              <a
-                href="/api/dev/test-sign-in?next=/ultima&ultima=1"
-                className={styles.quietLink}
-              >
-                Dev preview
-              </a>
-            </>
-          ) : null}
         </p>
       ) : null}
 
       {!manager && isSignedIn ? (
         <p className={styles.hubNote}>
-          Open the invite link from the commissioner to join. While you wait, watch the films or play Codemaster.
+          <Link href="/ultima/join" className={styles.quietLink}>
+            Enter your invite password
+          </Link>
+          {" · "}
+          <Link href="/ultima/rules" className={styles.quietLink}>
+            Read the rules
+          </Link>
         </p>
       ) : null}
 

@@ -2,26 +2,33 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./ultima.module.css";
 
-export default function UltimaJoinForm({ code, signInHref }) {
+export default function UltimaJoinForm({ signInHref, mode = "password", code: initialCode = "" }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const [secret, setSecret] = useState(initialCode);
 
   async function onSubmit(event) {
     event.preventDefault();
     setBusy(true);
     setError(null);
     try {
+      const body =
+        mode === "code"
+          ? { code: secret.trim().toUpperCase() }
+          : { password: secret.trim() };
+
       const res = await fetch("/api/ultima/invite/redeem", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message ?? "That code did not work. Ask the commissioner.");
+        setError(data.message ?? "That invite did not work. Check with the commissioner.");
         return;
       }
       router.push("/ultima/profile");
@@ -35,11 +42,24 @@ export default function UltimaJoinForm({ code, signInHref }) {
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
-      <p className={styles.lede}>
-        Invite code <strong>{code}</strong>
-      </p>
-      <button type="submit" className={styles.primaryBtn} disabled={busy}>
-        {busy ? "Joining…" : "Join the league"}
+      <div className={styles.field}>
+        <label htmlFor="ultima-join-secret">
+          {mode === "code" ? "Invite code" : "Invite password"}
+        </label>
+        <input
+          id="ultima-join-secret"
+          name="secret"
+          type={mode === "password" ? "password" : "text"}
+          autoComplete="off"
+          value={secret}
+          onChange={(e) => setSecret(e.target.value)}
+          placeholder={mode === "code" ? "8-character code" : "Enter invite password"}
+          required
+        />
+      </div>
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" className={styles.honeypot} aria-hidden="true" />
+      <button type="submit" className={styles.primaryBtn} disabled={busy || !secret.trim()}>
+        {busy ? "Joining…" : "Join Ultima"}
       </button>
       {error ? <p className={`${styles.message} ${styles.messageError}`}>{error}</p> : null}
       <p className={styles.hubNote}>
@@ -47,6 +67,10 @@ export default function UltimaJoinForm({ code, signInHref }) {
         <a href={signInHref} className={styles.quietLink}>
           Sign in first
         </a>
+        {" · "}
+        <Link href="/ultima/rules" className={styles.quietLink}>
+          Read the rules
+        </Link>
       </p>
     </form>
   );

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Ultima: invite-only fantasy across Europe's top five leagues">
+  <defs>
+    <linearGradient id="ultima-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A111F"/>
+      <stop offset="100%" stop-color="#060B14"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#ultima-bg)"/>
+  <rect x="0" y="446" width="800" height="4" fill="#D8232A"/>
+  <text x="48" y="78" fill="#F2EDE4" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700">Ultima</text>
+  <text x="48" y="118" fill="rgba(242,237,228,0.72)" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="0.08em">DRAFT EUROPE&apos;S TOP FIVE</text>
+  <text x="48" y="148" fill="rgba(242,237,228,0.55)" font-family="Arial, Helvetica, sans-serif" font-size="14">30 squad · 15 score · 10 seats</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" fill="#0A111F">
+    <rect x="48" y="176" width="52" height="28" rx="2" fill="#F2EDE4"/>
+    <text x="74" y="195" text-anchor="middle">PL</text>
+    <rect x="108" y="176" width="52" height="28" rx="2" fill="#F2EDE4"/>
+    <text x="134" y="195" text-anchor="middle">LL</text>
+    <rect x="168" y="176" width="52" height="28" rx="2" fill="#F2EDE4"/>
+    <text x="194" y="195" text-anchor="middle">SA</text>
+    <rect x="228" y="176" width="52" height="28" rx="2" fill="#F2EDE4"/>
+    <text x="254" y="195" text-anchor="middle">BL</text>
+    <rect x="288" y="176" width="52" height="28" rx="2" fill="#F2EDE4"/>
+    <text x="314" y="195" text-anchor="middle">L1</text>
+  </g>
+  <g transform="translate(420 56)">
+    <text x="0" y="0" fill="rgba(242,237,228,0.45)" font-family="Arial, Helvetica, sans-serif" font-size="11" letter-spacing="0.14em">STARTING XV</text>
+    <g stroke="rgba(242,237,228,0.35)" stroke-width="1.5" fill="none">
+      <rect x="0" y="16" width="56" height="36" rx="2"/>
+      <rect x="64" y="16" width="56" height="36" rx="2"/>
+      <rect x="128" y="16" width="56" height="36" rx="2"/>
+      <rect x="192" y="16" width="56" height="36" rx="2"/>
+      <rect x="256" y="16" width="56" height="36" rx="2"/>
+      <rect x="0" y="60" width="56" height="36" rx="2"/>
+      <rect x="64" y="60" width="56" height="36" rx="2"/>
+      <rect x="128" y="60" width="56" height="36" rx="2"/>
+      <rect x="192" y="60" width="56" height="36" rx="2"/>
+      <rect x="256" y="60" width="56" height="36" rx="2"/>
+      <rect x="0" y="104" width="56" height="36" rx="2"/>
+      <rect x="64" y="104" width="56" height="36" rx="2"/>
+      <rect x="128" y="104" width="56" height="36" rx="2"/>
+      <rect x="192" y="104" width="56" height="36" rx="2"/>
+      <rect x="256" y="104" width="56" height="36" rx="2"/>
+    </g>
+    <rect x="0" y="148" width="312" height="3" fill="#D8232A"/>
+  </g>
+  <text x="752" y="420" text-anchor="end" fill="rgba(242,237,228,0.5)" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="0.12em">INVITE ONLY</text>
+</svg>

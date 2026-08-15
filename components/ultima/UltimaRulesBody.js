@@ -36,6 +36,22 @@ export default function UltimaRulesBody() {
         </tbody>
       </table>
 
+      <h2>Access</h2>
+      <p>Invite only. Ten seats. Sign in, then enter the invite password at <Link href="/ultima/join">/ultima/join</Link>.</p>
+
+      <h2>Draft</h2>
+      <ul>
+        <li>Live snake draft, 30 rounds, 300 picks across 10 managers.</li>
+        <li>Minimum 3 players from each league by the end of the draft.</li>
+        <li>Timer auto-picks from your queue if it expires.</li>
+      </ul>
+
+      <h2>Market and trades</h2>
+      <ul>
+        <li>Free agency opens when the draft completes. Every add requires a drop.</li>
+        <li>Trades open from gameweek 4. Equal player counts. 24 hour league review.</li>
+      </ul>
+
       <h2>Squad and XV floors (v5)</h2>
       <ul>
         <li>30-man squad. Minimum 3 players from each of the five leagues.</li>

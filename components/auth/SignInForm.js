@@ -168,27 +168,6 @@ export default function SignInForm({ nextPath = "/" }) {
       )}
 
       {error ? <p className="mt-4 text-sm text-signal">{error}</p> : null}
-      {process.env.NODE_ENV === "development" ? (
-        <div className="mt-8 border-t border-navy/10 pt-6">
-          <p className="text-xs uppercase tracking-widest text-navy/45">
-            Local preview
-          </p>
-          <a
-            href={`/api/dev/test-sign-in?next=${encodeURIComponent(nextPath)}`}
-            className="mt-3 inline-flex min-h-[44px] items-center rounded-full border border-navy/20 px-5 py-2.5 font-body text-sm text-navy/75 transition-colors hover:border-navy/40 hover:text-navy"
-          >
-            Dev preview sign-in
-          </a>
-          {nextPath.startsWith("/ultima") ? (
-            <a
-              href={`/api/dev/test-sign-in?next=${encodeURIComponent(nextPath)}&ultima=1`}
-              className="mt-2 block text-sm text-navy/60 underline underline-offset-2"
-            >
-              Dev preview with Ultima manager
-            </a>
-          ) : null}
-        </div>
-      ) : null}
       <p className="mt-6 text-xs text-navy/50">
         No passwords. Magic link or Google only.
       </p>

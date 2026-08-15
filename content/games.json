@@ -28,9 +28,10 @@
     "slug": "ultima",
     "title": "Ultima",
     "hook": "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.",
-    "status": "coming_soon",
+    "status": "live",
     "href": "/ultima",
-    "statusLabel": "Coming for the 26/27 season"
+    "cover": "/ultima/ultima-card.png",
+    "statusLabel": "Invite only"
   },
   {
     "slug": "you-decide",
