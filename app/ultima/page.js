@@ -32,14 +32,25 @@ export default async function UltimaPage() {
   let hubStatus = null;
   let draftState = "lobby";
   if (competition && manager) {
-    hubStatus = await getHubStatus(competition.id, manager.id);
+    hubStatus = await safeResolve(
+      getHubStatus(competition.id, manager.id),
+      null,
+    );
     const db = getUltimaDb();
-    const { data: ds } = await db
-      .from("ultima_draft_state")
-      .select("state")
-      .eq("competition_id", competition.id)
-      .maybeSingle();
-    draftState = ds?.state ?? "lobby";
+    if (db) {
+      const ds = await safeResolve(
+        db
+          .from("ultima_draft_state")
+          .select("state")
+          .eq("competition_id", competition.id)
+          .maybeSingle()
+          .then(({ data }) => data),
+        null,
+      );
+      draftState = ds?.state ?? hubStatus?.draft ?? "lobby";
+    } else {
+      draftState = hubStatus?.draft ?? "lobby";
+    }
   }
 
   return (
