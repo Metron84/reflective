@@ -5,7 +5,7 @@ import {
   getActiveCompetition,
   getManagerForUser,
   getUltimaDb,
-  isCommissionerUser,
+  isUltimaCommissioner,
 } from "@/lib/ultima/server/db";
 import { expireLiveTurn, loadDraftContext, getManagerPickCounts } from "@/lib/ultima/server/draft";
 import {
@@ -87,7 +87,7 @@ export async function GET() {
         }
       : null,
     is_your_turn: ctx.onClock?.managerId === manager.id,
-    is_commissioner: isCommissionerUser(user.id),
+    is_commissioner: await isUltimaCommissioner(user.id),
     auto_draft: Boolean(
       ctx.managers.find((m) => m.id === manager.id)?.auto_draft ?? manager.auto_draft,
     ),

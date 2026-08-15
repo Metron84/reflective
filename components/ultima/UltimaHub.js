@@ -21,6 +21,7 @@ export default function UltimaHub({
   manager,
   draftState = "lobby",
   hubStatus = null,
+  isCommissioner = false,
 }) {
   const managerDoors = manager
     ? [
@@ -94,6 +95,13 @@ export default function UltimaHub({
       ) : null}
 
       <nav className={styles.doorList} aria-label="Ultima and site">
+        {isCommissioner ? (
+          <UltimaDoor
+            href="/ultima/admin"
+            label="Commissioner"
+            status="Sync players, schedule and start the draft."
+          />
+        ) : null}
         {STATIC_DOORS.map((door) => (
           <UltimaDoor key={door.href} {...door} />
         ))}

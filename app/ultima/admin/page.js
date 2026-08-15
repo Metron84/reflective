@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import UltimaAdminClient from "@/components/ultima/UltimaAdminClient";
+import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getActiveCompetition, getUltimaDb, isCommissionerUser } from "@/lib/ultima/server/db";
 import styles from "@/components/ultima/ultima.module.css";
@@ -16,7 +17,7 @@ export default async function UltimaAdminPage() {
   if (!auth.isSignedIn) {
     redirect("/signin?next=/ultima/admin");
   }
-  if (!isCommissionerUser(auth.user.id)) {
+  if (!isCommissionerUser(auth.user.id) && !profileIsAdmin(auth.profile)) {
     redirect("/ultima");
   }
 

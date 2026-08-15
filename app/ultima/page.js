@@ -1,9 +1,15 @@
 import Link from "next/link";
 import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
+import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
-import { getActiveCompetition, getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
+import {
+  getActiveCompetition,
+  getManagerForUser,
+  getUltimaDb,
+  isCommissionerUser,
+} from "@/lib/ultima/server/db";
 import { getHubStatus } from "@/lib/ultima/server/admin";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
@@ -73,6 +79,10 @@ export default async function UltimaPage() {
           manager={manager}
           draftState={draftState}
           hubStatus={hubStatus}
+          isCommissioner={
+            auth.isSignedIn &&
+            (profileIsAdmin(auth.profile) || isCommissionerUser(auth.user.id))
+          }
         />
         <p className={styles.hubNote}>
           <Link href="/ultima/rules" className={styles.quietLink}>

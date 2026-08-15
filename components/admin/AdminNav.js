@@ -21,6 +21,12 @@ export default function AdminNav({ active, newCount = 0 }) {
           </span>
         ) : null}
       </Link>
+      <Link
+        href="/ultima/admin"
+        className={active === "ultima" ? styles.active : styles.link}
+      >
+        Ultima
+      </Link>
     </nav>
   );
 }
