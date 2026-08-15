@@ -44,6 +44,10 @@ export default function UltimaRulesBody() {
         <li>Live snake draft, 30 rounds, 300 picks across 10 managers.</li>
         <li>Minimum 3 players from each league by the end of the draft.</li>
         <li>Timer auto-picks from your queue if it expires.</li>
+        <li>
+          Practise first at <Link href="/ultima/practice">/ultima/practice</Link>. Solo vs bots, or
+          a shared room. Practice picks do not count.
+        </li>
       </ul>
 
       <h2>Market and trades</h2>

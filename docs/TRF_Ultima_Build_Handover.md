@@ -27,7 +27,8 @@
 | `0019_ultima.sql` | Applied |
 | `0020_ultima_personas_seed.sql` | Run if not done |
 | `0021_ultima_v5_leagues.sql` | Applied |
-| `0022_ultima_notifications.sql` | **Run next** (notification dedupe + draft schedule) |
+| `0022_ultima_notifications.sql` | Applied |
+| `0023_ultima_practice.sql` | **Run next** (practice rooms, isolated from season) |
 
 ---
 

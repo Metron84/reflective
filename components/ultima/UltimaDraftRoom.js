@@ -13,44 +13,58 @@ const LEAGUE_TABS = [
   })),
 ];
 
-export default function UltimaDraftRoom({ managerId }) {
+export default function UltimaDraftRoom({
+  managerId,
+  variant = "season",
+  roomCode = null,
+}) {
+  const isPractice = variant === "practice";
   const [state, setState] = useState(null);
   const [league, setLeague] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [tab, setTab] = useState("board");
+  const [resetting, setResetting] = useState(false);
 
   const fetchState = useCallback(async () => {
     try {
-      const res = await fetch("/api/ultima/draft/state");
+      const url = isPractice
+        ? `/api/ultima/practice/state?code=${encodeURIComponent(roomCode)}`
+        : "/api/ultima/draft/state";
+      const res = await fetch(url);
       const data = await res.json();
       if (res.ok) setState(data);
     } catch {
       /* reconnect silently */
     }
-  }, []);
+  }, [isPractice, roomCode]);
 
   useEffect(() => {
     fetchState();
-    const es = new EventSource("/api/ultima/stream");
+    const streamUrl = isPractice
+      ? `/api/ultima/stream?scope=${encodeURIComponent(`practice:${roomCode}`)}`
+      : "/api/ultima/stream";
+    const es = new EventSource(streamUrl);
     es.addEventListener("draft.pick", fetchState);
     es.addEventListener("draft.state", fetchState);
     es.addEventListener("draft.tick", fetchState);
-    const poll = setInterval(fetchState, 5000);
+    const poll = setInterval(fetchState, isPractice ? 2000 : 5000);
     return () => {
       es.close();
       clearInterval(poll);
     };
-  }, [fetchState]);
+  }, [fetchState, isPractice, roomCode]);
 
   async function draftPlayer(playerId) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/ultima/draft/pick", {
+      const res = await fetch(isPractice ? "/api/ultima/practice/pick" : "/api/ultima/draft/pick", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_id: playerId }),
+        body: JSON.stringify(
+          isPractice ? { player_id: playerId, code: roomCode } : { player_id: playerId },
+        ),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -68,10 +82,14 @@ export default function UltimaDraftRoom({ managerId }) {
   async function queuePlayer(playerId) {
     const current = state?.queue?.map((q) => q.player_id) ?? [];
     if (current.includes(playerId)) return;
-    await fetch("/api/ultima/draft/queue", {
+    await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ player_ids: [...current, playerId] }),
+      body: JSON.stringify(
+        isPractice
+          ? { player_ids: [...current, playerId], code: roomCode }
+          : { player_ids: [...current, playerId] },
+      ),
     });
     fetchState();
   }
@@ -84,12 +102,31 @@ export default function UltimaDraftRoom({ managerId }) {
     );
   }
 
+  async function resetPractice() {
+    if (!isPractice || !state.is_host) return;
+    setResetting(true);
+    try {
+      await fetch("/api/ultima/practice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reset", code: roomCode }),
+      });
+      await fetchState();
+    } finally {
+      setResetting(false);
+    }
+  }
+
   if (state.state === "lobby") {
     return (
       <div className={styles.navyRoom}>
-        <p className={styles.navyText}>Draft lobby. Waiting for the commissioner to start.</p>
-        <Link href="/ultima" className={styles.quietLinkLight}>
-          Back to hub
+        <p className={styles.navyText}>
+          {isPractice
+            ? "Practice lobby. Waiting for the host to start."
+            : "Draft lobby. Waiting for the commissioner to start."}
+        </p>
+        <Link href={isPractice ? "/ultima/practice" : "/ultima"} className={styles.quietLinkLight}>
+          {isPractice ? "Back to practice" : "Back to hub"}
         </Link>
       </div>
     );
@@ -98,8 +135,12 @@ export default function UltimaDraftRoom({ managerId }) {
   if (state.state === "complete") {
     return (
       <div className={styles.navyRoom}>
-        <p className={styles.navyTitle}>Draft complete</p>
-        <p className={styles.navyText}>300 picks made. Set your XV before the first kickoff.</p>
+        <p className={styles.navyTitle}>{isPractice ? "Practice complete" : "Draft complete"}</p>
+        <p className={styles.navyText}>
+          {isPractice
+            ? "Practice picks do not count. Reset and run it again, or return to the hub."
+            : "300 picks made. Set your XV before the first kickoff."}
+        </p>
         <div className={styles.feedList}>
           {state.picks.slice(0, 20).map((p) => (
             <div key={p.pick_number} className={styles.feedRow}>
@@ -110,8 +151,13 @@ export default function UltimaDraftRoom({ managerId }) {
             </div>
           ))}
         </div>
-        <Link href="/ultima/squad" className={styles.primaryBtn}>
-          My squad
+        {isPractice && state.is_host ? (
+          <button type="button" className={styles.primaryBtn} onClick={resetPractice} disabled={resetting}>
+            {resetting ? "Resetting…" : "Reset practice"}
+          </button>
+        ) : null}
+        <Link href={isPractice ? "/ultima/practice" : "/ultima/squad"} className={styles.quietLinkLight}>
+          {isPractice ? "Practice lobby" : "My squad"}
         </Link>
       </div>
     );
@@ -136,7 +182,7 @@ export default function UltimaDraftRoom({ managerId }) {
         <Link href="/ultima" className={styles.quietLinkLight}>
           Hub
         </Link>
-        <p className={styles.draftEyebrow}>DRAFT · LIVE</p>
+        <p className={styles.draftEyebrow}>{isPractice ? "PRACTICE · LIVE" : "DRAFT · LIVE"}</p>
         <h1 className={styles.draftTitle}>Pick {state.current_pick} of {ULTIMA_TOTAL_PICKS}</h1>
         {state.on_clock ? (
           <p className={styles.onClock}>
@@ -162,6 +208,11 @@ export default function UltimaDraftRoom({ managerId }) {
         <p className={styles.floorLine}>{state.floor_counter}</p>
         {state.state === "paused" ? (
           <p className={styles.pausedBanner}>Paused by the commissioner</p>
+        ) : null}
+        {isPractice && state.is_host ? (
+          <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
+            {resetting ? "Resetting…" : "Reset"}
+          </button>
         ) : null}
       </header>
 

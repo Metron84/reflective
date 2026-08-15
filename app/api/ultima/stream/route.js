@@ -3,12 +3,17 @@ import { subscribeUltimaEvents, formatSseMessage } from "@/lib/ultima/server/eve
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request) {
+  const scope = request.nextUrl.searchParams.get("scope");
+
   const stream = new ReadableStream({
     start(controller) {
       const encoder = new TextEncoder();
 
       const send = (event) => {
+        const eventScope = event.payload?.scope ?? null;
+        if (scope && eventScope !== scope) return;
+        if (!scope && eventScope) return;
         controller.enqueue(encoder.encode(formatSseMessage(event.type, event.payload)));
       };
 

@@ -30,6 +30,11 @@ export default function UltimaHub({
           status: draftStatusLine(draftState, hubStatus),
         },
         {
+          href: "/ultima/practice",
+          label: "Practice draft",
+          status: "Practise with bots, or open a room for other invitees.",
+        },
+        {
           href: "/ultima/squad",
           label: "My squad",
           status: manager.profile_complete
