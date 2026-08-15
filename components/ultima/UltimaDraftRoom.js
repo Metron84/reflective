@@ -287,7 +287,7 @@ export default function UltimaDraftRoom({
             ? "Practice picks do not count. Reset and run it again, or return to the hub."
             : "300 picks made. Set your XV before the first kickoff."}
         </p>
-        <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} />
+        <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} youId={managerId} />
         {isPractice && state.is_host ? (
           <button type="button" className={styles.primaryBtn} onClick={resetPractice} disabled={resetting}>
             {resetting ? "Resetting…" : "Reset practice"}
@@ -307,67 +307,54 @@ export default function UltimaDraftRoom({
     state.on_clock &&
     !state.on_clock.is_you;
 
+  const pickMode = Boolean(state.is_your_turn || canForcePick);
+
   return (
-    <div className={styles.draftRoom}>
-      <header className={styles.draftHeader}>
-        <Link href="/ultima" className={styles.quietLinkLight}>
-          Hub
-        </Link>
-        <p className={styles.draftEyebrow}>{isPractice ? "PRACTICE · LIVE" : "DRAFT · LIVE"}</p>
-        <h1 className={styles.draftTitle}>Pick {state.current_pick} of {ULTIMA_TOTAL_PICKS}</h1>
-        {state.on_clock ? (
-          <p className={styles.onClock}>
-            {state.on_clock.is_you ? (
-              <>
-                You are on the clock
-                {state.seconds_remaining != null ? (
-                  <span className={styles.clockBar}>
-                    {" "}
-                    · {state.seconds_remaining}s
-                  </span>
-                ) : null}
-              </>
-            ) : (
-              <>
-                {state.on_clock.team_name}
-                {state.on_clock.is_bot ? " · BOT" : ""} on the clock
-                {state.seconds_remaining != null ? (
-                  <span className={styles.clockBar}> · {state.seconds_remaining}s</span>
-                ) : null}
-              </>
-            )}
-          </p>
-        ) : null}
-        {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
-        <p className={styles.floorLine}>{state.floor_counter}</p>
-        {state.auto_draft ? (
-          <p className={styles.floorLine}>
-            Auto-draft is on. The board picks from your queue, then ranking.
-          </p>
-        ) : null}
-        {canForcePick ? (
-          <p className={styles.floorLine}>
-            Force pick for {state.on_clock.team_name}. Use when they are away.
-          </p>
-        ) : null}
-        {state.state === "paused" ? (
-          <p className={styles.pausedBanner}>Paused by the commissioner</p>
-        ) : null}
-        <div className={styles.draftControls}>
+    <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
+      <header className={styles.draftHeaderSlim}>
+        <div className={styles.draftHeaderRow}>
+          <Link href="/ultima" className={styles.quietLinkLight}>
+            Hub
+          </Link>
+          <span className={styles.draftEyebrow}>
+            {isPractice ? "PRACTICE" : "DRAFT"} · {state.current_pick}/{ULTIMA_TOTAL_PICKS}
+          </span>
+          <button
+            type="button"
+            className={tab === "feed" ? styles.tabActive : styles.tab}
+            onClick={() => setTab(tab === "feed" ? "board" : "feed")}
+          >
+            {tab === "feed" ? "Board" : "Feed"}
+          </button>
           <button
             type="button"
             className={state.auto_draft ? styles.autoDraftOn : styles.queueBtn}
             onClick={toggleAutoDraft}
             disabled={autoBusy}
           >
-            {autoBusy ? "Saving…" : state.auto_draft ? "Auto-draft on" : "Auto-draft off"}
+            {autoBusy ? "…" : state.auto_draft ? "Auto on" : "Auto off"}
           </button>
           {isPractice && state.is_host ? (
             <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
-              {resetting ? "Resetting…" : "Reset"}
+              {resetting ? "…" : "Reset"}
             </button>
           ) : null}
         </div>
+        {state.on_clock ? (
+          <p className={styles.onClock}>
+            {state.on_clock.is_you
+              ? `You are on the clock${state.seconds_remaining != null ? ` · ${state.seconds_remaining}s` : ""}`
+              : `${state.on_clock.team_name}${state.on_clock.is_bot ? " · BOT" : ""} on the clock${state.seconds_remaining != null ? ` · ${state.seconds_remaining}s` : ""}`}
+          </p>
+        ) : null}
+        {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
+        <p className={styles.floorLine}>{state.floor_counter}</p>
+        {state.state === "paused" ? (
+          <p className={styles.pausedBanner}>Paused by the commissioner</p>
+        ) : null}
+        {canForcePick ? (
+          <p className={styles.floorLine}>Force pick for {state.on_clock.team_name}.</p>
+        ) : null}
         {!isPractice && state.is_commissioner ? (
           <div className={styles.timerRow}>
             <span className={styles.timerLabel}>Clock</span>
@@ -388,23 +375,6 @@ export default function UltimaDraftRoom({
         ) : null}
       </header>
 
-      <div className={styles.draftTabs}>
-        <button
-          type="button"
-          className={tab === "board" ? styles.tabActive : styles.tab}
-          onClick={() => setTab("board")}
-        >
-          Board
-        </button>
-        <button
-          type="button"
-          className={tab === "feed" ? styles.tabActive : styles.tab}
-          onClick={() => setTab("feed")}
-        >
-          Feed
-        </button>
-      </div>
-
       {tab === "feed" ? (
         <div className={styles.feedList}>
           {[...state.picks].reverse().map((p) => (
@@ -423,6 +393,8 @@ export default function UltimaDraftRoom({
             managers={state.managers ?? []}
             picks={state.picks ?? []}
             currentPick={state.current_pick}
+            youId={managerId}
+            mode={pickMode ? "column" : "full"}
           />
           {error ? <p className={styles.messageError}>{error}</p> : null}
           <UltimaDraftPicker
@@ -432,6 +404,7 @@ export default function UltimaDraftRoom({
             isYourTurn={state.is_your_turn}
             canForcePick={canForcePick}
             pickBusy={loading}
+            compact={!pickMode}
             onDraft={draftPlayer}
             onForce={forcePickPlayer}
             onQueue={queuePlayer}

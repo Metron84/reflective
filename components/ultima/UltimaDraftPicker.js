@@ -37,6 +37,7 @@ export default function UltimaDraftPicker({
   isYourTurn = false,
   canForcePick = false,
   pickBusy = false,
+  compact = false,
   onDraft,
   onForce,
   onQueue,
@@ -46,7 +47,7 @@ export default function UltimaDraftPicker({
   const [query, setQuery] = useState("");
   const [league, setLeague] = useState("all");
   const [sort, setSort] = useState("rating");
-  const [shown, setShown] = useState(PAGE);
+  const [shown, setShown] = useState(compact ? 8 : PAGE);
 
   const byId = useMemo(() => {
     const map = new Map();
@@ -102,7 +103,10 @@ export default function UltimaDraftPicker({
   }
 
   return (
-    <section className={styles.picker} aria-label="Select a player">
+    <section
+      className={compact ? styles.pickerCompact : styles.pickerPick}
+      aria-label="Select a player"
+    >
       <div className={styles.pickerHead}>
         <label className={styles.pickerSearchLabel} htmlFor="ultima-draft-search">
           Search
@@ -111,13 +115,14 @@ export default function UltimaDraftPicker({
           id="ultima-draft-search"
           className={styles.pickerSearch}
           type="search"
-          placeholder="Name or club"
+          placeholder={compact ? "Queue a name or club" : "Name or club"}
           value={query}
+          autoFocus={!compact}
+          autoComplete="off"
           onChange={(e) => {
             setQuery(e.target.value);
-            setShown(PAGE);
+            setShown(compact ? 8 : PAGE);
           }}
-          autoComplete="off"
         />
       </div>
 
@@ -173,10 +178,10 @@ export default function UltimaDraftPicker({
             Clear queue
           </button>
         </div>
+      ) : compact ? (
+        <p className={styles.pickerHint}>Queue while you wait. Search a name, then Queue.</p>
       ) : (
-        <p className={styles.pickerHint}>
-          Queue players now. If auto-draft is on, they go in this order.
-        </p>
+        <p className={styles.pickerHint}>Search, then Draft. Queue is your backup if the clock runs out.</p>
       )}
 
       {loadingPool && !available.length ? (

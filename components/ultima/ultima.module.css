@@ -295,6 +295,30 @@
   padding-bottom: max(3rem, calc(1.5rem + env(safe-area-inset-bottom)));
 }
 
+.draftHeaderSlim {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: -1.5rem -1.15rem 0.75rem;
+  margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
+  margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
+  padding: 0.55rem max(1.15rem, env(safe-area-inset-right)) 0.65rem max(1.15rem, env(safe-area-inset-left));
+  padding-top: max(0.55rem, env(safe-area-inset-top));
+  background: #0a111f;
+}
+
+.draftHeaderRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+}
+
+.draftHeaderRow .draftEyebrow {
+  margin: 0;
+  flex: 1;
+}
+
 .draftHeader {
   position: sticky;
   top: 0;
@@ -515,21 +539,33 @@
   cursor: pointer;
 }
 
+.pickerPick,
+.pickerCompact,
 .picker {
-  position: sticky;
-  bottom: 0;
   z-index: 4;
-  margin: 1rem -1.15rem 0;
+  margin: 0.75rem -1.15rem 0;
   margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
   margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
   padding: 0.85rem max(1.15rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom))
     max(1.15rem, env(safe-area-inset-left));
   background: #0a111f;
   border-top: 1px solid rgba(242, 237, 228, 0.18);
-  max-height: 48vh;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+}
+
+.pickerPick {
+  position: relative;
+  max-height: none;
+  min-height: 52vh;
+}
+
+.pickerCompact,
+.picker {
+  position: sticky;
+  bottom: 0;
+  max-height: 34vh;
 }
 
 .pickerHead {
@@ -686,8 +722,13 @@
 }
 
 @media (min-width: 800px) {
+  .pickerCompact,
   .picker {
-    max-height: 42vh;
+    max-height: 38vh;
+  }
+
+  .pickerPick {
+    min-height: 48vh;
   }
 }
 
@@ -731,7 +772,11 @@
 }
 
 .draftRoom .boardScroll {
-  max-height: 36vh;
+  max-height: 42vh;
+}
+
+.boardWrapMine .boardScroll {
+  max-height: 28vh;
 }
 
 .boardGrid {
@@ -750,7 +795,8 @@
 }
 
 .boardCorner,
-.boardHead {
+.boardHead,
+.boardHeadYou {
   position: sticky;
   top: 0;
   z-index: 2;
@@ -771,6 +817,18 @@
   z-index: 3;
   min-width: 2.25rem;
   border-right: 1px solid rgba(242, 237, 228, 0.2);
+}
+
+.boardHeadYou {
+  left: 2.25rem;
+  z-index: 3;
+  box-shadow: inset 0 -2px 0 #d8232a;
+}
+
+.boardStickyYou {
+  position: sticky;
+  left: 2.25rem;
+  z-index: 1;
 }
 
 .boardHeadName {
@@ -801,6 +859,7 @@
 }
 
 .boardCell,
+.boardCellYou,
 .boardCellEmpty,
 .boardCellOnClock {
   position: relative;
@@ -812,7 +871,8 @@
 }
 
 /* Light league fills, so navy stays legible on every one of them. */
-.boardCell {
+.boardCell,
+.boardCellYou {
   color: #0a111f;
 }
 
