@@ -1,6 +1,8 @@
 .ultimaPage {
   flex: 1;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #f2ede4;
   background-image: url("/brand/texture-cream-site-bg.png");
   background-size: 512px 512px;
@@ -11,6 +13,9 @@
   max-width: 42rem;
   margin: 0 auto;
   padding: 2.5rem 1.15rem 3.5rem;
+  padding-left: max(1.15rem, env(safe-area-inset-left));
+  padding-right: max(1.15rem, env(safe-area-inset-right));
+  padding-bottom: max(3.5rem, calc(2rem + env(safe-area-inset-bottom)));
 }
 
 .eyebrow {
@@ -265,6 +270,9 @@
   color: #f2ede4;
   min-height: 50vh;
   padding: 2rem 1.15rem;
+  padding-left: max(1.15rem, env(safe-area-inset-left));
+  padding-right: max(1.15rem, env(safe-area-inset-right));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
 }
 
 @media (min-width: 640px) {
@@ -278,11 +286,25 @@
   background: #0a111f;
   color: #f2ede4;
   min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 100%;
+  overflow-x: hidden;
   padding: 1.5rem 1.15rem 3rem;
+  padding-left: max(1.15rem, env(safe-area-inset-left));
+  padding-right: max(1.15rem, env(safe-area-inset-right));
+  padding-bottom: max(3rem, calc(1.5rem + env(safe-area-inset-bottom)));
 }
 
 .draftHeader {
-  margin-bottom: 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  margin: -1.5rem -1.15rem 1.25rem;
+  margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
+  margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
+  padding: 1rem max(1.15rem, env(safe-area-inset-right)) 0.85rem max(1.15rem, env(safe-area-inset-left));
+  padding-top: max(1rem, env(safe-area-inset-top));
+  background: #0a111f;
 }
 
 .draftEyebrow {
@@ -342,7 +364,16 @@
   display: flex;
   gap: 0.5rem;
   margin: 1rem 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.draftTabs::-webkit-scrollbar,
+.leagueTabs::-webkit-scrollbar,
+.squadTabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab,
@@ -357,6 +388,7 @@
   color: inherit;
   cursor: pointer;
   min-height: 44px;
+  flex: 0 0 auto;
 }
 
 .tabActive,
@@ -388,10 +420,27 @@
 .playerRowCream {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   padding: 0.75rem 0;
   border-bottom: 1px solid rgba(242, 237, 228, 0.12);
+}
+
+@media (max-width: 420px) {
+  .playerRow,
+  .playerRowCream {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .playerActions {
+    width: 100%;
+  }
+
+  .draftBtn,
+  .queueBtn {
+    flex: 1;
+  }
 }
 
 .playerRowCream {
@@ -543,6 +592,7 @@
   max-height: 70vh;
   overflow-y: auto;
   padding: 1.25rem 1.15rem 2rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
   border-radius: 12px 12px 0 0;
 }
 
@@ -611,6 +661,12 @@
   margin: 1rem 0;
 }
 
+@media (max-width: 420px) {
+  .standingsTable {
+    font-size: 0.75rem;
+  }
+}
+
 .standingsTable th,
 .standingsTable td {
   border-bottom: 1px solid rgba(10, 17, 31, 0.12);
@@ -647,6 +703,7 @@
   bottom: 0;
   background: #f2ede4;
   padding: 1rem 0;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
   border-top: 1px solid rgba(10, 17, 31, 0.12);
 }
 

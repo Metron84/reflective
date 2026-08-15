@@ -1,11 +1,12 @@
 [
   {
-    "slug": "the-guesser",
-    "title": "The Guesser",
-    "hook": "One player a day. Six guesses. Five clues.",
+    "slug": "ultima",
+    "title": "Ultima",
+    "hook": "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.",
     "status": "live",
-    "href": "/guesser",
-    "cover": null
+    "href": "/ultima",
+    "cover": "/ultima/ultima-card.png",
+    "statusLabel": "Invite only"
   },
   {
     "slug": "codemaster",
@@ -14,6 +15,14 @@
     "status": "live",
     "href": "/codemaster",
     "cover": "/codemaster/codemaster-card.svg"
+  },
+  {
+    "slug": "the-guesser",
+    "title": "The Guesser",
+    "hook": "One player a day. Six guesses. Five clues.",
+    "status": "live",
+    "href": "/guesser",
+    "cover": null
   },
   {
     "slug": "the-stand",
@@ -25,19 +34,10 @@
     "statusLabel": "Parked — SAMPLE preview"
   },
   {
-    "slug": "ultima",
-    "title": "Ultima",
-    "hook": "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.",
-    "status": "live",
-    "href": "/ultima",
-    "cover": "/ultima/ultima-card.png",
-    "statusLabel": "Invite only"
-  },
-  {
     "slug": "you-decide",
     "title": "You Decide",
     "hook": "Two moments. You pick the winner.",
-    "status": "coming_soon",
+    "status": "parked",
     "statusLabel": "Coming soon"
   }
 ]

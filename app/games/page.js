@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 export const metadata = {
   title: "Games",
   description:
-    "Play The Guesser and discover what is next from The Reflective Football.",
+    "Ultima, Codemaster, and The Guesser. Play from The Reflective Football.",
   alternates: { canonical: "/games" },
 };
 

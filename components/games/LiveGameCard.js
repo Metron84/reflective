@@ -5,7 +5,7 @@ import styles from "./GuesserHeroCard.module.css";
 export default function LiveGameCard({ game, strapline }) {
   return (
     <Link href={game.href} className={styles.card}>
-      <div className={styles.cover}>
+      <div className={game.slug === "ultima" ? styles.coverUltima : styles.cover}>
         {game.cover ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img

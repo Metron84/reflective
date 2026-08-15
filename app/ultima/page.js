@@ -48,12 +48,10 @@ export default async function UltimaPage() {
         <p className={styles.eyebrow}>GAMES · ULTIMA</p>
         <h1 className={styles.title}>Ultima</h1>
         <p className={styles.lede}>
-          Draft Europe's top five. Thirty players. Fifteen score each week. Ten seats. Invite only.
+          Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.
         </p>
         {!ULTIMA_ENABLED ? (
-          <p className={styles.phaseNote}>
-            Coming for the 26/27 season. The hub is in build preview for commissioners.
-          </p>
+          <p className={styles.phaseNote}>Invite only. Opens when the commissioner is ready.</p>
         ) : null}
         {competition ? (
           <p className={styles.hubNote}>Season {competition.season_label}</p>

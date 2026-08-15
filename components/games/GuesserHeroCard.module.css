@@ -20,6 +20,13 @@
   background: #0a111f;
 }
 
+.coverUltima {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0a111f;
+}
+
 @media (min-width: 640px) {
   .cover {
     aspect-ratio: 2.4 / 1;
