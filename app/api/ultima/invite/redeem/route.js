@@ -14,6 +14,7 @@ import {
   matchesJoinPassword,
   normalizeInviteCode,
 } from "@/lib/ultima/server/join";
+import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
 
 export const runtime = "nodejs";
 
@@ -100,9 +101,10 @@ async function joinWithInviteCode(userId, code) {
     .update({ used_by: userId, used_at: new Date().toISOString() })
     .eq("code", code);
 
-  await db.from("ultima_events").insert({
+  await recordUltimaEvent({
     event: "invite_redeemed",
-    manager_id: manager.id,
+    managerId: manager.id,
+    competitionId: manager.competition_id,
     payload: { code },
   });
 

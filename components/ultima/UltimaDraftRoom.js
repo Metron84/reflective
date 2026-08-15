@@ -22,7 +22,9 @@ export default function UltimaDraftRoom({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [tab, setTab] = useState("board");
+  const [boardOpen, setBoardOpen] = useState(false);
   const [resetting, setResetting] = useState(false);
+  const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
   const advancing = useRef(false);
@@ -111,6 +113,15 @@ export default function UltimaDraftRoom({
     state?.seconds_remaining,
     state?.is_your_turn,
   ]);
+
+  useEffect(() => {
+    if (!boardOpen) return undefined;
+    function onKey(event) {
+      if (event.key === "Escape") setBoardOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [boardOpen]);
 
   useEffect(() => {
     if (state?.state !== "live" && state?.state !== "paused") return;
@@ -263,6 +274,24 @@ export default function UltimaDraftRoom({
     }
   }
 
+  async function toggleKeep() {
+    if (!isPractice || !state.is_host) return;
+    setKeepBusy(true);
+    try {
+      await fetch("/api/ultima/practice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: state.keep ? "forget" : "save",
+          code: roomCode,
+        }),
+      });
+      await fetchState();
+    } finally {
+      setKeepBusy(false);
+    }
+  }
+
   if (state.state === "lobby") {
     return (
       <div className={styles.navyRoom}>
@@ -284,14 +313,19 @@ export default function UltimaDraftRoom({
         <p className={styles.navyTitle}>{isPractice ? "Practice complete" : "Draft complete"}</p>
         <p className={styles.navyText}>
           {isPractice
-            ? "Practice picks do not count. Reset and run it again, or return to the hub."
+            ? "Save this board to reopen it from Practice. Picks do not count toward the league."
             : "300 picks made. Set your XV before the first kickoff."}
         </p>
         <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} youId={managerId} />
         {isPractice && state.is_host ? (
-          <button type="button" className={styles.primaryBtn} onClick={resetPractice} disabled={resetting}>
-            {resetting ? "Resetting…" : "Reset practice"}
-          </button>
+          <div className={styles.completeActions}>
+            <button type="button" className={styles.primaryBtn} onClick={toggleKeep} disabled={keepBusy}>
+              {keepBusy ? "Saving…" : state.keep ? "Saved. Tap to forget" : "Save board"}
+            </button>
+            <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
+              {resetting ? "Resetting…" : "Reset practice"}
+            </button>
+          </div>
         ) : null}
         <Link href={isPractice ? "/ultima/practice" : "/ultima/squad"} className={styles.quietLinkLight}>
           {isPractice ? "Practice lobby" : "My squad"}
@@ -307,7 +341,8 @@ export default function UltimaDraftRoom({
     state.on_clock &&
     !state.on_clock.is_you;
 
-  const pickMode = Boolean(state.is_your_turn || canForcePick);
+  const lastPick = state.picks?.length ? state.picks[state.picks.length - 1] : null;
+  const yourLast = [...(state.picks ?? [])].reverse().find((p) => p.manager_id === managerId);
 
   return (
     <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
@@ -324,7 +359,7 @@ export default function UltimaDraftRoom({
             className={tab === "feed" ? styles.tabActive : styles.tab}
             onClick={() => setTab(tab === "feed" ? "board" : "feed")}
           >
-            {tab === "feed" ? "Board" : "Feed"}
+            {tab === "feed" ? "Players" : "Feed"}
           </button>
           <button
             type="button"
@@ -335,9 +370,14 @@ export default function UltimaDraftRoom({
             {autoBusy ? "…" : state.auto_draft ? "Auto on" : "Auto off"}
           </button>
           {isPractice && state.is_host ? (
-            <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
-              {resetting ? "…" : "Reset"}
-            </button>
+            <>
+              <button type="button" className={styles.queueBtn} onClick={toggleKeep} disabled={keepBusy}>
+                {keepBusy ? "…" : state.keep ? "Saved" : "Save"}
+              </button>
+              <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
+                {resetting ? "…" : "Reset"}
+              </button>
+            </>
           ) : null}
         </div>
         {state.on_clock ? (
@@ -389,13 +429,17 @@ export default function UltimaDraftRoom({
         </div>
       ) : (
         <>
-          <UltimaDraftBoard
-            managers={state.managers ?? []}
-            picks={state.picks ?? []}
-            currentPick={state.current_pick}
-            youId={managerId}
-            mode={pickMode ? "column" : "full"}
-          />
+          <div className={styles.draftStrip}>
+            <p className={styles.draftStripLine}>
+              {lastPick
+                ? `Last: ${lastPick.player?.name ?? "Unknown"} to ${lastPick.manager_name}`
+                : "Board empty. First pick coming."}
+              {yourLast ? ` · You last took ${yourLast.player?.name}` : ""}
+            </p>
+            <button type="button" className={styles.queueBtn} onClick={() => setBoardOpen(true)}>
+              Open board
+            </button>
+          </div>
           {error ? <p className={styles.messageError}>{error}</p> : null}
           <UltimaDraftPicker
             available={pool}
@@ -404,7 +448,7 @@ export default function UltimaDraftRoom({
             isYourTurn={state.is_your_turn}
             canForcePick={canForcePick}
             pickBusy={loading}
-            compact={!pickMode}
+            compact={false}
             onDraft={draftPlayer}
             onForce={forcePickPlayer}
             onQueue={queuePlayer}
@@ -413,6 +457,24 @@ export default function UltimaDraftRoom({
           />
         </>
       )}
+
+      {boardOpen ? (
+        <div className={styles.boardOverlay} role="dialog" aria-label="Draft board">
+          <div className={styles.boardOverlayBar}>
+            <p className={styles.draftEyebrow}>Full board</p>
+            <button type="button" className={styles.queueBtn} onClick={() => setBoardOpen(false)}>
+              Close
+            </button>
+          </div>
+          <UltimaDraftBoard
+            managers={state.managers ?? []}
+            picks={state.picks ?? []}
+            currentPick={state.current_pick}
+            youId={managerId}
+            mode="full"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

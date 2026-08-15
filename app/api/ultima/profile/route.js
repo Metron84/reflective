@@ -3,6 +3,7 @@ import { getSessionUser } from "@/lib/auth/session";
 import { ULTIMA_COLOUR_PALETTE } from "@/lib/ultima/constants";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
+import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
 
 export const runtime = "nodejs";
 
@@ -98,9 +99,10 @@ export async function POST(request) {
     return NextResponse.json(body, { status });
   }
 
-  await db.from("ultima_events").insert({
+  await recordUltimaEvent({
     event: "profile_saved",
-    manager_id: manager.id,
+    managerId: manager.id,
+    competitionId: manager.competition_id,
     payload: { team_name: teamName, colour },
   });
 

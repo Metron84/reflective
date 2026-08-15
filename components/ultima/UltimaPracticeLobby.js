@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./ultima.module.css";
@@ -10,6 +10,21 @@ export default function UltimaPracticeLobby() {
   const [joinCode, setJoinCode] = useState("");
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [rooms, setRooms] = useState([]);
+
+  async function loadRooms() {
+    try {
+      const res = await fetch("/api/ultima/practice");
+      const data = await res.json();
+      if (res.ok) setRooms(data.rooms ?? []);
+    } catch {
+      /* keep last */
+    }
+  }
+
+  useEffect(() => {
+    loadRooms();
+  }, []);
 
   async function act(action, extra = {}) {
     setBusy(action);
@@ -25,9 +40,11 @@ export default function UltimaPracticeLobby() {
         setError(data.message ?? "That did not work.");
         return;
       }
-      if (data.code) {
+      if (data.code && (action === "create_solo" || action === "create_room" || action === "join")) {
         router.push(`/ultima/practice/${data.code}`);
+        return;
       }
+      await loadRooms();
     } catch {
       setError("Connection lost. Try again.");
     } finally {
@@ -38,12 +55,51 @@ export default function UltimaPracticeLobby() {
   return (
     <div className={styles.adminPage}>
       <p className={styles.lede}>
-        Practice picks do not count. Thirty-second clock. Bots fill empty seats.
+        Practice picks do not count. Thirty-second clock. Bots fill empty seats. Save a board to keep it.
       </p>
+
+      {rooms.length > 0 ? (
+        <section className={styles.adminSection}>
+          <h2 className={styles.sectionTitle}>Your rooms</h2>
+          <ul className={styles.roomList}>
+            {rooms.map((room) => (
+              <li key={room.code} className={styles.roomRow}>
+                <div>
+                  <p className={styles.roomCode}>{room.code}</p>
+                  <p className={styles.hubNote}>
+                    {room.solo ? "Solo" : "Room"}
+                    {" · "}
+                    {room.state}
+                    {room.state === "live" || room.state === "complete"
+                      ? ` · pick ${room.current_pick}`
+                      : ""}
+                    {room.keep ? " · saved" : ""}
+                  </p>
+                </div>
+                <div className={styles.roomActions}>
+                  <Link href={`/ultima/practice/${room.code}`} className={styles.primaryBtn}>
+                    Resume
+                  </Link>
+                  {room.is_host ? (
+                    <button
+                      type="button"
+                      className={styles.queueBtnDark}
+                      disabled={Boolean(busy)}
+                      onClick={() => act(room.keep ? "forget" : "save", { code: room.code })}
+                    >
+                      {room.keep ? "Forget" : "Save"}
+                    </button>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className={styles.adminSection}>
         <h2 className={styles.sectionTitle}>Start alone</h2>
-        <p className={styles.hubNote}>You plus nine bots. Reset anytime.</p>
+        <p className={styles.hubNote}>You plus nine bots.</p>
         <button
           type="button"
           className={styles.primaryBtn}

@@ -50,6 +50,7 @@ export async function GET(request) {
     extra: {
       room: code,
       is_host: room.host_user_id === user.id,
+      keep: Boolean(room.keep),
     },
   });
 

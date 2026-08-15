@@ -1,12 +1,7 @@
 import Link from "next/link";
 import UltimaDoor from "./UltimaDoor";
+import UltimaNewsBoard, { UltimaChat } from "./UltimaNewsBoard";
 import styles from "./ultima.module.css";
-
-const STATIC_DOORS = [
-  { href: "/ultima/rules", label: "Rules", status: "Scoring, floors and locks." },
-  { href: "/films", label: "Films", status: "From the fans, every day." },
-  { href: "/games", label: "Games", status: "The Guesser, Codemaster, and more." },
-];
 
 function draftStatusLine(draftState, hubStatus) {
   if (hubStatus?.draft === "live") return "Live. Check the draft room.";
@@ -22,6 +17,7 @@ export default function UltimaHub({
   draftState = "lobby",
   hubStatus = null,
   isCommissioner = false,
+  news = [],
 }) {
   const managerDoors = manager
     ? [
@@ -33,7 +29,7 @@ export default function UltimaHub({
         {
           href: "/ultima/practice",
           label: "Practice draft",
-          status: "Practise with bots, or open a room for other invitees.",
+          status: "Save a board. Resume by code.",
         },
         {
           href: "/ultima/squad",
@@ -94,7 +90,14 @@ export default function UltimaHub({
         </nav>
       ) : null}
 
-      <nav className={styles.doorList} aria-label="Ultima and site">
+      {manager ? (
+        <>
+          <UltimaNewsBoard initialItems={news} />
+          <UltimaChat managerId={manager.id} />
+        </>
+      ) : null}
+
+      <nav className={styles.doorList} aria-label="Ultima extras">
         {isCommissioner ? (
           <UltimaDoor
             href="/ultima/admin"
@@ -102,9 +105,7 @@ export default function UltimaHub({
             status="Sync players, schedule and start the draft."
           />
         ) : null}
-        {STATIC_DOORS.map((door) => (
-          <UltimaDoor key={door.href} {...door} />
-        ))}
+        <UltimaDoor href="/ultima/rules" label="Rules" status="Scoring, floors and locks." />
       </nav>
     </div>
   );

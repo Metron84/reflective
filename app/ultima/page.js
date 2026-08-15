@@ -11,6 +11,7 @@ import {
   isCommissionerUser,
 } from "@/lib/ultima/server/db";
 import { getHubStatus } from "@/lib/ultima/server/admin";
+import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -37,11 +38,13 @@ export default async function UltimaPage() {
 
   let hubStatus = null;
   let draftState = "lobby";
+  let news = [];
   if (competition && manager) {
     hubStatus = await safeResolve(
       getHubStatus(competition.id, manager.id),
       null,
     );
+    news = await safeResolve(getCompetitionNews(competition.id), []);
     const db = getUltimaDb();
     if (db) {
       const ds = await safeResolve(
@@ -79,6 +82,7 @@ export default async function UltimaPage() {
           manager={manager}
           draftState={draftState}
           hubStatus={hubStatus}
+          news={news}
           isCommissioner={
             auth.isSignedIn &&
             (profileIsAdmin(auth.profile) || isCommissionerUser(auth.user.id))

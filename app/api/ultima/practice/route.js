@@ -5,10 +5,12 @@ import { getManagerForUser } from "@/lib/ultima/server/db";
 import {
   createPracticeRoom,
   joinPracticeRoom,
+  listMyPracticeRooms,
   listPracticeLobby,
   normalizeRoomCode,
   resetPracticeRoom,
   setPracticeAutoDraft,
+  setPracticeKeep,
   startPracticeRoom,
 } from "@/lib/ultima/server/practice";
 
@@ -36,7 +38,8 @@ export async function GET(request) {
 
   const code = normalizeRoomCode(request.nextUrl.searchParams.get("code"));
   if (!code) {
-    return NextResponse.json({ code: "INVALID", message: "Room code required." }, { status: 400 });
+    const rooms = await listMyPracticeRooms(user.id);
+    return NextResponse.json({ rooms });
   }
 
   const lobby = await listPracticeLobby(code);
@@ -105,6 +108,12 @@ export async function POST(request) {
         code: body.code,
         enabled: body.enabled,
       });
+      break;
+    case "save":
+      result = await setPracticeKeep({ userId: user.id, code: body.code, keep: true });
+      break;
+    case "forget":
+      result = await setPracticeKeep({ userId: user.id, code: body.code, keep: false });
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });

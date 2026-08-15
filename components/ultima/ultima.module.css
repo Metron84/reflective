@@ -728,7 +728,7 @@
   }
 
   .pickerPick {
-    min-height: 48vh;
+    min-height: 62vh;
   }
 }
 
@@ -1326,4 +1326,227 @@
   font-size: 0.75rem;
   opacity: 0.65;
 }
+
+.draftStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.55rem 0 0.35rem;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.14);
+}
+
+.draftStripLine {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  margin: 0;
+  opacity: 0.9;
+  flex: 1;
+  min-width: 12rem;
+}
+
+.boardOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #0a111f;
+  color: #f2ede4;
+  overflow: auto;
+  padding: 0.75rem 1rem 2rem;
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.boardOverlayBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.boardOverlay .boardScroll {
+  max-height: calc(100dvh - 5rem);
+}
+
+.completeActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.rail {
+  display: flex;
+  flex-direction: row;
+  gap: 0.15rem;
+  overflow-x: auto;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+  background: rgba(242, 237, 228, 0.92);
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  -webkit-overflow-scrolling: touch;
+}
+
+.railLink,
+.railLinkActive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 3.6rem;
+  padding: 0.35rem 0.4rem;
+  color: #0a111f;
+  text-decoration: none;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.railLinkActive {
+  opacity: 1;
+  box-shadow: inset 0 -2px 0 #d8232a;
+}
+
+.railLabel {
+  white-space: nowrap;
+}
+
+.newsBoard,
+.chatBoard {
+  margin: 1.75rem 0 0;
+}
+
+.newsList,
+.chatList,
+.roomList {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.newsItem {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.65rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+}
+
+.newsTime {
+  font-size: 0.75rem;
+  opacity: 0.65;
+}
+
+.chatList {
+  max-height: 16rem;
+  overflow: auto;
+  border: 1px solid rgba(10, 17, 31, 0.12);
+  padding: 0.65rem 0.85rem;
+}
+
+.chatRow,
+.chatMine {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  margin: 0 0 0.55rem;
+}
+
+.chatMine {
+  color: #0a111f;
+}
+
+.chatName {
+  display: block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.chatForm {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.chatForm input {
+  flex: 1;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(10, 17, 31, 0.2);
+  background: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.roomRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+}
+
+.roomCode {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.35rem;
+  margin: 0;
+  letter-spacing: 0.08em;
+}
+
+.roomActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.queueBtnDark {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  color: #0a111f;
+  background: transparent;
+  border: 1px solid rgba(10, 17, 31, 0.35);
+}
+
+@media (min-width: 900px) {
+  .shell {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .rail {
+    flex-direction: column;
+    position: sticky;
+    top: 4.5rem;
+    width: 5.25rem;
+    min-height: calc(100vh - 6rem);
+    border-bottom: none;
+    border-right: 1px solid rgba(10, 17, 31, 0.12);
+    padding: 1rem 0.4rem;
+    overflow-x: hidden;
+  }
+
+  .shellMain {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
 
