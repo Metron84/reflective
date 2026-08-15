@@ -58,12 +58,17 @@ export default function UltimaDraftRoom({
     es.addEventListener("draft.pick", fetchState);
     es.addEventListener("draft.state", fetchState);
     es.addEventListener("draft.tick", fetchState);
-    const poll = setInterval(fetchState, isPractice ? 2000 : 5000);
     return () => {
       es.close();
-      clearInterval(poll);
     };
   }, [fetchState, isPractice, roomCode]);
+
+  useEffect(() => {
+    const botOnClock = Boolean(state?.on_clock?.is_bot);
+    const ms = botOnClock ? 800 : isPractice ? 2000 : 5000;
+    const poll = setInterval(fetchState, ms);
+    return () => clearInterval(poll);
+  }, [fetchState, isPractice, state?.on_clock?.is_bot]);
 
   // Best available first, so the new prior-season ratings actually help a pick.
   const sortedAvailable = useMemo(() => {
