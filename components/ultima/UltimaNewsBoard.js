@@ -9,7 +9,7 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
 
   if (!items.length) {
     return (
-      <section className={styles.newsBoard} aria-label="League news">
+      <section className={styles.newsBoard} id="ultima-news" aria-label="League news">
         <h2 className={styles.sectionTitle}>League news</h2>
         <p className={styles.hubNote}>
           Picks, seats, XI locks, market moves and trades land here as they happen.
@@ -19,7 +19,7 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
   }
 
   return (
-    <section className={styles.newsBoard} aria-label="League news">
+    <section className={styles.newsBoard} id="ultima-news" aria-label="League news">
       <h2 className={styles.sectionTitle}>League news</h2>
       <ul className={styles.newsList}>
         {items.map((item) => (
@@ -98,7 +98,7 @@ export function UltimaTradeDesk({ initialCards = [], managerId }) {
   if (!cards.length) return null;
 
   return (
-    <section className={styles.tradeDesk} aria-label="Open trades">
+    <section className={styles.tradeDesk} id="ultima-decisions" aria-label="Open trades">
       <h2 className={styles.sectionTitle}>Needs a decision</h2>
       <ul className={styles.tradeDeskList}>
         {cards.map((card) => (

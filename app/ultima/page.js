@@ -9,6 +9,7 @@ import {
   getUltimaDb,
 } from "@/lib/ultima/server/db";
 import { getHubStatus } from "@/lib/ultima/server/admin";
+import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
 import { safeResolve } from "@/lib/ultima/server/safe";
@@ -39,6 +40,13 @@ export default async function UltimaPage() {
   let draftState = "lobby";
   let news = [];
   let tradeCards = [];
+  let gameweekNumber = null;
+  if (competition) {
+    const gameweek = await safeResolve(getCurrentGameweek(competition.id), null);
+    if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
+      gameweekNumber = gameweek.number;
+    }
+  }
   if (competition && manager) {
     hubStatus = await safeResolve(
       getHubStatus(competition.id, manager.id),
@@ -65,17 +73,15 @@ export default async function UltimaPage() {
 
   return (
     <div className={styles.ultimaPage}>
-      <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Ultima</h1>
+      <div className={`${styles.inner} ${styles.innerWide}`}>
+        <p className={styles.eyebrow}>Games · Ultima</p>
+        <h1 className={styles.displayTitle}>Ultima</h1>
+        <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
         <p className={styles.lede}>
-          League news and the room. Draft Europe's top five. Invite only.
+          Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.
         </p>
         {!ULTIMA_ENABLED ? (
           <p className={styles.phaseNote}>Invite only. Opens when the commissioner is ready.</p>
-        ) : null}
-        {competition ? (
-          <p className={styles.hubNote}>Season {competition.season_label}</p>
         ) : null}
         <hr className={styles.rule} />
         <UltimaHub
@@ -98,4 +104,19 @@ export default async function UltimaPage() {
       </div>
     </div>
   );
+}
+
+function formatDateline(seasonLabel, gameweekNumber) {
+  const date = new Intl.DateTimeFormat("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "Asia/Dubai",
+  }).format(new Date());
+
+  const parts = ["Ultima"];
+  if (seasonLabel) parts.push(seasonLabel);
+  if (gameweekNumber) parts.push(`Gameweek ${gameweekNumber}`);
+  parts.push(date);
+  return parts.join(" · ");
 }
