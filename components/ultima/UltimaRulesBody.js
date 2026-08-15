@@ -44,6 +44,9 @@ export default function UltimaRulesBody() {
         <li>Live snake draft, 30 rounds, 300 picks across 10 managers.</li>
         <li>Minimum 3 players from each league by the end of the draft.</li>
         <li>Timer auto-picks from your queue if it expires.</li>
+        <li>Turn on auto-draft to let the board pick for you from your queue, then ranking.</li>
+        <li>The commissioner can change the clock while the draft is live.</li>
+        <li>If a manager is away, the commissioner can force-pick for the seat on the clock.</li>
         <li>
           Practise first at <Link href="/ultima/practice">/ultima/practice</Link>. Solo vs bots, or
           a shared room. Practice picks do not count.
@@ -76,8 +79,7 @@ export default function UltimaRulesBody() {
       </p>
 
       <p className={styles.phaseNote}>
-        Rating thresholds may be calibrated per league once the season study is signed off.
-        See the master spec for the full rulebook.
+        Match ratings come from Sportmonks. The bands are 7.0 and 7.5 in every league.
       </p>
 
       <p className={styles.hubNote}>

@@ -1,30 +1,38 @@
-# Ultima — Master Specification v4
+# Ultima — Master Specification v5
 
 ### The Reflective Football · August 2026 · Games · Play
 
 **Brand reference:** TRF Brand Guidelines v1.0 (July 2026)
-**Data reference:** Sportmonks Football API, introduced at Phase F
+**Data reference:** Sportmonks Football API
 **Repo path:** `docs/TRF_Ultima_Master_Spec.md`
-**Supersedes:** v1, v2, v3, v3.1 (Aug 2026). v1 in the repo is to be replaced by this file, not appended to.
+**Supersedes:** v1, v2, v3, v3.1, v4 (Aug 2026). This file is the single source of truth.
 
 ---
 
 ## 0. North star
 
-**Ultima is a fan-first, invite-only fantasy league inside thereflectivefootball.com** — one competition, one commissioner, live snake draft, weekly lineups across **Premier League, LaLiga, and Serie A**. It should feel like a **matchday programme that comes alive on Saturday**: cream editorial pages, navy draft and live moments, one signal-red accent per screen.
+**Ultima is a fan-first, invite-only fantasy league inside thereflectivefootball.com** — one competition, one commissioner, live snake draft, weekly lineups across **Premier League, LaLiga, Serie A, Bundesliga, and Ligue 1**. It should feel like a **matchday programme that comes alive on Saturday**: cream editorial pages, navy draft and live moments, one signal-red accent per screen.
 
 **Not** a marketplace of leagues, not an FPL-clone aesthetic, not betting-adjacent UI.
 
-### 0.1 What changed in v4
+**Copy:** "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only."
 
-- Full **route map, hub layout and no-dead-ends funnel** restored.
-- **Site and repo integration** specified: games manifest, door copy, auth redirect, sitemap, loading shells.
-- **Stack contract** written: SSE event types, job schedule, role storage, rate limits, error shape.
-- **Draft lifecycle states** and **bot seating rules** named.
-- **Profile, invite, standings, draft feed and trade UI** specified.
-- **Mock provider contract** and a **filled worked example** added as appendices.
-- **Postponed fixture rule corrected**: a fixture scores in the gameweek it is actually played, not the one it was scheduled in.
-- **Security and compliance** pulled into one section.
+### 0.1 What changed in v5
+
+- Five leagues: Premier League, LaLiga, Serie A, Bundesliga, Ligue 1.
+- Squad of **30**. Starting **XV of 15**. Exactly **3 per league** in the XV. All fifteen score. No free slots.
+- Live snake draft, **30 rounds, 300 picks**, 10 seats.
+- Squad floor is **3 per league**.
+- Sportmonks is the live provider. Match-rating bands stay **7.0 / 7.5** in every league. No calibration pass.
+- Shared invite password at `/ultima/join`, plus 8-character commissioner codes.
+- Practice rooms at `/ultima/practice` (isolated competitions, picks do not count).
+- Commissioner can change the clock while the draft is live.
+- Managers can turn on auto-draft (queue, then ranking).
+- Commissioner can force-pick for an away manager who is on the clock.
+
+### 0.2 What v4 already locked
+
+- Route map, hub, no-dead-ends funnel, stack contract, draft lifecycle, bots, trades, postponed-fixture rule, security.
 
 ---
 
@@ -44,15 +52,15 @@
 ### 1.2 Core model
 
 - One competition, one commissioner, invite-only, maximum **10 seats**.
-- Live snake draft, 25 rounds, 250 picks.
-- Squad of **25**, positionless, drafted across three leagues.
-- Weekly **starting XI of 11** scores; the 14 bench players do not.
+- Live snake draft, 30 rounds, 300 picks.
+- Squad of **30**, positionless, drafted across five leagues.
+- Weekly **starting XV of 15** scores; the 15 bench players do not.
 - Free agency add and drop all season; trades from gameweek 4.
 - Empty seats filled by **bot personas**, no AI inference, no API cost.
 
 ### 1.3 Non-goals (v1)
 
-- Public league creation, auction draft, more than three leagues.
+- Public league creation, auction draft, more than five leagues.
 - Cash prizes, entry fees, betting odds.
 - Native mobile app, push notifications.
 - Client-side provider calls.
@@ -99,7 +107,7 @@ Eyebrows: Archivo, letter-spaced caps (`GAMES · ULTIMA`, `GAMEWEEK 12`).
 | `/ultima` hub | Cream | Redeem invite, or Enter draft when live |
 | Join, profile | Cream | Primary continue |
 | Draft room | Navy | On-the-clock progress line |
-| Squad, default | Cream | Save XI |
+| Squad, default | Cream | Save XV |
 | Squad, live | Cream with navy live strip | Live points pulse |
 | Market | Cream | Add |
 | Trades | Cream | Send proposal |
@@ -125,9 +133,9 @@ Eyebrows: Archivo, letter-spaced caps (`GAMES · ULTIMA`, `GAMEWEEK 12`).
 
 **Sample lines**
 
-- Landing: "Draft across the Premier League, LaLiga, and Serie A. 25 players. Invite only."
-- Draft counter: "Four from every league. Two LaLiga to go."
-- Forced pick: "LaLiga only. You need two more and you have two picks left."
+- Landing: "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only."
+- Draft counter: "Three from every league. Two LaLiga to go."
+- Floor block: "LaLiga only. You need two more and you have two picks left."
 - Lock notice: "LaLiga is live. Your LaLiga slots are set."
 - Market: "Free agent. Add him and someone has to go."
 - Bolt: "Bolt. Round 21 pick, eight points, plus two."
@@ -142,7 +150,7 @@ Eyebrows: Archivo, letter-spaced caps (`GAMES · ULTIMA`, `GAMEWEEK 12`).
 | Role | Capabilities |
 |------|----------------|
 | **Visitor** | Read landing and rules; cannot join without an invite |
-| **Manager** | Draft, set weekly XI, add and drop, propose and vote on trades, view all squads |
+| **Manager** | Draft, set weekly XV, add and drop, propose and vote on trades, view all squads |
 | **Commissioner** | Everything a manager does, plus invites, draft control, pool flags, corrections, season config |
 | **Backup commissioner** | One named manager who can **start, pause and resume the draft only**, for the case where Melo is filming. No corrections, no invites, no pool flags |
 | **Bot** | Server-run manager occupying an unfilled seat |
@@ -159,7 +167,10 @@ Eyebrows: Archivo, letter-spaced caps (`GAMES · ULTIMA`, `GAMEWEEK 12`).
 |-------|---------|------|---------|
 | `/ultima` | Hub, rules summary, invite CTA | Public | Yes |
 | `/ultima/rules` | Canonical scoring and floors | Public | Yes |
-| `/ultima/join/[code]` | Invite redemption | Sign-in required | No |
+| `/ultima/join` | Shared invite password | Sign-in required | No |
+| `/ultima/join/[code]` | 8-character invite code | Sign-in required | No |
+| `/ultima/practice` | Practice lobby | Manager, profile complete | No |
+| `/ultima/practice/[code]` | Practice draft room | Manager, profile complete | No |
 | `/ultima/profile` | Team identity | Manager | No |
 | `/ultima/draft` | Live draft room | Manager, profile complete | No |
 | `/ultima/squad` | XI and Squad tabs | Manager | No |
@@ -191,7 +202,7 @@ Status lines are live, not decorative.
 | Row | Example status |
 |-----|----------------|
 | Draft room | "Opens 14 August, 20:00" · "Live. You are on the clock." · "Complete" |
-| My squad | "Set your XI. LaLiga locks Friday 21:00." |
+| My squad | "Set your XV. LaLiga locks Friday 21:00." |
 | Market | "37 free agents." |
 | Trades | "One proposal waiting." · "Trades open at gameweek 4." |
 | Standings | "You are 4th. 212 points." |
@@ -204,8 +215,8 @@ Status lines are live, not decorative.
 | Invite redeemed | Profile, then draft lobby |
 | Profile saved | Draft lobby, or hub if the draft is not open |
 | Draft pick made | Back to the board, queue surfaced |
-| Draft complete | Squad, plus "Set your XI before [kickoff]" |
-| XI saved | Market, or Standings |
+| Draft complete | Squad, plus "Set your XV before [kickoff]" |
+| XV saved | Market, or Standings |
 | Add or drop | Squad |
 | Trade sent | Trades list, plus Squad |
 | Gameweek final | Standings, plus Watch Films and Play Codemaster |
@@ -220,11 +231,10 @@ Status lines are live, not decorative.
 
 | Item | Action |
 |------|--------|
-| `docs/TRF_Ultima_Master_Spec.md` | Replace v1 content with this v4 file |
-| Superseded versions | Note in section 20; do not keep v1 to v3.1 in the repo |
-| `CLAUDE.md` or build brief | Point at v4 as the single source of truth before Phase A starts |
-| `content/games.json` | Replace the `ultimate-fantasy-manager` entry |
-| Homepage door status | Replace the six-league, ten-player hook |
+| `docs/TRF_Ultima_Master_Spec.md` | This v5 file is the single source of truth |
+| Superseded versions | Note in section 24; do not keep v1 to v4 as separate files |
+| `CLAUDE.md` | Point at v5 |
+| `content/games.json` | `ultima` entry, five-league hook |
 
 ### 6.2 Games manifest
 
@@ -232,13 +242,13 @@ Status lines are live, not decorative.
 |-------|--------|
 | `slug` | `ultima` |
 | `title` | `Ultima` |
-| `hook` | `Draft PL, LaLiga, and Serie A. 25 players. Invite only.` |
+| `hook` | `Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.` |
 | `href` | `/ultima` |
 | `statusLabel` | `Coming for the 26/27 season` |
 
 ### 6.3 Homepage and chrome
 
-- Games door status line: `Ultima. Draft PL, LaLiga, Serie A. Invite only.`
+- Games door status line: `Ultima. Draft Europe's top five. Invite only.`
 - `/ultima` and `/ultima/rules` enter the sitemap and carry canonical tags when the landing page goes public. Every other route is `noindex`.
 - Ultima is added behind an `ULTIMA_ENABLED` flag in `lib/config.js`, matching the pattern used to park The Stand and gate the LaLiga campaign.
 
@@ -259,10 +269,10 @@ Each league opens its matchday at its **first kickoff inside the window**. Locki
 
 - A lineup slot **locks when the league of the player in it opens its matchday**.
 - An empty slot **stays editable**, but can only be filled from leagues that have not yet opened.
-- Once all three leagues have opened, the XI is fully locked for the window.
+- Once all five leagues have opened, the XV is fully locked for the window.
 - A locked player cannot be dropped or traded until the window closes.
 
-**Worked example.** LaLiga opens Friday 21:00, Premier League Saturday 12:30, Serie A Saturday 18:00. LaLiga slots freeze Friday night. Premier League slots stay live until Saturday lunchtime. Serie A slots are still editable Saturday afternoon.
+**Worked example.** LaLiga opens Friday 21:00, Premier League Saturday 12:30, Serie A Saturday 18:00. LaLiga slots freeze Friday night. Premier League slots stay live until Saturday lunchtime. Serie A, Bundesliga and Ligue 1 slots stay editable until that league's first kickoff.
 
 ### 7.3 Auto-start
 
@@ -277,12 +287,12 @@ Fires **per league, at that league's opening kickoff**.
 
 | Rule | Value |
 |------|-------|
-| Squad size | 25, fixed |
-| Starting XI | 11, scores |
-| Bench | 14, does not score |
+| Squad size | 30, fixed |
+| Starting XV | 15, scores |
+| Bench | 15, does not score |
 | Positions | None |
-| Squad league floor | Minimum 4 from each league |
-| XI league floor | Minimum 3 from each league, 2 free slots |
+| Squad league floor | Minimum 3 from each league |
+| XV league floor | Exactly 3 from each league. No free slots |
 | Club cap | None |
 | One slot per player | A player occupies exactly one XI slot, even with two fixtures in the window |
 
@@ -302,7 +312,7 @@ Fires **per league, at that league's opening kickoff**.
 | Match rating | 7.5 and above | 2 |
 | **Bolt bonus** | See 8.2 | +2 |
 
-Only the starting XI scores. A player with two fixtures in the window scores from both into the same slot.
+Only the starting XV scores. A player with two fixtures in the window scores from both into the same slot.
 
 ### 8.2 Bolt bonus
 
@@ -331,21 +341,11 @@ Only the starting XI scores. A player with two fixtures in the window scores fro
 - **Provisional:** any fixture in the window is not final.
 - **Final:** all fixtures final and the correction window closed, 24 hours after the last full-time.
 
-### 8.5 Rating comparability
+### 8.5 Rating bands
 
-**Study, before Phase A exits.** Sample 30 finished matches per league, record every rating, compute the mean and the share of ratings landing in each band.
+Sportmonks match ratings are trusted as returned. Bands are **7.0 to 7.4 = 1 point** and **7.5 and above = 2 points** in every league. No per-league calibration.
 
-**Output.** If the share landing in a band differs by more than 5 percentage points between leagues, thresholds are calibrated per league, not the points values. Calibration uses the band share of the median league as the target:
-
-```
-threshold_L_band1 = the rating value at which league L reaches
-                    the same cumulative share as the median league at 7.0
-threshold_L_band2 = the same, measured at 7.5
-```
-
-- Thresholds are stored in `ultima_competition.rating_thresholds` as a per-league pair, never hard-coded.
-- **Melo signs off** the calibration before Phase A closes.
-- Managers see the calibrated numbers on `/ultima/rules` with one line of explanation, because a hidden adjustment to two of four scoring events would be indefensible when someone loses by a point.
+Thresholds live in `ultima_competition.rating_thresholds` as a per-league pair, default `{ band1: 7.0, band2: 7.5 }`. Managers see those numbers on `/ultima/rules`.
 
 ---
 
@@ -362,7 +362,7 @@ lobby → live → (paused) → complete | cancelled
 | `lobby` | Invites open, seats filling, order not yet set. Commissioner can still invite |
 | `live` | Seats frozen, bots seated, order set, clock running |
 | `paused` | Commissioner or backup paused; clock frozen; board read-only |
-| `complete` | 250 picks made; squads written; market opens |
+| `complete` | 300 picks made; squads written; market opens |
 | `cancelled` | Commissioner cancelled with a typed confirmation; all picks discarded and logged |
 
 - The draft **can run across sessions**. Pausing overnight is supported and the clock resumes exactly where it stopped.
@@ -379,38 +379,49 @@ lobby → live → (paused) → complete | cancelled
 
 ### 9.3 Timer
 
-| Option | 250 picks |
+| Option | 300 picks |
 |--------|-----------|
-| 30 seconds | about 2 hours 5 minutes |
-| 60 seconds | about 4 hours 10 minutes |
-| 90 seconds | about 6 hours 15 minutes |
-| 2 minutes | about 8 hours 20 minutes |
+| 30 seconds | about 2 hours 30 minutes |
+| 60 seconds | about 5 hours |
+| 90 seconds | about 7 hours 30 minutes |
+| 2 minutes | about 10 hours |
 | 5 minutes | multi-session |
 | 24 hours (async) | multi-day |
 
-- On expiry: auto-pick from queue, then best available by ranking, then forced by league deficit.
+- On expiry: auto-pick from queue, then best available by ranking, then league deficit.
 - Server-authoritative clock. Reconnect restores board, queue and clock.
 - Bots pick instantly, so a bot-heavy league drafts far faster than the table suggests.
+- The commissioner can change the timer while the draft is live. A live change resets the current turn.
+- Managers can turn on **auto-draft**. When they are on the clock the board picks immediately from their queue, then ranking.
 
-### 9.4 League floor counter and forced pick
+### 9.4 League floor counter
 
 - Visible to **every manager**, not only the one on the clock.
-- Per manager per league: `deficit = max(0, 4 − count)`.
+- Per manager per league: `deficit = max(0, 3 − count)`.
 - A pick is rejected if, after it, `sum(deficits) > remaining slots`.
 - The guard uses `min(remaining slots, draftable players remaining in that league)`.
 - States: **Open**, **Warning** at deficit equals remaining slots minus two, **Forced** at deficit equals remaining slots.
-- In Forced state the board filters to deficit leagues and the header states why.
-- Reminders at rounds 15 and 20 for any manager carrying a deficit.
-- Display: `PL 9 · LaLiga 2 (need 2) · Serie A 1 (need 3) · 4 picks left`.
+- The server rejects an illegal pick. The board does not hide other leagues.
+- Display: `PL 9 · LaLiga 2 (need 1) · SA 3 · BL 3 · L1 2 (need 1) · 10 picks left`.
 
-### 9.5 Draft room UX
+### 9.5 Commissioner force pick
 
-- Navy full-bleed room, league tabs PL | LaLiga | Serie A.
+If a manager is away, the commissioner can pick for the seat that is on the clock.
+
+- Available only to the commissioner, only while the draft is `live`, and only when it is not the commissioner's own turn.
+- The pick is written to the away manager's roster. Floor rules still apply.
+- The feed shows "Commissioner pick. Manager away."
+- The action writes a public `/ultima/log` row.
+- The commissioner cannot undo their own pick.
+
+### 9.6 Draft room UX
+
+- Navy full-bleed room, league tabs All | PL | LL | SA | BL | L1.
 - Signal red only on the thin progress line under the on-the-clock name.
 - Player row: name, club, league, availability flag, Bolt-eligible marker from round 16.
 - Queue: ordered, reorderable, persists across reconnects.
 
-### 9.6 Draft feed
+### 9.7 Draft feed
 
 - A **tab on mobile, a right rail on desktop**, never a floating overlay.
 - Shows **every pick**, human and bot, newest first: round, pick number, manager, player, club, league.
@@ -438,7 +449,7 @@ No AI inference, no API cost. A persona is a set of numbers in a config file.
 | **Horizon** | Chases last week's form | Season averages and fixture load |
 | **Discipline** | Ignores the league floor until forced | Fills the floor on schedule |
 
-**Wobble** is the chance per pick that the bot ignores its own logic. It rises as discipline falls, and it is what stops a human solving a bot over 25 rounds.
+**Wobble** is the chance per pick that the bot ignores its own logic. It rises as discipline falls, and it is what stops a human solving a bot over 30 rounds.
 
 ### 10.3 The nine personas
 
@@ -486,7 +497,7 @@ Config lives at `data/ultima/personas.json`.
 
 ### 10.5 Scope and visibility
 
-- **Phase H:** draft picks and weekly XI selection, respecting every floor and lock a human faces.
+- **Phase H:** draft picks and weekly XV selection, respecting every floor and lock a human faces.
 - **Later:** free agency claims. Bots stay out of the trade machine, because a weighted bot cannot argue.
 - All bot actions run server-side, are logged, and carry no information a human does not have.
 - **Every squad, XI and live score is public to every manager**, human or bot.
@@ -497,7 +508,7 @@ Config lives at `data/ultima/personas.json`.
 ## 11. Free agency market
 
 - Every **undrafted player** is a free agent once the draft state is `complete`.
-- Squad stays at 25, so **every add requires a drop** in the same transaction.
+- Squad stays at 30, so **every add requires a drop** in the same transaction.
 - Claims are **first come, first served** v1. No bidding, no budget, no waiver period.
 - A dropped player returns to the market immediately.
 - A player whose league has opened cannot enter the current XI; a player in a locked slot cannot be dropped until the window closes.
@@ -512,8 +523,8 @@ Trades open at **gameweek 4**, because the fairness engine needs three gameweeks
 
 ### 12.1 Rules
 
-- Manager to manager, **equal player counts**, so both squads stay at 25.
-- Both squads must satisfy the 4-per-league squad floor after the trade, unless already relaxed by an inactive flag.
+- Manager to manager, **equal player counts**, so both squads stay at 30.
+- Both squads must satisfy the 3-per-league squad floor after the trade, unless already relaxed by an inactive flag.
 - Players in a locked slot cannot be traded until the window closes.
 - **Deadline:** the close of the third-from-last gameweek.
 - Bots neither propose, accept nor vote.
@@ -563,13 +574,13 @@ The commissioner has no unilateral veto, because the commissioner is also a mana
 
 ### 13.1 Structure
 
-- Two tabs: **XI** and **Squad**.
-- Sticky header carries the floor counter and Save: `PL 3/3 · LaLiga 2/3 · Serie A 3/3`.
+- Two tabs: **XV** and **Squad**.
+- Sticky header carries the floor counter and Save: `PL 3/3 · LL 2/3 · SA 3/3 · BL 3/3 · L1 3/3`.
 - Save is disabled while invalid, with the reason in one line underneath: "One more from LaLiga."
 
-### 13.2 XI tab
+### 13.2 XV tab
 
-- Eleven slot rows grouped **Premier League ×3, LaLiga ×3, Serie A ×3, Free ×2**.
+- Fifteen slot rows grouped **PL ×3, LaLiga ×3, Serie A ×3, Bundesliga ×3, Ligue 1 ×3**.
 - Row: player name, club, three-letter league tag, points last gameweek, lock state.
 - Tap a slot to open a **bottom sheet** of eligible bench players, filtered to that slot's requirement, sorted by points per game.
 - Locked slots render navy with a hairline padlock and no tap target; the group header reads "LaLiga is live".
@@ -577,7 +588,7 @@ The commissioner has no unilateral veto, because the commissioner is also a mana
 
 ### 13.3 Squad tab
 
-- Twenty-five rows sectioned by league, each section headed with the count against the floor.
+- Thirty rows sectioned by league, each section headed with the count against the floor.
 - Row: name, club, season points, next fixture, status flag, Bolt marker.
 - Overflow menu per row: Move to XI, Drop, Propose trade.
 
@@ -606,7 +617,8 @@ Profile must be complete before a manager can enter the draft room.
 | Field | Rule |
 |-------|------|
 | Format | 8 characters, uppercase alphanumeric, ambiguous characters removed |
-| Issue | Commissioner generates one code per seat. No master code |
+| Shared password | `ULTIMA_JOIN_PASSWORD` at `/ultima/join`. One password for the group |
+| Issue | Commissioner can also generate one 8-character code per seat |
 | Uses | **Single use** |
 | Expiry | 14 days, or draft start, whichever comes first |
 | Cap | Rejected once 10 seats are taken |
@@ -663,7 +675,7 @@ Minimum touch target 44 × 44px including icon-only controls. Every control has 
 | Draft room | Draft [player] | Add to queue, Remove from queue | — | Back to hub |
 | Draft queue | Save order | — | Clear queue | Close |
 | Draft feed | — | Filter to my picks | — | Close |
-| XI tab | Save XI | Reset to last saved | — | Back |
+| XV tab | Save XV | Reset to last saved | — | Back |
 | Slot sheet | Select | — | Clear slot | Close |
 | Squad tab | — | Move to XI, Propose trade | Drop | Back |
 | Market | Add | Filter, Sort | — | Back |
@@ -679,7 +691,7 @@ Minimum touch target 44 × 44px including icon-only controls. Every control has 
 
 | Action | Treatment |
 |--------|-----------|
-| Save XI | Immediate, toast confirms, editable until lock |
+| Save XV | Immediate, toast confirms, editable until lock |
 | Add from market | Confirm sheet, because it forces a drop |
 | Drop a player | Confirm sheet naming the player, warning he returns to the market |
 | Send a trade | Confirm sheet showing the fairness verdict |
@@ -696,7 +708,7 @@ Confirm sheets carry exactly two controls: the destructive action and Cancel. Ca
 
 | Action | Undo window |
 |--------|-------------|
-| Save XI | Until the relevant league locks |
+| Save XV | Until the relevant league locks |
 | Drop | None once confirmed; the player is public immediately |
 | Trade veto | Until the review window closes |
 | Draft pick | Commissioner only, audited, emergency use |
@@ -834,21 +846,21 @@ Nothing above the adapter knows which provider is live.
 | Item | Value |
 |------|-------|
 | Location | `data/ultima/seed/` |
-| Files | `players.pl.json`, `players.laliga.json`, `players.seriea.json`, `fixtures.json`, `stats.gw-sample.json`, `rankings.json` |
+| Files | `players.pl.json`, `players.laliga.json`, `players.seriea.json`, `players.bundesliga.json`, `players.ligue1.json`, `fixtures.json`, `stats.gw-sample.json`, `rankings.json` |
 | Volume | About 500 draftable players per league |
 | Player fields | `provider_id`, `name`, `club`, `league`, `active`, `goals_rate`, `assists_rate`, `rating_avg`, `rating_consistency`, `minutes_reliability`, `club_strength` |
 | Seeding of derived values | `goals_rate` and `assists_rate` as per-90 from last season; `rating_avg` and `rating_consistency` as mean and standard deviation from last season; `minutes_reliability` as appearances divided by club fixtures; `club_strength` as last season's final league position normalised to 0 to 1 |
 | Manual draft ranking | `rankings.json`, one ordered list per league, sourced from last season's total fantasy points under this scoring system |
 | Historical gameweek | One real completed round per league, hand-entered, matching the appendix worked example |
 
-**Phase A gate:** the seed loads, the appendix example scores exactly, and Melo signs the calibration.
+**Phase A gate:** the seed loads and the appendix example scores exactly (base 39, Bolt +2, total 41).
 
 ### 17.3 Sportmonks, Phase F
 
 | Item | Value |
 |------|-------|
-| Plan | Starter, three leagues in use |
-| League IDs | Confirm the three IDs from provider docs at Phase F; do not hard-code guesses |
+| Plan | Starter, five leagues in use |
+| League IDs | Confirm the five IDs from the Sportmonks dashboard; store only in env vars |
 | Endpoints | Schedules and results, Livescores and events, Statistics |
 | Field mapping | Goals, assists and rating come from the Statistics type IDs; confirm each ID against provider docs and record the mapping in `docs/ultima-provider-mapping.md` |
 | Call budget | 2,000 per entity per hour. Livescore polling bulk by date and league is 3 calls per minute, 180 per hour, comfortably inside budget |
@@ -894,7 +906,8 @@ Nothing above the adapter knows which provider is live.
 
 - `ultima_competition` (season, window rule, max seats, timer_setting, rating_thresholds, trade_deadline_gw)
 - `ultima_invites` (code, expires_at, used_by, used_at, created_by)
-- `ultima_managers` (user_id, team_name, colour, draft_slot, is_bot, persona_id, is_backup_commissioner)
+- `ultima_managers` (user_id, team_name, colour, draft_slot, is_bot, persona_id, is_backup_commissioner, auto_draft)
+- `ultima_practice_rooms` (code, competition_id, host_user_id, solo)
 - `ultima_bot_personas` (id, name, risk, horizon, discipline, wobble, weights, rationale_lines)
 - `ultima_players` (provider_id, name, league, club, active, draft_round, bolt_eligible, inactive_flag, seed_metrics)
 - `ultima_draft_state` (state, order, current_pick, paused_by, paused_at, resume_at)
@@ -920,11 +933,11 @@ Nothing above the adapter knows which provider is live.
 
 | Phase | Deliverable | Exit |
 |-------|-------------|------|
-| **A** | Spec in repo, schema, adapter, mock seed, rating study, worked example signed | Seed loads; appendix example scores exactly; thresholds signed off |
+| **A** | Spec in repo, schema, adapter, mock seed, worked example | Seed loads; appendix example scores exactly (39 + 2 = 41) |
 | **B** | Hub, landing, rules, invites capped at 10, profile, player browse | Eleventh redemption rejected; auth redirect works |
-| **C** | Live draft: lifecycle, timer, queue, floor counter, forced pick, feed, reconnect | 10 seats complete 25 rounds; every squad holds 4 per league |
-| **D** | Squad, XI, per-league locks, auto-start, historical scoring incl. Bolt | Points match the appendix; each league locks independently |
-| **E** | Market, drops, replacements, floor relaxation | Add and drop keeps squads at 25 and respects locks |
+| **C** | Live draft: lifecycle, timer, queue, floor counter, auto-draft, commissioner force pick, feed, reconnect | 10 seats complete 30 rounds; every squad holds 3 per league |
+| **D** | Squad, XV, per-league locks, auto-start, historical scoring incl. Bolt | Points match the appendix; each league locks independently |
+| **E** | Market, drops, replacements, floor relaxation | Add and drop keeps squads at 30 and respects locks |
 | **F** | **Sportmonks introduced behind the adapter** | Re-scored gameweek matches the mock |
 | **G** | Live matchday, SSE, provisional to final, notifications | Within SLA; emails deliver |
 | **H** | Bot personas: seating, draft, XI, published risk numbers, rationale feed | A 2-human league completes a full draft and gameweek |
@@ -941,9 +954,9 @@ Phases A to G are the launch build. H and I can land after kickoff: bots only ma
 
 1. Eleventh invite redemption rejected; expired code rejected; used code rejected.
 2. Signed-out hit on `/ultima/squad` redirects to `/signin?next=/ultima/squad`.
-3. Snake order correct for 10 seats across 25 rounds.
-4. Pick rejected when it makes the 4-per-league floor impossible, accounting for remaining supply.
-5. Forced state filters the board to deficit leagues and states why.
+3. Snake order correct for 10 seats across 30 rounds.
+4. Pick rejected when it makes the 3-per-league floor impossible, accounting for remaining supply.
+5. Commissioner can force-pick for the manager on the clock when that manager is away. Floor rules still apply.
 6. Floor counter visible to a manager not on the clock.
 7. Timer expiry auto-picks from queue, then ranking, then deficit.
 8. Reconnect mid-draft restores board, queue and clock.
@@ -955,7 +968,7 @@ Phases A to G are the launch build. H and I can land after kickoff: bots only ma
 14. Bench players score zero; a player with two fixtures scores both into one slot.
 15. A rescheduled fixture scores in the week it is played, and no Final gameweek is rewritten.
 16. Bolt fires on a round-21 player with 6 base points and not on a re-signed round-1 player.
-17. Add and drop keeps the squad at 25 and refuses a locked player.
+17. Add and drop keeps the squad at 30 and refuses a locked player.
 18. Inactive flag relaxes the floor and is logged.
 19. Trade rejected when uneven, when it breaks a floor, or before gameweek 4.
 20. Majority veto cancels an accepted trade inside 24 hours; the hourly job executes an unvetoed one.
@@ -974,22 +987,25 @@ Phases A to G are the launch build. H and I can land after kickoff: bots only ma
 
 ---
 
-## 23. Open decisions (Melo)
+## 23. Open decisions (group)
+
+These stay with the group. They are not code blockers.
 
 - [ ] Draft date and timer option
 - [ ] Gameweek 1 date
 - [ ] Whether standings are public to non-members
 - [ ] Backup commissioner, named or none
 - [ ] Prize or on-camera league name
-- [ ] Confirm **Ultima** as the public name
+
+Confirmed: public name is **Ultima**. Rating bands stay on Sportmonks 7.0 / 7.5.
 
 ---
 
-## Appendix A — Worked example, gameweek 12
+## Appendix A — Worked example, gameweek 12 (v5)
 
-Illustrative fixture for engineering QA. The real seed must reproduce this shape exactly.
+Illustrative fixture for engineering QA. `scripts/ultima-verify-appendix.mjs` must score this exactly.
 
-**Lock timeline:** LaLiga opens Friday 21:00, Premier League Saturday 12:30, Serie A Saturday 18:00.
+**Lock timeline:** LaLiga opens Friday 21:00, Premier League Saturday 12:30, Serie A Saturday 18:00. Bundesliga and Ligue 1 slots stay editable until that league's first kickoff.
 
 | Slot | League | Player | Round | Goals | Assists | Rating | Base | Bolt |
 |------|--------|--------|-------|-------|---------|--------|------|------|
@@ -998,19 +1014,24 @@ Illustrative fixture for engineering QA. The real seed must reproduce this shape
 | 3 | PL | Player C | 11 | 1 | 0 | 7.6 | 5 | — |
 | 4 | LL | Player D | 1 | 0 | 2 | 7.9 | 4 | — |
 | 5 | LL | Player E | 9 | 2 | 0 | 8.3 | 8 | — |
-| 6 | LL | Player F | 14 | 0 | 1 | 7.2 | 2 | — |
+| 6 | LL | Player K | 6 | 1 / 0 | 0 / 0 | 7.5 / 6.6 | 5 | — |
 | 7 | SA | Player G | 5 | 1 | 0 | 7.4 | 4 | — |
 | 8 | SA | Player H | 18 | 1 | 1 | 7.7 | 6 | **+2** |
 | 9 | SA | Player I | 20 | 0 | 0 | 7.1 | 1 | no |
-| 10 | Free, PL | Player J | 13 | 0 | 1 | 6.9 | 1 | — |
-| 11 | Free, LL | Player K | 6 | 1 / 0 | 0 / 0 | 7.5 / 6.6 | 5 | — |
+| 10 | BL | Player BL-A | 4 | 0 | 0 | 6.5 | 0 | — |
+| 11 | BL | Player BL-B | 12 | 0 | 0 | 6.4 | 0 | — |
+| 12 | BL | Player BL-C | 22 | 0 | 0 | 6.3 | 0 | — |
+| 13 | L1 | Player L1-A | 3 | 0 | 0 | 6.5 | 0 | — |
+| 14 | L1 | Player L1-B | 15 | 0 | 0 | 6.4 | 0 | — |
+| 15 | L1 | Player L1-C | 25 | 0 | 0 | 6.3 | 0 | — |
 
 - Player K has **two fixtures** in the window: 3 for the goal plus 2 for the 7.5 rating, then 0 from the second fixture.
 - Player H is **Bolt eligible** at round 18 and returns 6 base points, so the bonus fires.
 - Player I is Bolt eligible at round 20 but returns 1 base point, below the threshold, so it does not.
+- Bundesliga and Ligue 1 return 0 in this sample week so the XV still holds 3 per league.
 - A bench player scored 12 this week and contributes **nothing**.
 
-**Base total: 42. Bolt: +2. Gameweek total: 44.**
+**Base total: 39. Bolt: +2. Gameweek total: 41.**
 
 ---
 
@@ -1022,4 +1043,5 @@ Illustrative fixture for engineering QA. The real seed must reproduce this shape
 | 2.0 | Aug 2026 | Squad 25, 10 managers, weekly XI, dual floors, mock-provider build order |
 | 3.0 | Aug 2026 | Per-league locks, free agency, Bolt bonus, live draft, bots, trade machine |
 | 3.1 | Aug 2026 | Risk-scaled bot personas replacing the TPD dependency; controls and navigation |
-| 4.0 | Aug 2026 | Routes and hub, repo integration, stack contract, draft lifecycle, bot seating, profile, invites, standings, feed, trade UI, mock contract, calibration output, notifications, security section, worked example. Postponed-fixture rule corrected |
+| 4.0 | Aug 2026 | Routes and hub, repo integration, stack contract, draft lifecycle, bot seating, profile, invites, standings, feed, trade UI, mock contract, notifications, security section, worked example. Postponed-fixture rule corrected |
+| 5.0 | Aug 2026 | Five leagues, 30-man squad, 15 starters, 30-round draft, Sportmonks ratings trusted, live timer, auto-draft, practice rooms, shared join password, commissioner force pick. Appendix A totals 39 + 2 = 41 |

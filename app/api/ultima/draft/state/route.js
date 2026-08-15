@@ -5,8 +5,9 @@ import {
   getActiveCompetition,
   getManagerForUser,
   getUltimaDb,
+  isCommissionerUser,
 } from "@/lib/ultima/server/db";
-import { loadDraftContext, getManagerPickCounts } from "@/lib/ultima/server/draft";
+import { expireLiveTurn, loadDraftContext, getManagerPickCounts } from "@/lib/ultima/server/draft";
 import {
   floorCounterState,
   formatFloorCounter,
@@ -34,6 +35,8 @@ export async function GET() {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
     return NextResponse.json(body, { status });
   }
+
+  await expireLiveTurn(competition.id);
 
   const ctx = await loadDraftContext(competition.id);
   if (!ctx) {
@@ -84,6 +87,11 @@ export async function GET() {
         }
       : null,
     is_your_turn: ctx.onClock?.managerId === manager.id,
+    is_commissioner: isCommissionerUser(user.id),
+    auto_draft: Boolean(
+      ctx.managers.find((m) => m.id === manager.id)?.auto_draft ?? manager.auto_draft,
+    ),
+    timer_seconds: ctx.timerSeconds,
     seconds_remaining: secondsRemaining,
     floor_counter: formatFloorCounter(counter.counts, counter.deficits, counter.slotsLeft),
     floor_mode: counter.mode,

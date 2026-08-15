@@ -1,7 +1,7 @@
 # Ultima Build Handover (v5)
 
 **Date:** 15 August 2026  
-**Spec:** `docs/TRF_Ultima_Master_Spec.md` (update to v5 in progress)  
+**Spec:** `docs/TRF_Ultima_Master_Spec.md` (v5)  
 **Feature flag:** `ULTIMA_ENABLED` in `lib/config.js`
 
 ---
@@ -28,7 +28,8 @@
 | `0020_ultima_personas_seed.sql` | Run if not done |
 | `0021_ultima_v5_leagues.sql` | Applied |
 | `0022_ultima_notifications.sql` | Applied |
-| `0023_ultima_practice.sql` | **Run next** (practice rooms, isolated from season) |
+| `0023_ultima_practice.sql` | Applied |
+| `0024_ultima_auto_draft.sql` | Applied |
 
 ---
 
@@ -57,7 +58,8 @@ Never commit keys. See `docs/ultima-provider-mapping.md`.
 3. `/ultima/admin` → **Bootstrap** (sync players + sample GW12 mock).
 4. **Schedule draft** (ISO datetime) for 24h/1h reminder emails.
 5. **Start draft** when seats are full.
-6. Create live gameweek → **Sync active gameweek** during matchdays.
+6. Change the clock from `/ultima/admin` or the live draft room. It resets the current turn.
+7. Create live gameweek → **Sync active gameweek** during matchdays.
 
 Dev: `http://localhost:4343/api/dev/test-sign-in?next=/ultima&ultima=1`
 
@@ -79,9 +81,10 @@ Dev: `http://localhost:4343/api/dev/test-sign-in?next=/ultima&ultima=1`
 
 ```bash
 node scripts/ultima-verify-appendix.mjs
-node scripts/ultima-calibrate-sportmonks.mjs --league pl
 npm run build
 ```
+
+Rating bands stay at Sportmonks 7.0 / 7.5 in every league. No calibration pass.
 
 ---
 
@@ -100,8 +103,8 @@ npm run build
 
 ## Still open for Melo
 
-- [ ] Run migration 0022
-- [ ] Rating calibration sign-off (`node scripts/ultima-calibrate-sportmonks.mjs`)
-- [ ] Full acceptance test pass (spec §22, v5 numbers)
-- [ ] Open decisions: draft date, GW1, public standings, prize name
+- [ ] Push to GitHub, then formal acceptance pass (spec §22)
+- [ ] Group decisions: draft date, GW1, public standings, prize name
 - [ ] Production deploy approval
+
+Closed: rating calibration. Trust Sportmonks. Default bands 7.0 / 7.5.

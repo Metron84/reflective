@@ -6,11 +6,13 @@ import {
   commissionerStartDraft,
   commissionerPauseDraft,
   commissionerResumeDraft,
+  commissionerForcePick,
   commissionerUndoPick,
   commissionerCancelDraft,
   commissionerScoreOverride,
   commissionerIssueInvite,
   commissionerBootstrap,
+  commissionerSetTimer,
   commissionerScheduleDraft,
   commissionerSyncGameweek,
   commissionerCreateGameweek,
@@ -64,6 +66,9 @@ export async function POST(request) {
         competition.timer_seconds ?? 60,
       );
       break;
+    case "force_pick":
+      result = await commissionerForcePick(competition.id, user.id, body.player_id);
+      break;
     case "undo_pick":
       result = await commissionerUndoPick(
         competition.id,
@@ -86,8 +91,8 @@ export async function POST(request) {
         gameweekId: body.gameweek_id,
         actorId: user.id,
         reason: body.reason,
-        afterPoints: body.points,
-        afterBolt: body.bolt_points,
+        afterPoints: Number(body.points),
+        afterBolt: Number(body.bolt_points),
       });
       break;
     case "issue_invite": {
@@ -97,6 +102,9 @@ export async function POST(request) {
     }
     case "bootstrap":
       result = await commissionerBootstrap(competition.id, user.id);
+      break;
+    case "set_timer":
+      result = await commissionerSetTimer(competition.id, user.id, body.timer_seconds);
       break;
     case "schedule_draft":
       result = await commissionerScheduleDraft(competition.id, user.id, body.scheduled_at);

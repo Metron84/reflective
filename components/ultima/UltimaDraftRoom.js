@@ -2,7 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT, ULTIMA_TOTAL_PICKS } from "@/lib/ultima/constants";
+import {
+  ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_SHORT,
+  ULTIMA_TIMER_OPTIONS,
+  ULTIMA_TOTAL_PICKS,
+  formatUltimaTimer,
+} from "@/lib/ultima/constants";
 import styles from "./ultima.module.css";
 
 const LEAGUE_TABS = [
@@ -25,6 +31,8 @@ export default function UltimaDraftRoom({
   const [error, setError] = useState("");
   const [tab, setTab] = useState("board");
   const [resetting, setResetting] = useState(false);
+  const [autoBusy, setAutoBusy] = useState(false);
+  const [timerBusy, setTimerBusy] = useState(false);
 
   const fetchState = useCallback(async () => {
     try {
@@ -54,6 +62,29 @@ export default function UltimaDraftRoom({
       clearInterval(poll);
     };
   }, [fetchState, isPractice, roomCode]);
+
+  async function forcePickPlayer(playerId) {
+    if (isPractice || !state?.is_commissioner) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "force_pick", player_id: playerId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message ?? "Force pick failed.");
+      } else {
+        await fetchState();
+      }
+    } catch {
+      setError("Connection lost. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function draftPlayer(playerId) {
     setLoading(true);
@@ -92,6 +123,49 @@ export default function UltimaDraftRoom({
       ),
     });
     fetchState();
+  }
+
+  async function toggleAutoDraft() {
+    setAutoBusy(true);
+    setError("");
+    try {
+      const res = await fetch(isPractice ? "/api/ultima/practice" : "/api/ultima/draft/auto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          isPractice
+            ? { action: "auto_draft", code: roomCode, enabled: !state.auto_draft }
+            : { enabled: !state.auto_draft },
+        ),
+      });
+      const data = await res.json();
+      if (!res.ok) setError(data.message ?? "Could not update auto-draft.");
+      await fetchState();
+    } catch {
+      setError("Connection lost. Try again.");
+    } finally {
+      setAutoBusy(false);
+    }
+  }
+
+  async function setLiveTimer(seconds) {
+    if (isPractice || !state.is_commissioner) return;
+    setTimerBusy(true);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "set_timer", timer_seconds: seconds }),
+      });
+      const data = await res.json();
+      if (!res.ok) setError(data.message ?? "Could not change the clock.");
+      await fetchState();
+    } catch {
+      setError("Connection lost. Try again.");
+    } finally {
+      setTimerBusy(false);
+    }
   }
 
   if (!state) {
@@ -168,13 +242,12 @@ export default function UltimaDraftRoom({
       ? state.available
       : state.available.filter((p) => p.league === league);
 
-  const forcedFilter =
-    state.floor_mode === "forced"
-      ? filtered.filter((p) => {
-          const need = state.floor_counter?.includes("need");
-          return need ? true : true;
-        })
-      : filtered;
+  const canForcePick =
+    !isPractice &&
+    state.is_commissioner &&
+    state.state === "live" &&
+    state.on_clock &&
+    !state.on_clock.is_you;
 
   return (
     <div className={styles.draftRoom}>
@@ -200,19 +273,60 @@ export default function UltimaDraftRoom({
               <>
                 {state.on_clock.team_name}
                 {state.on_clock.is_bot ? " · BOT" : ""} on the clock
+                {state.seconds_remaining != null ? (
+                  <span className={styles.clockBar}> · {state.seconds_remaining}s</span>
+                ) : null}
               </>
             )}
           </p>
         ) : null}
         {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
         <p className={styles.floorLine}>{state.floor_counter}</p>
+        {state.auto_draft ? (
+          <p className={styles.floorLine}>
+            Auto-draft is on. The board picks from your queue, then ranking.
+          </p>
+        ) : null}
+        {canForcePick ? (
+          <p className={styles.floorLine}>
+            Force pick for {state.on_clock.team_name}. Use when they are away.
+          </p>
+        ) : null}
         {state.state === "paused" ? (
           <p className={styles.pausedBanner}>Paused by the commissioner</p>
         ) : null}
-        {isPractice && state.is_host ? (
-          <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
-            {resetting ? "Resetting…" : "Reset"}
+        <div className={styles.draftControls}>
+          <button
+            type="button"
+            className={state.auto_draft ? styles.autoDraftOn : styles.queueBtn}
+            onClick={toggleAutoDraft}
+            disabled={autoBusy}
+          >
+            {autoBusy ? "Saving…" : state.auto_draft ? "Auto-draft on" : "Auto-draft off"}
           </button>
+          {isPractice && state.is_host ? (
+            <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
+              {resetting ? "Resetting…" : "Reset"}
+            </button>
+          ) : null}
+        </div>
+        {!isPractice && state.is_commissioner ? (
+          <div className={styles.timerRow}>
+            <span className={styles.timerLabel}>Clock</span>
+            {ULTIMA_TIMER_OPTIONS.map((seconds) => (
+              <button
+                key={seconds}
+                type="button"
+                className={
+                  state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
+                }
+                disabled={timerBusy}
+                onClick={() => setLiveTimer(seconds)}
+              >
+                {formatUltimaTimer(seconds)}
+              </button>
+            ))}
+          </div>
         ) : null}
       </header>
 
@@ -263,7 +377,7 @@ export default function UltimaDraftRoom({
           {error ? <p className={styles.messageError}>{error}</p> : null}
 
           <ul className={styles.playerList}>
-            {forcedFilter.map((p) => (
+            {filtered.map((p) => (
               <li key={p.id} className={styles.playerRow}>
                 <div>
                   <strong>{p.name}</strong>
@@ -280,6 +394,16 @@ export default function UltimaDraftRoom({
                       onClick={() => draftPlayer(p.id)}
                     >
                       Draft
+                    </button>
+                  ) : null}
+                  {canForcePick ? (
+                    <button
+                      type="button"
+                      className={styles.draftBtn}
+                      disabled={loading}
+                      onClick={() => forcePickPlayer(p.id)}
+                    >
+                      Force pick
                     </button>
                   ) : null}
                   <button

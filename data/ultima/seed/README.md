@@ -21,6 +21,6 @@ Placeholder directory for the mock stats provider. Full contract: `docs/TRF_Ulti
 
 ## Exit gate
 
-Seed loads through `MockProvider`, and the Appendix A worked example scores exactly. Melo signs off rating calibration before Phase A closes.
+Seed loads through `MockProvider`, and the Appendix A worked example scores exactly. Live ratings come from Sportmonks (7.0 / 7.5 bands).
 
 Do not invent real player stats. Use SAMPLE data clearly marked until Melo supplies the seed.

@@ -8,6 +8,7 @@ import {
   listPracticeLobby,
   normalizeRoomCode,
   resetPracticeRoom,
+  setPracticeAutoDraft,
   startPracticeRoom,
 } from "@/lib/ultima/server/practice";
 
@@ -95,6 +96,13 @@ export async function POST(request) {
       break;
     case "reset":
       result = await resetPracticeRoom({ userId: user.id, code: body.code });
+      break;
+    case "auto_draft":
+      result = await setPracticeAutoDraft({
+        userId: user.id,
+        code: body.code,
+        enabled: body.enabled,
+      });
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });

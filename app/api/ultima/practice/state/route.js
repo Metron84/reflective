@@ -91,6 +91,9 @@ export async function GET(request) {
         }
       : null,
     is_your_turn: ctx.onClock?.managerId === manager.id,
+    auto_draft: Boolean(
+      ctx.managers.find((m) => m.id === manager.id)?.auto_draft ?? manager.auto_draft,
+    ),
     seconds_remaining: secondsRemaining,
     floor_counter: formatFloorCounter(counter.counts, counter.deficits, counter.slotsLeft),
     floor_mode: counter.mode,
