@@ -117,7 +117,7 @@ const nextConfig = {
         ],
       },
       {
-        source: "/swe-worker-:path*",
+        source: "/swe-worker-:file.js",
         headers: [
           {
             key: "Cache-Control",
