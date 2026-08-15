@@ -481,6 +481,168 @@
   cursor: pointer;
 }
 
+.boardWrap {
+  margin-top: 0.5rem;
+}
+
+.boardLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+}
+
+.boardLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.boardSwatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+/* Ten columns never fit a phone, so the grid scrolls under a pinned round number. */
+.boardScroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 70vh;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(242, 237, 228, 0.14);
+}
+
+.boardGrid {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.boardCaption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.boardCorner,
+.boardHead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0a111f;
+  color: #f2ede4;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 500;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.2);
+  min-width: 8.5rem;
+}
+
+.boardCorner {
+  left: 0;
+  z-index: 3;
+  min-width: 2.25rem;
+  border-right: 1px solid rgba(242, 237, 228, 0.2);
+}
+
+.boardHeadName {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 8rem;
+}
+
+.boardHeadBot {
+  display: block;
+  font-size: 0.625rem;
+  opacity: 0.6;
+}
+
+.boardRound {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #0a111f;
+  color: #f2ede4;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 0.4rem;
+  border-right: 1px solid rgba(242, 237, 228, 0.2);
+  border-bottom: 1px solid rgba(242, 237, 228, 0.08);
+}
+
+.boardCell,
+.boardCellEmpty,
+.boardCellOnClock {
+  position: relative;
+  vertical-align: top;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
+  border-right: 1px solid rgba(10, 17, 31, 0.12);
+  min-width: 8.5rem;
+}
+
+/* Light league fills, so navy stays legible on every one of them. */
+.boardCell {
+  color: #0a111f;
+}
+
+.boardCellEmpty,
+.boardCellOnClock {
+  color: rgba(242, 237, 228, 0.45);
+  border-bottom-color: rgba(242, 237, 228, 0.08);
+  border-right-color: rgba(242, 237, 228, 0.08);
+}
+
+.boardCellOnClock {
+  color: #f2ede4;
+  box-shadow: inset 0 0 0 2px #d8232a;
+}
+
+.boardPlayer {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.boardMeta {
+  display: block;
+  font-size: 0.6875rem;
+  opacity: 0.75;
+  line-height: 1.3;
+}
+
+.boardPickNumber {
+  display: block;
+  font-size: 0.625rem;
+  opacity: 0.55;
+  margin-top: 0.15rem;
+}
+
+.boardOnClock {
+  display: block;
+  font-size: 0.625rem;
+  color: #d8232a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .feedList {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
@@ -9,6 +9,7 @@ import {
   ULTIMA_TOTAL_PICKS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import UltimaDraftBoard from "./UltimaDraftBoard";
 import styles from "./ultima.module.css";
 
 const LEAGUE_TABS = [
@@ -29,7 +30,7 @@ export default function UltimaDraftRoom({
   const [league, setLeague] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [tab, setTab] = useState("board");
+  const [tab, setTab] = useState("players");
   const [resetting, setResetting] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
@@ -62,6 +63,20 @@ export default function UltimaDraftRoom({
       clearInterval(poll);
     };
   }, [fetchState, isPractice, roomCode]);
+
+  // Best available first, so the new prior-season ratings actually help a pick.
+  const sortedAvailable = useMemo(() => {
+    const rows = state?.available ?? [];
+    return [...rows].sort((a, b) => {
+      const ratingGap = (b.seed_metrics?.rating_avg ?? 0) - (a.seed_metrics?.rating_avg ?? 0);
+      if (ratingGap) return ratingGap;
+
+      const goalGap = (b.seed_metrics?.goals_rate ?? 0) - (a.seed_metrics?.goals_rate ?? 0);
+      if (goalGap) return goalGap;
+
+      return String(a.name ?? "").localeCompare(String(b.name ?? ""));
+    });
+  }, [state?.available]);
 
   async function forcePickPlayer(playerId) {
     if (isPractice || !state?.is_commissioner) return;
@@ -215,16 +230,7 @@ export default function UltimaDraftRoom({
             ? "Practice picks do not count. Reset and run it again, or return to the hub."
             : "300 picks made. Set your XV before the first kickoff."}
         </p>
-        <div className={styles.feedList}>
-          {state.picks.slice(0, 20).map((p) => (
-            <div key={p.pick_number} className={styles.feedRow}>
-              <span>R{p.round} · #{p.pick_number}</span>
-              <span>{p.manager_name}</span>
-              <span>{p.player?.name}</span>
-              {p.rationale ? <span className={styles.feedBot}>{p.rationale}</span> : null}
-            </div>
-          ))}
-        </div>
+        <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} />
         {isPractice && state.is_host ? (
           <button type="button" className={styles.primaryBtn} onClick={resetPractice} disabled={resetting}>
             {resetting ? "Resetting…" : "Reset practice"}
@@ -239,8 +245,8 @@ export default function UltimaDraftRoom({
 
   const filtered =
     league === "all"
-      ? state.available
-      : state.available.filter((p) => p.league === league);
+      ? sortedAvailable
+      : sortedAvailable.filter((p) => p.league === league);
 
   const canForcePick =
     !isPractice &&
@@ -333,6 +339,13 @@ export default function UltimaDraftRoom({
       <div className={styles.draftTabs}>
         <button
           type="button"
+          className={tab === "players" ? styles.tabActive : styles.tab}
+          onClick={() => setTab("players")}
+        >
+          Players
+        </button>
+        <button
+          type="button"
           className={tab === "board" ? styles.tabActive : styles.tab}
           onClick={() => setTab("board")}
         >
@@ -347,7 +360,13 @@ export default function UltimaDraftRoom({
         </button>
       </div>
 
-      {tab === "feed" ? (
+      {tab === "board" ? (
+        <UltimaDraftBoard
+          managers={state.managers ?? []}
+          picks={state.picks ?? []}
+          currentPick={state.current_pick}
+        />
+      ) : tab === "feed" ? (
         <div className={styles.feedList}>
           {[...state.picks].reverse().map((p) => (
             <div key={p.pick_number} className={styles.feedRow}>
