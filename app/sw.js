@@ -11,7 +11,7 @@ import {
 } from "./sw-archive-meta";
 
 /** Bump when runtime cache strategy changes so clients drop old caches. */
-const CACHE_VERSION = "swr-v1";
+const CACHE_VERSION = "net-v1";
 
 const NEVER_CACHE_API_PATHS = new Set([
   "/api/laliga",
@@ -28,6 +28,18 @@ function isArchivePagePath(pathname) {
 
 function isArchiveJsonPath(pathname) {
   return pathname.startsWith("/archive/data/");
+}
+
+function isUltimaPath(pathname) {
+  return pathname === "/ultima" || pathname.startsWith("/ultima/");
+}
+
+function isDocumentOrRsc(request) {
+  return (
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    request.headers.get("RSC") === "1"
+  );
 }
 
 function isNeverCacheApi(pathname) {
@@ -73,7 +85,7 @@ const CURRENT_CACHE_NAMES = new Set([
   archiveJsonCache,
 ]);
 
-/** Prefetch HTML for the three warm routes into pages-swr-v1. Fail quietly offline. */
+/** Prefetch HTML for the three warm routes into the pages cache. Fail quietly offline. */
 async function warmHighTrafficPages() {
   try {
     if (typeof navigator !== "undefined" && navigator.onLine === false) {
@@ -146,6 +158,12 @@ const serwist = new Serwist({
         (pathname.startsWith("/auth/") || pathname.startsWith("/admin/")),
       handler: new NetworkOnly(),
     },
+    // Ultima is live. Never serve a stale hub, draft, or squad.
+    {
+      matcher: ({ request, sameOrigin, url: { pathname } }) =>
+        sameOrigin && isUltimaPath(pathname) && isDocumentOrRsc(request),
+      handler: new NetworkOnly(),
+    },
     // Beautiful Archive pages + RSC payloads.
     {
       matcher: ({ request, sameOrigin, url: { pathname } }) =>
@@ -173,17 +191,25 @@ const serwist = new Serwist({
         ],
       }),
     },
-    // HTML document navigations + RSC: stale-while-revalidate.
+    // HTML + RSC: network first so a Vercel deploy shows on the next open.
+    // Cache is only the offline fallback. Timeout keeps door taps from hanging.
     {
       matcher: ({ request, sameOrigin, url: { pathname } }) =>
         sameOrigin &&
         !pathname.startsWith("/api/") &&
         !isArchivePagePath(pathname) &&
-        (request.mode === "navigate" ||
-          request.destination === "document" ||
-          request.headers.get("RSC") === "1"),
-      handler: new StaleWhileRevalidate({
+        !isUltimaPath(pathname) &&
+        isDocumentOrRsc(request),
+      handler: new NetworkFirst({
         cacheName: pagesCache,
+        networkTimeoutSeconds: 4,
+        plugins: [
+          new ExpirationPlugin({
+            maxEntries: 48,
+            maxAgeSeconds: 24 * 60 * 60,
+            maxAgeFrom: "last-used",
+          }),
+        ],
       }),
     },
     // JS, CSS, fonts, images (including hashed Next assets + brand).
