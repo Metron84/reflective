@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import {
-  getActiveCompetition,
-  getManagerForUser,
-  getUltimaDb,
-  isUltimaCommissioner,
-} from "@/lib/ultima/server/db";
-import { buildDraftRoomPayload, loadDraftContext } from "@/lib/ultima/server/draft";
+import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
+import { slimPoolPlayer } from "@/lib/ultima/server/draft";
+import { getUndraftedPlayers } from "@/lib/ultima/server/players";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,25 +27,6 @@ export async function GET() {
     return NextResponse.json(body, { status });
   }
 
-  const ctx = await loadDraftContext(competition.id, { includeAvailable: false });
-  if (!ctx) {
-    return NextResponse.json({ state: "lobby", picks: [] });
-  }
-
-  const db = getUltimaDb();
-  const { data: queue } = await db
-    .from("ultima_draft_queues")
-    .select("player_id, position")
-    .eq("manager_id", manager.id)
-    .order("position");
-
-  const payload = await buildDraftRoomPayload(ctx, {
-    manager,
-    queue: queue ?? [],
-    extra: {
-      is_commissioner: await isUltimaCommissioner(user.id),
-    },
-  });
-
-  return NextResponse.json(payload);
+  const rows = await getUndraftedPlayers(competition.id);
+  return NextResponse.json({ available: rows.map(slimPoolPlayer) });
 }

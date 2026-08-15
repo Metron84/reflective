@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
@@ -28,6 +28,7 @@ export default function UltimaDraftRoom({
 }) {
   const isPractice = variant === "practice";
   const [state, setState] = useState(null);
+  const [available, setAvailable] = useState([]);
   const [league, setLeague] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,6 +36,7 @@ export default function UltimaDraftRoom({
   const [resetting, setResetting] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
+  const advancing = useRef(false);
 
   const fetchState = useCallback(async () => {
     try {
@@ -46,6 +48,19 @@ export default function UltimaDraftRoom({
       if (res.ok) setState(data);
     } catch {
       /* reconnect silently */
+    }
+  }, [isPractice, roomCode]);
+
+  const fetchAvailable = useCallback(async () => {
+    try {
+      const url = isPractice
+        ? `/api/ultima/practice/available?code=${encodeURIComponent(roomCode)}`
+        : "/api/ultima/draft/available";
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) setAvailable(data.available ?? []);
+    } catch {
+      /* keep the last list */
     }
   }, [isPractice, roomCode]);
 
@@ -64,15 +79,58 @@ export default function UltimaDraftRoom({
   }, [fetchState, isPractice, roomCode]);
 
   useEffect(() => {
-    const botOnClock = Boolean(state?.on_clock?.is_bot);
-    const ms = botOnClock ? 800 : isPractice ? 2000 : 5000;
-    const poll = setInterval(fetchState, ms);
+    const poll = setInterval(fetchState, isPractice ? 2000 : 5000);
     return () => clearInterval(poll);
-  }, [fetchState, isPractice, state?.on_clock?.is_bot]);
+  }, [fetchState, isPractice]);
 
-  // Best available first, so the new prior-season ratings actually help a pick.
+  useEffect(() => {
+    if (state?.state !== "live") return;
+    const botOnClock = Boolean(state.on_clock?.is_bot);
+    const timedOut = state.seconds_remaining === 0;
+    if (!botOnClock && !timedOut) return;
+    if (advancing.current) return;
+
+    let cancelled = false;
+    advancing.current = true;
+    (async () => {
+      try {
+        await fetch(isPractice ? "/api/ultima/practice/advance" : "/api/ultima/draft/advance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: isPractice ? JSON.stringify({ code: roomCode }) : "{}",
+        });
+        if (!cancelled) await fetchState();
+      } finally {
+        advancing.current = false;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    fetchState,
+    isPractice,
+    roomCode,
+    state?.state,
+    state?.current_pick,
+    state?.on_clock?.is_bot,
+    state?.seconds_remaining,
+    state?.is_your_turn,
+  ]);
+
+  useEffect(() => {
+    if (tab !== "players") return;
+    fetchAvailable();
+  }, [tab, fetchAvailable, state?.current_pick]);
+
+  const draftedIds = useMemo(
+    () => new Set((state?.picks ?? []).map((p) => p.player?.id).filter(Boolean)),
+    [state?.picks],
+  );
+
   const sortedAvailable = useMemo(() => {
-    const rows = state?.available ?? [];
+    const rows = available.filter((p) => !draftedIds.has(p.id));
     return [...rows].sort((a, b) => {
       const ratingGap = (b.seed_metrics?.rating_avg ?? 0) - (a.seed_metrics?.rating_avg ?? 0);
       if (ratingGap) return ratingGap;
@@ -82,7 +140,7 @@ export default function UltimaDraftRoom({
 
       return String(a.name ?? "").localeCompare(String(b.name ?? ""));
     });
-  }, [state?.available]);
+  }, [available, draftedIds]);
 
   async function forcePickPlayer(playerId) {
     if (isPractice || !state?.is_commissioner) return;

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getUltimaDb } from "@/lib/ultima/server/db";
-import { buildDraftRoomPayload, loadDraftContext } from "@/lib/ultima/server/draft";
+import { getUndraftedPlayers } from "@/lib/ultima/server/players";
+import { slimPoolPlayer } from "@/lib/ultima/server/draft";
 import {
   getPracticeManager,
   getPracticeRoom,
@@ -32,26 +32,6 @@ export async function GET(request) {
     return NextResponse.json(body, { status });
   }
 
-  const ctx = await loadDraftContext(room.competition_id, { includeAvailable: false });
-  if (!ctx) {
-    return NextResponse.json({ state: "lobby", picks: [], room: code });
-  }
-
-  const db = getUltimaDb();
-  const { data: queue } = await db
-    .from("ultima_draft_queues")
-    .select("player_id, position")
-    .eq("manager_id", manager.id)
-    .order("position");
-
-  const payload = await buildDraftRoomPayload(ctx, {
-    manager,
-    queue: queue ?? [],
-    extra: {
-      room: code,
-      is_host: room.host_user_id === user.id,
-    },
-  });
-
-  return NextResponse.json(payload);
+  const rows = await getUndraftedPlayers(room.competition_id);
+  return NextResponse.json({ available: rows.map(slimPoolPlayer) });
 }

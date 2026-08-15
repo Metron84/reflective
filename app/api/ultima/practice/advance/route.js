@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { executePick } from "@/lib/ultima/server/draft";
 import {
+  expirePracticeTurn,
   getPracticeManager,
   getPracticeRoom,
   normalizeRoomCode,
-  PRACTICE_DRAFT_OPTS,
-  practiceScope,
 } from "@/lib/ultima/server/practice";
 
 export const runtime = "nodejs";
@@ -24,10 +22,10 @@ export async function POST(request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
+    body = {};
   }
 
-  const code = normalizeRoomCode(body?.code);
+  const code = normalizeRoomCode(body?.code ?? request.nextUrl.searchParams.get("code"));
   const room = await getPracticeRoom(code);
   if (!room) {
     const { status, body: err } = ultimaErrorResponse("INVITE_INVALID");
@@ -40,24 +38,6 @@ export async function POST(request) {
     return NextResponse.json(err, { status });
   }
 
-  const playerId = body?.player_id;
-  if (!playerId) {
-    return NextResponse.json({ code: "INVALID", message: "Pick a player." }, { status: 400 });
-  }
-
-  const result = await executePick({
-    competitionId: room.competition_id,
-    managerId: manager.id,
-    playerId,
-    options: { ...PRACTICE_DRAFT_OPTS, eventScope: practiceScope(code) },
-  });
-
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-
+  const result = await expirePracticeTurn(code);
   return NextResponse.json({ ok: true, ...result });
 }
