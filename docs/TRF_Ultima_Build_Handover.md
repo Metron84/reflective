@@ -69,9 +69,11 @@ Dev: `http://localhost:4343/api/dev/test-sign-in?next=/ultima&ultima=1`
 
 | Route | Schedule | Purpose |
 |-------|----------|---------|
-| `/api/cron/ultima/trade-expiry` | Hourly | Trade review expiry + draft auto-pick |
-| `/api/cron/ultima/reminders` | Hourly | Draft 24h/1h reminders |
-| `/api/cron/ultima/lineup-lock` | Every 5 min | League locks, bot XI, Sportmonks sync, XI reminders |
+| `/api/cron/ultima/trade-expiry` | Daily 05:00 UTC (Hobby) | Trade review expiry + draft auto-pick |
+| `/api/cron/ultima/reminders` | Daily 06:00 UTC (Hobby) | Draft 24h/1h reminders |
+| `/api/cron/ultima/lineup-lock` | Daily 07:00 UTC (Hobby) | League locks, bot XI, Sportmonks sync, XI reminders |
+
+Hobby only allows daily crons. Restore hourly / every 5 minutes after a Pro upgrade. Draft expiry still runs when the room polls.
 
 ---
 
