@@ -310,7 +310,9 @@ export default function UltimaAdminClient({
 function SyncReport({ report }) {
   const byLeague = report.byLeague ?? {};
   const reasons = report.reasons ?? {};
+  const coverage = report.coverage ?? {};
   const total = ULTIMA_LEAGUES.reduce((sum, l) => sum + (byLeague[l] ?? 0), 0);
+  const statsSeason = ULTIMA_LEAGUES.map((l) => coverage[l]?.season).find(Boolean);
   const ready =
     total >= ULTIMA_MIN_POOL_TOTAL &&
     ULTIMA_LEAGUES.every((l) => (byLeague[l] ?? 0) >= ULTIMA_MIN_POOL_PER_LEAGUE);
@@ -320,10 +322,12 @@ function SyncReport({ report }) {
       <p className={styles.adminHint}>
         Provider: {report.provider === "sportmonks" ? "Sportmonks" : "Mock seed"}. {total} players
         in the pool.
+        {statsSeason ? ` Ratings from the ${statsSeason} season.` : null}
       </p>
       <ul className={styles.syncList}>
         {ULTIMA_LEAGUES.map((league) => {
           const count = byLeague[league] ?? 0;
+          const rated = coverage[league]?.rated;
           return (
             <li key={league} className={styles.syncRow}>
               <span>{ULTIMA_LEAGUE_LABELS[league]}</span>
@@ -334,6 +338,11 @@ function SyncReport({ report }) {
               </span>
               {reasons[league] ? (
                 <span className={styles.syncReason}>{reasons[league]}</span>
+              ) : null}
+              {!reasons[league] && typeof rated === "number" ? (
+                <span className={styles.syncReason}>
+                  {rated} rated, {Math.max(count - rated, 0)} on league average
+                </span>
               ) : null}
             </li>
           );
