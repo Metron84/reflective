@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_COLOURS,
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_TIMER_OPTIONS,
   ULTIMA_TOTAL_PICKS,
@@ -30,7 +31,7 @@ export default function UltimaDraftRoom({
   const [league, setLeague] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [tab, setTab] = useState("players");
+  const [tab, setTab] = useState("board");
   const [resetting, setResetting] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
@@ -381,16 +382,28 @@ export default function UltimaDraftRoom({
       ) : (
         <>
           <div className={styles.leagueTabs}>
-            {LEAGUE_TABS.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                className={league === t.id ? styles.leagueTabActive : styles.leagueTab}
-                onClick={() => setLeague(t.id)}
-              >
-                {t.label}
-              </button>
-            ))}
+            {LEAGUE_TABS.map((t) => {
+              const fill = t.id === "all" ? null : ULTIMA_LEAGUE_COLOURS[t.id];
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={
+                    fill
+                      ? league === t.id
+                        ? styles.leagueChipActive
+                        : styles.leagueChip
+                      : league === t.id
+                        ? styles.leagueTabActive
+                        : styles.leagueTab
+                  }
+                  style={fill ? { background: fill } : undefined}
+                  onClick={() => setLeague(t.id)}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
           </div>
 
           {error ? <p className={styles.messageError}>{error}</p> : null}

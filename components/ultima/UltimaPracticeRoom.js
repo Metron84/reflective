@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import UltimaDraftRoom from "./UltimaDraftRoom";
 import styles from "./ultima.module.css";
@@ -9,6 +9,7 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
   const [lobby, setLobby] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const autoStarted = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,7 +30,7 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
     };
   }, [code]);
 
-  async function start() {
+  const start = useCallback(async () => {
     setBusy(true);
     setError("");
     try {
@@ -47,12 +48,43 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
     } finally {
       setBusy(false);
     }
-  }
+  }, [code]);
+
+  // A solo room has nobody to wait for, so it starts itself on arrival. The work
+  // now happens here rather than inside the request that created the room.
+  useEffect(() => {
+    if (autoStarted.current) return;
+    if (!lobby?.solo || !isHost || lobby.state !== "lobby") return;
+    autoStarted.current = true;
+    start();
+  }, [lobby, isHost, start]);
 
   if (!lobby) {
     return (
       <div className={styles.navyRoom}>
         <p className={styles.navyText}>Loading practice room…</p>
+      </div>
+    );
+  }
+
+  if (lobby.state === "lobby" && lobby.solo && isHost) {
+    return (
+      <div className={styles.navyRoom}>
+        <p className={styles.navyTitle}>Setting up your practice</p>
+        <p className={styles.navyText}>
+          Seating nine bots and drawing the order. This takes a moment.
+        </p>
+        {error ? (
+          <>
+            <p className={styles.messageError}>{error}</p>
+            <button type="button" className={styles.primaryBtn} onClick={start} disabled={busy}>
+              {busy ? "Starting…" : "Try again"}
+            </button>
+          </>
+        ) : null}
+        <Link href="/ultima/practice" className={styles.quietLinkLight}>
+          Back to practice
+        </Link>
       </div>
     );
   }

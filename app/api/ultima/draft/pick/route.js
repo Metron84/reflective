@@ -5,6 +5,7 @@ import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db"
 import { executePick } from "@/lib/ultima/server/draft";
 
 export const runtime = "nodejs";
+export const maxDuration = 10;
 
 export async function POST(request) {
   const user = await getSessionUser();

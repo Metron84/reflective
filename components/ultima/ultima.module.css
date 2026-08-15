@@ -409,6 +409,29 @@
   color: #0a111f;
 }
 
+/* Same light fills as the board, navy text so the chips stay readable. */
+.leagueChip,
+.leagueChipActive {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid transparent;
+  color: #0a111f;
+  cursor: pointer;
+  min-height: 44px;
+  flex: 0 0 auto;
+}
+
+.leagueChip {
+  opacity: 0.72;
+}
+
+.leagueChipActive {
+  opacity: 1;
+  box-shadow: inset 0 0 0 2px #f2ede4;
+}
+
 .playerList,
 .playerListCream {
   list-style: none;
