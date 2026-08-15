@@ -558,7 +558,7 @@
 .pickerPick {
   position: relative;
   max-height: none;
-  min-height: 52vh;
+  min-height: 42vh;
 }
 
 .pickerCompact,
@@ -768,6 +768,7 @@
   overflow-y: auto;
   max-height: 70vh;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
   border: 1px solid rgba(242, 237, 228, 0.14);
 }
 
@@ -1352,9 +1353,14 @@
   z-index: 40;
   background: #0a111f;
   color: #f2ede4;
-  overflow: auto;
-  padding: 0.75rem 1rem 2rem;
-  padding-top: max(0.75rem, env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 .boardOverlayBar {
@@ -1362,11 +1368,39 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  flex: 0 0 auto;
+  padding: 0.65rem 1rem 0.5rem;
 }
 
-.boardOverlay .boardScroll {
-  max-height: calc(100dvh - 5rem);
+.boardOverlayStage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: safe center;
+  align-items: safe center;
+  padding: 0.35rem 0.75rem 1rem;
+}
+
+.boardOverlayStage .boardWrap {
+  margin: auto;
+  width: max-content;
+  max-width: 100%;
+}
+
+.boardOverlayStage .boardScroll {
+  max-height: calc(100dvh - 6.25rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  width: 100%;
+}
+
+.boardOverlayStage .boardHead,
+.boardOverlayStage .boardHeadYou,
+.boardOverlayStage .boardCell,
+.boardOverlayStage .boardCellYou,
+.boardOverlayStage .boardCellEmpty,
+.boardOverlayStage .boardCellOnClock {
+  min-width: 7rem;
 }
 
 .completeActions {
@@ -1382,17 +1416,29 @@
   gap: 0;
 }
 
+.shellMain {
+  min-width: 0;
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+}
+
 .rail {
   display: flex;
   flex-direction: row;
-  gap: 0.15rem;
+  justify-content: space-around;
+  gap: 0;
   overflow-x: auto;
-  padding: 0.45rem 0.75rem;
-  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
-  background: rgba(242, 237, 228, 0.92);
-  position: sticky;
-  top: 0;
-  z-index: 6;
+  overscroll-behavior-x: contain;
+  padding: 0.3rem 0.2rem calc(0.3rem + env(safe-area-inset-bottom));
+  padding-left: max(0.2rem, env(safe-area-inset-left));
+  padding-right: max(0.2rem, env(safe-area-inset-right));
+  border-bottom: none;
+  border-top: 1px solid rgba(10, 17, 31, 0.12);
+  background: rgba(242, 237, 228, 0.97);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -1401,13 +1447,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  min-width: 3.6rem;
-  padding: 0.35rem 0.4rem;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 3.15rem;
+  min-height: 44px;
+  flex: 1 0 auto;
+  padding: 0.25rem 0.2rem;
   color: #0a111f;
   text-decoration: none;
   font-family: var(--font-archivo), sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -1415,11 +1464,19 @@
 
 .railLinkActive {
   opacity: 1;
-  box-shadow: inset 0 -2px 0 #d8232a;
+  box-shadow: inset 0 2px 0 #d8232a;
 }
 
 .railLabel {
   white-space: nowrap;
+}
+
+.rail {
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
 }
 
 .newsBoard,
@@ -1587,27 +1644,106 @@
     align-items: flex-start;
   }
 
+  .shellMain {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 0;
+  }
+
   .rail {
     flex-direction: column;
+    justify-content: flex-start;
     position: sticky;
     top: 4.5rem;
+    bottom: auto;
+    left: auto;
+    right: auto;
     width: 5.25rem;
     min-height: calc(100vh - 6rem);
-    border-bottom: none;
+    border-top: none;
     border-right: 1px solid rgba(10, 17, 31, 0.12);
     padding: 1rem 0.4rem;
     overflow-x: hidden;
   }
 
-  .shellMain {
-    flex: 1;
-    min-width: 0;
+  .railLink,
+  .railLinkActive {
+    flex: 0 0 auto;
+    min-width: 3.6rem;
+    font-size: 0.625rem;
+    padding: 0.35rem 0.4rem;
+  }
+
+  .railLinkActive {
+    box-shadow: inset 0 -2px 0 #d8232a;
   }
 
   .newsCentreGrid {
     grid-template-columns: 1.1fr 0.9fr;
     align-items: start;
     gap: 2.5rem;
+  }
+
+  .boardOverlayStage .boardHead,
+  .boardOverlayStage .boardHeadYou,
+  .boardOverlayStage .boardCell,
+  .boardOverlayStage .boardCellYou,
+  .boardOverlayStage .boardCellEmpty,
+  .boardOverlayStage .boardCellOnClock {
+    min-width: 8.25rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .shellMain .inner {
+    padding-bottom: 1.25rem;
+  }
+
+  .chatList {
+    max-height: 38vh;
+    min-height: 8rem;
+  }
+
+  .pickerScroll {
+    max-height: 48vh;
+  }
+
+  .navyRoom {
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 639px) {
+  .newsItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .chatForm {
+    flex-wrap: wrap;
+  }
+
+  .chatForm input {
+    flex: 1 1 10rem;
+    font-size: 1rem;
+  }
+
+  .chatForm button {
+    flex: 0 0 auto;
+  }
+
+  .draftStripLine {
+    min-width: 0;
+  }
+
+  .pickerTable th,
+  .pickerTable td {
+    padding: 0.45rem 0.35rem;
+  }
+
+  .title {
+    font-size: clamp(1.85rem, 9vw, 2.5rem);
   }
 }
 

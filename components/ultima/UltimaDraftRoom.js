@@ -119,8 +119,13 @@ export default function UltimaDraftRoom({
     function onKey(event) {
       if (event.key === "Escape") setBoardOpen(false);
     }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
   }, [boardOpen]);
 
   useEffect(() => {
@@ -459,20 +464,22 @@ export default function UltimaDraftRoom({
       )}
 
       {boardOpen ? (
-        <div className={styles.boardOverlay} role="dialog" aria-label="Draft board">
+        <div className={styles.boardOverlay} role="dialog" aria-modal="true" aria-label="Draft board">
           <div className={styles.boardOverlayBar}>
             <p className={styles.draftEyebrow}>Full board</p>
             <button type="button" className={styles.queueBtn} onClick={() => setBoardOpen(false)}>
               Close
             </button>
           </div>
-          <UltimaDraftBoard
-            managers={state.managers ?? []}
-            picks={state.picks ?? []}
-            currentPick={state.current_pick}
-            youId={managerId}
-            mode="full"
-          />
+          <div className={styles.boardOverlayStage}>
+            <UltimaDraftBoard
+              managers={state.managers ?? []}
+              picks={state.picks ?? []}
+              currentPick={state.current_pick}
+              youId={managerId}
+              mode="full"
+            />
+          </div>
         </div>
       ) : null}
     </div>
