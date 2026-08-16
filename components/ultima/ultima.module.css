@@ -379,6 +379,211 @@
   background: #0a111f;
 }
 
+.draftSticky {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  margin: -1.5rem -1.15rem 0.75rem;
+  margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
+  margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
+  padding: 0.45rem max(1.15rem, env(safe-area-inset-right)) 0.5rem
+    max(1.15rem, env(safe-area-inset-left));
+  padding-top: max(0.45rem, env(safe-area-inset-top));
+  background: #0a111f;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.18);
+}
+
+.draftStickyRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+}
+
+.draftOnClockName {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  color: #f2ede4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.draftClockSecs {
+  flex: 0 0 auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: #f2ede4;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.draftMenuWrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.draftMenuBtn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #f2ede4;
+  cursor: pointer;
+}
+
+.draftChipRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.4rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-top: 0.35rem;
+  padding-bottom: 0.15rem;
+}
+
+.draftChipRow::-webkit-scrollbar {
+  display: none;
+}
+
+.draftChip {
+  flex: 0 0 auto;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: #f2ede4;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+  padding: 0.2rem 0.5rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.draftViewToggle {
+  display: flex;
+  gap: 0;
+  margin: 0.75rem 0 1rem;
+  border: 1px solid rgba(242, 237, 228, 0.28);
+}
+
+.draftSeg,
+.draftSegActive {
+  flex: 1;
+  min-height: 44px;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #f2ede4;
+}
+
+.draftSegActive {
+  background: rgba(242, 237, 228, 0.14);
+}
+
+.draftPanePlayers,
+.draftPaneBoard {
+  display: none;
+}
+
+.draftPanePlayers[data-active="true"],
+.draftPaneBoard[data-active="true"] {
+  display: block;
+}
+
+.draftBoardEmpty {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  color: #f2ede4;
+  opacity: 0.8;
+  margin: 1.5rem 0;
+}
+
+.draftOverflowBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(10, 17, 31, 0.55);
+}
+
+.draftOverflowPanel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 31;
+  background: #0a111f;
+  border-top: 1px solid rgba(242, 237, 228, 0.18);
+  padding: 0.5rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+
+.draftOverflowItem {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.draftOverflowItem:disabled {
+  opacity: 0.55;
+}
+
+@media (min-width: 768px) {
+  .draftOverflowBackdrop {
+    display: none;
+  }
+
+  .draftOverflowPanel {
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: calc(100% + 0.25rem);
+    bottom: auto;
+    width: 14rem;
+    border: 1px solid rgba(242, 237, 228, 0.18);
+    padding: 0.35rem 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .draftViewToggle {
+    display: none;
+  }
+
+  .draftBodySplit {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .draftPanePlayers,
+  .draftPaneBoard {
+    display: block;
+  }
+}
+
 .draftHeaderRow {
   display: flex;
   flex-wrap: wrap;

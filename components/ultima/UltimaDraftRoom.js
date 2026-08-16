@@ -3,13 +3,30 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
+  ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_SHORT,
+  ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
   ULTIMA_TIMER_OPTIONS,
-  ULTIMA_TOTAL_PICKS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import { countByLeague, remainingSlots } from "@/lib/ultima/draft/floor";
 import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftPicker from "./UltimaDraftPicker";
 import styles from "./ultima.module.css";
+
+function viewStorageKey(scope) {
+  return `ultima-draft-view:${scope}`;
+}
+
+function OverflowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+      <circle cx="12" cy="5" r="1.75" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.75" fill="currentColor" />
+      <circle cx="12" cy="19" r="1.75" fill="currentColor" />
+    </svg>
+  );
+}
 
 export default function UltimaDraftRoom({
   managerId,
@@ -21,8 +38,10 @@ export default function UltimaDraftRoom({
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [tab, setTab] = useState("board");
-  const [boardOpen, setBoardOpen] = useState(false);
+  const [viewMode, setViewMode] = useState("players");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showFeed, setShowFeed] = useState(false);
+  const menuRef = useRef(null);
   const [resetting, setResetting] = useState(false);
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
@@ -114,19 +133,35 @@ export default function UltimaDraftRoom({
     state?.is_your_turn,
   ]);
 
+  const viewScope = isPractice ? roomCode : managerId;
+
   useEffect(() => {
-    if (!boardOpen) return undefined;
-    function onKey(event) {
-      if (event.key === "Escape") setBoardOpen(false);
+    if (!viewScope || typeof window === "undefined") return;
+    try {
+      const stored = sessionStorage.getItem(viewStorageKey(viewScope));
+      if (stored === "players" || stored === "board") setViewMode(stored);
+    } catch {
+      /* private mode */
     }
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+  }, [viewScope]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    function onKey(event) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    function onPointer(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
     window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", onPointer);
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onPointer);
     };
-  }, [boardOpen]);
+  }, [menuOpen]);
 
   useEffect(() => {
     if (state?.state !== "live" && state?.state !== "paused") return;
@@ -346,142 +381,255 @@ export default function UltimaDraftRoom({
     state.on_clock &&
     !state.on_clock.is_you;
 
-  const lastPick = state.picks?.length ? state.picks[state.picks.length - 1] : null;
-  const yourLast = [...(state.picks ?? [])].reverse().find((p) => p.manager_id === managerId);
+  const myPicks = (state.picks ?? []).filter((p) => p.manager_id === managerId);
+  const leagueCounts = countByLeague(myPicks.map((p) => p.player).filter(Boolean));
+  const slotsLeft = remainingSlots(myPicks.length);
+  const onClockName = state.on_clock
+    ? state.on_clock.is_you
+      ? "You are on the clock"
+      : `${state.on_clock.team_name}${state.on_clock.is_bot ? " · BOT" : ""}`
+    : isPractice
+      ? "Practice"
+      : "Draft";
+  const secondsLabel =
+    state.seconds_remaining != null ? String(state.seconds_remaining) : "—";
+
+  function chooseView(next) {
+    setViewMode(next);
+    setShowFeed(false);
+    if (!viewScope) return;
+    try {
+      sessionStorage.setItem(viewStorageKey(viewScope), next);
+    } catch {
+      /* private mode */
+    }
+  }
+
+  const picker = (
+    <>
+      {error ? <p className={styles.messageError}>{error}</p> : null}
+      <UltimaDraftPicker
+        available={pool}
+        queue={state.queue ?? []}
+        loadingPool={poolLoading}
+        isYourTurn={state.is_your_turn}
+        canForcePick={canForcePick}
+        pickBusy={loading}
+        compact={false}
+        onDraft={draftPlayer}
+        onForce={forcePickPlayer}
+        onQueue={queuePlayer}
+        onUnqueue={unqueuePlayer}
+        onClearQueue={() => saveQueue([])}
+      />
+    </>
+  );
+
+  const boardPane =
+    (state.picks ?? []).length === 0 ? (
+      <p className={styles.draftBoardEmpty}>Board empty. First pick coming.</p>
+    ) : (
+      <UltimaDraftBoard
+        managers={state.managers ?? []}
+        picks={state.picks ?? []}
+        currentPick={state.current_pick}
+        youId={managerId}
+        mode="full"
+      />
+    );
+
+  const feedList = (
+    <div className={styles.feedList}>
+      {(state.picks ?? []).length === 0 ? (
+        <p className={styles.navyText}>No picks yet.</p>
+      ) : (
+        [...state.picks].reverse().map((p) => (
+          <div key={p.pick_number} className={styles.feedRow}>
+            <span>R{p.round} · #{p.pick_number}</span>
+            <span>
+              {p.manager_name}
+              {p.is_bot ? " · BOT" : ""}
+            </span>
+            <span>{p.player?.name}</span>
+            {p.forced ? <span className={styles.feedForced}>Forced</span> : null}
+            {p.rationale ? <span className={styles.feedBot}>{p.rationale}</span> : null}
+          </div>
+        ))
+      )}
+    </div>
+  );
 
   return (
     <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-      <header className={styles.draftHeaderSlim}>
-        <div className={styles.draftHeaderRow}>
-          <Link href="/ultima" className={styles.quietLinkLight}>
-            Hub
-          </Link>
-          <span className={styles.draftEyebrow}>
-            {isPractice ? "PRACTICE" : "DRAFT"} · {state.current_pick}/{ULTIMA_TOTAL_PICKS}
+      <header className={styles.draftSticky}>
+        <div className={styles.draftStickyRow}>
+          <p className={styles.draftOnClockName}>{onClockName}</p>
+          <span className={styles.draftClockSecs} aria-label="Seconds remaining">
+            {secondsLabel}
           </span>
-          <button
-            type="button"
-            className={tab === "feed" ? styles.tabActive : styles.tab}
-            onClick={() => setTab(tab === "feed" ? "board" : "feed")}
-          >
-            {tab === "feed" ? "Players" : "Feed"}
-          </button>
-          <button
-            type="button"
-            className={state.auto_draft ? styles.autoDraftOn : styles.queueBtn}
-            onClick={toggleAutoDraft}
-            disabled={autoBusy}
-          >
-            {autoBusy ? "…" : state.auto_draft ? "Auto on" : "Auto off"}
-          </button>
-          {isPractice && state.is_host ? (
-            <>
-              <button type="button" className={styles.queueBtn} onClick={toggleKeep} disabled={keepBusy}>
-                {keepBusy ? "…" : state.keep ? "Saved" : "Save"}
-              </button>
-              <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
-                {resetting ? "…" : "Reset"}
-              </button>
-            </>
-          ) : null}
-        </div>
-        {state.on_clock ? (
-          <p className={styles.onClock}>
-            {state.on_clock.is_you
-              ? `You are on the clock${state.seconds_remaining != null ? ` · ${state.seconds_remaining}s` : ""}`
-              : `${state.on_clock.team_name}${state.on_clock.is_bot ? " · BOT" : ""} on the clock${state.seconds_remaining != null ? ` · ${state.seconds_remaining}s` : ""}`}
-          </p>
-        ) : null}
-        {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
-        <p className={styles.floorLine}>{state.floor_counter}</p>
-        {state.state === "paused" ? (
-          <p className={styles.pausedBanner}>Paused by the commissioner</p>
-        ) : null}
-        {canForcePick ? (
-          <p className={styles.floorLine}>Force pick for {state.on_clock.team_name}.</p>
-        ) : null}
-        {!isPractice && state.is_commissioner ? (
-          <div className={styles.timerRow}>
-            <span className={styles.timerLabel}>Clock</span>
-            {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-              <button
-                key={seconds}
-                type="button"
-                className={
-                  state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
-                }
-                disabled={timerBusy}
-                onClick={() => setLiveTimer(seconds)}
-              >
-                {formatUltimaTimer(seconds)}
-              </button>
-            ))}
+          <div className={styles.draftMenuWrap} ref={menuRef}>
+            <button
+              type="button"
+              className={styles.draftMenuBtn}
+              aria-label="Draft menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <OverflowIcon />
+            </button>
+            {menuOpen ? (
+              <>
+                <div
+                  className={styles.draftOverflowBackdrop}
+                  aria-hidden
+                  onClick={() => setMenuOpen(false)}
+                />
+                <div className={styles.draftOverflowPanel} role="menu">
+                  <Link
+                    href="/ultima"
+                    className={styles.draftOverflowItem}
+                    role="menuitem"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Hub
+                  </Link>
+                  <button
+                    type="button"
+                    className={styles.draftOverflowItem}
+                    role="menuitem"
+                    onClick={() => {
+                      setShowFeed((open) => !open);
+                      setMenuOpen(false);
+                    }}
+                  >
+                    Feed
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.draftOverflowItem}
+                    role="menuitem"
+                    onClick={() => {
+                      toggleAutoDraft();
+                      setMenuOpen(false);
+                    }}
+                    disabled={autoBusy}
+                  >
+                    {autoBusy ? "…" : state.auto_draft ? "Auto on" : "Auto off"}
+                  </button>
+                  {isPractice && state.is_host ? (
+                    <>
+                      <button
+                        type="button"
+                        className={styles.draftOverflowItem}
+                        role="menuitem"
+                        onClick={() => {
+                          toggleKeep();
+                          setMenuOpen(false);
+                        }}
+                        disabled={keepBusy}
+                      >
+                        {keepBusy ? "…" : state.keep ? "Saved" : "Save"}
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.draftOverflowItem}
+                        role="menuitem"
+                        onClick={() => {
+                          resetPractice();
+                          setMenuOpen(false);
+                        }}
+                        disabled={resetting}
+                      >
+                        {resetting ? "…" : "Reset"}
+                      </button>
+                    </>
+                  ) : null}
+                </div>
+              </>
+            ) : null}
           </div>
-        ) : null}
+        </div>
+        <div className={styles.draftChipRow} aria-label="League floor">
+          {ULTIMA_LEAGUES.map((league) => (
+            <span key={league} className={styles.draftChip}>
+              {ULTIMA_LEAGUE_SHORT[league]} {leagueCounts[league] ?? 0}/{ULTIMA_SQUAD_FLOOR_PER_LEAGUE}
+            </span>
+          ))}
+          <span className={styles.draftChip}>
+            {slotsLeft} pick{slotsLeft === 1 ? "" : "s"} left
+          </span>
+        </div>
+        {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
       </header>
 
-      {tab === "feed" ? (
-        <div className={styles.feedList}>
-          {[...state.picks].reverse().map((p) => (
-            <div key={p.pick_number} className={styles.feedRow}>
-              <span>R{p.round} · #{p.pick_number}</span>
-              <span>{p.manager_name}{p.is_bot ? " · BOT" : ""}</span>
-              <span>{p.player?.name}</span>
-              {p.forced ? <span className={styles.feedForced}>Forced</span> : null}
-              {p.rationale ? <span className={styles.feedBot}>{p.rationale}</span> : null}
-            </div>
+      {state.state === "paused" ? (
+        <p className={styles.pausedBanner}>Paused by the commissioner</p>
+      ) : null}
+      {canForcePick ? (
+        <p className={styles.floorLine}>Force pick for {state.on_clock.team_name}.</p>
+      ) : null}
+      {!isPractice && state.is_commissioner ? (
+        <div className={styles.timerRow}>
+          <span className={styles.timerLabel}>Clock</span>
+          {ULTIMA_TIMER_OPTIONS.map((seconds) => (
+            <button
+              key={seconds}
+              type="button"
+              className={
+                state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
+              }
+              disabled={timerBusy}
+              onClick={() => setLiveTimer(seconds)}
+            >
+              {formatUltimaTimer(seconds)}
+            </button>
           ))}
         </div>
-      ) : (
-        <>
-          <div className={styles.draftStrip}>
-            <p className={styles.draftStripLine}>
-              {lastPick
-                ? `Last: ${lastPick.player?.name ?? "Unknown"} to ${lastPick.manager_name}`
-                : "Board empty. First pick coming."}
-              {yourLast ? ` · You last took ${yourLast.player?.name}` : ""}
-            </p>
-            <button type="button" className={styles.queueBtn} onClick={() => setBoardOpen(true)}>
-              Open board
-            </button>
-          </div>
-          {error ? <p className={styles.messageError}>{error}</p> : null}
-          <UltimaDraftPicker
-            available={pool}
-            queue={state.queue ?? []}
-            loadingPool={poolLoading}
-            isYourTurn={state.is_your_turn}
-            canForcePick={canForcePick}
-            pickBusy={loading}
-            compact={false}
-            onDraft={draftPlayer}
-            onForce={forcePickPlayer}
-            onQueue={queuePlayer}
-            onUnqueue={unqueuePlayer}
-            onClearQueue={() => saveQueue([])}
-          />
-        </>
-      )}
+      ) : null}
 
-      {boardOpen ? (
-        <div className={styles.boardOverlay} role="dialog" aria-modal="true" aria-label="Draft board">
-          <div className={styles.boardOverlayBar}>
-            <p className={styles.draftEyebrow}>Full board</p>
-            <button type="button" className={styles.queueBtn} onClick={() => setBoardOpen(false)}>
-              Close
-            </button>
+      <div
+        className={styles.draftViewToggle}
+        role="tablist"
+        aria-label="Draft view"
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "players" && !showFeed}
+          className={viewMode === "players" && !showFeed ? styles.draftSegActive : styles.draftSeg}
+          onClick={() => chooseView("players")}
+        >
+          Players
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "board" && !showFeed}
+          className={viewMode === "board" && !showFeed ? styles.draftSegActive : styles.draftSeg}
+          onClick={() => chooseView("board")}
+        >
+          Board
+        </button>
+      </div>
+
+      {showFeed ? (
+        feedList
+      ) : (
+        <div className={styles.draftBodySplit}>
+          <div
+            className={styles.draftPanePlayers}
+            data-active={viewMode === "players" ? "true" : "false"}
+          >
+            {picker}
           </div>
-          <div className={styles.boardOverlayStage}>
-            <UltimaDraftBoard
-              managers={state.managers ?? []}
-              picks={state.picks ?? []}
-              currentPick={state.current_pick}
-              youId={managerId}
-              mode="full"
-            />
+          <div
+            className={styles.draftPaneBoard}
+            data-active={viewMode === "board" ? "true" : "false"}
+          >
+            {boardPane}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
