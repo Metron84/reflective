@@ -6,19 +6,9 @@ const BOT_VISIBLE_DELAY_MS = 900;
 const BOT_CHAIN_GAP_MS = 350;
 const MAX_STALL_RETRIES = 2;
 
-function sleep(ms, signal) {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => resolve(), ms);
-    if (!signal) return;
-    const onAbort = () => {
-      clearTimeout(timer);
-      reject(new DOMException("Aborted", "AbortError"));
-    };
-    if (signal.aborted) {
-      onAbort();
-      return;
-    }
-    signal.addEventListener("abort", onAbort, { once: true });
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
   });
 }
 
@@ -26,11 +16,9 @@ function sleep(ms, signal) {
  * Bot / timeout advance driver. Mounted from the draft room root so Players vs
  * Board cannot unmount it.
  *
- * Before: the POST /advance effect lived in UltimaDraftRoom, beside the
- * boardOpen overlay (not inside UltimaDraftBoard). Removing the overlay did not
- * unmount it. The stall was the effect depending on seconds_remaining: each
- * tick aborted the in-flight work and skipped fetchState, so bots sat on the
- * 30s clock. The advance route itself was not the failure.
+ * The old stall was a cancelled flag in UltimaDraftRoom tied to
+ * seconds_remaining: each tick aborted the POST and skipped fetchState.
+ * This hook does not abort fetches. A failed POST cannot leave a lock set.
  */
 export default function useUltimaDraftAdvance({
   enabled,
@@ -42,30 +30,40 @@ export default function useUltimaDraftAdvance({
   const [botPicking, setBotPicking] = useState(false);
   const [humanSeconds, setHumanSeconds] = useState(null);
   const [stall, setStall] = useState(false);
+  const [loopKey, setLoopKey] = useState(0);
   const stateRef = useRef(state);
   const recovering = useRef(false);
   const stallTries = useRef(0);
   const fetchStateRef = useRef(fetchState);
   const intervalRef = useRef(null);
+  const isPracticeRef = useRef(isPractice);
+  const roomCodeRef = useRef(roomCode);
   stateRef.current = state;
   fetchStateRef.current = fetchState;
+  isPracticeRef.current = isPractice;
+  roomCodeRef.current = roomCode;
 
   async function postAdvance() {
-    const res = await fetch(
-      isPractice ? "/api/ultima/practice/advance" : "/api/ultima/draft/advance",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: isPractice ? JSON.stringify({ code: roomCode }) : "{}",
-      },
-    );
-    let data = {};
     try {
-      data = await res.json();
+      const practice = isPracticeRef.current;
+      const res = await fetch(
+        practice ? "/api/ultima/practice/advance" : "/api/ultima/draft/advance",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: practice ? JSON.stringify({ code: roomCodeRef.current }) : "{}",
+        },
+      );
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+      return { ok: res.ok && data.ok !== false, data };
     } catch {
-      data = {};
+      return { ok: false, data: {} };
     }
-    return { ok: res.ok && data.ok !== false, data };
   }
 
   function warnStall(snap, reason) {
@@ -95,11 +93,7 @@ export default function useUltimaDraftAdvance({
           setStall(false);
           return;
         }
-        if (!result.ok) {
-          await sleep(BOT_CHAIN_GAP_MS);
-          continue;
-        }
-        if (result.data.skipped) {
+        if (!result.ok || result.data.skipped) {
           await sleep(BOT_CHAIN_GAP_MS);
           continue;
         }
@@ -114,49 +108,50 @@ export default function useUltimaDraftAdvance({
   }
 
   useEffect(() => {
+    stallTries.current = 0;
+    setStall(false);
+  }, [state?.current_pick]);
+
+  useEffect(() => {
     if (!enabled || state?.state !== "live" || !state.on_clock?.is_bot) {
       setBotPicking(false);
       return undefined;
     }
 
-    const controller = new AbortController();
-    setStall(false);
+    let stopped = false;
     setBotPicking(true);
 
     (async () => {
       try {
-        await sleep(BOT_VISIBLE_DELAY_MS, controller.signal);
-        while (!controller.signal.aborted) {
+        await sleep(BOT_VISIBLE_DELAY_MS);
+        while (!stopped) {
           const snap = stateRef.current;
           if (snap?.state !== "live" || !snap.on_clock?.is_bot) break;
           const result = await postAdvance();
-          if (controller.signal.aborted) break;
-          if (!result.ok) {
-            warnStall(snap, "advance_http");
-            stallTries.current += 1;
-            if (stallTries.current >= MAX_STALL_RETRIES) {
-              setStall(true);
-              break;
-            }
-            await sleep(BOT_CHAIN_GAP_MS, controller.signal);
+          await fetchStateRef.current();
+          if (result.ok) {
+            stallTries.current = 0;
+            if (result.data.on_clock_is_bot === false) break;
+            await sleep(BOT_CHAIN_GAP_MS);
             continue;
           }
-          stallTries.current = 0;
-          await fetchStateRef.current();
-          if (result.data.on_clock_is_bot === false) break;
-          await sleep(BOT_CHAIN_GAP_MS, controller.signal);
+          warnStall(snap, "advance_http");
+          stallTries.current += 1;
+          if (stallTries.current >= MAX_STALL_RETRIES) {
+            setStall(true);
+            break;
+          }
+          await sleep(BOT_CHAIN_GAP_MS);
         }
-      } catch (err) {
-        if (err?.name !== "AbortError") warnStall(stateRef.current, "advance_throw");
       } finally {
-        if (!controller.signal.aborted) setBotPicking(false);
+        setBotPicking(false);
       }
     })();
 
     return () => {
-      controller.abort();
+      stopped = true;
     };
-  }, [enabled, isPractice, roomCode, state?.state, state?.on_clock?.is_bot]);
+  }, [enabled, state?.state, state?.on_clock?.is_bot, loopKey]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -210,8 +205,13 @@ export default function useUltimaDraftAdvance({
   }, [enabled, state?.state, state?.current_pick, state?.on_clock?.id, state?.on_clock?.is_bot]);
 
   async function retry() {
-    setStall(false);
     stallTries.current = 0;
+    recovering.current = false;
+    setStall(false);
+    if (stateRef.current?.on_clock?.is_bot) {
+      setLoopKey((key) => key + 1);
+      return;
+    }
     await recoverOnce("manual_retry");
   }
 
