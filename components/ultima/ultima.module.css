@@ -354,6 +354,7 @@
 
 /* Draft room (Phase C) */
 .draftRoom {
+  --ultima-draft-sticky: 0px;
   background: #0a111f;
   background-image: none;
   color: #f2ede4;
@@ -491,9 +492,14 @@
   background: rgba(242, 237, 228, 0.14);
 }
 
+.draftBodySplit {
+  min-width: 0;
+}
+
 .draftPanePlayers,
 .draftPaneBoard {
   display: none;
+  min-width: 0;
 }
 
 .draftPanePlayers[data-active="true"],
@@ -822,33 +828,150 @@
   cursor: pointer;
 }
 
-.pickerPick,
-.pickerCompact,
-.picker {
-  z-index: 4;
-  margin: 0.75rem -1.15rem 0;
-  margin-left: calc(-1 * max(1.15rem, env(safe-area-inset-left)));
-  margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
-  padding: 0.85rem max(1.15rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom))
-    max(1.15rem, env(safe-area-inset-left));
-  background: #0a111f;
-  border-top: 1px solid rgba(242, 237, 228, 0.18);
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
 .pickerPick {
   position: relative;
-  max-height: none;
-  min-height: 42vh;
+  z-index: 4;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  min-width: 0;
+  background: #0a111f;
 }
 
-.pickerCompact,
-.picker {
+.pickerSrOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pickerSticky {
   position: sticky;
-  bottom: 0;
-  max-height: 34vh;
+  top: var(--ultima-draft-sticky, 0px);
+  z-index: 11;
+  background: #0a111f;
+  padding: 0.35rem 0 0.5rem;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.14);
+}
+
+.pickerSearchWrap {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  background: #f2ede4;
+  color: #0a111f;
+  padding: 0 0.15rem 0 0.7rem;
+}
+
+.pickerSearchIcon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: #0a111f;
+  opacity: 0.55;
+}
+
+.pickerSearch {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: none;
+  background: transparent;
+  padding: 0 0.55rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1rem;
+  color: #0a111f;
+}
+
+.pickerSearch:focus {
+  outline: none;
+}
+
+.pickerSearchClear {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  cursor: pointer;
+}
+
+.pickerLeagueRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.pickerLeagueRow::-webkit-scrollbar {
+  display: none;
+}
+
+.pickerLeagueChip,
+.pickerLeagueChipOn {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pickerCount {
+  margin: 0.55rem 0 0.35rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: rgba(242, 237, 228, 0.65);
+}
+
+.pickerHintBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin: 0 0 0.65rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(242, 237, 228, 0.8);
+}
+
+.pickerHintDismiss,
+.pickerClearFilters {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 0.15rem;
+  border: none;
+  background: transparent;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.pickerEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  margin: 0.75rem 0 1rem;
 }
 
 .pickerHead {
@@ -863,17 +986,6 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.7;
-}
-
-.pickerSearch {
-  width: 100%;
-  min-height: 44px;
-  padding: 0.55rem 0.75rem;
-  font-family: var(--font-archivo), sans-serif;
-  font-size: 1rem;
-  color: #0a111f;
-  background: #f2ede4;
-  border: 1px solid #f2ede4;
 }
 
 .pickerHint {
@@ -931,10 +1043,7 @@
 }
 
 .pickerScroll {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
   min-height: 0;
-  flex: 1;
 }
 
 .pickerRowList {
@@ -1152,13 +1261,8 @@
 }
 
 @media (min-width: 800px) {
-  .pickerCompact,
-  .picker {
-    max-height: 38vh;
-  }
-
   .pickerPick {
-    min-height: 62vh;
+    min-width: 0;
   }
 }
 
@@ -1423,8 +1527,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-height: 60vh;
-  overflow-y: auto;
+}
 }
 
 .feedRow {
@@ -2153,10 +2256,6 @@
   .chatList {
     max-height: 38vh;
     min-height: 8rem;
-  }
-
-  .pickerScroll {
-    max-height: 48vh;
   }
 
   .navyRoom {

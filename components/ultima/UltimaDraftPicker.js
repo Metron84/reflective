@@ -53,13 +53,36 @@ function CheckGlyph() {
   );
 }
 
+function SearchGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm8.3 12.9-3.5-3.5 1.4-1.4 3.5 3.5-1.4 1.4Z"
+      />
+    </svg>
+  );
+}
+
+function ClearGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6 6.4 5Z"
+      />
+    </svg>
+  );
+}
+
+const HINT_KEY = "ultima-draft-hint-dismissed";
+
 export default function UltimaDraftPicker({
   available = [],
   queue = [],
   loadingPool = false,
   isYourTurn = false,
   pickBusy = false,
-  compact = false,
   onDraft,
   onQueue,
   onUnqueue,
@@ -67,9 +90,10 @@ export default function UltimaDraftPicker({
 }) {
   const [query, setQuery] = useState("");
   const [league, setLeague] = useState("all");
-  const [shown, setShown] = useState(compact ? 8 : PAGE);
+  const [shown, setShown] = useState(PAGE);
   const [hiddenIds, setHiddenIds] = useState(() => new Set());
   const [toast, setToast] = useState(null);
+  const [showHint, setShowHint] = useState(false);
 
   const byId = useMemo(() => {
     const map = new Map();
@@ -130,7 +154,31 @@ export default function UltimaDraftPicker({
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  const visible = rows.filter((p) => !hiddenIds.has(p.id)).slice(0, shown);
+  useEffect(() => {
+    try {
+      setShowHint(window.localStorage.getItem(HINT_KEY) !== "1");
+    } catch {
+      setShowHint(true);
+    }
+  }, []);
+
+  const matched = rows.filter((p) => !hiddenIds.has(p.id));
+  const visible = matched.slice(0, shown);
+
+  function clearFilters() {
+    setQuery("");
+    setLeague("all");
+    setShown(PAGE);
+  }
+
+  function dismissHint() {
+    setShowHint(false);
+    try {
+      window.localStorage.setItem(HINT_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+  }
 
   async function pickPlayer(player) {
     if (!isYourTurn || pickBusy) return;
@@ -151,56 +199,82 @@ export default function UltimaDraftPicker({
   }
 
   return (
-    <section
-      className={compact ? styles.pickerCompact : styles.pickerPick}
-      aria-label="Select a player"
-    >
-      <div className={styles.pickerHead}>
-        <label className={styles.pickerSearchLabel} htmlFor="ultima-draft-search">
-          Search
-        </label>
-        <input
-          id="ultima-draft-search"
-          className={styles.pickerSearch}
-          type="search"
-          placeholder={compact ? "Queue a name or club" : "Name or club"}
-          value={query}
-          autoFocus={!compact}
-          autoComplete="off"
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setShown(compact ? 8 : PAGE);
-          }}
-        />
-      </div>
-
-      <div className={styles.leagueTabs}>
-        {LEAGUE_TABS.map((t) => {
-          const fill = t.id === "all" ? null : ULTIMA_LEAGUE_COLOURS[t.id];
-          return (
+    <section className={styles.pickerPick} aria-label="Select a player">
+      <div className={styles.pickerSticky}>
+        <div className={styles.pickerSearchWrap}>
+          <span className={styles.pickerSearchIcon}>
+            <SearchGlyph />
+          </span>
+          <label className={styles.pickerSrOnly} htmlFor="ultima-draft-search">
+            Name or club
+          </label>
+          <input
+            id="ultima-draft-search"
+            className={styles.pickerSearch}
+            type="text"
+            placeholder="Name or club"
+            value={query}
+            autoComplete="off"
+            enterKeyHint="search"
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShown(PAGE);
+            }}
+          />
+          {query ? (
             <button
-              key={t.id}
               type="button"
-              className={
-                fill
-                  ? league === t.id
-                    ? styles.leagueChipActive
-                    : styles.leagueChip
-                  : league === t.id
-                    ? styles.leagueTabActive
-                    : styles.leagueTab
-              }
-              style={fill ? { background: fill } : undefined}
+              className={styles.pickerSearchClear}
               onClick={() => {
-                setLeague(t.id);
+                setQuery("");
                 setShown(PAGE);
               }}
+              aria-label="Clear search"
             >
-              {t.label}
+              <ClearGlyph />
             </button>
-          );
-        })}
+          ) : null}
+        </div>
+        <div className={styles.pickerLeagueRow} role="tablist" aria-label="League filter">
+          {LEAGUE_TABS.map((t) => {
+            const colour = t.id === "all" ? "#f2ede4" : ULTIMA_LEAGUE_COLOURS[t.id];
+            const selected = league === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                className={selected ? styles.pickerLeagueChipOn : styles.pickerLeagueChip}
+                style={
+                  selected
+                    ? { background: colour, borderColor: colour, color: "#0a111f" }
+                    : { background: "transparent", borderColor: colour, color: "#f2ede4" }
+                }
+                onClick={() => {
+                  setLeague(t.id);
+                  setShown(PAGE);
+                }}
+              >
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      <p className={styles.pickerCount} aria-live="polite">
+        {matched.length} available
+      </p>
+
+      {showHint && !queued.length ? (
+        <p className={styles.pickerHintBanner}>
+          <span>Queue is your backup if the clock runs out.</span>
+          <button type="button" className={styles.pickerHintDismiss} onClick={dismissHint}>
+            Got it
+          </button>
+        </p>
+      ) : null}
 
       {queued.length ? (
         <div className={styles.queueStrip}>
@@ -226,16 +300,12 @@ export default function UltimaDraftPicker({
             Clear queue
           </button>
         </div>
-      ) : compact ? (
-        <p className={styles.pickerHint}>Queue while you wait. Search a name, then Queue.</p>
-      ) : (
-        <p className={styles.pickerHint}>Search, then Draft. Queue is your backup if the clock runs out.</p>
-      )}
+      ) : null}
 
       {loadingPool && !available.length ? (
         <p className={styles.pickerHint}>Loading players…</p>
       ) : (
-        <div className={styles.pickerScroll}>
+        <>
           <ul className={styles.pickerRowList}>
             {visible.map((p) => {
               const fill = ULTIMA_LEAGUE_COLOURS[p.league] ?? "#E4DED3";
@@ -282,18 +352,23 @@ export default function UltimaDraftPicker({
             })}
           </ul>
           {!visible.length ? (
-            <p className={styles.pickerHint}>No players match that search.</p>
+            <div className={styles.pickerEmpty}>
+              <p className={styles.pickerHint}>No players match that search.</p>
+              <button type="button" className={styles.pickerClearFilters} onClick={clearFilters}>
+                Clear filters
+              </button>
+            </div>
           ) : null}
-          {rows.filter((p) => !hiddenIds.has(p.id)).length > shown ? (
+          {matched.length > shown ? (
             <button
               type="button"
               className={styles.pickerMore}
               onClick={() => setShown((n) => n + PAGE)}
             >
-              Show more · {rows.length - shown} left
+              Show more · {matched.length - shown} left
             </button>
           ) : null}
-        </div>
+        </>
       )}
       {toast ? (
         <p

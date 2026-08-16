@@ -42,6 +42,7 @@ export default function UltimaDraftRoom({
   const [menuOpen, setMenuOpen] = useState(false);
   const [showFeed, setShowFeed] = useState(false);
   const menuRef = useRef(null);
+  const stickyRef = useRef(null);
   const [resetting, setResetting] = useState(false);
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
@@ -162,6 +163,19 @@ export default function UltimaDraftRoom({
       window.removeEventListener("pointerdown", onPointer);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const el = stickyRef.current;
+    const root = el?.parentElement;
+    if (!el || !root) return undefined;
+    function apply() {
+      root.style.setProperty("--ultima-draft-sticky", `${el.offsetHeight}px`);
+    }
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [state?.on_clock, state?.is_your_turn, state?.state]);
 
   useEffect(() => {
     if (state?.state !== "live" && state?.state !== "paused") return;
@@ -415,7 +429,6 @@ export default function UltimaDraftRoom({
         isYourTurn={state.is_your_turn}
         canForcePick={canForcePick}
         pickBusy={loading}
-        compact={false}
         onDraft={draftPlayer}
         onForce={forcePickPlayer}
         onQueue={queuePlayer}
@@ -459,7 +472,7 @@ export default function UltimaDraftRoom({
 
   return (
     <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-      <header className={styles.draftSticky}>
+      <header className={styles.draftSticky} ref={stickyRef}>
         <div className={styles.draftStickyRow}>
           <p className={styles.draftOnClockName}>{onClockName}</p>
           <span className={styles.draftClockSecs} aria-label="Seconds remaining">
