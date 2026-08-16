@@ -60,7 +60,7 @@
 
 .arrow {
   flex-shrink: 0;
-  color: var(--color-signal);
+  color: #d8232a;
   transition: transform 0.15s ease;
 }
 
@@ -70,15 +70,6 @@
 }
 
 @media (min-width: 768px) {
-  .ribbon {
-    justify-content: center;
-  }
-
-  .copy {
-    align-items: center;
-    text-align: center;
-  }
-
   .main {
     font-size: 1rem;
   }

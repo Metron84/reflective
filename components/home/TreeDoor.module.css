@@ -81,6 +81,7 @@
   font-size: max(0.875rem, 14px);
   line-height: 1.35;
   color: rgba(242, 237, 228, 0.85);
+  white-space: nowrap;
   transition: color 0.2s ease;
 }
 
@@ -93,21 +94,16 @@
   line-height: 1.35;
   color: rgba(242, 237, 228, 0.62);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .statusLineWrap {
-  display: -webkit-box;
+  display: block;
   max-width: 100%;
   margin-top: 0.125rem;
   font-family: var(--font-body);
   font-size: max(0.75rem, 12px);
   line-height: 1.35;
   color: rgba(242, 237, 228, 0.62);
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .statusMeasure {
@@ -142,7 +138,7 @@
   width: 2.5rem;
   height: 2.5rem;
   flex-shrink: 0;
-  color: rgba(242, 237, 228, 0.55);
+  color: #f2ede4;
   transition:
     color 0.2s ease,
     transform 0.2s ease;

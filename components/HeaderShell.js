@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { PRIMARY_NAV } from "@/lib/nav";
+import { SITE_SECTIONS, WORK_WITH_US_HREF } from "@/lib/config";
 import MobileMenu from "./MobileMenu";
+
+function isActiveSection(pathname, href) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 function UserMenu({ profile }) {
   const [open, setOpen] = useState(false);
@@ -21,7 +26,7 @@ function UserMenu({ profile }) {
   }, []);
 
   return (
-    <div className="relative hidden sm:block" ref={ref}>
+    <div className="relative hidden lg:block" ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -64,32 +69,53 @@ function UserMenu({ profile }) {
 
 export default function HeaderShell({ auth }) {
   const signedIn = auth?.isSignedIn && auth?.profile;
+  const pathname = usePathname() ?? "";
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy/10 bg-paper/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href="/"
           className="max-w-[55vw] truncate font-display text-base tracking-wide text-navy sm:max-w-none sm:text-lg"
         >
           The Reflective Football
         </Link>
-        <nav className="flex items-center gap-4 text-sm sm:gap-6">
-          {PRIMARY_NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="hidden text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 sm:block motion-reduce:active:scale-100"
+        <nav className="flex items-center gap-4 text-sm lg:gap-5">
+          <div className="hidden items-center gap-5 lg:flex">
+            {SITE_SECTIONS.map((item) => {
+              const active = isActiveSection(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative py-1 text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 motion-reduce:active:scale-100 ${
+                    active ? "text-navy" : ""
+                  }`}
+                >
+                  {item.label}
+                  {active ? (
+                    <span
+                      className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
+                      aria-hidden
+                    />
+                  ) : null}
+                </Link>
+              );
+            })}
+            <a
+              href={WORK_WITH_US_HREF}
+              className="text-navy/55 transition-colors hover:text-navy"
             >
-              {item.label}
-            </Link>
-          ))}
+              Work With Us
+            </a>
+          </div>
           {signedIn ? (
             <UserMenu profile={auth.profile} />
           ) : (
             <Link
               href="/signin"
-              className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-[opacity,transform] duration-100 hover:opacity-90 active:scale-[0.98] active:opacity-80 sm:block motion-reduce:active:scale-100"
+              className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-[opacity,transform] duration-100 hover:opacity-90 active:scale-[0.98] active:opacity-80 lg:block motion-reduce:active:scale-100"
             >
               Sign in
             </Link>

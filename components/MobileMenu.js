@@ -3,15 +3,21 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { PRIMARY_NAV } from "@/lib/nav";
+import { usePathname } from "next/navigation";
+import { SITE_SECTIONS } from "@/lib/config";
+
+function isActiveSection(pathname, href) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 function MenuOverlay({ onClose, auth }) {
   const signedIn = auth?.isSignedIn && auth?.profile;
   const name = auth?.profile?.preferred_name ?? "Account";
+  const pathname = usePathname() ?? "";
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex flex-col bg-navy sm:hidden"
+      className="fixed inset-0 z-[200] flex flex-col bg-navy lg:hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Site menu"
@@ -30,16 +36,26 @@ function MenuOverlay({ onClose, auth }) {
         </button>
       </div>
       <nav className="flex flex-1 flex-col justify-center gap-8 px-8">
-        {PRIMARY_NAV.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onClose}
-            className="font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
-          >
-            {item.label}
-          </Link>
-        ))}
+        {SITE_SECTIONS.map((item) => {
+          const active = isActiveSection(pathname, item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onClose}
+              aria-current={active ? "page" : undefined}
+              className="relative w-fit font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
+            >
+              {item.label}
+              {active ? (
+                <span
+                  className="absolute inset-x-0 -bottom-1 h-0.5 bg-signal"
+                  aria-hidden
+                />
+              ) : null}
+            </Link>
+          );
+        })}
       </nav>
       <div className="space-y-3 border-t border-paper/10 p-6">
         {signedIn ? (
@@ -94,7 +110,7 @@ export default function MobileMenu({ auth = null }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 sm:hidden"
+        className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
         aria-label="Open menu"
         aria-expanded={open}
       >

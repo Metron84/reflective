@@ -1,5 +1,5 @@
 import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
+import { getActiveCompetition } from "@/lib/ultima/server/db";
 import {
   getStandings,
   getBoltBoard,
@@ -16,14 +16,9 @@ export const dynamic = "force-dynamic";
 export default async function UltimaStandingsPage() {
   await requireUltimaManager("/ultima/standings");
   const competition = await getActiveCompetition();
-  const db = getUltimaDb();
 
   const standings = competition ? await getStandings(competition.id) : [];
   const boltBoard = competition ? await getBoltBoard(competition.id) : [];
-
-  const { data: botPersonas } = db
-    ? await db.from("ultima_bot_personas").select("*")
-    : { data: [] };
 
   return (
     <div className={styles.ultimaPage}>
@@ -51,7 +46,9 @@ export default async function UltimaStandingsPage() {
                     style={{ background: row.colour === "navy" ? "#0A111F" : "#4A5568" }}
                   />
                   {row.team_name}
-                  {row.is_bot ? " · BOT" : ""}
+                  {row.is_bot
+                    ? ` · BOT${row.persona_name ? ` · ${row.persona_name}` : ""}`
+                    : ""}
                 </td>
                 <td>{row.gameweekPoints ?? "—"}</td>
                 <td>{row.seasonPoints}</td>
@@ -78,30 +75,6 @@ export default async function UltimaStandingsPage() {
               ))}
             </ul>
           )}
-        </section>
-
-        <section className={styles.rulesSection}>
-          <h2>Bot risk numbers</h2>
-          <table className={styles.standingsTable}>
-            <thead>
-              <tr>
-                <th>Bot</th>
-                <th>Risk</th>
-                <th>Horizon</th>
-                <th>Discipline</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(botPersonas ?? []).map((p) => (
-                <tr key={p.id}>
-                  <td>{p.name}</td>
-                  <td>{p.risk}</td>
-                  <td>{p.horizon}</td>
-                  <td>{p.discipline}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </section>
       </div>
     </div>

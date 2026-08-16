@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { HOME_HERO_STILL, LALIGA_CAMPAIGN_ENABLED } from "@/lib/config";
+import { HOME_HERO_STILL, LALIGA_CAMPAIGN_ENABLED, SITE_SECTIONS } from "@/lib/config";
 import HeroCta from "./HeroCta";
 import HeroPromoVideo from "./HeroPromoVideo";
 import LaLigaRibbon from "./LaLigaRibbon";
@@ -10,38 +10,12 @@ import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
 
-const DOORS = [
-  {
-    id: "films",
-    href: "/films",
-    category: "Films.",
-    qualifier: "From the Fans.",
-  },
-  {
-    id: "awards",
-    href: "/reflections",
-    category: "Awards.",
-    qualifier: "For the Fans.",
-  },
-  {
-    id: "games",
-    href: "/games",
-    category: "Games.",
-    qualifier: "For the Fun.",
-  },
-  {
-    id: "concierge",
-    href: "/concierge",
-    category: "Concierge.",
-    qualifier: "Ask. Find. Watch.",
-  },
-  {
-    id: "archive",
-    href: "/archive",
-    category: "The Archive.",
-    qualifier: "Read. Watch. Listen.",
-  },
-];
+const DOORS = SITE_SECTIONS.map((section) => ({
+  id: section.id,
+  href: section.href,
+  category: `${section.label}.`,
+  qualifier: section.description,
+}));
 
 function useHomeTabOrder(doorRefs) {
   useEffect(() => {

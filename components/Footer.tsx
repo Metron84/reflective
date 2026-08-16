@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SITE_SECTIONS, SOCIAL_LINKS } from "@/lib/config";
 
 const footerLink =
   "text-sm text-paper transition-colors hover:text-signal";
@@ -43,50 +44,32 @@ export default function Footer() {
   return (
     <footer className="bg-navy text-paper">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-8">
-          <div className="flex flex-col gap-3">
-            <p className="font-display text-xl leading-tight tracking-wide sm:text-2xl">
-              The Reflective Football
-            </p>
-            <p className="max-w-xs text-sm leading-relaxed text-paper/75">
-              Football is nothing without the fans.
-            </p>
-            <p className="text-xs text-paper/45">The Reflective Football LLC</p>
-          </div>
+        <div className="mb-10 flex flex-col gap-3 lg:mb-12">
+          <p className="font-display text-xl leading-tight tracking-wide sm:text-2xl">
+            The Reflective Football
+          </p>
+          <p className="max-w-xs text-sm leading-relaxed text-paper/75">
+            Football is nothing without the fans.
+          </p>
+          <p className="text-xs text-paper/45">The Reflective Football LLC</p>
+        </div>
 
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-8">
           <div className="flex flex-col gap-3">
             <p className="text-xs font-medium uppercase tracking-widest text-paper/50">
-              Watch
+              Explore
             </p>
             <ul className="flex flex-col gap-2">
-              <li>
-                <Link
-                  href="/films"
-                  className="text-sm text-paper transition-colors hover:text-signal"
-                >
-                  Episodes
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/concierge"
-                  className="text-sm text-paper transition-colors hover:text-signal"
-                >
-                  Concierge
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://www.youtube.com/@TheReflectiveFootball"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-paper transition-colors hover:text-signal"
-                >
-                  YouTube
-                </a>
-              </li>
+              {SITE_SECTIONS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={footerLink}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
+
           <div className="flex flex-col gap-3">
             <p className="text-xs font-medium uppercase tracking-widest text-paper/50">
               Work With Us
@@ -95,7 +78,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:partnerships@thereflectivefootball.com?subject=Venue%20Partnership"
-                  className="text-sm text-paper transition-colors hover:text-signal"
+                  className={footerLink}
                 >
                   For Venues
                 </a>
@@ -103,7 +86,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:partnerships@thereflectivefootball.com?subject=Brand%20%26%20Sponsor%20Inquiry"
-                  className="text-sm text-paper transition-colors hover:text-signal"
+                  className={footerLink}
                 >
                   For Brands &amp; Sponsors
                 </a>
@@ -111,13 +94,14 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:press@thereflectivefootball.com?subject=Press%20%26%20Licensing"
-                  className="text-sm text-paper transition-colors hover:text-signal"
+                  className={footerLink}
                 >
                   Press &amp; Licensing
                 </a>
               </li>
             </ul>
           </div>
+
           <div className="flex flex-col gap-3">
             <p className="text-xs font-medium uppercase tracking-widest text-paper/50">
               Contact
@@ -139,7 +123,7 @@ export default function Footer() {
             </ul>
             <div className="mt-1 flex items-center gap-4">
               <a
-                href="https://www.instagram.com/thereflectivefootball"
+                href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={socialLink}
@@ -148,7 +132,7 @@ export default function Footer() {
                 <InstagramIcon />
               </a>
               <a
-                href="https://www.youtube.com/@TheReflectiveFootball"
+                href={SOCIAL_LINKS.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={socialLink}
@@ -157,7 +141,7 @@ export default function Footer() {
                 <YouTubeIcon />
               </a>
               <a
-                href="https://www.linkedin.com/company/the-reflective-football/"
+                href={SOCIAL_LINKS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={socialLink}
