@@ -215,12 +215,12 @@ export default function UltimaDraftRoom({
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message ?? "Pick failed.");
-      } else {
-        await fetchState();
+        return { ok: false, message: data.message ?? "Pick failed." };
       }
+      await fetchState();
+      return { ok: true };
     } catch {
-      setError("Connection lost. Try again.");
+      return { ok: false, message: "Connection lost. Try again." };
     } finally {
       setLoading(false);
     }
