@@ -10,7 +10,9 @@ export default function UltimaPracticeLobby() {
   const [joinCode, setJoinCode] = useState("");
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [toast, setToast] = useState("");
   const [rooms, setRooms] = useState([]);
+  const [confirm, setConfirm] = useState(null);
 
   async function loadRooms() {
     try {
@@ -26,6 +28,12 @@ export default function UltimaPracticeLobby() {
     loadRooms();
   }, []);
 
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => setToast(""), 3200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
   async function act(action, extra = {}) {
     setBusy(action);
     setError("");
@@ -38,19 +46,83 @@ export default function UltimaPracticeLobby() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.message ?? "That did not work.");
-        return;
+        return null;
       }
       if (data.code && (action === "create_solo" || action === "create_room" || action === "join")) {
         router.push(`/ultima/practice/${data.code}`);
-        return;
+        return data;
       }
       await loadRooms();
+      return data;
     } catch {
       setError("Connection lost. Try again.");
+      return null;
     } finally {
       setBusy("");
     }
   }
+
+  async function deleteRoom(code) {
+    const previous = rooms;
+    setRooms((list) => list.filter((room) => room.code !== code));
+    setConfirm(null);
+    setBusy(`delete:${code}`);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/practice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", code }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setRooms(previous);
+        setToast(data.message ?? "Could not delete that room.");
+        return;
+      }
+      setToast(`Deleted ${code}.`);
+    } catch {
+      setRooms(previous);
+      setToast("Connection lost. Room restored.");
+    } finally {
+      setBusy("");
+    }
+  }
+
+  async function deleteAllSaved() {
+    const previous = rooms;
+    const removing = new Set(
+      previous.filter((room) => room.is_host && room.keep).map((room) => room.code),
+    );
+    setRooms((list) => list.filter((room) => !removing.has(room.code)));
+    setConfirm(null);
+    setBusy("delete_all");
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/practice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete_all" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setRooms(previous);
+        setToast(data.message ?? "Could not delete rooms.");
+        return;
+      }
+      await loadRooms();
+      setToast(
+        data.count ? `Deleted ${data.count} room${data.count === 1 ? "" : "s"}.` : "No saved rooms to delete.",
+      );
+    } catch {
+      setRooms(previous);
+      setToast("Connection lost. Rooms restored.");
+    } finally {
+      setBusy("");
+    }
+  }
+
+  const savedHostedCount = rooms.filter((room) => room.is_host && room.keep).length;
 
   return (
     <div className={styles.adminPage}>
@@ -81,19 +153,41 @@ export default function UltimaPracticeLobby() {
                     Resume
                   </Link>
                   {room.is_host ? (
-                    <button
-                      type="button"
-                      className={styles.queueBtnDark}
-                      disabled={Boolean(busy)}
-                      onClick={() => act(room.keep ? "forget" : "save", { code: room.code })}
-                    >
-                      {room.keep ? "Forget" : "Save"}
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        className={styles.queueBtnDark}
+                        disabled={Boolean(busy)}
+                        onClick={() => act(room.keep ? "forget" : "save", { code: room.code })}
+                      >
+                        {room.keep ? "Forget" : "Save"}
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.deleteTextBtn}
+                        disabled={Boolean(busy)}
+                        onClick={() =>
+                          setConfirm({ type: "one", code: room.code })
+                        }
+                      >
+                        Delete
+                      </button>
+                    </>
                   ) : null}
                 </div>
               </li>
             ))}
           </ul>
+          {savedHostedCount > 0 ? (
+            <button
+              type="button"
+              className={styles.deleteAllLink}
+              disabled={Boolean(busy)}
+              onClick={() => setConfirm({ type: "all" })}
+            >
+              Delete all saved rooms
+            </button>
+          ) : null}
         </section>
       ) : null}
 
@@ -158,10 +252,42 @@ export default function UltimaPracticeLobby() {
       </section>
 
       {error ? <p className={styles.messageError}>{error}</p> : null}
+      {toast ? <p className={styles.practiceToast}>{toast}</p> : null}
 
       <Link href="/ultima" className={styles.quietLink}>
         Back to hub
       </Link>
+
+      {confirm ? (
+        <div className={styles.confirmSheet} role="dialog" aria-modal="true">
+          <div className={styles.confirmBackdrop} onClick={() => setConfirm(null)} aria-hidden />
+          <div className={styles.confirmPanel}>
+            <p className={styles.confirmCopy}>
+              {confirm.type === "all"
+                ? "Delete all saved practice rooms? This cannot be undone."
+                : `Delete room ${confirm.code}? This cannot be undone.`}
+            </p>
+            <div className={styles.confirmActions}>
+              <button
+                type="button"
+                className={styles.queueBtnDark}
+                onClick={() => setConfirm(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.deleteConfirmBtn}
+                onClick={() =>
+                  confirm.type === "all" ? deleteAllSaved() : deleteRoom(confirm.code)
+                }
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

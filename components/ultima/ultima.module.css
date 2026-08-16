@@ -2304,6 +2304,98 @@
   border: 1px solid rgba(10, 17, 31, 0.35);
 }
 
+.deleteTextBtn {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  padding: 0.4rem 0.35rem;
+  cursor: pointer;
+  color: #d8232a;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.deleteAllLink {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #d8232a;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.practiceToast {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  color: #0a111f;
+  margin: 0.75rem 0 0;
+}
+
+.confirmSheet {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.confirmBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 17, 31, 0.55);
+}
+
+.confirmPanel {
+  position: relative;
+  z-index: 1;
+  width: min(28rem, 100%);
+  background: #f2ede4;
+  border-top: 1px solid rgba(10, 17, 31, 0.12);
+  padding: 1.25rem 1.15rem max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.confirmCopy {
+  margin: 0 0 1rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  color: #0a111f;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: flex-end;
+}
+
+.deleteConfirmBtn {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  color: #f2ede4;
+  background: #d8232a;
+  border: 1px solid #d8232a;
+}
+
+@media (min-width: 768px) {
+  .confirmSheet {
+    align-items: center;
+  }
+
+  .confirmPanel {
+    border: 1px solid rgba(10, 17, 31, 0.12);
+  }
+}
+
 @media (min-width: 900px) {
   .shell {
     flex-direction: row;

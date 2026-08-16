@@ -4,6 +4,8 @@ import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getManagerForUser } from "@/lib/ultima/server/db";
 import {
   createPracticeRoom,
+  deleteAllMyPracticeRooms,
+  deletePracticeRoom,
   joinPracticeRoom,
   listMyPracticeRooms,
   listPracticeLobby,
@@ -114,6 +116,12 @@ export async function POST(request) {
       break;
     case "forget":
       result = await setPracticeKeep({ userId: user.id, code: body.code, keep: false });
+      break;
+    case "delete":
+      result = await deletePracticeRoom({ userId: user.id, code: body.code });
+      break;
+    case "delete_all":
+      result = await deleteAllMyPracticeRooms({ userId: user.id });
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });
