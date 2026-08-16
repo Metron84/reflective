@@ -1,22 +1,53 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./ultima.module.css";
 
-const LINKS = [
+const PRIMARY = [
   { href: "/ultima", label: "Hub", icon: HubIcon },
   { href: "/ultima/draft", label: "Draft", icon: DraftIcon },
   { href: "/ultima/squad", label: "Squad", icon: SquadIcon },
   { href: "/ultima/standings", label: "Table", icon: TableIcon },
+];
+
+const MORE = [
   { href: "/ultima/market", label: "Market", icon: MarketIcon },
   { href: "/ultima/trades", label: "Trades", icon: TradesIcon },
   { href: "/ultima/practice", label: "Practice", icon: PracticeIcon },
 ];
 
+const DESKTOP = [
+  ...PRIMARY,
+  ...MORE,
+];
+
+const CRUMB_LABELS = {
+  "/ultima": "Ultima",
+  "/ultima/draft": "Draft",
+  "/ultima/squad": "Squad",
+  "/ultima/standings": "Table",
+  "/ultima/market": "Market",
+  "/ultima/trades": "Trades",
+  "/ultima/practice": "Practice",
+  "/ultima/admin": "Admin",
+  "/ultima/rules": "Rules",
+  "/ultima/join": "Join",
+  "/ultima/profile": "Profile",
+  "/ultima/log": "Log",
+};
+
 function hideRail(pathname) {
   if (pathname === "/ultima/draft" || pathname.startsWith("/ultima/draft/")) return true;
   if (pathname.startsWith("/ultima/join")) return true;
+  if (/^\/ultima\/practice\/[A-Z0-9]{4}/i.test(pathname)) return true;
+  return false;
+}
+
+function hideBreadcrumb(pathname) {
+  if (pathname === "/ultima/draft" || pathname.startsWith("/ultima/draft/")) return true;
   if (/^\/ultima\/practice\/[A-Z0-9]{4}/i.test(pathname)) return true;
   return false;
 }
@@ -26,39 +57,173 @@ function isActive(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function crumbsFor(pathname) {
+  if (pathname === "/ultima") {
+    return [
+      { label: "Home", href: "/" },
+      { label: "Ultima" },
+    ];
+  }
+
+  const tradeMatch = pathname.match(/^\/ultima\/trades\/([^/]+)/);
+  if (tradeMatch) {
+    return [
+      { label: "Ultima", href: "/ultima" },
+      { label: "Trades", href: "/ultima/trades" },
+      { label: "Trade" },
+    ];
+  }
+
+  const joinMatch = pathname.match(/^\/ultima\/join(\/|$)/);
+  if (joinMatch) {
+    return [
+      { label: "Ultima", href: "/ultima" },
+      { label: "Join" },
+    ];
+  }
+
+  const base = Object.keys(CRUMB_LABELS)
+    .filter((href) => href !== "/ultima")
+    .sort((a, b) => b.length - a.length)
+    .find((href) => pathname === href || pathname.startsWith(`${href}/`));
+
+  if (base) {
+    return [
+      { label: "Ultima", href: "/ultima" },
+      { label: CRUMB_LABELS[base] },
+    ];
+  }
+
+  return [
+    { label: "Ultima", href: "/ultima" },
+    { label: "Ultima" },
+  ];
+}
+
 export default function UltimaShell({ manager, isCommissioner, children }) {
   const pathname = usePathname() ?? "";
   const showRail = Boolean(manager) && !hideRail(pathname);
+  const showCrumb = !hideBreadcrumb(pathname);
+  const [moreOpen, setMoreOpen] = useState(false);
 
-  const items = [
-    ...LINKS,
+  useEffect(() => {
+    document.body.classList.add("ultima-root");
+    return () => document.body.classList.remove("ultima-root");
+  }, []);
+
+  useEffect(() => {
+    setMoreOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!moreOpen) return undefined;
+    function onKey(event) {
+      if (event.key === "Escape") setMoreOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [moreOpen]);
+
+  const moreItems = [
+    ...MORE,
     ...(isCommissioner
       ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
       : []),
   ];
 
+  const desktopItems = [
+    ...DESKTOP,
+    ...(isCommissioner
+      ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
+      : []),
+  ];
+
+  const moreActive = moreItems.some((item) => isActive(pathname, item.href));
+
   return (
-    <div className={showRail ? styles.shell : undefined}>
-      {showRail ? (
-        <nav className={styles.rail} aria-label="Ultima">
-          {items.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(pathname, item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={active ? styles.railLinkActive : styles.railLink}
-                title={item.label}
+    <div className={styles.ultimaRoot}>
+      {showCrumb ? <Breadcrumb items={crumbsFor(pathname)} /> : null}
+
+      <div className={showRail ? styles.shell : undefined}>
+        {showRail ? (
+          <>
+            <nav className={`${styles.rail} ${styles.railDesktop}`} aria-label="Ultima">
+              {desktopItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={active ? styles.railLinkActive : styles.railLink}
+                    title={item.label}
+                  >
+                    <Icon />
+                    <span className={styles.railLabel}>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <nav className={`${styles.rail} ${styles.railMobile}`} aria-label="Ultima">
+              {PRIMARY.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={active ? styles.railLinkActive : styles.railLink}
+                    title={item.label}
+                  >
+                    <Icon />
+                    <span className={styles.railLabel}>{item.label}</span>
+                  </Link>
+                );
+              })}
+              <button
+                type="button"
+                className={moreActive || moreOpen ? styles.railLinkActive : styles.railLink}
+                aria-expanded={moreOpen}
+                aria-label="More"
+                onClick={() => setMoreOpen((open) => !open)}
               >
-                <Icon />
-                <span className={styles.railLabel}>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+                <MoreIcon />
+                <span className={styles.railLabel}>More</span>
+              </button>
+            </nav>
+          </>
+        ) : null}
+
+        <div className={showRail ? styles.shellMain : undefined}>{children}</div>
+      </div>
+
+      {moreOpen ? (
+        <div className={styles.moreSheet} role="dialog" aria-modal="true" aria-label="More">
+          <div
+            className={styles.moreBackdrop}
+            aria-hidden
+            onClick={() => setMoreOpen(false)}
+          />
+          <div className={styles.morePanel}>
+            {moreItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={active ? styles.moreItemActive : styles.moreItem}
+                  onClick={() => setMoreOpen(false)}
+                >
+                  <Icon />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       ) : null}
-      <div className={showRail ? styles.shellMain : undefined}>{children}</div>
     </div>
   );
 }
@@ -132,6 +297,16 @@ function AdminIcon() {
         fill="currentColor"
         d="M12 2.8 14.4 8l5.6.6-4.2 3.8 1.2 5.5L12 15.6 6.9 17.9l1.2-5.5L4 8.6 9.6 8 12 2.8Z"
       />
+    </svg>
+  );
+}
+
+function MoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
+      <circle cx="5" cy="12" r="1.8" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+      <circle cx="19" cy="12" r="1.8" fill="currentColor" />
     </svg>
   );
 }

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import styles from "@/components/ultima/ultima.module.css";
 
 export default function UltimaPhaseShell({
@@ -6,7 +5,6 @@ export default function UltimaPhaseShell({
   phase,
   lede,
   children,
-  backHref = "/ultima",
 }) {
   return (
     <div className={styles.ultimaPage}>
@@ -20,10 +18,6 @@ export default function UltimaPhaseShell({
           </p>
         ) : null}
         {children}
-        <hr className={styles.rule} />
-        <Link href={backHref} className={styles.quietLink}>
-          Back to Ultima hub
-        </Link>
       </div>
     </div>
   );

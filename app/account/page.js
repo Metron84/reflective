@@ -8,6 +8,7 @@ import GuesserSection from "@/components/account/GuesserSection";
 import ReflectionsBallot from "@/components/account/ReflectionsBallot";
 import HonoursSection from "@/components/account/HonoursSection";
 import SettingsPanel from "@/components/account/SettingsPanel";
+import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -30,6 +31,7 @@ export default async function AccountPage() {
 
   return (
     <div className={styles.page}>
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Programme" }]} />
       <div className={styles.inner}>
         <p className={styles.eyebrow}>My Programme</p>
         <ProgrammeHeader

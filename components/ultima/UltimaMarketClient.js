@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_LABELS } from "@/lib/ultima/constants";
 import styles from "./ultima.module.css";
 
@@ -111,10 +110,6 @@ export default function UltimaMarketClient({ freeAgents, roster }) {
           </div>
         </div>
       ) : null}
-
-      <Link href="/ultima" className={styles.quietLink}>
-        Back to hub
-      </Link>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getAdminLog } from "@/lib/ultima/server/admin";
 import styles from "@/components/ultima/ultima.module.css";
@@ -38,10 +37,6 @@ export default async function UltimaLogPage() {
         {entries.length === 0 ? (
           <p className={styles.emptyState}>No commissioner actions yet.</p>
         ) : null}
-
-        <Link href="/ultima" className={styles.quietLink}>
-          Back to hub
-        </Link>
       </div>
     </div>
   );

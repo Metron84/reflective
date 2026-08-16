@@ -11,6 +11,7 @@ import {
 import { getAuthContext } from "@/lib/auth/session";
 import ReflectivesHero from "@/components/reflections/ReflectivesHero";
 import VotingBoard from "@/components/reflections/VotingBoard";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "The Reflectives",
@@ -50,6 +51,9 @@ export default async function ReflectionsPage() {
 
   return (
     <div>
+      <Breadcrumb
+        items={[{ label: "Home", href: "/" }, { label: "The Reflectives" }]}
+      />
       <ReflectivesHero votingState={votingState} isSignedIn={isSignedIn} />
 
       <VotingBoard

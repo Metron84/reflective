@@ -592,6 +592,93 @@
   cursor: pointer;
 }
 
+.draftExit {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.35rem 0 0;
+  border: none;
+  background: transparent;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.draftExitChevron {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.draftSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.draftSkeletonBar {
+  height: 44px;
+  background: rgba(242, 237, 228, 0.12);
+}
+
+.draftSkeletonChip {
+  height: 28px;
+  width: 70%;
+  background: rgba(242, 237, 228, 0.1);
+}
+
+.draftSkeletonBody {
+  height: 12rem;
+  background: rgba(242, 237, 228, 0.08);
+}
+
+.moreSheet {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.moreBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 17, 31, 0.55);
+}
+
+.morePanel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: #f2ede4;
+  border-top: 1px solid rgba(10, 17, 31, 0.12);
+  padding: 0.5rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+
+.moreItem,
+.moreItemActive {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  color: #0a111f;
+  text-decoration: none;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.moreItemActive {
+  background: rgba(10, 17, 31, 0.06);
+}
+
 .draftBodySplit {
   min-width: 0;
 }
@@ -2074,6 +2161,10 @@
   gap: 0;
 }
 
+.ultimaRoot {
+  min-width: 0;
+}
+
 .shellMain {
   min-width: 0;
   padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
@@ -2100,6 +2191,14 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.railDesktop {
+  display: none;
+}
+
+.railMobile {
+  display: flex;
+}
+
 .railLink,
 .railLinkActive {
   display: flex;
@@ -2118,6 +2217,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.7;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .railLinkActive {
@@ -2406,6 +2508,14 @@
     flex: 1;
     min-width: 0;
     padding-bottom: 0;
+  }
+
+  .railDesktop {
+    display: flex;
+  }
+
+  .railMobile {
+    display: none;
   }
 
   .rail {

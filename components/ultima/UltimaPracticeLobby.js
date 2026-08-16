@@ -254,10 +254,6 @@ export default function UltimaPracticeLobby() {
       {error ? <p className={styles.messageError}>{error}</p> : null}
       {toast ? <p className={styles.practiceToast}>{toast}</p> : null}
 
-      <Link href="/ultima" className={styles.quietLink}>
-        Back to hub
-      </Link>
-
       {confirm ? (
         <div className={styles.confirmSheet} role="dialog" aria-modal="true">
           <div className={styles.confirmBackdrop} onClick={() => setConfirm(null)} aria-hidden />

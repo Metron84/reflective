@@ -7,6 +7,7 @@ import {
   ULTIMA_LEAGUE_COLOURS,
   ULTIMA_LEAGUE_LABELS,
 } from "@/lib/ultima/constants";
+import EmptyState from "@/components/EmptyState";
 import styles from "./ultima.module.css";
 
 function pickNumberFor(round, slot, seats) {
@@ -122,7 +123,11 @@ export default function UltimaDraftBoard({
       )}
 
       {empty ? (
-        <p className={styles.draftBoardEmpty}>Board empty. First pick coming.</p>
+        <EmptyState
+          tone="navy"
+          heading="Board empty"
+          body="First pick coming. Stay on Players until the board fills."
+        />
       ) : (
         <div className={styles.boardScroll}>
           <table

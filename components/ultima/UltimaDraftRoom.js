@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_COLOURS,
@@ -12,6 +12,7 @@ import {
 } from "@/lib/ultima/constants";
 import { lastPicksNewestFirst, playerSurname } from "@/lib/ultima/draft/last-picks";
 import { countByLeague, remainingSlots } from "@/lib/ultima/draft/floor";
+import EmptyState from "@/components/EmptyState";
 import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftPicker from "./UltimaDraftPicker";
 import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
@@ -31,12 +32,25 @@ function OverflowIcon() {
   );
 }
 
+function ExitChevron() {
+  return (
+    <svg className={styles.draftExitChevron} viewBox="0 0 24 24" width="18" height="18" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M14.7 5.3 8 12l6.7 6.7 1.4-1.4L10.8 12l5.3-5.3-1.4-1.4Z"
+      />
+    </svg>
+  );
+}
+
 export default function UltimaDraftRoom({
   managerId,
   variant = "season",
   roomCode = null,
 }) {
   const isPractice = variant === "practice";
+  const router = useRouter();
+  const exitHref = isPractice ? "/ultima/practice" : "/ultima";
   const [state, setState] = useState(null);
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,8 +58,10 @@ export default function UltimaDraftRoom({
   const [viewMode, setViewMode] = useState("players");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showFeed, setShowFeed] = useState(false);
+  const [exitConfirm, setExitConfirm] = useState(false);
   const menuRef = useRef(null);
   const stickyRef = useRef(null);
+  const allowLeave = useRef(false);
   const [resetting, setResetting] = useState(false);
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
@@ -140,6 +156,50 @@ export default function UltimaDraftRoom({
       window.removeEventListener("pointerdown", onPointer);
     };
   }, [menuOpen]);
+
+  const leaveRoom = useCallback(() => {
+    allowLeave.current = true;
+    setExitConfirm(false);
+    router.push(exitHref);
+  }, [exitHref, router]);
+
+  const requestExit = useCallback(() => {
+    if (isPractice) {
+      leaveRoom();
+      return;
+    }
+    if (state?.state === "live") {
+      setExitConfirm(true);
+      return;
+    }
+    leaveRoom();
+  }, [isPractice, leaveRoom, state?.state]);
+
+  useEffect(() => {
+    if (isPractice || state?.state !== "live") return undefined;
+    const marker = { ultimaDraftGuard: true };
+    window.history.pushState(marker, "");
+
+    function onPopState() {
+      if (allowLeave.current) return;
+      window.history.pushState(marker, "");
+      setExitConfirm(true);
+    }
+
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, [isPractice, state?.state]);
+
+  useEffect(() => {
+    if (!exitConfirm) return undefined;
+    function onKey(event) {
+      if (event.key === "Escape") setExitConfirm(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [exitConfirm]);
 
   useEffect(() => {
     const el = stickyRef.current;
@@ -298,8 +358,12 @@ export default function UltimaDraftRoom({
 
   if (!state) {
     return (
-      <div className={styles.navyRoom}>
-        <p className={styles.navyText}>Loading draft room…</p>
+      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+        <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading draft room">
+          <div className={styles.draftSkeletonBar} />
+          <div className={styles.draftSkeletonChip} />
+          <div className={styles.draftSkeletonBody} />
+        </div>
       </div>
     );
   }
@@ -339,28 +403,36 @@ export default function UltimaDraftRoom({
 
   if (state.state === "lobby") {
     return (
-      <div className={styles.navyRoom}>
-        <p className={styles.navyText}>
-          {isPractice
-            ? "Practice lobby. Waiting for the host to start."
-            : "Draft lobby. Waiting for the commissioner to start."}
-        </p>
-        <Link href={isPractice ? "/ultima/practice" : "/ultima"} className={styles.quietLinkLight}>
-          {isPractice ? "Back to practice" : "Back to hub"}
-        </Link>
+      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+        <EmptyState
+          tone="navy"
+          heading={isPractice ? "Practice lobby" : "Draft lobby"}
+          body={
+            isPractice
+              ? "Waiting for the host to start."
+              : "Waiting for the commissioner to start."
+          }
+          actionLabel="Exit"
+          onAction={leaveRoom}
+        />
       </div>
     );
   }
 
   if (state.state === "complete") {
     return (
-      <div className={styles.navyRoom}>
-        <p className={styles.navyTitle}>{isPractice ? "Practice complete" : "Draft complete"}</p>
-        <p className={styles.navyText}>
-          {isPractice
-            ? "Save this board to reopen it from Practice. Picks do not count toward the league."
-            : "300 picks made. Set your XV before the first kickoff."}
-        </p>
+      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+        <EmptyState
+          tone="navy"
+          heading={isPractice ? "Practice complete" : "Draft complete"}
+          body={
+            isPractice
+              ? "Save this board to reopen it from Practice. Picks do not count toward the league."
+              : "300 picks made. Set your XV before the first kickoff."
+          }
+          actionLabel={isPractice ? "Practice lobby" : "My squad"}
+          actionHref={isPractice ? "/ultima/practice" : "/ultima/squad"}
+        />
         <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} youId={managerId} />
         {isPractice && state.is_host ? (
           <div className={styles.completeActions}>
@@ -372,9 +444,6 @@ export default function UltimaDraftRoom({
             </button>
           </div>
         ) : null}
-        <Link href={isPractice ? "/ultima/practice" : "/ultima/squad"} className={styles.quietLinkLight}>
-          {isPractice ? "Practice lobby" : "My squad"}
-        </Link>
       </div>
     );
   }
@@ -486,6 +555,10 @@ export default function UltimaDraftRoom({
     <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
       <header className={styles.draftSticky} ref={stickyRef}>
         <div className={styles.draftStickyRow}>
+          <button type="button" className={styles.draftExit} onClick={requestExit}>
+            <ExitChevron />
+            Exit
+          </button>
           <p className={styles.draftOnClockName}>{onClockName}</p>
           {showBotClock ? (
             <span className={styles.botSpinner} aria-label="Bot picking" />
@@ -512,14 +585,17 @@ export default function UltimaDraftRoom({
                   onClick={() => setMenuOpen(false)}
                 />
                 <div className={styles.draftOverflowPanel} role="menu">
-                  <Link
-                    href="/ultima"
+                  <button
+                    type="button"
                     className={styles.draftOverflowItem}
                     role="menuitem"
-                    onClick={() => setMenuOpen(false)}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      requestExit();
+                    }}
                   >
-                    Hub
-                  </Link>
+                    Exit
+                  </button>
                   <button
                     type="button"
                     className={styles.draftOverflowItem}
@@ -692,6 +768,33 @@ export default function UltimaDraftRoom({
           </div>
         </div>
       )}
+
+      {exitConfirm ? (
+        <div className={styles.confirmSheet} role="dialog" aria-modal="true">
+          <div
+            className={styles.confirmBackdrop}
+            aria-hidden
+            onClick={() => setExitConfirm(false)}
+          />
+          <div className={styles.confirmPanel}>
+            <p className={styles.confirmCopy}>
+              Leave the draft room? Your clock keeps running.
+            </p>
+            <div className={styles.confirmActions}>
+              <button
+                type="button"
+                className={styles.queueBtnDark}
+                onClick={() => setExitConfirm(false)}
+              >
+                Stay
+              </button>
+              <button type="button" className={styles.deleteConfirmBtn} onClick={leaveRoom}>
+                Leave
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import LiveGameCard from "@/components/games/LiveGameCard";
 import ComingSoonGameCard from "@/components/games/ComingSoonGameCard";
 import SectionHeader from "@/components/SectionHeader";
+import Breadcrumb from "@/components/Breadcrumb";
 import { GUESSER_STRAPLINE } from "@/lib/config";
 import { getGames } from "@/lib/games";
 import styles from "./page.module.css";
@@ -19,6 +20,7 @@ export default function GamesPage() {
 
   return (
     <div className={styles.page}>
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Games" }]} />
       <div className={styles.inner}>
         <SectionHeader
           eyebrow="Games. For the Fun."

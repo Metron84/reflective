@@ -130,8 +130,14 @@ button.rounded-full.bg-navy:active:not(:disabled) {
   background-size: 180px 180px;
 }
 
-/* Live Ultima draft: site nav and footer leave the room. */
-body:has(.ultima-live-chrome-off) > header,
+/* Ultima: marketing footer leaves; the rail is the terminus. */
+body.ultima-root > footer,
+body:has(.ultima-root) > footer,
 body:has(.ultima-live-chrome-off) > footer {
+  display: none;
+}
+
+/* Live Ultima draft: site nav and footer leave the room. */
+body:has(.ultima-live-chrome-off) > header {
   display: none;
 }

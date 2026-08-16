@@ -1,5 +1,6 @@
 import ViewsTickerBand from "@/components/ViewsTickerBand";
 import SectionContinue from "@/components/SectionContinue";
+import Breadcrumb from "@/components/Breadcrumb";
 import FilmsHero from "@/components/films/FilmsHero";
 import FilmsHeroPicks from "@/components/films/FilmsHeroPicks";
 import FilmsWatchWays from "@/components/films/FilmsWatchWays";
@@ -52,6 +53,7 @@ export default async function FilmsPage() {
 
   return (
     <div className="flex flex-1 flex-col">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Films" }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

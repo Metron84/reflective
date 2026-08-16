@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import {
@@ -104,10 +103,6 @@ export default async function UltimaStandingsPage() {
             </tbody>
           </table>
         </section>
-
-        <Link href="/ultima" className={styles.quietLink}>
-          Back to hub
-        </Link>
       </div>
     </div>
   );

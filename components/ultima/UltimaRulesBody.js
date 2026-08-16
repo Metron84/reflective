@@ -81,12 +81,6 @@ export default function UltimaRulesBody() {
       <p className={styles.phaseNote}>
         Match ratings come from Sportmonks. The bands are 7.0 and 7.5 in every league.
       </p>
-
-      <p className={styles.hubNote}>
-        <Link href="/ultima" className={styles.quietLink}>
-          Back to Ultima
-        </Link>
-      </p>
     </div>
   );
 }

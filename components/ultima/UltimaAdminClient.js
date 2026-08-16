@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_LABELS,
@@ -299,10 +298,6 @@ export default function UltimaAdminClient({
 
       {message ? <p className={styles.messageOk}>{message}</p> : null}
       {error ? <p className={styles.messageError}>{error}</p> : null}
-
-      <Link href="/ultima" className={styles.quietLink}>
-        Back to hub
-      </Link>
     </div>
   );
 }

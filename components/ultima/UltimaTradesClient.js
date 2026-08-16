@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import EmptyState from "@/components/EmptyState";
 import styles from "./ultima.module.css";
 
 export default function UltimaTradesClient({
@@ -95,12 +95,12 @@ export default function UltimaTradesClient({
 
   if (!tradesOpen) {
     return (
-      <div>
-        <p className={styles.lede}>Not enough data yet. Trades open at gameweek 4.</p>
-        <Link href="/ultima" className={styles.quietLink}>
-          Back to hub
-        </Link>
-      </div>
+      <EmptyState
+        heading="Trades closed"
+        body={`Not enough data yet. Trades open at gameweek 4. Current gameweek ${gameweekNumber ?? "—"}.`}
+        actionLabel="Open the hub"
+        actionHref="/ultima"
+      />
     );
   }
 
@@ -219,10 +219,6 @@ export default function UltimaTradesClient({
       </ul>
 
       {trades.length === 0 ? <p className={styles.emptyState}>No trades yet.</p> : null}
-
-      <Link href="/ultima" className={styles.quietLink}>
-        Back to hub
-      </Link>
     </div>
   );
 }

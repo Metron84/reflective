@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_SHORT,
@@ -189,10 +188,6 @@ export default function UltimaSquadClient({
           </div>
         </div>
       ) : null}
-
-      <Link href="/ultima" className={styles.quietLink}>
-        Back to hub
-      </Link>
     </div>
   );
 }

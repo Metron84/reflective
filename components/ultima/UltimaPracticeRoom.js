@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import EmptyState from "@/components/EmptyState";
 import UltimaDraftRoom from "./UltimaDraftRoom";
 import styles from "./ultima.module.css";
 
@@ -61,19 +62,26 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
 
   if (!lobby) {
     return (
-      <div className={styles.navyRoom}>
-        <p className={styles.navyText}>Loading practice room…</p>
+      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+        <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading practice room">
+          <div className={styles.draftSkeletonBar} />
+          <div className={styles.draftSkeletonChip} />
+          <div className={styles.draftSkeletonBody} />
+        </div>
       </div>
     );
   }
 
   if (lobby.state === "lobby" && lobby.solo && isHost) {
     return (
-      <div className={styles.navyRoom}>
-        <p className={styles.navyTitle}>Setting up your practice</p>
-        <p className={styles.navyText}>
-          Seating nine bots and drawing the order. This takes a moment.
-        </p>
+      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+        <EmptyState
+          tone="navy"
+          heading="Setting up your practice"
+          body="Seating nine bots and drawing the order. This takes a moment."
+          actionLabel="Exit"
+          actionHref="/ultima/practice"
+        />
         {error ? (
           <>
             <p className={styles.messageError}>{error}</p>
@@ -82,9 +90,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
             </button>
           </>
         ) : null}
-        <Link href="/ultima/practice" className={styles.quietLinkLight}>
-          Back to practice
-        </Link>
       </div>
     );
   }

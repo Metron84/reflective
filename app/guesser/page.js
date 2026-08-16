@@ -30,6 +30,7 @@ import {
 } from "@/lib/auth/plays";
 import { GUESSER_STRAPLINE } from "@/lib/config";
 import GuesserBoard from "@/components/guesser/GuesserBoard";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "The Guesser",
@@ -108,6 +109,7 @@ export default async function GuesserPage({ searchParams }) {
 
   return (
     <div>
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "The Guesser" }]} />
       <section className="bg-gradient-to-b from-navy to-navy-deep px-6 py-16 text-center">
         <p className="text-xs uppercase tracking-[0.35em] text-paper/50">
           The Reflective Football

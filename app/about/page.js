@@ -1,4 +1,5 @@
 import ComingSoon from "@/components/ComingSoon";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "About",
@@ -9,5 +10,10 @@ export const metadata = {
 
 // Placeholder. About page is build-order step 7.
 export default function AboutPage() {
-  return <ComingSoon title="About" note="Fan-first football films from Dubai." />;
+  return (
+    <div>
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+      <ComingSoon title="About" note="Fan-first football films from Dubai." />
+    </div>
+  );
 }
