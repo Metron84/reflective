@@ -471,7 +471,7 @@
 .draftViewToggle {
   display: flex;
   gap: 0;
-  margin: 0.75rem 0 1rem;
+  margin: 0.75rem 0 0.35rem;
   border: 1px solid rgba(242, 237, 228, 0.28);
 }
 
@@ -490,6 +490,106 @@
 
 .draftSegActive {
   background: rgba(242, 237, 228, 0.14);
+}
+
+.draftSegDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: #d8232a;
+}
+
+.lastPicksStrip {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0 0 1rem;
+}
+
+.lastPicksStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.lastPickChip {
+  flex: 0 0 auto;
+  max-width: 8.5rem;
+  height: 32px;
+  padding: 0 0.55rem 0 0.65rem;
+  border: none;
+  border-left: 3px solid #f2ede4;
+  background: rgba(242, 237, 228, 0.1);
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.lastPickChipEnter {
+  animation: lastPickIn 280ms ease-out;
+}
+
+@keyframes lastPickIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lastPickChipEnter {
+    animation: none;
+  }
+
+  .botSpinner {
+    animation: none;
+    border-top-color: #f2ede4;
+  }
+}
+
+.botSpinner {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(242, 237, 228, 0.28);
+  border-top-color: #f2ede4;
+  border-radius: 50%;
+  animation: ultimaSpin 0.7s linear infinite;
+}
+
+@keyframes ultimaSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.draftStall {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0 0 0.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid #d8232a;
+  background: transparent;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  cursor: pointer;
 }
 
 .draftBodySplit {
@@ -581,6 +681,10 @@
 @media (min-width: 1024px) {
   .draftViewToggle {
     display: none;
+  }
+
+  .lastPicksStrip {
+    margin-top: 0.75rem;
   }
 
   .draftBodySplit {

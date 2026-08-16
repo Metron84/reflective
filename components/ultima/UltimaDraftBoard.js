@@ -28,9 +28,12 @@ export default function UltimaDraftBoard({
   youId = null,
   mode = "full",
   reveal = true,
+  focusPick = null,
+  focusGen = 0,
 }) {
   const youHead = useRef(null);
   const currentCell = useRef(null);
+  const rootRef = useRef(null);
   const seats = managers.length;
   const columnOnly = mode === "column";
 
@@ -64,6 +67,24 @@ export default function UltimaDraftBoard({
     el.scrollIntoView(SCROLL_OPTS);
   }, [columnOnly, currentPick, reveal, picks.length]);
 
+  useEffect(() => {
+    if (columnOnly || !focusPick || !reveal) return undefined;
+    const root = rootRef.current;
+    if (!root) return undefined;
+    let frame2 = 0;
+    const frame1 = window.requestAnimationFrame(() => {
+      frame2 = window.requestAnimationFrame(() => {
+        const el = root.querySelector(`[data-pick-number="${focusPick}"]`);
+        if (!el || el.getClientRects().length === 0) return;
+        el.scrollIntoView(SCROLL_OPTS);
+      });
+    });
+    return () => {
+      window.cancelAnimationFrame(frame1);
+      window.cancelAnimationFrame(frame2);
+    };
+  }, [columnOnly, focusPick, focusGen, reveal]);
+
   if (!seats) {
     return <p className={styles.floorLine}>The board appears once seats are filled.</p>;
   }
@@ -72,7 +93,7 @@ export default function UltimaDraftBoard({
   const rounds = Array.from({ length: ULTIMA_DRAFT_ROUNDS }, (_, i) => i + 1);
 
   return (
-    <div className={columnOnly ? styles.boardWrapMine : styles.boardWrap}>
+    <div className={columnOnly ? styles.boardWrapMine : styles.boardWrap} ref={rootRef}>
       {columnOnly ? null : (
         <>
           <ul className={styles.boardLegend}>
@@ -160,6 +181,7 @@ export default function UltimaDraftBoard({
                       <td
                         key={manager.id}
                         ref={isCurrent ? currentCell : undefined}
+                        data-pick-number={number}
                         className={`${cellClass} ${youClass}`.trim()}
                         style={
                           pick

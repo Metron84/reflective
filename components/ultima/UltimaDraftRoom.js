@@ -4,14 +4,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_COLOURS,
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import { lastPicksNewestFirst, playerSurname } from "@/lib/ultima/draft/last-picks";
 import { countByLeague, remainingSlots } from "@/lib/ultima/draft/floor";
 import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftPicker from "./UltimaDraftPicker";
+import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
 import styles from "./ultima.module.css";
 
 function viewStorageKey(scope) {
@@ -47,8 +50,10 @@ export default function UltimaDraftRoom({
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
-  const advancing = useRef(false);
   const [poolLoading, setPoolLoading] = useState(false);
+  const [focusPick, setFocusPick] = useState(null);
+  const [focusGen, setFocusGen] = useState(0);
+  const [seenPicks, setSeenPicks] = useState(null);
 
   const fetchState = useCallback(async () => {
     try {
@@ -79,6 +84,14 @@ export default function UltimaDraftRoom({
     }
   }, [isPractice, roomCode]);
 
+  const { botPicking, humanSeconds, stall, retry } = useUltimaDraftAdvance({
+    enabled: Boolean(state) && state.state === "live",
+    isPractice,
+    roomCode,
+    state,
+    fetchState,
+  });
+
   useEffect(() => {
     fetchState();
     const streamUrl = isPractice
@@ -97,42 +110,6 @@ export default function UltimaDraftRoom({
     const poll = setInterval(fetchState, isPractice ? 2000 : 5000);
     return () => clearInterval(poll);
   }, [fetchState, isPractice]);
-
-  useEffect(() => {
-    if (state?.state !== "live") return;
-    const botOnClock = Boolean(state.on_clock?.is_bot);
-    const timedOut = state.seconds_remaining === 0;
-    if (!botOnClock && !timedOut) return;
-    if (advancing.current) return;
-
-    let cancelled = false;
-    advancing.current = true;
-    (async () => {
-      try {
-        await fetch(isPractice ? "/api/ultima/practice/advance" : "/api/ultima/draft/advance", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: isPractice ? JSON.stringify({ code: roomCode }) : "{}",
-        });
-        if (!cancelled) await fetchState();
-      } finally {
-        advancing.current = false;
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [
-    fetchState,
-    isPractice,
-    roomCode,
-    state?.state,
-    state?.current_pick,
-    state?.on_clock?.is_bot,
-    state?.seconds_remaining,
-    state?.is_your_turn,
-  ]);
 
   const viewScope = isPractice ? roomCode : managerId;
 
@@ -175,13 +152,27 @@ export default function UltimaDraftRoom({
     const observer = new ResizeObserver(apply);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [state?.on_clock, state?.is_your_turn, state?.state]);
+  }, [state?.on_clock, state?.is_your_turn, state?.state, botPicking, stall]);
 
   useEffect(() => {
     if (state?.state !== "live" && state?.state !== "paused") return;
     if (available.length) return;
     fetchAvailable();
   }, [available.length, fetchAvailable, state?.state]);
+
+  const pickCount = state?.picks?.length ?? 0;
+
+  useEffect(() => {
+    if (!state) return;
+    if (seenPicks == null) {
+      setSeenPicks(pickCount);
+      return;
+    }
+    if (viewMode === "board") setSeenPicks(pickCount);
+    else if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
+      setSeenPicks(pickCount);
+    }
+  }, [state, pickCount, viewMode, seenPicks]);
 
   const draftedIds = useMemo(
     () => new Set((state?.picks ?? []).map((p) => p.player?.id).filter(Boolean)),
@@ -398,15 +389,26 @@ export default function UltimaDraftRoom({
   const myPicks = (state.picks ?? []).filter((p) => p.manager_id === managerId);
   const leagueCounts = countByLeague(myPicks.map((p) => p.player).filter(Boolean));
   const slotsLeft = remainingSlots(myPicks.length);
+  const botOnClock = Boolean(state.on_clock?.is_bot);
   const onClockName = state.on_clock
     ? state.on_clock.is_you
       ? "You are on the clock"
-      : `${state.on_clock.team_name}${state.on_clock.is_bot ? " · BOT" : ""}`
+      : botOnClock
+        ? `${state.on_clock.team_name} · BOT picking`
+        : state.on_clock.team_name
     : isPractice
       ? "Practice"
       : "Draft";
-  const secondsLabel =
-    state.seconds_remaining != null ? String(state.seconds_remaining) : "—";
+  const showBotClock = botOnClock || botPicking;
+  const secondsLabel = showBotClock
+    ? null
+    : humanSeconds != null
+      ? String(humanSeconds)
+      : state.seconds_remaining != null
+        ? String(state.seconds_remaining)
+        : "—";
+  const lastPicks = lastPicksNewestFirst(state.picks ?? [], 5);
+  const unreadBoard = viewMode !== "board" && pickCount > (seenPicks ?? 0);
 
   function chooseView(next) {
     setViewMode(next);
@@ -417,6 +419,12 @@ export default function UltimaDraftRoom({
     } catch {
       /* private mode */
     }
+  }
+
+  function openPickOnBoard(pickNumber) {
+    setFocusPick(pickNumber);
+    setFocusGen((gen) => gen + 1);
+    chooseView("board");
   }
 
   const picker = (
@@ -446,6 +454,8 @@ export default function UltimaDraftRoom({
       youId={managerId}
       mode="full"
       reveal={viewMode === "board"}
+      focusPick={focusPick}
+      focusGen={focusGen}
     />
   );
 
@@ -475,9 +485,13 @@ export default function UltimaDraftRoom({
       <header className={styles.draftSticky} ref={stickyRef}>
         <div className={styles.draftStickyRow}>
           <p className={styles.draftOnClockName}>{onClockName}</p>
-          <span className={styles.draftClockSecs} aria-label="Seconds remaining">
-            {secondsLabel}
-          </span>
+          {showBotClock ? (
+            <span className={styles.botSpinner} aria-label="Bot picking" />
+          ) : (
+            <span className={styles.draftClockSecs} aria-label="Seconds remaining">
+              {secondsLabel}
+            </span>
+          )}
           <div className={styles.draftMenuWrap} ref={menuRef}>
             <button
               type="button"
@@ -573,6 +587,12 @@ export default function UltimaDraftRoom({
         {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
       </header>
 
+      {stall ? (
+        <button type="button" className={styles.draftStall} onClick={retry}>
+          Draft stalled, tap to retry
+        </button>
+      ) : null}
+
       {state.state === "paused" ? (
         <p className={styles.pausedBanner}>Paused by the commissioner</p>
       ) : null}
@@ -620,8 +640,35 @@ export default function UltimaDraftRoom({
           onClick={() => chooseView("board")}
         >
           Board
+          {unreadBoard ? (
+            <span className={styles.draftSegDot} aria-label="New picks" />
+          ) : null}
         </button>
       </div>
+
+      {lastPicks.length ? (
+        <div className={styles.lastPicksStrip} aria-label="Last picks">
+          {lastPicks.map((pick, index) => {
+            const league = pick.player?.league;
+            const label = `${pick.pick_number} · ${playerSurname(pick.player?.name)}`;
+            return (
+              <button
+                key={pick.pick_number}
+                type="button"
+                className={
+                  index === 0 ? `${styles.lastPickChip} ${styles.lastPickChipEnter}` : styles.lastPickChip
+                }
+                style={{ borderLeftColor: ULTIMA_LEAGUE_COLOURS[league] ?? "#F2EDE4" }}
+                onClick={() => openPickOnBoard(pick.pick_number)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className={styles.lastPicksStrip} aria-hidden />
+      )}
 
       {showFeed ? (
         feedList
