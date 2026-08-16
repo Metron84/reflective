@@ -579,17 +579,37 @@
 }
 
 .draftStall {
-  display: block;
+  display: grid;
+  gap: 0.15rem;
   width: 100%;
   min-height: 44px;
   margin: 0 0 0.75rem;
-  padding: 0 0.75rem;
+  padding: 0.55rem 0.75rem;
   border: 1px solid #d8232a;
   background: transparent;
   color: #f2ede4;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.875rem;
+  text-align: left;
   cursor: pointer;
+}
+
+.draftStallLabel {
+  font-weight: 600;
+}
+
+.draftStallDetail {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.35;
+  opacity: 0.92;
+}
+
+.draftStallHint {
+  font-size: 0.75rem;
+  opacity: 0.75;
 }
 
 .draftExit {

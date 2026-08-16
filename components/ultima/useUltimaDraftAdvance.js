@@ -124,7 +124,11 @@ export default function useUltimaDraftAdvance({
   }
 
   function markStall(detail) {
-    setStallDetail(detail || "");
+    const text = detail || "";
+    if (text) {
+      console.error("Ultima draft stall reason", text);
+    }
+    setStallDetail(text);
     setStall(true);
     setBotPicking(false);
   }

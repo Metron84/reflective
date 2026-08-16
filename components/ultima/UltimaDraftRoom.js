@@ -667,9 +667,15 @@ export default function UltimaDraftRoom({
 
       {stall ? (
         <button type="button" className={styles.draftStall} onClick={retry}>
-          {stallDetail
-            ? `Draft stalled · ${stallDetail}. Tap to retry`
-            : "Draft stalled, tap to retry"}
+          {stallDetail ? (
+            <>
+              <span className={styles.draftStallLabel}>Draft stalled</span>
+              <span className={styles.draftStallDetail}>{stallDetail}</span>
+              <span className={styles.draftStallHint}>Tap to retry</span>
+            </>
+          ) : (
+            "Draft stalled, tap to retry"
+          )}
         </button>
       ) : null}
 
