@@ -38,6 +38,35 @@ export async function POST(request) {
     return NextResponse.json(err, { status });
   }
 
-  const result = await expirePracticeTurn(code);
-  return NextResponse.json({ ok: true, ...result });
+  try {
+    const result = await expirePracticeTurn(code);
+    if (result?.ok === false) {
+      return NextResponse.json(
+        {
+          ok: false,
+          code: result.code ?? "BOT_PICK_FAILED",
+          message: result.message ?? "Advance failed.",
+          competition_id: room.competition_id,
+          current_pick: result.current_pick ?? null,
+          on_clock_is_bot: result.on_clock_is_bot ?? null,
+        },
+        { status: 422 },
+      );
+    }
+    return NextResponse.json({ ok: true, ...result });
+  } catch (err) {
+    console.error("Ultima practice advance threw", {
+      competition_id: room.competition_id,
+      message: err?.message ?? String(err),
+    });
+    return NextResponse.json(
+      {
+        ok: false,
+        code: "BOT_PICK_FAILED",
+        message: err?.message ?? "Advance threw.",
+        competition_id: room.competition_id,
+      },
+      { status: 500 },
+    );
+  }
 }

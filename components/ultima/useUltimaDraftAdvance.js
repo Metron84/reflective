@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const BOT_VISIBLE_DELAY_MS = 900;
 const BOT_CHAIN_GAP_MS = 350;
 const MAX_STALL_RETRIES = 2;
+const STALE_LOCK_MS = 5000;
 
 function sleep(ms) {
   return new Promise((resolve) => {
@@ -16,9 +17,9 @@ function sleep(ms) {
  * Bot / timeout advance driver. Mounted from the draft room root so Players vs
  * Board cannot unmount it.
  *
- * The old stall was a cancelled flag in UltimaDraftRoom tied to
- * seconds_remaining: each tick aborted the POST and skipped fetchState.
- * This hook does not abort fetches. A failed POST cannot leave a lock set.
+ * Part A finding: chooseBotPick threw ReferenceError (ULTIMA_LEAGUES missing),
+ * so POST /advance returned 500. Both fresh and resumed rooms stalled on any
+ * bot seat. The retry button did reach advance; the route failed every time.
  */
 export default function useUltimaDraftAdvance({
   enabled,
@@ -30,9 +31,12 @@ export default function useUltimaDraftAdvance({
   const [botPicking, setBotPicking] = useState(false);
   const [humanSeconds, setHumanSeconds] = useState(null);
   const [stall, setStall] = useState(false);
+  const [stallDetail, setStallDetail] = useState("");
   const [loopKey, setLoopKey] = useState(0);
   const stateRef = useRef(state);
-  const recovering = useRef(false);
+  const advancing = useRef(false);
+  const advancingSince = useRef(0);
+  const lastPickSeen = useRef(state?.current_pick ?? null);
   const stallTries = useRef(0);
   const fetchStateRef = useRef(fetchState);
   const intervalRef = useRef(null);
@@ -43,7 +47,31 @@ export default function useUltimaDraftAdvance({
   isPracticeRef.current = isPractice;
   roomCodeRef.current = roomCode;
 
-  async function postAdvance() {
+  function logAdvance(phase, extra = {}) {
+    const snap = stateRef.current;
+    console.info("[ultima-advance]", phase, {
+      competition_id: snap?.competition_id ?? extra.competition_id ?? null,
+      current_pick: snap?.current_pick ?? extra.current_pick ?? null,
+      "advancing.current": advancing.current,
+      ...extra,
+    });
+  }
+
+  function clearStaleLock(force = false) {
+    if (!advancing.current) return false;
+    const age = Date.now() - advancingSince.current;
+    if (force || age >= STALE_LOCK_MS) {
+      logAdvance("stale_lock_clear", { age_ms: age, forced: force });
+      advancing.current = false;
+      advancingSince.current = 0;
+      return true;
+    }
+    return false;
+  }
+
+  async function postAdvance(reason) {
+    const snap = stateRef.current;
+    logAdvance("entry", { reason });
     try {
       const practice = isPracticeRef.current;
       const res = await fetch(
@@ -60,29 +88,61 @@ export default function useUltimaDraftAdvance({
       } catch {
         data = {};
       }
-      return { ok: res.ok && data.ok !== false, data };
-    } catch {
-      return { ok: false, data: {} };
+      logAdvance("fetch_resolve", {
+        reason,
+        status: res.status,
+        ok: res.ok && data.ok !== false,
+        body_ok: data.ok,
+        message: data.message ?? null,
+        current_pick: data.current_pick ?? snap?.current_pick ?? null,
+        competition_id: data.competition_id ?? snap?.competition_id ?? null,
+      });
+      return {
+        ok: res.ok && data.ok !== false,
+        status: res.status,
+        data,
+        message: data.message ?? (res.ok ? "" : `HTTP ${res.status}`),
+      };
+    } catch (err) {
+      logAdvance("catch", {
+        reason,
+        message: err?.message ?? String(err),
+      });
+      return { ok: false, status: 0, data: {}, message: err?.message ?? "Network error" };
+    } finally {
+      logAdvance("finally", { reason });
     }
   }
 
-  function warnStall(snap, reason) {
+  function warnStall(snap, reason, detail = "") {
     console.warn("Ultima draft stall", {
       reason,
+      detail,
       competition_id: snap?.competition_id ?? null,
       current_pick: snap?.current_pick ?? null,
     });
   }
 
-  async function recoverOnce(reason) {
-    if (recovering.current) return;
-    recovering.current = true;
+  function markStall(detail) {
+    setStallDetail(detail || "");
+    setStall(true);
+    setBotPicking(false);
+  }
+
+  async function recoverOnce(reason, { force = false } = {}) {
+    clearStaleLock(force);
+    if (advancing.current) {
+      logAdvance("recover_early_return", { reason });
+      return;
+    }
+    advancing.current = true;
+    advancingSince.current = Date.now();
     try {
       while (stallTries.current < MAX_STALL_RETRIES) {
         const snap = stateRef.current;
         warnStall(snap, reason);
         stallTries.current += 1;
-        const result = await postAdvance();
+        const result = await postAdvance(reason);
         await fetchStateRef.current();
         const moved =
           result.ok &&
@@ -91,30 +151,47 @@ export default function useUltimaDraftAdvance({
         if (moved) {
           stallTries.current = 0;
           setStall(false);
+          setStallDetail("");
           return;
         }
         if (!result.ok || result.data.skipped) {
+          if (stallTries.current >= MAX_STALL_RETRIES) {
+            markStall(
+              result.message
+                ? `${result.status || "ERR"} · ${result.message}`
+                : "",
+            );
+            return;
+          }
           await sleep(BOT_CHAIN_GAP_MS);
           continue;
         }
         stallTries.current = 0;
         setStall(false);
+        setStallDetail("");
         return;
       }
-      setStall(true);
+      markStall("");
     } finally {
-      recovering.current = false;
+      advancing.current = false;
+      advancingSince.current = 0;
+      logAdvance("recover_finally", { reason });
     }
   }
 
   useEffect(() => {
-    stallTries.current = 0;
-    setStall(false);
+    if (state?.current_pick == null) return;
+    if (lastPickSeen.current !== state.current_pick) {
+      lastPickSeen.current = state.current_pick;
+      stallTries.current = 0;
+      setStall(false);
+      setStallDetail("");
+    }
   }, [state?.current_pick]);
 
   useEffect(() => {
-    if (!enabled || state?.state !== "live" || !state.on_clock?.is_bot) {
-      setBotPicking(false);
+    if (!enabled || state?.state !== "live" || !state.on_clock?.is_bot || stall) {
+      if (!state?.on_clock?.is_bot || stall) setBotPicking(false);
       return undefined;
     }
 
@@ -122,36 +199,48 @@ export default function useUltimaDraftAdvance({
     setBotPicking(true);
 
     (async () => {
+      clearStaleLock(true);
+      advancing.current = true;
+      advancingSince.current = Date.now();
       try {
         await sleep(BOT_VISIBLE_DELAY_MS);
         while (!stopped) {
           const snap = stateRef.current;
           if (snap?.state !== "live" || !snap.on_clock?.is_bot) break;
-          const result = await postAdvance();
+          const beforePick = snap.current_pick;
+          const result = await postAdvance("bot_loop");
           await fetchStateRef.current();
-          if (result.ok) {
+          const afterPick = stateRef.current?.current_pick;
+          if (result.ok && afterPick != null && afterPick !== beforePick) {
             stallTries.current = 0;
             if (result.data.on_clock_is_bot === false) break;
             await sleep(BOT_CHAIN_GAP_MS);
             continue;
           }
-          warnStall(snap, "advance_http");
+          warnStall(snap, "advance_http", result.message);
           stallTries.current += 1;
           if (stallTries.current >= MAX_STALL_RETRIES) {
-            setStall(true);
+            markStall(
+              result.message
+                ? `${result.status || "ERR"} · ${result.message}`
+                : "",
+            );
             break;
           }
           await sleep(BOT_CHAIN_GAP_MS);
         }
       } finally {
+        advancing.current = false;
+        advancingSince.current = 0;
         setBotPicking(false);
+        logAdvance("bot_loop_finally");
       }
     })();
 
     return () => {
       stopped = true;
     };
-  }, [enabled, state?.state, state?.on_clock?.is_bot, loopKey]);
+  }, [enabled, state?.state, state?.on_clock?.is_bot, loopKey, stall]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -205,15 +294,17 @@ export default function useUltimaDraftAdvance({
   }, [enabled, state?.state, state?.current_pick, state?.on_clock?.id, state?.on_clock?.is_bot]);
 
   async function retry() {
+    logAdvance("retry_tap");
     stallTries.current = 0;
-    recovering.current = false;
+    clearStaleLock(true);
     setStall(false);
+    setStallDetail("");
     if (stateRef.current?.on_clock?.is_bot) {
       setLoopKey((key) => key + 1);
       return;
     }
-    await recoverOnce("manual_retry");
+    await recoverOnce("manual_retry", { force: true });
   }
 
-  return { botPicking, humanSeconds, stall, retry };
+  return { botPicking, humanSeconds, stall, stallDetail, retry };
 }

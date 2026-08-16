@@ -84,7 +84,7 @@ export default function UltimaDraftRoom({
     }
   }, [isPractice, roomCode]);
 
-  const { botPicking, humanSeconds, stall, retry } = useUltimaDraftAdvance({
+  const { botPicking, humanSeconds, stall, stallDetail, retry } = useUltimaDraftAdvance({
     enabled: Boolean(state) && state.state === "live",
     isPractice,
     roomCode,
@@ -393,13 +393,15 @@ export default function UltimaDraftRoom({
   const onClockName = state.on_clock
     ? state.on_clock.is_you
       ? "You are on the clock"
-      : botOnClock
-        ? `${state.on_clock.team_name} · BOT picking`
-        : state.on_clock.team_name
+      : botOnClock && stall
+        ? `${state.on_clock.team_name} · BOT stalled`
+        : botOnClock
+          ? `${state.on_clock.team_name} · BOT picking`
+          : state.on_clock.team_name
     : isPractice
       ? "Practice"
       : "Draft";
-  const showBotClock = botOnClock || botPicking;
+  const showBotClock = !stall && (botOnClock || botPicking);
   const secondsLabel = showBotClock
     ? null
     : humanSeconds != null
@@ -589,7 +591,9 @@ export default function UltimaDraftRoom({
 
       {stall ? (
         <button type="button" className={styles.draftStall} onClick={retry}>
-          Draft stalled, tap to retry
+          {stallDetail
+            ? `Draft stalled · ${stallDetail}. Tap to retry`
+            : "Draft stalled, tap to retry"}
         </button>
       ) : null}
 
