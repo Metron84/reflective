@@ -1528,7 +1528,6 @@
   flex-direction: column;
   gap: 0.5rem;
 }
-}
 
 .feedRow {
   font-family: var(--font-archivo), sans-serif;
