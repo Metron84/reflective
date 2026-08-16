@@ -425,18 +425,16 @@ export default function UltimaDraftRoom({
     </>
   );
 
-  const boardPane =
-    (state.picks ?? []).length === 0 ? (
-      <p className={styles.draftBoardEmpty}>Board empty. First pick coming.</p>
-    ) : (
-      <UltimaDraftBoard
-        managers={state.managers ?? []}
-        picks={state.picks ?? []}
-        currentPick={state.current_pick}
-        youId={managerId}
-        mode="full"
-      />
-    );
+  const boardPane = (
+    <UltimaDraftBoard
+      managers={state.managers ?? []}
+      picks={state.picks ?? []}
+      currentPick={state.current_pick}
+      youId={managerId}
+      mode="full"
+      reveal={viewMode === "board"}
+    />
+  );
 
   const feedList = (
     <div className={styles.feedList}>

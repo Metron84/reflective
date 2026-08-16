@@ -5,7 +5,6 @@ import {
   ULTIMA_DRAFT_ROUNDS,
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_COLOURS,
-  ULTIMA_LEAGUE_SHORT,
   ULTIMA_LEAGUE_LABELS,
 } from "@/lib/ultima/constants";
 import styles from "./ultima.module.css";
@@ -15,28 +14,12 @@ function pickNumberFor(round, slot, seats) {
   return (round - 1) * seats + position;
 }
 
-function cellContent(pick, number, isCurrent) {
-  if (!pick) {
-    return (
-      <>
-        <span className={styles.boardPickNumber}>{number}</span>
-        {isCurrent ? <span className={styles.boardOnClock}>On the clock</span> : null}
-      </>
-    );
-  }
-
-  const league = pick.player?.league;
-  return (
-    <>
-      <span className={styles.boardPlayer}>{pick.player?.name ?? "Unknown"}</span>
-      <span className={styles.boardMeta}>
-        {pick.player?.club}
-        {league ? ` · ${ULTIMA_LEAGUE_SHORT[league] ?? league}` : ""}
-      </span>
-      <span className={styles.boardPickNumber}>{number}</span>
-    </>
-  );
+function surname(name) {
+  const parts = String(name ?? "").trim().split(/\s+/).filter(Boolean);
+  return parts[parts.length - 1] || "Unknown";
 }
+
+const SCROLL_OPTS = { behavior: "smooth", block: "center", inline: "center" };
 
 export default function UltimaDraftBoard({
   managers = [],
@@ -44,8 +27,10 @@ export default function UltimaDraftBoard({
   currentPick = 0,
   youId = null,
   mode = "full",
+  reveal = true,
 }) {
-  const youCell = useRef(null);
+  const youHead = useRef(null);
+  const currentCell = useRef(null);
   const seats = managers.length;
   const columnOnly = mode === "column";
 
@@ -63,95 +48,144 @@ export default function UltimaDraftBoard({
     return map;
   }, [picks]);
 
+  function scrollToMine() {
+    youHead.current?.scrollIntoView(SCROLL_OPTS);
+  }
+
+  function scrollToCurrent() {
+    currentCell.current?.scrollIntoView(SCROLL_OPTS);
+  }
+
   useEffect(() => {
     if (columnOnly) return;
-    youCell.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  }, [columnOnly, youId, currentPick]);
+    const el = currentCell.current;
+    if (!el) return;
+    if (el.getClientRects().length === 0) return;
+    el.scrollIntoView(SCROLL_OPTS);
+  }, [columnOnly, currentPick, reveal, picks.length]);
 
   if (!seats) {
     return <p className={styles.floorLine}>The board appears once seats are filled.</p>;
   }
 
+  const empty = picks.length === 0;
   const rounds = Array.from({ length: ULTIMA_DRAFT_ROUNDS }, (_, i) => i + 1);
 
   return (
     <div className={columnOnly ? styles.boardWrapMine : styles.boardWrap}>
       {columnOnly ? null : (
-        <ul className={styles.boardLegend}>
-          {ULTIMA_LEAGUES.map((league) => (
-            <li key={league} className={styles.boardLegendItem}>
-              <span
-                className={styles.boardSwatch}
-                style={{ background: ULTIMA_LEAGUE_COLOURS[league] }}
-                aria-hidden
-              />
-              {ULTIMA_LEAGUE_LABELS[league]}
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className={styles.boardLegend}>
+            {ULTIMA_LEAGUES.map((league) => (
+              <li key={league} className={styles.boardLegendItem}>
+                <span
+                  className={styles.boardSwatch}
+                  style={{ background: ULTIMA_LEAGUE_COLOURS[league] }}
+                  aria-hidden
+                />
+                {ULTIMA_LEAGUE_LABELS[league]}
+              </li>
+            ))}
+          </ul>
+          {empty ? null : (
+            <div className={styles.boardJump}>
+              <button type="button" className={styles.boardJumpBtn} onClick={scrollToMine}>
+                My column
+              </button>
+              <button type="button" className={styles.boardJumpBtn} onClick={scrollToCurrent}>
+                Current pick
+              </button>
+            </div>
+          )}
+        </>
       )}
 
-      <div className={styles.boardScroll}>
-        <table className={styles.boardGrid}>
-          <caption className={styles.boardCaption}>
-            {columnOnly
-              ? "Your squad, round by round."
-              : "Every pick of the draft. Your column stays in view."}
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col" className={styles.boardCorner}>
-                Rd
-              </th>
-              {ordered.map((manager) => {
-                const isYou = manager.id === youId;
-                return (
-                  <th
-                    key={manager.id}
-                    scope="col"
-                    ref={isYou ? youCell : undefined}
-                    className={isYou ? styles.boardHeadYou : styles.boardHead}
-                  >
-                    <span className={styles.boardHeadName}>
-                      {isYou ? "You" : manager.team_name}
-                    </span>
-                    {manager.is_bot ? <span className={styles.boardHeadBot}>BOT</span> : null}
-                  </th>
-                );
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {rounds.map((round) => (
-              <tr key={round}>
-                <th scope="row" className={styles.boardRound}>
-                  {round}
+      {empty ? (
+        <p className={styles.draftBoardEmpty}>Board empty. First pick coming.</p>
+      ) : (
+        <div className={styles.boardScroll}>
+          <table
+            className={styles.boardGrid}
+            style={{ "--board-seats": String(ordered.length) }}
+          >
+            <caption className={styles.boardCaption}>
+              {columnOnly
+                ? "Your squad, round by round."
+                : "Every pick of the draft. Your column stays in view."}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" className={styles.boardCorner}>
+                  Rd
                 </th>
                 {ordered.map((manager) => {
-                  const slot = manager.draft_slot ?? 1;
-                  const number = pickNumberFor(round, slot, seats);
-                  const pick = byPickNumber.get(number);
-                  const isCurrent = number === currentPick;
                   const isYou = manager.id === youId;
-                  const league = pick?.player?.league;
-                  const emptyClass = isCurrent ? styles.boardCellOnClock : styles.boardCellEmpty;
-                  const filledClass = isYou ? styles.boardCellYou : styles.boardCell;
-
                   return (
-                    <td
+                    <th
                       key={manager.id}
-                      className={`${pick ? filledClass : emptyClass} ${isYou ? styles.boardStickyYou : ""}`}
-                      style={pick ? { background: ULTIMA_LEAGUE_COLOURS[league] ?? "#E4DED3" } : undefined}
+                      scope="col"
+                      ref={isYou ? youHead : undefined}
+                      className={isYou ? styles.boardHeadYou : styles.boardHead}
                     >
-                      {cellContent(pick, number, isCurrent)}
-                    </td>
+                      <span className={styles.boardHeadName}>
+                        {isYou ? "You" : manager.team_name}
+                      </span>
+                      {manager.is_bot ? <span className={styles.boardHeadBot}>BOT</span> : null}
+                    </th>
                   );
                 })}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {rounds.map((round) => (
+                <tr key={round}>
+                  <th scope="row" className={styles.boardRound}>
+                    {round}
+                  </th>
+                  {ordered.map((manager) => {
+                    const slot = manager.draft_slot ?? 1;
+                    const number = pickNumberFor(round, slot, seats);
+                    const pick = byPickNumber.get(number);
+                    const isCurrent = number === currentPick;
+                    const isYou = manager.id === youId;
+                    const league = pick?.player?.league;
+                    const cellClass = pick
+                      ? styles.boardCell
+                      : isCurrent
+                        ? styles.boardCellOnClock
+                        : styles.boardCellEmpty;
+                    const youClass = isYou ? styles.boardCellYou : "";
+
+                    return (
+                      <td
+                        key={manager.id}
+                        ref={isCurrent ? currentCell : undefined}
+                        className={`${cellClass} ${youClass}`.trim()}
+                        style={
+                          pick
+                            ? { borderLeftColor: ULTIMA_LEAGUE_COLOURS[league] ?? "#E4DED3" }
+                            : undefined
+                        }
+                      >
+                        {pick ? (
+                          <span className={styles.boardPlayer}>
+                            {surname(pick.player?.name)}
+                          </span>
+                        ) : (
+                          <span className={styles.boardEmptyInner}>
+                            {isCurrent ? <span className={styles.boardClockDot} aria-hidden /> : null}
+                            <span className={styles.boardPickNumber}>{number}</span>
+                          </span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

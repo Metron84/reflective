@@ -502,11 +502,17 @@
 }
 
 .draftBoardEmpty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 12rem;
+  margin: 0;
+  border: none;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.9375rem;
   color: #f2ede4;
-  opacity: 0.8;
-  margin: 1.5rem 0;
+  opacity: 0.65;
+  text-align: center;
 }
 
 .draftOverflowBackdrop {
@@ -1162,42 +1168,70 @@
 
 .boardLegend {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1rem;
+  flex-wrap: nowrap;
+  gap: 0.65rem;
   list-style: none;
-  margin: 0 0 0.85rem;
-  padding: 0;
+  margin: 0 0 0.65rem;
+  padding: 0 0 0.2rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.boardLegend::-webkit-scrollbar {
+  display: none;
 }
 
 .boardLegendItem {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  flex: 0 0 auto;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: #f2ede4;
   opacity: 0.85;
 }
 
 .boardSwatch {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 2px;
+  width: 0.55rem;
+  height: 0.55rem;
   flex: 0 0 auto;
 }
 
-/* Ten columns never fit a phone, so the grid scrolls under a pinned round number. */
+.boardJump {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin: 0 0 0.65rem;
+}
+
+.boardJumpBtn {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 237, 228, 0.4);
+  background: transparent;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
 .boardScroll {
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
   max-height: 70vh;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x pan-y;
-  border: 1px solid rgba(242, 237, 228, 0.14);
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 44px;
 }
 
 .draftRoom .boardScroll {
-  max-height: 42vh;
+  max-height: min(42vh, calc(100dvh - 14rem));
 }
 
 .boardWrapMine .boardScroll {
@@ -1207,6 +1241,8 @@
 .boardGrid {
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
+  width: calc(44px + (132px * var(--board-seats, 10)));
   font-family: var(--font-archivo), sans-serif;
 }
 
@@ -1228,32 +1264,42 @@
   background: #0a111f;
   color: #f2ede4;
   font-size: 0.6875rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: left;
   font-weight: 500;
-  padding: 0.6rem 0.5rem;
+  padding: 0.45rem 0.5rem;
   border-bottom: 1px solid rgba(242, 237, 228, 0.2);
-  min-width: 8.5rem;
+}
+
+.boardHead,
+.boardHeadYou,
+.boardCell,
+.boardCellYou,
+.boardCellEmpty,
+.boardCellOnClock {
+  width: 132px;
+  min-width: 132px;
+  max-width: 132px;
+  scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
 .boardCorner {
   left: 0;
-  z-index: 3;
-  min-width: 2.25rem;
+  z-index: 4;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  scroll-snap-align: none;
   border-right: 1px solid rgba(242, 237, 228, 0.2);
+  font-variant-numeric: tabular-nums;
 }
 
 .boardHeadYou {
-  left: 2.25rem;
   z-index: 3;
-  box-shadow: inset 0 -2px 0 #d8232a;
-}
-
-.boardStickyYou {
-  position: sticky;
-  left: 2.25rem;
-  z-index: 1;
+  background: linear-gradient(rgba(242, 237, 228, 0.04), rgba(242, 237, 228, 0.04)), #0a111f;
+  border-left: 1px solid #f2ede4;
 }
 
 .boardHeadName {
@@ -1261,24 +1307,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 8rem;
 }
 
 .boardHeadBot {
   display: block;
   font-size: 0.625rem;
+  letter-spacing: 0.08em;
   opacity: 0.6;
+  white-space: nowrap;
 }
 
 .boardRound {
   position: sticky;
   left: 0;
-  z-index: 1;
+  z-index: 3;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
   background: #0a111f;
   color: #f2ede4;
   font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
   text-align: center;
-  padding: 0.4rem;
+  padding: 0.4rem 0.15rem;
   border-right: 1px solid rgba(242, 237, 228, 0.2);
   border-bottom: 1px solid rgba(242, 237, 228, 0.08);
 }
@@ -1288,29 +1339,29 @@
 .boardCellEmpty,
 .boardCellOnClock {
   position: relative;
-  vertical-align: top;
-  padding: 0.4rem 0.5rem;
-  border-bottom: 1px solid rgba(10, 17, 31, 0.12);
-  border-right: 1px solid rgba(10, 17, 31, 0.12);
-  min-width: 8.5rem;
+  vertical-align: middle;
+  padding: 0.35rem 0.45rem;
+  border-bottom: 1px solid rgba(242, 237, 228, 0.08);
+  border-right: 1px solid rgba(242, 237, 228, 0.08);
 }
 
-/* Light league fills, so navy stays legible on every one of them. */
-.boardCell,
-.boardCellYou {
-  color: #0a111f;
+.boardCell {
+  color: #f2ede4;
+  border-left: 3px solid #f2ede4;
 }
 
 .boardCellEmpty,
 .boardCellOnClock {
   color: rgba(242, 237, 228, 0.45);
-  border-bottom-color: rgba(242, 237, 228, 0.08);
-  border-right-color: rgba(242, 237, 228, 0.08);
+}
+
+.boardCellYou {
+  background: linear-gradient(rgba(242, 237, 228, 0.04), rgba(242, 237, 228, 0.04)), #0a111f;
 }
 
 .boardCellOnClock {
   color: #f2ede4;
-  box-shadow: inset 0 0 0 2px #d8232a;
+  border: 1px solid #d8232a;
 }
 
 .boardPlayer {
@@ -1318,29 +1369,54 @@
   font-size: 0.8125rem;
   font-weight: 600;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.boardMeta {
-  display: block;
-  font-size: 0.6875rem;
-  opacity: 0.75;
-  line-height: 1.3;
+.boardEmptyInner {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.boardClockDot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #d8232a;
 }
 
 .boardPickNumber {
-  display: block;
-  font-size: 0.625rem;
-  opacity: 0.55;
-  margin-top: 0.15rem;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.boardMeta {
+  display: none;
 }
 
 .boardOnClock {
-  display: block;
-  font-size: 0.625rem;
-  color: #d8232a;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .boardGrid {
+    width: 100%;
+  }
+
+  .boardHead,
+  .boardHeadYou,
+  .boardCell,
+  .boardCellYou,
+  .boardCellEmpty,
+  .boardCellOnClock {
+    width: auto;
+    max-width: none;
+  }
 }
 
 .feedList {
@@ -1779,62 +1855,6 @@
   min-width: 12rem;
 }
 
-.boardOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background: #0a111f;
-  color: #f2ede4;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 0;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-.boardOverlayBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex: 0 0 auto;
-  padding: 0.65rem 1rem 0.5rem;
-}
-
-.boardOverlayStage {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  display: flex;
-  justify-content: safe center;
-  align-items: safe center;
-  padding: 0.35rem 0.75rem 1rem;
-}
-
-.boardOverlayStage .boardWrap {
-  margin: auto;
-  width: max-content;
-  max-width: 100%;
-}
-
-.boardOverlayStage .boardScroll {
-  max-height: calc(100dvh - 6.25rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  width: 100%;
-}
-
-.boardOverlayStage .boardHead,
-.boardOverlayStage .boardHeadYou,
-.boardOverlayStage .boardCell,
-.boardOverlayStage .boardCellYou,
-.boardOverlayStage .boardCellEmpty,
-.boardOverlayStage .boardCellOnClock {
-  min-width: 7rem;
-}
-
 .completeActions {
   display: flex;
   flex-wrap: wrap;
@@ -2122,15 +2142,6 @@
     grid-template-columns: 1.1fr 0.9fr;
     align-items: start;
     gap: 2.5rem;
-  }
-
-  .boardOverlayStage .boardHead,
-  .boardOverlayStage .boardHeadYou,
-  .boardOverlayStage .boardCell,
-  .boardOverlayStage .boardCellYou,
-  .boardOverlayStage .boardCellEmpty,
-  .boardOverlayStage .boardCellOnClock {
-    min-width: 8.25rem;
   }
 }
 
