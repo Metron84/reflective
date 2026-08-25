@@ -3,6 +3,9 @@
 import { useId, useState } from "react";
 import styles from "./TrainingCommitment.module.css";
 
+// Set to true once five real frames are added to public/training/frames/.
+const SHOW_CONTACT_SHEET = false;
+
 const WEEKS = [
   {
     week: "Week 1",
@@ -160,15 +163,17 @@ export default function TrainingCommitment() {
         </div>
       </div>
 
-      <div className={styles.stripWrap}>
-        <div className={styles.stripRule} aria-hidden="true" />
-        {/* TODO: replace with five real frames cut from published footage, then apply a navy multiply overlay at roughly 60%. */}
-        <div className={styles.strip} aria-hidden="true">
-          {Array.from({ length: 5 }, (_, index) => (
-            <div key={index} className={styles.stripCell} />
-          ))}
+      {SHOW_CONTACT_SHEET ? (
+        <div className={styles.stripWrap}>
+          <div className={styles.stripRule} aria-hidden="true" />
+          {/* TODO: replace with five real frames cut from published footage, then apply a navy multiply overlay at roughly 60%. */}
+          <div className={styles.strip} aria-hidden="true">
+            {Array.from({ length: 5 }, (_, index) => (
+              <div key={index} className={styles.stripCell} />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }

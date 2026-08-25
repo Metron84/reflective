@@ -108,11 +108,15 @@
   width: 100%;
 }
 
+.videoFrame {
+  position: relative;
+  width: 100%;
+}
+
 .video {
   display: block;
   width: 100%;
-  max-width: 340px;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   border: 1px solid rgba(10, 17, 31, 0.15);
   border-radius: 0;
@@ -161,8 +165,8 @@
     max-width: 45%;
   }
 
-  .video {
-    max-width: 400px;
+  .videoFrame {
+    max-width: 420px;
   }
 }
 

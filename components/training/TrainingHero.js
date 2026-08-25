@@ -1,3 +1,6 @@
+"use client";
+
+import { TrainingPageVideo } from "@/components/training/TrainingSyllabus";
 import styles from "./TrainingHero.module.css";
 
 export default function TrainingHero() {
@@ -32,16 +35,11 @@ export default function TrainingHero() {
         </div>
 
         <div className={styles.videoPanel}>
-          {/* TODO: replace with the hero insert loop once shot. */}
-          <video
-            className={styles.video}
-            src="/chelsea-case-study.mp4"
-            muted
-            loop
-            autoPlay
-            playsInline
-            preload="metadata"
-            aria-label="Media training preview"
+          <TrainingPageVideo
+            src="/training/hero.mp4"
+            label="Media training preview"
+            videoClassName={styles.video}
+            frameClassName={styles.videoFrame}
           />
         </div>
       </div>

@@ -1,4 +1,7 @@
+"use client";
+
 import PlayableLoopVideo from "@/components/media/PlayableLoopVideo";
+import { TrainingPageVideo } from "@/components/training/TrainingSyllabus";
 import {
   ClockIcon,
   EyeIcon,
@@ -57,6 +60,15 @@ export default function TrainingProof() {
             );
           })}
         </dl>
+
+        <div className={styles.proofVideoWrap}>
+          <TrainingPageVideo
+            src="/training/proof.mp4"
+            label="Channel proof reel"
+            videoClassName={styles.proofVideo}
+            frameClassName={styles.videoFrame}
+          />
+        </div>
 
         <p className={styles.reach}>
           Viewers in over 8 countries: UK 20%, UAE 14%, Spain 13%, US 8%, Mexico

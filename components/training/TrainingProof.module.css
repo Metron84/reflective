@@ -80,6 +80,34 @@
   color: rgba(10, 17, 31, 0.7);
 }
 
+.proofVideoWrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem 0 0;
+}
+
+.videoFrame {
+  position: relative;
+  width: 100%;
+}
+
+.proofVideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid rgba(10, 17, 31, 0.15);
+  border-radius: 0;
+  background: #0a111f;
+}
+
+@media (min-width: 1024px) {
+  .videoFrame {
+    max-width: 380px;
+  }
+}
+
 .reach {
   margin: 2rem 0 0;
   max-width: 42rem;

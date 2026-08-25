@@ -4,16 +4,6 @@ import { useState } from "react";
 import { TRAINING_TERMS } from "@/lib/training/terms";
 import styles from "./TrainingApply.module.css";
 
-const DESCRIBES = [
-  "Student",
-  "Recent graduate",
-  "Changing career",
-  "Already creating content",
-  "Other",
-];
-
-const FILMED_BEFORE = ["No", "A little", "Yes"];
-
 const MESSAGES = {
   "full_name-required": "Add your full name.",
   "full_name-too-long": "That name is too long. Shorten it.",
@@ -22,12 +12,8 @@ const MESSAGES = {
   "email-too-long": "That email is too long.",
   "whatsapp-required": "Add a WhatsApp number.",
   "whatsapp-too-long": "That WhatsApp number is too long.",
-  "describes-required": "Choose which option describes you.",
-  "describes-invalid": "Choose an option from the list.",
   "why-required": "Tell us why you want a seat.",
   "why-too-long": "Keep that answer under 500 characters.",
-  "filmed-required": "Say whether you have filmed or edited before.",
-  "filmed-invalid": "Choose an option from the list.",
   "accepted_terms-required": "Accept the terms to continue.",
   "accepted_fee-required": "Confirm you understand the fee.",
   "requested_payment-required": "Confirm you want payment details.",
@@ -41,12 +27,8 @@ export default function TrainingApply() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [describes, setDescribes] = useState("");
   const [why, setWhy] = useState("");
-  const [filmedBefore, setFilmedBefore] = useState("");
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [acceptedFee, setAcceptedFee] = useState(false);
-  const [requestedPayment, setRequestedPayment] = useState(false);
+  const [acceptedAll, setAcceptedAll] = useState(false);
   const [website, setWebsite] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
@@ -56,14 +38,9 @@ export default function TrainingApply() {
     Boolean(fullName.trim()) &&
     Boolean(email.trim()) &&
     Boolean(whatsapp.trim()) &&
-    Boolean(describes) &&
-    Boolean(why.trim()) &&
-    Boolean(filmedBefore);
+    Boolean(why.trim());
 
-  const acceptancesComplete =
-    acceptedTerms && acceptedFee && requestedPayment;
-
-  const canSubmit = fieldsComplete && acceptancesComplete && !submitting;
+  const canSubmit = fieldsComplete && acceptedAll && !submitting;
 
   function messageFor(reason) {
     return MESSAGES[reason] ?? MESSAGES["server-error"];
@@ -85,10 +62,6 @@ export default function TrainingApply() {
       setError(messageFor("whatsapp-required"));
       return;
     }
-    if (!describes) {
-      setError(messageFor("describes-required"));
-      return;
-    }
     if (!why.trim()) {
       setError(messageFor("why-required"));
       return;
@@ -97,20 +70,8 @@ export default function TrainingApply() {
       setError(messageFor("why-too-long"));
       return;
     }
-    if (!filmedBefore) {
-      setError(messageFor("filmed-required"));
-      return;
-    }
-    if (!acceptedTerms) {
+    if (!acceptedAll) {
       setError(messageFor("accepted_terms-required"));
-      return;
-    }
-    if (!acceptedFee) {
-      setError(messageFor("accepted_fee-required"));
-      return;
-    }
-    if (!requestedPayment) {
-      setError(messageFor("requested_payment-required"));
       return;
     }
 
@@ -125,12 +86,10 @@ export default function TrainingApply() {
           full_name: fullName.trim(),
           email: email.trim(),
           whatsapp: whatsapp.trim(),
-          describes_you: describes,
           why_seat: why.trim(),
-          filmed_before: filmedBefore,
-          accepted_terms: acceptedTerms,
-          accepted_fee: acceptedFee,
-          requested_payment_details: requestedPayment,
+          accepted_terms: true,
+          accepted_fee: true,
+          requested_payment_details: true,
           website,
         }),
       });
@@ -232,28 +191,6 @@ export default function TrainingApply() {
             </div>
 
             <div className={styles.field}>
-              <label htmlFor="training-describes" className={styles.label}>
-                Which best describes you
-              </label>
-              <select
-                id="training-describes"
-                className={styles.select}
-                name="describes_you"
-                required
-                disabled={submitting}
-                value={describes}
-                onChange={(event) => setDescribes(event.target.value)}
-              >
-                <option value="">Select one</option>
-                {DESCRIBES.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.field}>
               <label htmlFor="training-why" className={styles.label}>
                 Why you want a seat
               </label>
@@ -271,28 +208,6 @@ export default function TrainingApply() {
               <p className={styles.charCount}>{why.length}/500</p>
             </div>
 
-            <div className={styles.field}>
-              <label htmlFor="training-filmed" className={styles.label}>
-                Have you filmed or edited anything before
-              </label>
-              <select
-                id="training-filmed"
-                className={styles.select}
-                name="filmed_before"
-                required
-                disabled={submitting}
-                value={filmedBefore}
-                onChange={(event) => setFilmedBefore(event.target.value)}
-              >
-                <option value="">Select one</option>
-                {FILMED_BEFORE.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div className={styles.terms}>
               <h3 className={styles.termsHeading}>The terms</h3>
               <ul className={styles.termsList}>
@@ -305,53 +220,20 @@ export default function TrainingApply() {
             </div>
 
             <div className={styles.checks}>
-              <label htmlFor="training-accepted-terms" className={styles.check}>
+              <label htmlFor="training-accepted-all" className={styles.check}>
                 <input
-                  id="training-accepted-terms"
+                  id="training-accepted-all"
                   type="checkbox"
-                  name="accepted_terms"
+                  name="accepted_all"
                   required
-                  checked={acceptedTerms}
+                  checked={acceptedAll}
                   disabled={submitting}
-                  onChange={(event) => setAcceptedTerms(event.target.checked)}
-                />
-                <span>I have read and accept the terms above.</span>
-              </label>
-
-              <label htmlFor="training-accepted-fee" className={styles.check}>
-                <input
-                  id="training-accepted-fee"
-                  type="checkbox"
-                  name="accepted_fee"
-                  required
-                  checked={acceptedFee}
-                  disabled={submitting}
-                  onChange={(event) => setAcceptedFee(event.target.checked)}
+                  onChange={(event) => setAcceptedAll(event.target.checked)}
                 />
                 <span>
-                  I understand the fee is AED 2,500 and must be paid in full
-                  before the course begins.
-                </span>
-              </label>
-
-              <label
-                htmlFor="training-requested-payment"
-                className={styles.check}
-              >
-                <input
-                  id="training-requested-payment"
-                  type="checkbox"
-                  name="requested_payment_details"
-                  required
-                  checked={requestedPayment}
-                  disabled={submitting}
-                  onChange={(event) =>
-                    setRequestedPayment(event.target.checked)
-                  }
-                />
-                <span>
-                  I request payment details and am happy for The Reflective
-                  Football to contact me.
+                  I accept the terms above, understand the fee is AED 2,500
+                  payable before the course begins, and am happy to be
+                  contacted.
                 </span>
               </label>
             </div>

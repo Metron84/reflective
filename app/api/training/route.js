@@ -4,16 +4,6 @@ import { notifyTrainingApplicationAsync } from "@/lib/training/notify";
 
 export const runtime = "nodejs";
 
-const DESCRIBES = new Set([
-  "Student",
-  "Recent graduate",
-  "Changing career",
-  "Already creating content",
-  "Other",
-]);
-
-const FILMED_BEFORE = new Set(["No", "A little", "Yes"]);
-
 /** Same sliding window as Write to Melo: 3 submissions per IP per hour. */
 const RATE_LIMIT = { windowMs: 60 * 60_000, max: 3 };
 const rateMap = new Map();
@@ -122,20 +112,6 @@ export async function POST(request) {
     );
   }
 
-  const describesYou = asTrimmedString(body?.describes_you);
-  if (!describesYou) {
-    return NextResponse.json(
-      { ok: false, reason: "describes-required" },
-      { status: 400 },
-    );
-  }
-  if (!DESCRIBES.has(describesYou)) {
-    return NextResponse.json(
-      { ok: false, reason: "describes-invalid" },
-      { status: 400 },
-    );
-  }
-
   const whySeat = asTrimmedString(body?.why_seat);
   if (!whySeat) {
     return NextResponse.json(
@@ -146,20 +122,6 @@ export async function POST(request) {
   if (whySeat.length > 500) {
     return NextResponse.json(
       { ok: false, reason: "why-too-long" },
-      { status: 400 },
-    );
-  }
-
-  const filmedBefore = asTrimmedString(body?.filmed_before);
-  if (!filmedBefore) {
-    return NextResponse.json(
-      { ok: false, reason: "filmed-required" },
-      { status: 400 },
-    );
-  }
-  if (!FILMED_BEFORE.has(filmedBefore)) {
-    return NextResponse.json(
-      { ok: false, reason: "filmed-invalid" },
       { status: 400 },
     );
   }
@@ -189,9 +151,9 @@ export async function POST(request) {
     full_name: fullName,
     email: emailRaw,
     whatsapp,
-    describes_you: describesYou,
+    describes_you: null,
     why_seat: whySeat,
-    filmed_before: filmedBefore,
+    filmed_before: null,
     accepted_terms: true,
     accepted_fee: true,
     requested_payment_details: true,

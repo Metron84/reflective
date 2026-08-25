@@ -2,12 +2,6 @@ import styles from "./TrainingStanding.module.css";
 
 const QUOTES = [
   {
-    club: "Dubai Hammers",
-    role: "Official supporters club",
-    quote:
-      "Very well produced. I think you guys are providing a great insight into the supporters clubs out here. Well done.",
-  },
-  {
     club: "Chelsea UAE",
     role: "Official supporters club",
     quote: "Absolutely love this.",
@@ -16,6 +10,12 @@ const QUOTES = [
     club: "Dubai Lions",
     role: "Official supporters club",
     quote: "We love what you're doing. Seriously, keep it up.",
+  },
+  {
+    club: "Dubai Hammers",
+    role: "Official supporters club",
+    quote:
+      "Very well produced. I think you guys are providing a great insight into the supporters clubs out here. Well done.",
   },
 ];
 

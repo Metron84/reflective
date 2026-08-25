@@ -82,17 +82,50 @@
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
+  width: 100%;
+}
+
+.videoFrame {
+  position: relative;
+  width: 100%;
 }
 
 .video {
   display: block;
   width: 100%;
-  max-width: 300px;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   border: 1px solid rgba(10, 17, 31, 0.15);
   border-radius: 0;
   background: #0a111f;
+}
+
+.muteButton {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: rgba(10, 17, 31, 0.8);
+  color: #f2ede4;
+  cursor: pointer;
+}
+
+.muteButton:focus-visible {
+  outline: 2px solid #f2ede4;
+  outline-offset: 2px;
+}
+
+.muteIcon {
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 .lessons {
@@ -195,11 +228,14 @@
     margin-top: 1.5rem;
   }
 
+  .videoFrame {
+    max-width: 340px;
+  }
+
   .videoDesktop {
     display: block;
     width: 100%;
-    max-width: 320px;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
     border: 1px solid rgba(10, 17, 31, 0.15);
     border-radius: 0;

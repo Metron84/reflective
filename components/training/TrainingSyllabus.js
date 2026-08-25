@@ -3,11 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./TrainingSyllabus.module.css";
 
-// TODO: replace each module.video with the real insert loops once shot:
-// /training/module-interview.mp4
-// /training/module-filming.mp4
-// /training/module-edit.mp4
-// /training/module-distribution.mp4
 const MODULES = [
   {
     number: "01",
@@ -19,7 +14,7 @@ const MODULES = [
     ],
     capability:
       "You leave able to run an interview that produces a story, not a soundbite.",
-    video: "/chelsea-case-study.mp4",
+    video: "/training/module-interview.mp4",
   },
   {
     number: "02",
@@ -31,7 +26,7 @@ const MODULES = [
     ],
     capability:
       "You leave able to walk into an unpredictable room and come out with usable footage.",
-    video: "/chelsea-case-study.mp4",
+    video: "/training/module-filming.mp4",
   },
   {
     number: "03",
@@ -43,7 +38,7 @@ const MODULES = [
     ],
     capability:
       "You leave able to turn raw footage into a film someone watches to the end.",
-    video: "/chelsea-case-study.mp4",
+    video: "/training/module-edit.mp4",
   },
   {
     number: "04",
@@ -55,22 +50,105 @@ const MODULES = [
     ],
     capability:
       "You leave able to publish with intent rather than hope.",
-    video: "/chelsea-case-study.mp4",
+    video: "/training/module-distribution.mp4",
   },
 ];
 
-function ModuleVideo({ src, label, className }) {
+function getTrainingVideoRegistry() {
+  if (!globalThis.__trfTrainingPageVideos) {
+    globalThis.__trfTrainingPageVideos = new Set();
+  }
+  return globalThis.__trfTrainingPageVideos;
+}
+
+function SpeakerMutedIcon() {
   return (
-    <video
-      className={className}
-      src={src}
-      muted
-      loop
-      autoPlay
-      playsInline
-      preload="metadata"
-      aria-label={label}
-    />
+    <svg className={styles.muteIcon} viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M5 9v6h4l5 5V4L9 9H5zm11.5 3 2.1-2.1 1.4 1.4L17.9 13.4l2.1 2.1-1.4 1.4L16.5 14.8l-2.1 2.1-1.4-1.4 2.1-2.1-2.1-2.1 1.4-1.4 2.1 2.1z"
+      />
+    </svg>
+  );
+}
+
+function SpeakerIcon() {
+  return (
+    <svg className={styles.muteIcon} viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M5 9v6h4l5 5V4L9 9H5zm11.66 0.17a4 4 0 0 1 0 5.66l1.41 1.41a6 6 0 0 0 0-8.48l-1.41 1.41zm2.83-2.83a8 8 0 0 1 0 11.32l1.41 1.41a10 10 0 0 0 0-14.14l-1.41 1.41z"
+      />
+    </svg>
+  );
+}
+
+export function TrainingPageVideo({
+  src,
+  label,
+  videoClassName,
+  frameClassName,
+}) {
+  const videoRef = useRef(null);
+  const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return undefined;
+
+    const entry = { el, setMuted };
+    getTrainingVideoRegistry().add(entry);
+    el.muted = true;
+
+    return () => {
+      getTrainingVideoRegistry().delete(entry);
+    };
+  }, []);
+
+  function toggleMute(event) {
+    event.stopPropagation();
+    const el = videoRef.current;
+    if (!el) return;
+
+    const nextMuted = el.muted;
+    if (nextMuted) {
+      for (const entry of getTrainingVideoRegistry()) {
+        if (entry.el !== el) {
+          entry.el.muted = true;
+          entry.setMuted(true);
+        }
+      }
+      el.muted = false;
+      setMuted(false);
+      return;
+    }
+
+    el.muted = true;
+    setMuted(true);
+  }
+
+  return (
+    <div className={frameClassName}>
+      <video
+        ref={videoRef}
+        className={videoClassName}
+        src={src}
+        muted
+        loop
+        autoPlay
+        playsInline
+        preload="metadata"
+        aria-label={label}
+      />
+      <button
+        type="button"
+        className={styles.muteButton}
+        onClick={toggleMute}
+        aria-label={muted ? "Unmute" : "Mute"}
+      >
+        {muted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
+      </button>
+    </div>
   );
 }
 
@@ -171,10 +249,11 @@ export default function TrainingSyllabus() {
               <p className={styles.mobileNumber}>{mod.number}</p>
               <h3 className={styles.mobileTitle}>{mod.title}</h3>
               <div className={styles.mobileVideoWrap}>
-                <ModuleVideo
+                <TrainingPageVideo
                   src={mod.video}
                   label={`${mod.title} preview`}
-                  className={styles.video}
+                  videoClassName={styles.video}
+                  frameClassName={styles.videoFrame}
                 />
               </div>
               <ul className={styles.lessons}>
@@ -210,10 +289,11 @@ export default function TrainingSyllabus() {
             >
               <h3 className={styles.pinnedTitle}>{pinned.title}</h3>
               <div className={styles.pinnedVideoWrap}>
-                <ModuleVideo
+                <TrainingPageVideo
                   src={pinned.video}
                   label={`${pinned.title} preview`}
-                  className={styles.videoDesktop}
+                  videoClassName={styles.videoDesktop}
+                  frameClassName={styles.videoFrame}
                 />
               </div>
             </div>
