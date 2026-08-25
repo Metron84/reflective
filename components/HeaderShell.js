@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SITE_SECTIONS, WORK_WITH_US_HREF } from "@/lib/config";
+import { SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
 import MobileMenu from "./MobileMenu";
 
 function isActiveSection(pathname, href) {
@@ -103,6 +103,25 @@ export default function HeaderShell({ auth }) {
                 </Link>
               );
             })}
+            {TRAINING_ENABLED ? (
+              <Link
+                href="/training"
+                aria-current={
+                  isActiveSection(pathname, "/training") ? "page" : undefined
+                }
+                className={`relative py-1 text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 motion-reduce:active:scale-100 ${
+                  isActiveSection(pathname, "/training") ? "text-navy" : ""
+                }`}
+              >
+                Training
+                {isActiveSection(pathname, "/training") ? (
+                  <span
+                    className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
+                    aria-hidden
+                  />
+                ) : null}
+              </Link>
+            ) : null}
             <a
               href={WORK_WITH_US_HREF}
               className="text-navy/55 transition-colors hover:text-navy"

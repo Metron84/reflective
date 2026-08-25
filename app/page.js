@@ -1,9 +1,11 @@
 import HomeTree from "@/components/home/HomeTree";
+import TrainingRibbon from "@/components/home/TrainingRibbon";
 import ReportSection from "@/components/home/ReportSection";
 import {
   SITE_DESCRIPTION,
   SITE_URL,
   SOCIAL_LINKS,
+  TRAINING_ENABLED,
   getHeroPromoVideoSrc,
 } from "@/lib/config";
 import { getAuthContext } from "@/lib/auth/session";
@@ -89,6 +91,7 @@ export default async function Home() {
         promoVideoSrc={promoVideoSrc}
         isSignedIn={isSignedIn}
       />
+      {TRAINING_ENABLED ? <TrainingRibbon /> : null}
       <ReportSection />
     </>
   );

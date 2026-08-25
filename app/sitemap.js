@@ -2,6 +2,7 @@ import {
   LALIGA_CAMPAIGN_ENABLED,
   SITE_URL,
   STAND_ENABLED,
+  TRAINING_ENABLED,
   ULTIMA_ENABLED,
 } from "@/lib/config";
 import { getAllEntries } from "@/lib/archive/index";
@@ -26,6 +27,9 @@ export default function sitemap() {
       : []),
     ...(LALIGA_CAMPAIGN_ENABLED
       ? [{ path: "/laliga", changeFrequency: "weekly", priority: 0.8 }]
+      : []),
+    ...(TRAINING_ENABLED
+      ? [{ path: "/training", changeFrequency: "weekly", priority: 0.8 }]
       : []),
     ...(ULTIMA_ENABLED
       ? [

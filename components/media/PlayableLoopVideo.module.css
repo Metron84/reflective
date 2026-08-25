@@ -36,6 +36,19 @@
   transition: background 0.15s ease;
 }
 
+.playControl {
+  right: 50%;
+  bottom: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  transform: translate(50%, 50%);
+  background: rgba(10, 17, 31, 0.72);
+}
+
+.playControl:hover {
+  background: rgba(10, 17, 31, 0.88);
+}
+
 .control:hover {
   background: rgba(10, 17, 31, 0.75);
 }
@@ -51,8 +64,15 @@
   height: 1.125rem;
 }
 
+.playControl .icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-left: 0.1rem;
+}
+
+/* Home hero layout */
 @media (min-width: 1024px) {
-  .frame {
+  .frame:not(.syllabus):not(.caseStudy) {
     margin-top: 0;
     justify-content: flex-end;
     flex: 0 1 45%;
@@ -63,11 +83,51 @@
     aspect-ratio: 16 / 9;
   }
 
-  .video {
+  .frame:not(.syllabus):not(.caseStudy) .video {
     width: 100%;
     height: 100%;
     max-height: min(72vh, 640px);
     aspect-ratio: 16 / 9;
     object-fit: contain;
   }
+}
+
+/* Training syllabus promo: mobile full-bleed 16:9 under copy; desktop beside copy */
+.syllabus {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.syllabusVideo {
+  max-height: none;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .syllabus {
+    margin: 0;
+    width: 100%;
+    max-width: 380px;
+  }
+}
+
+/* Chelsea case study: 4:5 */
+.caseStudy {
+  margin: 0;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 0.35rem;
+  overflow: hidden;
+}
+
+.caseVideo {
+  max-height: none;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  border-radius: 0.35rem;
 }

@@ -1,0 +1,90 @@
+.band {
+  background: #d8232a;
+  color: #f2ede4;
+}
+
+.cream {
+  background: #f2ede4;
+  color: #0a111f;
+  border-top: 1px solid rgba(10, 17, 31, 0.15);
+  border-bottom: 1px solid rgba(10, 17, 31, 0.15);
+}
+
+.inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2.5rem 1.75rem;
+  }
+}
+
+.line {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.band:not(.cream) .cta {
+  border-color: #f2ede4;
+  color: #f2ede4;
+}
+
+.cream .cta {
+  border-color: #0a111f;
+  color: #0a111f;
+}
+
+.cta:active {
+  opacity: 0.82;
+  transform: scale(0.985);
+}
+
+@media (min-width: 768px) {
+  .cta {
+    width: auto;
+    flex: 0 0 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta {
+    transition: none;
+  }
+
+  .cta:active {
+    transform: none;
+  }
+}

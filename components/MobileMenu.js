@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SITE_SECTIONS } from "@/lib/config";
+import { SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
 
 function isActiveSection(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -56,6 +56,24 @@ function MenuOverlay({ onClose, auth }) {
             </Link>
           );
         })}
+        {TRAINING_ENABLED ? (
+          <Link
+            href="/training"
+            onClick={onClose}
+            aria-current={
+              isActiveSection(pathname, "/training") ? "page" : undefined
+            }
+            className="relative w-fit font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
+          >
+            Training
+            {isActiveSection(pathname, "/training") ? (
+              <span
+                className="absolute inset-x-0 -bottom-1 h-0.5 bg-signal"
+                aria-hidden
+              />
+            ) : null}
+          </Link>
+        ) : null}
       </nav>
       <div className="space-y-3 border-t border-paper/10 p-6">
         {signedIn ? (

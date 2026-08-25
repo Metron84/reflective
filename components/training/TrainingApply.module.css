@@ -1,0 +1,236 @@
+.section {
+  background: #f2ede4;
+  color: #0a111f;
+  scroll-margin-top: 5rem;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding: 7rem 1.75rem;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #d8232a;
+}
+
+.heading {
+  margin: 0.85rem 0 0;
+  max-width: 18ch;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #0a111f;
+}
+
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  max-width: 620px;
+  margin: 2.5rem 0 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #0a111f;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid rgba(10, 17, 31, 0.22);
+  background: #f2ede4;
+  color: #0a111f;
+  border-radius: 0;
+  padding: 0.65rem 0.75rem;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: 2px solid rgba(216, 35, 42, 0.35);
+  outline-offset: 1px;
+}
+
+.charCount {
+  margin: 0;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.terms {
+  margin-top: 0.25rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(10, 17, 31, 0.15);
+}
+
+@media (min-width: 768px) {
+  .terms {
+    padding: 1.75rem;
+  }
+}
+
+.termsHeading {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #0a111f;
+}
+
+.termsList {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.termsItem {
+  margin: 0;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #0a111f;
+}
+
+.checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #0a111f;
+  cursor: pointer;
+}
+
+.check input {
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
+}
+
+.error {
+  margin: 0;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: #d8232a;
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.95rem 1.75rem;
+  border: none;
+  background: #d8232a;
+  color: #f2ede4;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.12s ease, transform 0.12s ease, background-color 0.12s ease;
+}
+
+.submit:disabled {
+  background: rgba(216, 35, 42, 0.38);
+  color: rgba(242, 237, 228, 0.75);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.submit:active:not(:disabled) {
+  opacity: 0.82;
+  transform: scale(0.985);
+}
+
+@media (min-width: 768px) {
+  .submit {
+    width: auto;
+    min-width: 18rem;
+    align-self: flex-start;
+  }
+}
+
+.footnote {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.success {
+  margin: 2.5rem 0 0;
+  max-width: 28rem;
+  font-family: var(--font-body), "Archivo", system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #0a111f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submit {
+    transition: none;
+  }
+
+  .submit:active:not(:disabled) {
+    transform: none;
+  }
+}

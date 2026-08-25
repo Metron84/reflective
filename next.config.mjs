@@ -104,6 +104,15 @@ const nextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
+      },
+    ],
+  },
   async headers() {
     return [
       {
