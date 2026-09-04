@@ -1,6 +1,13 @@
 {
   "collections": [
     {
+      "playlistId": "PLeDfFlRhuEHI",
+      "title": "We Are Football | Episode 2 | West Ham and Chelsea",
+      "titleOverride": null,
+      "sort": 1,
+      "visible": false
+    },
+    {
       "playlistId": "PLDFZolP_Rxwg",
       "title": "World Cup 2026 — The Fans of Dubai",
       "titleOverride": "The Fans of Dubai: World Cup 2026",
@@ -8,8 +15,15 @@
       "visible": true
     },
     {
+      "playlistId": "PLTXy4D1L-GsI",
+      "title": "We Are Football | Episode 1: One Weekend, Three Clubs, One City",
+      "titleOverride": null,
+      "sort": 2,
+      "visible": false
+    },
+    {
       "playlistId": "PLdSH0JcJjbEw",
-      "title": "The Reflectives | World Cup 2026 Awards",
+      "title": "The Reflections | World Cup 2026 Awards",
       "titleOverride": "The Reflectives 2026",
       "sort": 2,
       "visible": true
