@@ -1,0 +1,1730 @@
+[
+  {
+    "name": "1. FC Heidenheim",
+    "common_name": "1. FC Heidenheim",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "1-fc-heidenheim"
+  },
+  {
+    "name": "1. FC Kaiserslautern",
+    "common_name": "1. FC Kaiserslautern",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "1-fc-kaiserslautern"
+  },
+  {
+    "name": "1. FC Magdeburg",
+    "common_name": "1. FC Magdeburg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "1-fc-magdeburg"
+  },
+  {
+    "name": "1. FC Nurnberg",
+    "common_name": "1. FC Nurnberg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "1-fc-nurnberg"
+  },
+  {
+    "name": "Arminia Bielefeld",
+    "common_name": "Arminia Bielefeld",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "arminia-bielefeld"
+  },
+  {
+    "name": "Darmstadt 98",
+    "common_name": "Darmstadt 98",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "darmstadt-98"
+  },
+  {
+    "name": "Dynamo Dresden",
+    "common_name": "Dynamo Dresden",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "dynamo-dresden"
+  },
+  {
+    "name": "Eintracht Braunschweig",
+    "common_name": "Eintracht Braunschweig",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "eintracht-braunschweig"
+  },
+  {
+    "name": "Energie Cottbus",
+    "common_name": "Energie Cottbus",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "energie-cottbus"
+  },
+  {
+    "name": "Greuther Furth",
+    "common_name": "Greuther Furth",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "greuther-furth"
+  },
+  {
+    "name": "Hannover 96",
+    "common_name": "Hannover 96",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "hannover-96"
+  },
+  {
+    "name": "Hertha BSC",
+    "common_name": "Hertha BSC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "hertha-bsc"
+  },
+  {
+    "name": "Holstein Kiel",
+    "common_name": "Holstein Kiel",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "holstein-kiel"
+  },
+  {
+    "name": "Karlsruher SC",
+    "common_name": "Karlsruher SC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "karlsruher-sc"
+  },
+  {
+    "name": "VfL Bochum",
+    "common_name": "VfL Bochum",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "vfl-bochum"
+  },
+  {
+    "name": "VfL Osnabruck",
+    "common_name": "VfL Osnabruck",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "vfl-osnabruck"
+  },
+  {
+    "name": "VfL Wolfsburg",
+    "common_name": "VfL Wolfsburg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "2. Bundesliga",
+    "slug_suggested": "vfl-wolfsburg"
+  },
+  {
+    "name": "1. FC Koln",
+    "common_name": "1. FC Koln",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "1-fc-koln"
+  },
+  {
+    "name": "Bayer Leverkusen",
+    "common_name": "Bayer Leverkusen",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "bayer-leverkusen"
+  },
+  {
+    "name": "Borussia Monchengladbach",
+    "common_name": "Borussia Monchengladbach",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "borussia-monchengladbach"
+  },
+  {
+    "name": "Eintracht Frankfurt",
+    "common_name": "Eintracht Frankfurt",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "eintracht-frankfurt"
+  },
+  {
+    "name": "FC Augsburg",
+    "common_name": "FC Augsburg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "fc-augsburg"
+  },
+  {
+    "name": "Hamburger SV",
+    "common_name": "Hamburger SV",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "hamburger-sv"
+  },
+  {
+    "name": "Mainz 05",
+    "common_name": "Mainz 05",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "mainz-05"
+  },
+  {
+    "name": "RB Leipzig",
+    "common_name": "RB Leipzig",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "rb-leipzig"
+  },
+  {
+    "name": "SC Freiburg",
+    "common_name": "SC Freiburg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "sc-freiburg"
+  },
+  {
+    "name": "SC Paderborn",
+    "common_name": "SC Paderborn",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "sc-paderborn"
+  },
+  {
+    "name": "Schalke 04",
+    "common_name": "Schalke 04",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "schalke-04"
+  },
+  {
+    "name": "SV Elversberg",
+    "common_name": "SV Elversberg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "sv-elversberg"
+  },
+  {
+    "name": "TSG Hoffenheim",
+    "common_name": "TSG Hoffenheim",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "tsg-hoffenheim"
+  },
+  {
+    "name": "Union Berlin",
+    "common_name": "Union Berlin",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "union-berlin"
+  },
+  {
+    "name": "VfB Stuttgart",
+    "common_name": "VfB Stuttgart",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "vfb-stuttgart"
+  },
+  {
+    "name": "Werder Bremen",
+    "common_name": "Werder Bremen",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Bundesliga",
+    "slug_suggested": "werder-bremen"
+  },
+  {
+    "name": "Birmingham City",
+    "common_name": "Birmingham City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "birmingham-city"
+  },
+  {
+    "name": "Blackburn Rovers",
+    "common_name": "Blackburn Rovers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "blackburn-rovers"
+  },
+  {
+    "name": "Bolton Wanderers",
+    "common_name": "Bolton Wanderers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "bolton-wanderers"
+  },
+  {
+    "name": "Bristol City",
+    "common_name": "Bristol City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "bristol-city"
+  },
+  {
+    "name": "Burnley",
+    "common_name": "Burnley",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "burnley"
+  },
+  {
+    "name": "Cardiff City",
+    "common_name": "Cardiff City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "cardiff-city"
+  },
+  {
+    "name": "Charlton Athletic",
+    "common_name": "Charlton Athletic",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "charlton-athletic"
+  },
+  {
+    "name": "Derby County",
+    "common_name": "Derby County",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "derby-county"
+  },
+  {
+    "name": "Lincoln City",
+    "common_name": "Lincoln City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "lincoln-city"
+  },
+  {
+    "name": "Middlesbrough",
+    "common_name": "Middlesbrough",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "middlesbrough"
+  },
+  {
+    "name": "Millwall",
+    "common_name": "Millwall",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "millwall"
+  },
+  {
+    "name": "Norwich City",
+    "common_name": "Norwich City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "norwich-city"
+  },
+  {
+    "name": "Portsmouth",
+    "common_name": "Portsmouth",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "portsmouth"
+  },
+  {
+    "name": "Preston North End",
+    "common_name": "Preston North End",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "preston-north-end"
+  },
+  {
+    "name": "Queens Park Rangers",
+    "common_name": "Queens Park Rangers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "queens-park-rangers"
+  },
+  {
+    "name": "Sheffield United",
+    "common_name": "Sheffield United",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "sheffield-united"
+  },
+  {
+    "name": "Southampton",
+    "common_name": "Southampton",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "southampton"
+  },
+  {
+    "name": "Stoke City",
+    "common_name": "Stoke City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "stoke-city"
+  },
+  {
+    "name": "Swansea City",
+    "common_name": "Swansea City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "swansea-city"
+  },
+  {
+    "name": "Watford",
+    "common_name": "Watford",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "watford"
+  },
+  {
+    "name": "West Bromwich Albion",
+    "common_name": "West Bromwich Albion",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "west-bromwich-albion"
+  },
+  {
+    "name": "West Ham United",
+    "common_name": "West Ham United",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "west-ham-united"
+  },
+  {
+    "name": "Wolverhampton Wanderers",
+    "common_name": "Wolverhampton Wanderers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "wolverhampton-wanderers"
+  },
+  {
+    "name": "Wrexham",
+    "common_name": "Wrexham",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL Championship",
+    "slug_suggested": "wrexham"
+  },
+  {
+    "name": "AFC Wimbledon",
+    "common_name": "AFC Wimbledon",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "afc-wimbledon"
+  },
+  {
+    "name": "Barnsley",
+    "common_name": "Barnsley",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "barnsley"
+  },
+  {
+    "name": "Blackpool",
+    "common_name": "Blackpool",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "blackpool"
+  },
+  {
+    "name": "Bradford City",
+    "common_name": "Bradford City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "bradford-city"
+  },
+  {
+    "name": "Bromley",
+    "common_name": "Bromley",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "bromley"
+  },
+  {
+    "name": "Burton Albion",
+    "common_name": "Burton Albion",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "burton-albion"
+  },
+  {
+    "name": "Cambridge United",
+    "common_name": "Cambridge United",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "cambridge-united"
+  },
+  {
+    "name": "Doncaster Rovers",
+    "common_name": "Doncaster Rovers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "doncaster-rovers"
+  },
+  {
+    "name": "Huddersfield Town",
+    "common_name": "Huddersfield Town",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "huddersfield-town"
+  },
+  {
+    "name": "Leicester City",
+    "common_name": "Leicester City",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "leicester-city"
+  },
+  {
+    "name": "Leyton Orient",
+    "common_name": "Leyton Orient",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "leyton-orient"
+  },
+  {
+    "name": "Luton Town",
+    "common_name": "Luton Town",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "luton-town"
+  },
+  {
+    "name": "Mansfield Town",
+    "common_name": "Mansfield Town",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "mansfield-town"
+  },
+  {
+    "name": "Milton Keynes Dons",
+    "common_name": "Milton Keynes Dons",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "milton-keynes-dons"
+  },
+  {
+    "name": "Notts County",
+    "common_name": "Notts County",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "notts-county"
+  },
+  {
+    "name": "Oxford United",
+    "common_name": "Oxford United",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "oxford-united"
+  },
+  {
+    "name": "Peterborough United",
+    "common_name": "Peterborough United",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "peterborough-united"
+  },
+  {
+    "name": "Plymouth Argyle",
+    "common_name": "Plymouth Argyle",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "plymouth-argyle"
+  },
+  {
+    "name": "Reading",
+    "common_name": "Reading",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "reading"
+  },
+  {
+    "name": "Sheffield Wednesday",
+    "common_name": "Sheffield Wednesday",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "sheffield-wednesday"
+  },
+  {
+    "name": "Stevenage",
+    "common_name": "Stevenage",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "stevenage"
+  },
+  {
+    "name": "Stockport County",
+    "common_name": "Stockport County",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "stockport-county"
+  },
+  {
+    "name": "Wigan Athletic",
+    "common_name": "Wigan Athletic",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "wigan-athletic"
+  },
+  {
+    "name": "Wycombe Wanderers",
+    "common_name": "Wycombe Wanderers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "EFL League One",
+    "slug_suggested": "wycombe-wanderers"
+  },
+  {
+    "name": "Alaves",
+    "common_name": "Alaves",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "alaves"
+  },
+  {
+    "name": "Athletic Bilbao",
+    "common_name": "Athletic Bilbao",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "athletic-bilbao"
+  },
+  {
+    "name": "Celta Vigo",
+    "common_name": "Celta Vigo",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "celta-vigo"
+  },
+  {
+    "name": "Deportivo La Coruna",
+    "common_name": "Deportivo La Coruna",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "deportivo-la-coruna"
+  },
+  {
+    "name": "Elche",
+    "common_name": "Elche",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "elche"
+  },
+  {
+    "name": "Espanyol",
+    "common_name": "Espanyol",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "espanyol"
+  },
+  {
+    "name": "Getafe",
+    "common_name": "Getafe",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "getafe"
+  },
+  {
+    "name": "Levante",
+    "common_name": "Levante",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "levante"
+  },
+  {
+    "name": "Malaga",
+    "common_name": "Malaga",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "malaga"
+  },
+  {
+    "name": "Osasuna",
+    "common_name": "Osasuna",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "osasuna"
+  },
+  {
+    "name": "Racing Santander",
+    "common_name": "Racing Santander",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "racing-santander"
+  },
+  {
+    "name": "Rayo Vallecano",
+    "common_name": "Rayo Vallecano",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "rayo-vallecano"
+  },
+  {
+    "name": "Real Betis",
+    "common_name": "Real Betis",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "real-betis"
+  },
+  {
+    "name": "Real Sociedad",
+    "common_name": "Real Sociedad",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "real-sociedad"
+  },
+  {
+    "name": "Sevilla",
+    "common_name": "Sevilla",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "sevilla"
+  },
+  {
+    "name": "Valencia",
+    "common_name": "Valencia",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "valencia"
+  },
+  {
+    "name": "Villarreal",
+    "common_name": "Villarreal",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga",
+    "slug_suggested": "villarreal"
+  },
+  {
+    "name": "AD Ceuta FC",
+    "common_name": "AD Ceuta FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "ad-ceuta-fc"
+  },
+  {
+    "name": "Albacete BP",
+    "common_name": "Albacete BP",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "albacete-bp"
+  },
+  {
+    "name": "Burgos CF",
+    "common_name": "Burgos CF",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "burgos-cf"
+  },
+  {
+    "name": "Cadiz CF",
+    "common_name": "Cadiz CF",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cadiz-cf"
+  },
+  {
+    "name": "CD Castellon",
+    "common_name": "CD Castellon",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cd-castellon"
+  },
+  {
+    "name": "CD Eldense",
+    "common_name": "CD Eldense",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cd-eldense"
+  },
+  {
+    "name": "CD Leganes",
+    "common_name": "CD Leganes",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cd-leganes"
+  },
+  {
+    "name": "CD Tenerife",
+    "common_name": "CD Tenerife",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cd-tenerife"
+  },
+  {
+    "name": "CE Sabadell",
+    "common_name": "CE Sabadell",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "ce-sabadell"
+  },
+  {
+    "name": "Celta Fortuna",
+    "common_name": "Celta Fortuna",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "celta-fortuna"
+  },
+  {
+    "name": "Cordoba CF",
+    "common_name": "Cordoba CF",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "cordoba-cf"
+  },
+  {
+    "name": "FC Andorra",
+    "common_name": "FC Andorra",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "fc-andorra"
+  },
+  {
+    "name": "Girona FC",
+    "common_name": "Girona FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "girona-fc"
+  },
+  {
+    "name": "Granada CF",
+    "common_name": "Granada CF",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "granada-cf"
+  },
+  {
+    "name": "RCD Mallorca",
+    "common_name": "RCD Mallorca",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "rcd-mallorca"
+  },
+  {
+    "name": "Real Oviedo",
+    "common_name": "Real Oviedo",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "real-oviedo"
+  },
+  {
+    "name": "Real Sociedad B",
+    "common_name": "Real Sociedad B",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "real-sociedad-b"
+  },
+  {
+    "name": "Real Sporting Gijon",
+    "common_name": "Real Sporting Gijon",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "real-sporting-gijon"
+  },
+  {
+    "name": "Real Valladolid",
+    "common_name": "Real Valladolid",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "real-valladolid"
+  },
+  {
+    "name": "SD Eibar",
+    "common_name": "SD Eibar",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "sd-eibar"
+  },
+  {
+    "name": "UD Almeria",
+    "common_name": "UD Almeria",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "ud-almeria"
+  },
+  {
+    "name": "UD Las Palmas",
+    "common_name": "UD Las Palmas",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "LaLiga 2",
+    "slug_suggested": "ud-las-palmas"
+  },
+  {
+    "name": "AJ Auxerre",
+    "common_name": "AJ Auxerre",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "aj-auxerre"
+  },
+  {
+    "name": "Angers",
+    "common_name": "Angers",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "angers"
+  },
+  {
+    "name": "AS Monaco",
+    "common_name": "AS Monaco",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "as-monaco"
+  },
+  {
+    "name": "ESTAC Troyes",
+    "common_name": "ESTAC Troyes",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "estac-troyes"
+  },
+  {
+    "name": "FC Lorient",
+    "common_name": "FC Lorient",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "fc-lorient"
+  },
+  {
+    "name": "Le Havre",
+    "common_name": "Le Havre",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "le-havre"
+  },
+  {
+    "name": "Le Mans",
+    "common_name": "Le Mans",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "le-mans"
+  },
+  {
+    "name": "LOSC Lille",
+    "common_name": "LOSC Lille",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "losc-lille"
+  },
+  {
+    "name": "OGC Nice",
+    "common_name": "OGC Nice",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "ogc-nice"
+  },
+  {
+    "name": "Olympique Lyon",
+    "common_name": "Olympique Lyon",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "olympique-lyon"
+  },
+  {
+    "name": "Paris FC",
+    "common_name": "Paris FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "paris-fc"
+  },
+  {
+    "name": "Paris Saint-Germain",
+    "common_name": "Paris Saint-Germain",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "paris-saint-germain"
+  },
+  {
+    "name": "RC Lens",
+    "common_name": "RC Lens",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "rc-lens"
+  },
+  {
+    "name": "RC Strasbourg",
+    "common_name": "RC Strasbourg",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "rc-strasbourg"
+  },
+  {
+    "name": "Stade Brestois",
+    "common_name": "Stade Brestois",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "stade-brestois"
+  },
+  {
+    "name": "Stade Rennais",
+    "common_name": "Stade Rennais",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "stade-rennais"
+  },
+  {
+    "name": "Toulouse FC",
+    "common_name": "Toulouse FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 1",
+    "slug_suggested": "toulouse-fc"
+  },
+  {
+    "name": "AS Nancy-Lorraine",
+    "common_name": "AS Nancy-Lorraine",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "as-nancy-lorraine"
+  },
+  {
+    "name": "AS Saint-Etienne",
+    "common_name": "AS Saint-Etienne",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "as-saint-etienne"
+  },
+  {
+    "name": "Clermont Foot 63",
+    "common_name": "Clermont Foot 63",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "clermont-foot-63"
+  },
+  {
+    "name": "Dijon FCO",
+    "common_name": "Dijon FCO",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "dijon-fco"
+  },
+  {
+    "name": "En Avant Guingamp",
+    "common_name": "En Avant Guingamp",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "en-avant-guingamp"
+  },
+  {
+    "name": "FC Annecy",
+    "common_name": "FC Annecy",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "fc-annecy"
+  },
+  {
+    "name": "FC Metz",
+    "common_name": "FC Metz",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "fc-metz"
+  },
+  {
+    "name": "FC Nantes",
+    "common_name": "FC Nantes",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "fc-nantes"
+  },
+  {
+    "name": "FC Sochaux-Montbeliard",
+    "common_name": "FC Sochaux-Montbeliard",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "fc-sochaux-montbeliard"
+  },
+  {
+    "name": "Grenoble Foot 38",
+    "common_name": "Grenoble Foot 38",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "grenoble-foot-38"
+  },
+  {
+    "name": "Montpellier HSC",
+    "common_name": "Montpellier HSC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "montpellier-hsc"
+  },
+  {
+    "name": "Pau FC",
+    "common_name": "Pau FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "pau-fc"
+  },
+  {
+    "name": "Red Star FC",
+    "common_name": "Red Star FC",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "red-star-fc"
+  },
+  {
+    "name": "Rodez Aveyron",
+    "common_name": "Rodez Aveyron",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "rodez-aveyron"
+  },
+  {
+    "name": "Stade de Reims",
+    "common_name": "Stade de Reims",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "stade-de-reims"
+  },
+  {
+    "name": "Stade Lavallois",
+    "common_name": "Stade Lavallois",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "stade-lavallois"
+  },
+  {
+    "name": "US Boulogne Cote d'Opale",
+    "common_name": "US Boulogne Cote d'Opale",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "us-boulogne-cote-d-opale"
+  },
+  {
+    "name": "USL Dunkerque",
+    "common_name": "USL Dunkerque",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Ligue 2",
+    "slug_suggested": "usl-dunkerque"
+  },
+  {
+    "name": "AC Milan",
+    "common_name": "AC Milan",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "ac-milan"
+  },
+  {
+    "name": "Atalanta",
+    "common_name": "Atalanta",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "atalanta"
+  },
+  {
+    "name": "Bologna",
+    "common_name": "Bologna",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "bologna"
+  },
+  {
+    "name": "Cagliari",
+    "common_name": "Cagliari",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "cagliari"
+  },
+  {
+    "name": "Como",
+    "common_name": "Como",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "como"
+  },
+  {
+    "name": "Fiorentina",
+    "common_name": "Fiorentina",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "fiorentina"
+  },
+  {
+    "name": "Frosinone",
+    "common_name": "Frosinone",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "frosinone"
+  },
+  {
+    "name": "Genoa",
+    "common_name": "Genoa",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "genoa"
+  },
+  {
+    "name": "Inter Milan",
+    "common_name": "Inter Milan",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "inter-milan"
+  },
+  {
+    "name": "Lazio",
+    "common_name": "Lazio",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "lazio"
+  },
+  {
+    "name": "Lecce",
+    "common_name": "Lecce",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "lecce"
+  },
+  {
+    "name": "Monza",
+    "common_name": "Monza",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "monza"
+  },
+  {
+    "name": "Parma",
+    "common_name": "Parma",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "parma"
+  },
+  {
+    "name": "Sassuolo",
+    "common_name": "Sassuolo",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "sassuolo"
+  },
+  {
+    "name": "Torino",
+    "common_name": "Torino",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "torino"
+  },
+  {
+    "name": "Udinese",
+    "common_name": "Udinese",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "udinese"
+  },
+  {
+    "name": "Venezia",
+    "common_name": "Venezia",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie A",
+    "slug_suggested": "venezia"
+  },
+  {
+    "name": "Ascoli",
+    "common_name": "Ascoli",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "ascoli"
+  },
+  {
+    "name": "Avellino",
+    "common_name": "Avellino",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "avellino"
+  },
+  {
+    "name": "Benevento",
+    "common_name": "Benevento",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "benevento"
+  },
+  {
+    "name": "Calcio Padova",
+    "common_name": "Calcio Padova",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "calcio-padova"
+  },
+  {
+    "name": "Carrarese",
+    "common_name": "Carrarese",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "carrarese"
+  },
+  {
+    "name": "Catanzaro",
+    "common_name": "Catanzaro",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "catanzaro"
+  },
+  {
+    "name": "Cesena",
+    "common_name": "Cesena",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "cesena"
+  },
+  {
+    "name": "Cremonese",
+    "common_name": "Cremonese",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "cremonese"
+  },
+  {
+    "name": "Empoli",
+    "common_name": "Empoli",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "empoli"
+  },
+  {
+    "name": "Hellas Verona",
+    "common_name": "Hellas Verona",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "hellas-verona"
+  },
+  {
+    "name": "Juve Stabia",
+    "common_name": "Juve Stabia",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "juve-stabia"
+  },
+  {
+    "name": "LR Vicenza",
+    "common_name": "LR Vicenza",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "lr-vicenza"
+  },
+  {
+    "name": "Mantova",
+    "common_name": "Mantova",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "mantova"
+  },
+  {
+    "name": "Modena",
+    "common_name": "Modena",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "modena"
+  },
+  {
+    "name": "Palermo",
+    "common_name": "Palermo",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "palermo"
+  },
+  {
+    "name": "Pisa",
+    "common_name": "Pisa",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "pisa"
+  },
+  {
+    "name": "Sampdoria",
+    "common_name": "Sampdoria",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "sampdoria"
+  },
+  {
+    "name": "SS Arezzo",
+    "common_name": "SS Arezzo",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "ss-arezzo"
+  },
+  {
+    "name": "Sudtirol",
+    "common_name": "Sudtirol",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "sudtirol"
+  },
+  {
+    "name": "Virtus Entella",
+    "common_name": "Virtus Entella",
+    "city": "",
+    "country": "",
+    "founded": 0,
+    "competition": "Serie B",
+    "slug_suggested": "virtus-entella"
+  }
+]

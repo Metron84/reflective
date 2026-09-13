@@ -1,0 +1,188 @@
+{
+  "batch": 5,
+  "id": "tier-b-batch-005",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Wycombe Wanderers",
+      "common_name": "Wycombe Wanderers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "wycombe-wanderers"
+    },
+    {
+      "name": "Alaves",
+      "common_name": "Alaves",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "alaves"
+    },
+    {
+      "name": "Athletic Bilbao",
+      "common_name": "Athletic Bilbao",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "athletic-bilbao"
+    },
+    {
+      "name": "Celta Vigo",
+      "common_name": "Celta Vigo",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "celta-vigo"
+    },
+    {
+      "name": "Deportivo La Coruna",
+      "common_name": "Deportivo La Coruna",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "deportivo-la-coruna"
+    },
+    {
+      "name": "Elche",
+      "common_name": "Elche",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "elche"
+    },
+    {
+      "name": "Espanyol",
+      "common_name": "Espanyol",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "espanyol"
+    },
+    {
+      "name": "Getafe",
+      "common_name": "Getafe",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "getafe"
+    },
+    {
+      "name": "Levante",
+      "common_name": "Levante",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "levante"
+    },
+    {
+      "name": "Malaga",
+      "common_name": "Malaga",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "malaga"
+    },
+    {
+      "name": "Osasuna",
+      "common_name": "Osasuna",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "osasuna"
+    },
+    {
+      "name": "Racing Santander",
+      "common_name": "Racing Santander",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "racing-santander"
+    },
+    {
+      "name": "Rayo Vallecano",
+      "common_name": "Rayo Vallecano",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "rayo-vallecano"
+    },
+    {
+      "name": "Real Betis",
+      "common_name": "Real Betis",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "real-betis"
+    },
+    {
+      "name": "Real Sociedad",
+      "common_name": "Real Sociedad",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "real-sociedad"
+    },
+    {
+      "name": "Sevilla",
+      "common_name": "Sevilla",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "sevilla"
+    },
+    {
+      "name": "Valencia",
+      "common_name": "Valencia",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "valencia"
+    },
+    {
+      "name": "Villarreal",
+      "common_name": "Villarreal",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga",
+      "slug_suggested": "villarreal"
+    },
+    {
+      "name": "AD Ceuta FC",
+      "common_name": "AD Ceuta FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "ad-ceuta-fc"
+    },
+    {
+      "name": "Albacete BP",
+      "common_name": "Albacete BP",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "albacete-bp"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "batch": 7,
+  "id": "tier-b-batch-007",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "AJ Auxerre",
+      "common_name": "AJ Auxerre",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "aj-auxerre"
+    },
+    {
+      "name": "Angers",
+      "common_name": "Angers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "angers"
+    },
+    {
+      "name": "AS Monaco",
+      "common_name": "AS Monaco",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "as-monaco"
+    },
+    {
+      "name": "ESTAC Troyes",
+      "common_name": "ESTAC Troyes",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "estac-troyes"
+    },
+    {
+      "name": "FC Lorient",
+      "common_name": "FC Lorient",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "fc-lorient"
+    },
+    {
+      "name": "Le Havre",
+      "common_name": "Le Havre",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "le-havre"
+    },
+    {
+      "name": "Le Mans",
+      "common_name": "Le Mans",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "le-mans"
+    },
+    {
+      "name": "LOSC Lille",
+      "common_name": "LOSC Lille",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "losc-lille"
+    },
+    {
+      "name": "OGC Nice",
+      "common_name": "OGC Nice",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "ogc-nice"
+    },
+    {
+      "name": "Olympique Lyon",
+      "common_name": "Olympique Lyon",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "olympique-lyon"
+    },
+    {
+      "name": "Paris FC",
+      "common_name": "Paris FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "paris-fc"
+    },
+    {
+      "name": "Paris Saint-Germain",
+      "common_name": "Paris Saint-Germain",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "paris-saint-germain"
+    },
+    {
+      "name": "RC Lens",
+      "common_name": "RC Lens",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "rc-lens"
+    },
+    {
+      "name": "RC Strasbourg",
+      "common_name": "RC Strasbourg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "rc-strasbourg"
+    },
+    {
+      "name": "Stade Brestois",
+      "common_name": "Stade Brestois",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "stade-brestois"
+    },
+    {
+      "name": "Stade Rennais",
+      "common_name": "Stade Rennais",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "stade-rennais"
+    },
+    {
+      "name": "Toulouse FC",
+      "common_name": "Toulouse FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 1",
+      "slug_suggested": "toulouse-fc"
+    },
+    {
+      "name": "AS Nancy-Lorraine",
+      "common_name": "AS Nancy-Lorraine",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "as-nancy-lorraine"
+    },
+    {
+      "name": "AS Saint-Etienne",
+      "common_name": "AS Saint-Etienne",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "as-saint-etienne"
+    },
+    {
+      "name": "Clermont Foot 63",
+      "common_name": "Clermont Foot 63",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "clermont-foot-63"
+    }
+  ]
+}

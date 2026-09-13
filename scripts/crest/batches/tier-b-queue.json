@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-09-11T10:02:54.704Z",
+  "tier_b_club_count": 192,
+  "tier_a_skipped": [
+    {
+      "name": "Juventus",
+      "competition": "Serie A",
+      "tier_a_slug": "juventus"
+    },
+    {
+      "name": "Napoli",
+      "competition": "Serie A",
+      "tier_a_slug": "napoli"
+    },
+    {
+      "name": "Roma",
+      "competition": "Serie A",
+      "tier_a_slug": "roma"
+    },
+    {
+      "name": "Atletico Madrid",
+      "competition": "LaLiga",
+      "tier_a_slug": "atletico-madrid"
+    },
+    {
+      "name": "Barcelona",
+      "competition": "LaLiga",
+      "tier_a_slug": "barcelona"
+    },
+    {
+      "name": "Real Madrid",
+      "competition": "LaLiga",
+      "tier_a_slug": "real-madrid"
+    },
+    {
+      "name": "Bayern Munich",
+      "competition": "Bundesliga",
+      "tier_a_slug": "bayern-munich"
+    },
+    {
+      "name": "Borussia Dortmund",
+      "competition": "Bundesliga",
+      "tier_a_slug": "borussia-dortmund"
+    },
+    {
+      "name": "Olympique Marseille",
+      "competition": "Ligue 1",
+      "tier_a_slug": "marseille"
+    },
+    {
+      "name": "FC St. Pauli",
+      "competition": "2. Bundesliga",
+      "tier_a_slug": "st-pauli"
+    }
+  ],
+  "batches": 10,
+  "batch_size": 20
+}

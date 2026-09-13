@@ -1,0 +1,188 @@
+{
+  "batch": 2,
+  "id": "tier-b-batch-002",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Eintracht Frankfurt",
+      "common_name": "Eintracht Frankfurt",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "eintracht-frankfurt"
+    },
+    {
+      "name": "FC Augsburg",
+      "common_name": "FC Augsburg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "fc-augsburg"
+    },
+    {
+      "name": "Hamburger SV",
+      "common_name": "Hamburger SV",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "hamburger-sv"
+    },
+    {
+      "name": "Mainz 05",
+      "common_name": "Mainz 05",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "mainz-05"
+    },
+    {
+      "name": "RB Leipzig",
+      "common_name": "RB Leipzig",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "rb-leipzig"
+    },
+    {
+      "name": "SC Freiburg",
+      "common_name": "SC Freiburg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "sc-freiburg"
+    },
+    {
+      "name": "SC Paderborn",
+      "common_name": "SC Paderborn",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "sc-paderborn"
+    },
+    {
+      "name": "Schalke 04",
+      "common_name": "Schalke 04",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "schalke-04"
+    },
+    {
+      "name": "SV Elversberg",
+      "common_name": "SV Elversberg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "sv-elversberg"
+    },
+    {
+      "name": "TSG Hoffenheim",
+      "common_name": "TSG Hoffenheim",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "tsg-hoffenheim"
+    },
+    {
+      "name": "Union Berlin",
+      "common_name": "Union Berlin",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "union-berlin"
+    },
+    {
+      "name": "VfB Stuttgart",
+      "common_name": "VfB Stuttgart",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "vfb-stuttgart"
+    },
+    {
+      "name": "Werder Bremen",
+      "common_name": "Werder Bremen",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "werder-bremen"
+    },
+    {
+      "name": "Birmingham City",
+      "common_name": "Birmingham City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "birmingham-city"
+    },
+    {
+      "name": "Blackburn Rovers",
+      "common_name": "Blackburn Rovers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "blackburn-rovers"
+    },
+    {
+      "name": "Bolton Wanderers",
+      "common_name": "Bolton Wanderers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "bolton-wanderers"
+    },
+    {
+      "name": "Bristol City",
+      "common_name": "Bristol City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "bristol-city"
+    },
+    {
+      "name": "Burnley",
+      "common_name": "Burnley",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "burnley"
+    },
+    {
+      "name": "Cardiff City",
+      "common_name": "Cardiff City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "cardiff-city"
+    },
+    {
+      "name": "Charlton Athletic",
+      "common_name": "Charlton Athletic",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "charlton-athletic"
+    }
+  ]
+}

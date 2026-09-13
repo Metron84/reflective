@@ -1,0 +1,188 @@
+{
+  "batch": 4,
+  "id": "tier-b-batch-004",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Bradford City",
+      "common_name": "Bradford City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "bradford-city"
+    },
+    {
+      "name": "Bromley",
+      "common_name": "Bromley",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "bromley"
+    },
+    {
+      "name": "Burton Albion",
+      "common_name": "Burton Albion",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "burton-albion"
+    },
+    {
+      "name": "Cambridge United",
+      "common_name": "Cambridge United",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "cambridge-united"
+    },
+    {
+      "name": "Doncaster Rovers",
+      "common_name": "Doncaster Rovers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "doncaster-rovers"
+    },
+    {
+      "name": "Huddersfield Town",
+      "common_name": "Huddersfield Town",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "huddersfield-town"
+    },
+    {
+      "name": "Leicester City",
+      "common_name": "Leicester City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "leicester-city"
+    },
+    {
+      "name": "Leyton Orient",
+      "common_name": "Leyton Orient",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "leyton-orient"
+    },
+    {
+      "name": "Luton Town",
+      "common_name": "Luton Town",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "luton-town"
+    },
+    {
+      "name": "Mansfield Town",
+      "common_name": "Mansfield Town",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "mansfield-town"
+    },
+    {
+      "name": "Milton Keynes Dons",
+      "common_name": "Milton Keynes Dons",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "milton-keynes-dons"
+    },
+    {
+      "name": "Notts County",
+      "common_name": "Notts County",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "notts-county"
+    },
+    {
+      "name": "Oxford United",
+      "common_name": "Oxford United",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "oxford-united"
+    },
+    {
+      "name": "Peterborough United",
+      "common_name": "Peterborough United",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "peterborough-united"
+    },
+    {
+      "name": "Plymouth Argyle",
+      "common_name": "Plymouth Argyle",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "plymouth-argyle"
+    },
+    {
+      "name": "Reading",
+      "common_name": "Reading",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "reading"
+    },
+    {
+      "name": "Sheffield Wednesday",
+      "common_name": "Sheffield Wednesday",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "sheffield-wednesday"
+    },
+    {
+      "name": "Stevenage",
+      "common_name": "Stevenage",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "stevenage"
+    },
+    {
+      "name": "Stockport County",
+      "common_name": "Stockport County",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "stockport-county"
+    },
+    {
+      "name": "Wigan Athletic",
+      "common_name": "Wigan Athletic",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "wigan-athletic"
+    }
+  ]
+}

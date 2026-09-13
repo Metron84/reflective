@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Crest</title>
+<meta name="description" content="Find the football club that sounds like your heart, thinks like your mind and feels like your soul.">
+<meta name="theme-color" content="#0A111F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F2EDE4;
+  --navy:#0A111F;
+  --red:#D8232A;
+  --ink:#2A3547;
+  --edge:#DED3C2;
+  --display:"Bodoni Moda",Georgia,serif;
+  --ui:"Archivo",system-ui,-apple-system,sans-serif;
+  --pad:clamp(20px,5vw,40px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--cream);color:var(--navy);font-family:var(--ui);
+  font-size:17px;line-height:1.45;
+  overscroll-behavior:none;
+}
+#app{min-height:100svh;display:flex;flex-direction:column}
+.screen{display:none;flex:1;flex-direction:column;padding:var(--pad);padding-top:max(var(--pad),env(safe-area-inset-top));padding-bottom:max(var(--pad),env(safe-area-inset-bottom))}
+.screen.on{display:flex}
+
+/* ---------- opening ---------- */
+#start{justify-content:center;align-items:flex-start;max-width:760px;margin:0 auto;width:100%}
+.mark{font-family:var(--display);font-size:clamp(52px,16vw,104px);line-height:.92;letter-spacing:-.02em;margin:0}
+.mark em{font-style:italic}
+.standfirst{font-family:var(--display);font-size:clamp(20px,4.6vw,28px);line-height:1.3;margin:22px 0 0;max-width:22ch}
+.note{color:var(--ink);font-size:15px;margin:18px 0 0;max-width:40ch}
+
+/* ---------- question ---------- */
+.rail{display:flex;gap:4px;margin-bottom:26px}
+.tick{height:3px;flex:1;background:var(--edge)}
+.tick.done{background:var(--navy)}
+.tick.now{background:var(--red)}
+.pillar{font-family:var(--ui);font-size:13px;letter-spacing:.14em;color:var(--ink);margin:0 0 10px}
+.q{font-family:var(--display);font-size:clamp(26px,6.6vw,40px);line-height:1.18;margin:0 0 auto;max-width:18ch;letter-spacing:-.01em}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:32px}
+.opt{
+  font-family:var(--ui);font-size:16px;line-height:1.35;text-align:left;
+  background:transparent;color:var(--navy);
+  border:1px solid var(--edge);border-radius:2px;
+  padding:15px 17px;min-height:56px;cursor:pointer;width:100%;
+  transition:background .12s ease,border-color .12s ease,color .12s ease;
+}
+.opt:active,.opt.picked{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.opt:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.back{background:none;border:0;color:var(--ink);font-family:var(--ui);font-size:15px;padding:14px 0 0;cursor:pointer;align-self:flex-start}
+
+/* ---------- club grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:22px}
+.chip{font-family:var(--ui);font-size:14px;background:transparent;border:1px solid var(--edge);border-radius:2px;padding:13px 10px;min-height:52px;cursor:pointer;color:var(--navy)}
+.chip.picked{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.scroller{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;margin:0 calc(var(--pad)*-1);padding:0 var(--pad)}
+
+/* ---------- result ---------- */
+#result{max-width:860px;margin:0 auto;width:100%}
+.crestwrap{display:flex;justify-content:center;margin:6px 0 4px}
+.crestwrap svg{width:min(62vw,260px);height:auto}
+.arch{font-family:var(--display);font-size:clamp(32px,8vw,52px);line-height:1.02;margin:14px 0 0;text-align:center;letter-spacing:-.02em}
+.reading{font-family:var(--display);font-size:19px;line-height:1.5;margin:16px auto 0;max-width:34ch;text-align:center;color:var(--ink)}
+.block{margin-top:34px;border-top:1px solid var(--edge);padding-top:18px}
+.block h3{font-family:var(--ui);font-size:13px;letter-spacing:.14em;color:var(--ink);margin:0 0 12px;font-weight:500}
+.club{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 0}
+.club .n{font-family:var(--display);font-size:clamp(22px,5.4vw,30px);line-height:1.1}
+.club .n small{display:block;font-family:var(--ui);font-size:14px;color:var(--ink);margin-top:5px;max-width:38ch;line-height:1.4}
+.pct{font-family:var(--display);font-size:clamp(22px,5.4vw,30px);color:var(--red);flex:none}
+.why{font-size:14px;color:var(--ink);margin:2px 0 0}
+.cta{display:block;width:100%;background:var(--navy);color:var(--cream);border:0;border-radius:2px;padding:18px;font-family:var(--ui);font-size:16px;font-weight:500;margin-top:14px;cursor:pointer}
+.cta.ghost{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.sample{font-size:12px;color:var(--ink);border:1px dashed var(--edge);padding:10px 12px;margin-top:30px;border-radius:2px}
+
+@media (min-width:760px){
+  body{font-size:18px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid{grid-template-columns:repeat(4,1fr)}
+  #question{max-width:900px;margin:0 auto;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <section class="screen on" id="start">
+    <h1 class="mark">The<br><em>Crest</em></h1>
+    <p class="standfirst">Not the club that wins. The club that sounds like you.</p>
+    <p class="note">Twelve questions. No typing, no right answers. Built by The Reflective Football.</p>
+    <button class="cta" id="begin">Start</button>
+  </section>
+
+  <section class="screen" id="owned">
+    <p class="pillar">Before we start</p>
+    <h2 class="q">Do you already have a club?</h2>
+    <div class="scroller"><div class="grid" id="ownedGrid"></div></div>
+    <button class="cta" id="ownedNext">Continue</button>
+  </section>
+
+  <section class="screen" id="question">
+    <div class="rail" id="rail"></div>
+    <p class="pillar" id="pillarLabel"></p>
+    <h2 class="q" id="qText"></h2>
+    <div class="opts" id="opts"></div>
+    <button class="back" id="back">Back</button>
+  </section>
+
+  <section class="screen" id="result">
+    <div class="crestwrap" id="crestwrap"></div>
+    <h2 class="arch" id="archName"></h2>
+    <p class="reading" id="reading"></p>
+
+    <div class="block">
+      <h3>Your club</h3>
+      <div id="primary"></div>
+    </div>
+    <div class="block">
+      <h3>Near neighbours</h3>
+      <div id="alts"></div>
+    </div>
+    <div class="block">
+      <h3>Admire from afar</h3>
+      <div id="afar"></div>
+    </div>
+    <div class="block">
+      <h3>Next</h3>
+      <button class="cta" id="share">Save my crest</button>
+      <button class="cta ghost" id="again">Start again</button>
+    </div>
+    <p class="sample">Club scores are SAMPLE editorial estimates pending the researched database. Percentages are relative fit across the club set, not a claim about you.</p>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   THE CREST
+   Data below is SAMPLE. Replace CLUBS with the researched
+   database from the Perplexity brief (v1.1 schema). Order of
+   the v array is fixed: H1 H2 H3 H4 M1 M2 M3 M4 S1 S2 S3 S4
+   ============================================================ */
+
+const DIMS = [
+  {id:"H1",pillar:"Heart",low:"Success",high:"Suffering"},
+  {id:"H2",pillar:"Heart",low:"Calm",high:"Volatile"},
+  {id:"H3",pillar:"Heart",low:"Belonging",high:"Distinction"},
+  {id:"H4",pillar:"Heart",low:"Glory",high:"Journey"},
+  {id:"M1",pillar:"Mind",low:"Results",high:"Aesthetics"},
+  {id:"M2",pillar:"Mind",low:"Control",high:"Risk"},
+  {id:"M3",pillar:"Mind",low:"Acquisition",high:"Development"},
+  {id:"M4",pillar:"Mind",low:"Adaptability",high:"Ideology"},
+  {id:"S1",pillar:"Soul",low:"Global",high:"Local"},
+  {id:"S2",pillar:"Soul",low:"Modernity",high:"Heritage"},
+  {id:"S3",pillar:"Soul",low:"Establishment",high:"Defiance"},
+  {id:"S4",pillar:"Soul",low:"Entertainment",high:"Meaning"}
+];
+
+const SCALE = [1, 2.5, 4, 5.5, 7];
+
+const QUESTIONS = [
+  {d:0,q:"A club wins nothing for fifteen years. What is that?",
+   a:["A failure, and I would not sign up for it","Hard to justify to anyone","Part of football","Where the real supporters are made","The whole point, and the reason it means something"]},
+  {d:1,q:"Pick the season you would rather live through.",
+   a:["Won it by twelve points, never in doubt","Comfortable, a couple of scares","Middling, one good cup run","Survived on the last day, barely","Three comebacks, two collapses, decided in stoppage time"]},
+  {d:2,q:"Someone asks who you support.",
+   a:["I like that everyone instantly knows them","Easy to explain, easy to share","I do not think about it","I enjoy that it needs explaining","I would rather nobody in the room had heard of them"]},
+  {d:3,q:"Twenty years from now, what do you want to remember?",
+   a:["The trophies","The big nights","A bit of both","The away days and the people","The ritual of it, whatever we won"]},
+  {d:4,q:"Your team wins ugly, all season.",
+   a:["Take the trophy and say nothing","Winning is winning","Depends who we beat","It would start to grate","I would rather lose playing properly"]},
+  {d:5,q:"A manager can have either of these.",
+   a:["A defence that never breaks","A plan for every opponent","A balanced side","Players allowed to improvise","A team that gambles and sometimes falls apart"]},
+  {d:6,q:"A place opens up in the first team.",
+   a:["Sign the best available player","Buy well, buy proven","Whoever is ready","Promote from the academy","Promote from the academy even if we drop points for it"]},
+  {d:7,q:"Every new manager arrives with their own ideas.",
+   a:["Good, adapt to whoever wins","Flexibility is a strength","Take it case by case","The club should have a way of playing","The club's way outlives any manager"]},
+  {d:8,q:"Where should a club belong?",
+   a:["To the world, and the bigger the better","To its supporters everywhere","Both at once","To its city first","To its streets, and it should feel like a trespass to buy in"]},
+  {d:9,q:"The club wants to modernise: new badge, new stadium, new sound.",
+   a:["Good, football has to move","Refresh it carefully","No strong view","Keep the songs and the badge","Change nothing that was inherited"]},
+  {d:10,q:"Which club would you rather be part of?",
+   a:["One that sets the standard everyone else measures against","One with real power and expectation","Neither especially","One that annoys the people in charge","One that exists in opposition to the whole system"]},
+  {d:11,q:"What is football to you?",
+   a:["A good way to spend a Saturday","Entertainment, and I want it to be fun","A serious hobby","Part of who I am","A language I understand people through"]}
+];
+
+const PILLAR_Q = {
+  q:"Last one. What decides it for you?",
+  a:[
+    {t:"How a club makes me feel",w:{Heart:.50,Mind:.25,Soul:.25}},
+    {t:"How a club plays and thinks",w:{Heart:.25,Mind:.50,Soul:.25}},
+    {t:"What a club stands for",w:{Heart:.25,Mind:.25,Soul:.50}},
+    {t:"All three, equally",w:{Heart:.34,Mind:.33,Soul:.33}}
+  ]
+};
+
+/* SAMPLE club vectors. v = [H1,H2,H3,H4,M1,M2,M3,M4,S1,S2,S3,S4] */
+const CLUBS = [
+ {n:"Real Madrid",c:"Madrid",k:"iberia-elite",v:[1,4,1,1,3,4,2,2,2,5,1,4],x:["Atletico Madrid","Barcelona"],s:"Winning is not a hope here, it is the minimum, and the history is worn like a uniform."},
+ {n:"Barcelona",c:"Barcelona",k:"iberia-elite",v:[3,5,2,3,7,6,7,7,4,6,5,6],x:["Real Madrid","Espanyol"],s:"A way of playing treated as a belief system, taught to children before they are trusted with the first team."},
+ {n:"Atletico Madrid",c:"Madrid",k:"iberia-elite",v:[5,6,4,5,2,2,5,6,6,6,5,6],x:["Real Madrid"],s:"Built on resistance and effort, and proud that its glory has always been taken rather than expected."},
+ {n:"Athletic Club",c:"Bilbao",k:"iberia-identity",v:[5,4,6,7,5,4,7,7,7,7,6,7],x:["Real Sociedad"],s:"Only Basque players, no exceptions, which makes every season a statement rather than a strategy."},
+ {n:"Everton",c:"Liverpool",k:"england-north",v:[7,6,4,6,3,3,4,3,6,7,4,6],x:["Liverpool"],s:"Loyalty here is measured in bad years, and the bad years are long."},
+ {n:"Liverpool",c:"Liverpool",k:"england-north",v:[4,6,2,5,5,5,4,5,6,7,5,6],x:["Everton","Manchester United"],s:"A city's emotional language, sung before kickoff and carried a long way from home."},
+ {n:"Arsenal",c:"London",k:"england-london",v:[4,5,3,4,7,6,6,6,4,6,3,5],x:["Tottenham Hotspur"],s:"An insistence on playing properly that has cost it as often as it has won."},
+ {n:"Tottenham Hotspur",c:"London",k:"england-london",v:[6,6,4,5,5,5,5,4,5,5,4,5],x:["Arsenal"],s:"Ambition and heartbreak in the same shirt, year after year, told with dark humour."},
+ {n:"Manchester City",c:"Manchester",k:"england-north",v:[1,3,3,2,6,4,3,7,3,3,2,3],x:["Manchester United"],s:"A single idea executed to the last centimetre, with the resources to keep executing it."},
+ {n:"Manchester United",c:"Manchester",k:"england-north",v:[2,5,1,3,5,5,6,4,4,6,2,4],x:["Manchester City","Liverpool"],s:"Youth, comebacks and scale, a club that became a global habit."},
+ {n:"Newcastle United",c:"Newcastle",k:"england-north",v:[6,6,4,6,3,4,4,3,7,6,4,6],x:[],s:"One city, one club, and a crowd that turns up whatever the table says."},
+ {n:"Celtic",c:"Glasgow",k:"scotland",v:[4,6,3,6,5,5,5,4,6,7,6,7],x:["Rangers"],s:"Founded to feed the poor of the East End, and it has never let anyone forget it."},
+ {n:"Juventus",c:"Turin",k:"italy",v:[2,4,2,2,3,3,5,3,4,6,2,5],x:["Torino","Inter Milan"],s:"Control, pragmatism and a quiet certainty that winning is the only argument."},
+ {n:"Napoli",c:"Naples",k:"italy",v:[5,7,5,6,6,6,4,4,7,6,6,7],x:[],s:"A city that treats its team as proof of itself against the north."},
+ {n:"Roma",c:"Rome",k:"italy",v:[7,7,4,7,5,5,5,4,7,6,5,7],x:["Lazio"],s:"Devotion far out of proportion to what the club gives back, and that is the deal."},
+ {n:"Borussia Dortmund",c:"Dortmund",k:"germany",v:[4,6,4,5,6,6,6,5,6,5,5,6],x:["Schalke 04"],s:"A wall of eighty thousand, young players trusted early, and a refusal to be the safe option."},
+ {n:"Bayern Munich",c:"Munich",k:"germany",v:[1,3,2,2,5,4,5,5,5,6,1,4],x:[],s:"Order, standards and a habit of winning that the rest of the league builds itself around."},
+ {n:"St Pauli",c:"Hamburg",k:"germany",v:[6,5,7,7,4,5,5,4,7,5,7,7],x:["Hamburger SV"],s:"A football club used as a position, where the stand matters more than the table."},
+ {n:"Ajax",c:"Amsterdam",k:"netherlands",v:[3,4,4,4,7,6,7,7,5,6,4,5],x:["Feyenoord"],s:"An idea about football, taught, exported, and rebuilt from schoolboys every few years."},
+ {n:"Marseille",c:"Marseille",k:"france",v:[6,7,4,6,5,6,5,4,7,6,6,7],x:["Paris Saint-Germain"],s:"Volatile, southern and permanently at war with the capital."},
+ {n:"Al Ahly",c:"Cairo",k:"arab",v:[2,5,2,3,4,4,5,4,6,7,3,6],x:["Zamalek"],s:"The most decorated club in Africa, and a fixture of Egyptian public life for a century."},
+ {n:"Wydad Casablanca",c:"Casablanca",k:"arab",v:[5,7,4,6,4,5,5,4,7,6,6,7],x:["Raja Casablanca"],s:"A crowd that sings for ninety minutes whatever happens, in a city that answers back."},
+ {n:"Al Hilal",c:"Riyadh",k:"arab",v:[1,4,2,2,4,4,3,3,5,5,2,4],x:["Al Nassr"],s:"Built to win continentally, and it usually does."},
+ {n:"Al Ain",c:"Al Ain",k:"arab",v:[3,5,4,4,4,4,6,4,7,6,3,5],x:["Shabab Al Ahli"],s:"The Emirates' most successful club, rooted in its own city rather than the coast."}
+];
+
+const ARCHETYPES = [
+ {n:"The Romantic Traditionalist",v:[6,6,4,6,6,5,5,6,6,7,4,6],r:"You want football that was inherited, not bought. Songs, scars and a club that keeps faith with its own past."},
+ {n:"The Relentless Achiever",v:[1,3,2,1,4,3,3,4,3,4,2,4],r:"You have no romance about losing. You want standards, expectation and a club that treats winning as the baseline."},
+ {n:"The Faithful Sufferer",v:[7,6,4,6,3,3,4,3,6,6,4,6],r:"You measure loyalty in bad seasons. A club that is easy to support would mean nothing to you."},
+ {n:"The Tactical Idealist",v:[3,4,4,4,7,6,6,7,4,5,4,5],r:"You follow ideas before results. You want a club with an argument about how football should be played."},
+ {n:"The Community Guardian",v:[5,4,5,6,4,4,6,5,7,6,5,7],r:"A club belongs to the place that made it. You want yours to mean something to the street outside the ground."},
+ {n:"The Rebel Supporter",v:[6,6,7,6,4,5,5,4,7,5,7,7],r:"You are drawn to clubs that stand against something. The badge is a position, not a purchase."},
+ {n:"The Academy Evangelist",v:[4,5,4,5,6,5,7,6,5,5,4,5],r:"You want to watch someone grow up in the shirt. Bought success feels borrowed to you."},
+ {n:"The Global Dreamer",v:[3,5,1,3,6,5,4,4,2,4,3,4],r:"Football is a world game and you want a club that lives at that scale, followed everywhere at once."},
+ {n:"The Matchday Pilgrim",v:[6,6,5,7,5,5,5,4,6,6,5,7],r:"You treat football as ritual rather than consumption. The journey is the thing you would keep."},
+ {n:"The Ambitious Builder",v:[3,4,4,3,5,5,5,6,4,3,3,4],r:"You want a club going somewhere, with a plan you can see, and the nerve to back it."},
+ {n:"The Cult Club Seeker",v:[6,5,7,6,5,5,5,4,7,5,6,6],r:"You want a club nobody around you has picked. Being hard to explain is part of the appeal."},
+ {n:"The Standard Bearer",v:[2,3,2,2,4,3,4,5,4,6,1,5],r:"You are drawn to institutions: power, history and the expectation that comes with both."}
+];
+
+/* ---------- state ---------- */
+const S = {i:0, scores:new Array(12).fill(null), owned:new Set(), pillar:null};
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$(id).classList.add("on");window.scrollTo(0,0);}
+
+/* variance weights across whatever club set is loaded */
+const VAR = (()=>{ 
+  const w = DIMS.map((_,d)=>{
+    const col = CLUBS.map(c=>c.v[d]);
+    const m = col.reduce((a,b)=>a+b,0)/col.length;
+    return Math.sqrt(col.reduce((a,b)=>a+(b-m)*(b-m),0)/col.length);
+  });
+  const mean = w.reduce((a,b)=>a+b,0)/w.length;
+  return w.map(x=> mean>0 ? x/mean : 1);
+})();
+
+/* ---------- club picker ---------- */
+function buildOwned(){
+  const g = $("ownedGrid"); g.innerHTML="";
+  const none = document.createElement("button");
+  none.className="chip"; none.textContent="No club yet";
+  none.onclick=()=>{S.owned.clear();g.querySelectorAll(".chip").forEach(c=>c.classList.remove("picked"));none.classList.add("picked");};
+  g.appendChild(none);
+  CLUBS.map(c=>c.n).sort().forEach(name=>{
+    const b=document.createElement("button");
+    b.className="chip"; b.textContent=name;
+    b.onclick=()=>{none.classList.remove("picked");
+      if(S.owned.has(name)){S.owned.delete(name);b.classList.remove("picked");}
+      else{S.owned.add(name);b.classList.add("picked");}};
+    g.appendChild(b);
+  });
+}
+
+/* ---------- questions ---------- */
+function renderRail(){
+  const r=$("rail"); r.innerHTML="";
+  for(let k=0;k<13;k++){
+    const t=document.createElement("div");
+    t.className="tick"+(k<S.i?" done":k===S.i?" now":"");
+    r.appendChild(t);
+  }
+}
+function renderQ(){
+  renderRail();
+  const opts=$("opts"); opts.innerHTML="";
+  if(S.i<12){
+    const q=QUESTIONS[S.i];
+    $("pillarLabel").textContent=DIMS[q.d].pillar;
+    $("qText").textContent=q.q;
+    q.a.forEach((text,k)=>{
+      const b=document.createElement("button");
+      b.className="opt"+(S.scores[q.d]===SCALE[k]?" picked":"");
+      b.textContent=text;
+      b.onclick=()=>{S.scores[q.d]=SCALE[k];S.i++;renderQ();};
+      opts.appendChild(b);
+    });
+  } else {
+    $("pillarLabel").textContent="Weighting";
+    $("qText").textContent=PILLAR_Q.q;
+    PILLAR_Q.a.forEach(o=>{
+      const b=document.createElement("button");
+      b.className="opt"; b.textContent=o.t;
+      b.onclick=()=>{S.pillar=o.w;finish();};
+      opts.appendChild(b);
+    });
+  }
+  $("back").style.visibility = S.i===0 ? "hidden":"visible";
+}
+
+/* ---------- matching ---------- */
+function weights(){
+  return DIMS.map((d,i)=>{
+    const pw = S.pillar[d.pillar]/4;      // pillar share split across its 4 dims
+    return pw * VAR[i];                    // confidence factor enters here with real data
+  });
+}
+function rawFit(club,w){
+  let num=0,den=0;
+  for(let d=0;d<12;d++){
+    const sim = 1 - Math.abs(S.scores[d]-club.v[d])/6;
+    num += w[d]*sim; den += w[d];
+  }
+  return num/den;
+}
+function pillarFit(club,pillar){
+  const idx=DIMS.map((d,i)=>d.pillar===pillar?i:-1).filter(i=>i>=0);
+  return idx.reduce((a,d)=>a+(1-Math.abs(S.scores[d]-club.v[d])/6),0)/idx.length;
+}
+function rank(){
+  const w=weights();
+  return CLUBS.map(c=>({c,raw:rawFit(c,w)})).sort((a,b)=>b.raw-a.raw);
+}
+function display(raw,lo,hi){
+  if(hi===lo) return 80;
+  return Math.round(60 + ((raw-lo)/(hi-lo))*37);
+}
+function nearestArchetype(){
+  let best=null,bd=Infinity;
+  ARCHETYPES.forEach(a=>{
+    if(!Array.isArray(a.v)) return;
+    let d=0; for(let i=0;i<12;i++) d+=Math.pow(S.scores[i]-a.v[i],2);
+    if(d<bd){bd=d;best=a;}
+  });
+  return best;
+}
+function reasonFor(club){
+  const gaps=DIMS.map((d,i)=>({d,i,gap:Math.abs(S.scores[i]-club.v[i])*VAR[i]}))
+                 .sort((a,b)=>a.gap-b.gap).slice(0,2);
+  return gaps.map(g=>{
+    const val=club.v[g.i];
+    return val>=5 ? g.d.high.toLowerCase() : val<=3 ? g.d.low.toLowerCase() : "balance";
+  }).join(" and ");
+}
+
+/* ---------- crest ---------- */
+function crestSVG(){
+  const cx=140,cy=140,rMin=26,rMax=118;
+  const pts=S.scores.map((s,i)=>{
+    const ang=(Math.PI*2*i/12)-Math.PI/2;
+    const r=rMin+((s-1)/6)*(rMax-rMin);
+    return [cx+Math.cos(ang)*r, cy+Math.sin(ang)*r];
+  });
+  const path=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ")+" Z";
+  const spokes=pts.map(p=>`<line x1="${cx}" y1="${cy}" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" stroke="#0A111F" stroke-opacity=".18" stroke-width="1"/>`).join("");
+  return `<svg viewBox="0 0 280 280" role="img" aria-label="Your football identity crest">
+    <circle cx="${cx}" cy="${cy}" r="${rMax}" fill="none" stroke="#DED3C2"/>
+    <circle cx="${cx}" cy="${cy}" r="${(rMax+rMin)/2}" fill="none" stroke="#DED3C2"/>
+    ${spokes}
+    <path d="${path}" fill="#0A111F" fill-opacity=".9"/>
+    <circle cx="${cx}" cy="${cy}" r="4" fill="#D8232A"/>
+  </svg>`;
+}
+
+/* ---------- result ---------- */
+function finish(){
+  const all=rank();
+  const lo=all[all.length-1].raw, hi=all[0].raw;
+
+  const eligible=all.filter(r=>!S.owned.has(r.c.n));
+  const primary=eligible[0];
+  const banned=new Set([...(primary.c.x||[]), primary.c.n]);
+  const alts=[];
+  for(const r of eligible){
+    if(banned.has(r.c.n)) continue;
+    if(alts.some(a=>a.c.k===r.c.k) && alts.length) continue;   // diversification
+    alts.push(r);
+    (r.c.x||[]).forEach(b=>banned.add(b));
+    if(alts.length===2) break;
+  }
+  const afar=[...eligible].filter(r=>r.c.n!==primary.c.n && !alts.includes(r))
+    .map(r=>({r,score:pillarFit(r.c,"Mind")-Math.min(pillarFit(r.c,"Heart"),pillarFit(r.c,"Soul"))}))
+    .sort((a,b)=>b.score-a.score)[0];
+
+  const arch=nearestArchetype();
+  $("crestwrap").innerHTML=crestSVG();
+  $("archName").textContent=arch.n;
+  $("reading").textContent=arch.r;
+
+  $("primary").innerHTML=row(primary,lo,hi);
+  $("alts").innerHTML=alts.map(a=>row(a,lo,hi)).join("");
+  $("afar").innerHTML = afar ? `<div class="club"><div class="n">${afar.r.c.n}
+      <small>${afar.r.c.s}</small></div></div>
+      <p class="why">You would respect how they think. Living with them is another matter.</p>` : "";
+
+  show("result");
+}
+function row(r,lo,hi){
+  return `<div class="club"><div class="n">${r.c.n}<small>${r.c.s}</small></div>
+    <div class="pct">${display(r.raw,lo,hi)}%</div></div>
+    <p class="why">Closest on ${reasonFor(r.c)}.</p>`;
+}
+
+/* ---------- wiring ---------- */
+$("begin").onclick=()=>{buildOwned();show("owned");};
+$("ownedNext").onclick=()=>{S.i=0;renderQ();show("question");};
+$("back").onclick=()=>{if(S.i>0){S.i--;renderQ();}};
+$("again").onclick=()=>{S.i=0;S.scores.fill(null);S.owned.clear();S.pillar=null;show("start");};
+$("share").onclick=async()=>{
+  const text=`${$("archName").textContent} — my football crest, from The Reflective Football.`;
+  if(navigator.share){try{await navigator.share({title:"The Crest",text,url:location.href});}catch(e){}}
+  else{try{await navigator.clipboard.writeText(text+" "+location.href);$("share").textContent="Copied";}catch(e){}}
+};
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>

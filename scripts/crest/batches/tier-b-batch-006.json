@@ -1,0 +1,188 @@
+{
+  "batch": 6,
+  "id": "tier-b-batch-006",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Burgos CF",
+      "common_name": "Burgos CF",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "burgos-cf"
+    },
+    {
+      "name": "Cadiz CF",
+      "common_name": "Cadiz CF",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cadiz-cf"
+    },
+    {
+      "name": "CD Castellon",
+      "common_name": "CD Castellon",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cd-castellon"
+    },
+    {
+      "name": "CD Eldense",
+      "common_name": "CD Eldense",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cd-eldense"
+    },
+    {
+      "name": "CD Leganes",
+      "common_name": "CD Leganes",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cd-leganes"
+    },
+    {
+      "name": "CD Tenerife",
+      "common_name": "CD Tenerife",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cd-tenerife"
+    },
+    {
+      "name": "CE Sabadell",
+      "common_name": "CE Sabadell",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "ce-sabadell"
+    },
+    {
+      "name": "Celta Fortuna",
+      "common_name": "Celta Fortuna",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "celta-fortuna"
+    },
+    {
+      "name": "Cordoba CF",
+      "common_name": "Cordoba CF",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "cordoba-cf"
+    },
+    {
+      "name": "FC Andorra",
+      "common_name": "FC Andorra",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "fc-andorra"
+    },
+    {
+      "name": "Girona FC",
+      "common_name": "Girona FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "girona-fc"
+    },
+    {
+      "name": "Granada CF",
+      "common_name": "Granada CF",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "granada-cf"
+    },
+    {
+      "name": "RCD Mallorca",
+      "common_name": "RCD Mallorca",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "rcd-mallorca"
+    },
+    {
+      "name": "Real Oviedo",
+      "common_name": "Real Oviedo",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "real-oviedo"
+    },
+    {
+      "name": "Real Sociedad B",
+      "common_name": "Real Sociedad B",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "real-sociedad-b"
+    },
+    {
+      "name": "Real Sporting Gijon",
+      "common_name": "Real Sporting Gijon",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "real-sporting-gijon"
+    },
+    {
+      "name": "Real Valladolid",
+      "common_name": "Real Valladolid",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "real-valladolid"
+    },
+    {
+      "name": "SD Eibar",
+      "common_name": "SD Eibar",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "sd-eibar"
+    },
+    {
+      "name": "UD Almeria",
+      "common_name": "UD Almeria",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "ud-almeria"
+    },
+    {
+      "name": "UD Las Palmas",
+      "common_name": "UD Las Palmas",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "LaLiga 2",
+      "slug_suggested": "ud-las-palmas"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "batch": 8,
+  "id": "tier-b-batch-008",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Dijon FCO",
+      "common_name": "Dijon FCO",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "dijon-fco"
+    },
+    {
+      "name": "En Avant Guingamp",
+      "common_name": "En Avant Guingamp",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "en-avant-guingamp"
+    },
+    {
+      "name": "FC Annecy",
+      "common_name": "FC Annecy",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "fc-annecy"
+    },
+    {
+      "name": "FC Metz",
+      "common_name": "FC Metz",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "fc-metz"
+    },
+    {
+      "name": "FC Nantes",
+      "common_name": "FC Nantes",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "fc-nantes"
+    },
+    {
+      "name": "FC Sochaux-Montbeliard",
+      "common_name": "FC Sochaux-Montbeliard",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "fc-sochaux-montbeliard"
+    },
+    {
+      "name": "Grenoble Foot 38",
+      "common_name": "Grenoble Foot 38",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "grenoble-foot-38"
+    },
+    {
+      "name": "Montpellier HSC",
+      "common_name": "Montpellier HSC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "montpellier-hsc"
+    },
+    {
+      "name": "Pau FC",
+      "common_name": "Pau FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "pau-fc"
+    },
+    {
+      "name": "Red Star FC",
+      "common_name": "Red Star FC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "red-star-fc"
+    },
+    {
+      "name": "Rodez Aveyron",
+      "common_name": "Rodez Aveyron",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "rodez-aveyron"
+    },
+    {
+      "name": "Stade de Reims",
+      "common_name": "Stade de Reims",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "stade-de-reims"
+    },
+    {
+      "name": "Stade Lavallois",
+      "common_name": "Stade Lavallois",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "stade-lavallois"
+    },
+    {
+      "name": "US Boulogne Cote d'Opale",
+      "common_name": "US Boulogne Cote d'Opale",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "us-boulogne-cote-d-opale"
+    },
+    {
+      "name": "USL Dunkerque",
+      "common_name": "USL Dunkerque",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Ligue 2",
+      "slug_suggested": "usl-dunkerque"
+    },
+    {
+      "name": "AC Milan",
+      "common_name": "AC Milan",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "ac-milan"
+    },
+    {
+      "name": "Atalanta",
+      "common_name": "Atalanta",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "atalanta"
+    },
+    {
+      "name": "Bologna",
+      "common_name": "Bologna",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "bologna"
+    },
+    {
+      "name": "Cagliari",
+      "common_name": "Cagliari",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "cagliari"
+    },
+    {
+      "name": "Como",
+      "common_name": "Como",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "como"
+    }
+  ]
+}

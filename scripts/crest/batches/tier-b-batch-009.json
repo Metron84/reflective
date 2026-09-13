@@ -1,0 +1,188 @@
+{
+  "batch": 9,
+  "id": "tier-b-batch-009",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Fiorentina",
+      "common_name": "Fiorentina",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "fiorentina"
+    },
+    {
+      "name": "Frosinone",
+      "common_name": "Frosinone",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "frosinone"
+    },
+    {
+      "name": "Genoa",
+      "common_name": "Genoa",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "genoa"
+    },
+    {
+      "name": "Inter Milan",
+      "common_name": "Inter Milan",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "inter-milan"
+    },
+    {
+      "name": "Lazio",
+      "common_name": "Lazio",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "lazio"
+    },
+    {
+      "name": "Lecce",
+      "common_name": "Lecce",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "lecce"
+    },
+    {
+      "name": "Monza",
+      "common_name": "Monza",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "monza"
+    },
+    {
+      "name": "Parma",
+      "common_name": "Parma",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "parma"
+    },
+    {
+      "name": "Sassuolo",
+      "common_name": "Sassuolo",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "sassuolo"
+    },
+    {
+      "name": "Torino",
+      "common_name": "Torino",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "torino"
+    },
+    {
+      "name": "Udinese",
+      "common_name": "Udinese",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "udinese"
+    },
+    {
+      "name": "Venezia",
+      "common_name": "Venezia",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie A",
+      "slug_suggested": "venezia"
+    },
+    {
+      "name": "Ascoli",
+      "common_name": "Ascoli",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "ascoli"
+    },
+    {
+      "name": "Avellino",
+      "common_name": "Avellino",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "avellino"
+    },
+    {
+      "name": "Benevento",
+      "common_name": "Benevento",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "benevento"
+    },
+    {
+      "name": "Calcio Padova",
+      "common_name": "Calcio Padova",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "calcio-padova"
+    },
+    {
+      "name": "Carrarese",
+      "common_name": "Carrarese",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "carrarese"
+    },
+    {
+      "name": "Catanzaro",
+      "common_name": "Catanzaro",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "catanzaro"
+    },
+    {
+      "name": "Cesena",
+      "common_name": "Cesena",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "cesena"
+    },
+    {
+      "name": "Cremonese",
+      "common_name": "Cremonese",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "cremonese"
+    }
+  ]
+}

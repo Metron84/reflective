@@ -1,0 +1,188 @@
+{
+  "batch": 3,
+  "id": "tier-b-batch-003",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Derby County",
+      "common_name": "Derby County",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "derby-county"
+    },
+    {
+      "name": "Lincoln City",
+      "common_name": "Lincoln City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "lincoln-city"
+    },
+    {
+      "name": "Middlesbrough",
+      "common_name": "Middlesbrough",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "middlesbrough"
+    },
+    {
+      "name": "Millwall",
+      "common_name": "Millwall",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "millwall"
+    },
+    {
+      "name": "Norwich City",
+      "common_name": "Norwich City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "norwich-city"
+    },
+    {
+      "name": "Portsmouth",
+      "common_name": "Portsmouth",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "portsmouth"
+    },
+    {
+      "name": "Preston North End",
+      "common_name": "Preston North End",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "preston-north-end"
+    },
+    {
+      "name": "Queens Park Rangers",
+      "common_name": "Queens Park Rangers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "queens-park-rangers"
+    },
+    {
+      "name": "Sheffield United",
+      "common_name": "Sheffield United",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "sheffield-united"
+    },
+    {
+      "name": "Southampton",
+      "common_name": "Southampton",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "southampton"
+    },
+    {
+      "name": "Stoke City",
+      "common_name": "Stoke City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "stoke-city"
+    },
+    {
+      "name": "Swansea City",
+      "common_name": "Swansea City",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "swansea-city"
+    },
+    {
+      "name": "Watford",
+      "common_name": "Watford",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "watford"
+    },
+    {
+      "name": "West Bromwich Albion",
+      "common_name": "West Bromwich Albion",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "west-bromwich-albion"
+    },
+    {
+      "name": "West Ham United",
+      "common_name": "West Ham United",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "west-ham-united"
+    },
+    {
+      "name": "Wolverhampton Wanderers",
+      "common_name": "Wolverhampton Wanderers",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "wolverhampton-wanderers"
+    },
+    {
+      "name": "Wrexham",
+      "common_name": "Wrexham",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL Championship",
+      "slug_suggested": "wrexham"
+    },
+    {
+      "name": "AFC Wimbledon",
+      "common_name": "AFC Wimbledon",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "afc-wimbledon"
+    },
+    {
+      "name": "Barnsley",
+      "common_name": "Barnsley",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "barnsley"
+    },
+    {
+      "name": "Blackpool",
+      "common_name": "Blackpool",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "EFL League One",
+      "slug_suggested": "blackpool"
+    }
+  ]
+}

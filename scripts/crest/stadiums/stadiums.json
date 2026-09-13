@@ -1,0 +1,1314 @@
+[
+  {
+    "slug": "1-fc-heidenheim",
+    "city": "Heidenheim an der Brenz",
+    "stadiumName": "Voith-Arena",
+    "wikidataClub": "Q162251",
+    "wikidataStadium": "Q548138",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "1-fc-kaiserslautern",
+    "city": "Kaiserslautern",
+    "stadiumName": "Fritz Walter Stadium",
+    "wikidataClub": "Q8466",
+    "wikidataStadium": "Q154298",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ac-milan",
+    "city": "Milan",
+    "stadiumName": "Giuseppe Meazza Stadium",
+    "wikidataClub": "Q1543",
+    "wikidataStadium": "Q133566",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ad-ceuta-fc",
+    "city": "Ceuta",
+    "stadiumName": "Estadio Alfonso Murube",
+    "wikidataClub": "Q5773365",
+    "wikidataStadium": "Q1369445",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "afc-wimbledon",
+    "city": "London Borough of Merton",
+    "stadiumName": "Plough Lane",
+    "wikidataClub": "Q48851",
+    "wikidataStadium": "Q48699006",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "aj-auxerre",
+    "city": "Auxerre",
+    "stadiumName": "Stade de l'Abbé-Deschamps",
+    "wikidataClub": "Q182876",
+    "wikidataStadium": "Q1347183",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ajax",
+    "city": "Amsterdam",
+    "stadiumName": "Johan Cruijff ArenA",
+    "source": "known"
+  },
+  {
+    "slug": "al-ahly",
+    "city": "Cairo",
+    "stadiumName": "Cairo International Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "al-ain",
+    "city": "Al Ain",
+    "stadiumName": "Hazza bin Zayed Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "al-hilal",
+    "city": "Riyadh",
+    "stadiumName": "Kingdom Arena",
+    "source": "known"
+  },
+  {
+    "slug": "alaves",
+    "city": "Vitoria-Gasteiz",
+    "stadiumName": "Mendizorrotza Stadium",
+    "wikidataClub": "Q223620",
+    "wikidataStadium": "Q1369390",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "albacete-bp",
+    "city": "Albacete",
+    "stadiumName": "Estadio Carlos Belmonte",
+    "wikidataClub": "Q576285",
+    "wikidataStadium": "Q1369118",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "angers",
+    "city": "Angers",
+    "stadiumName": "Stade Raymond Kopa",
+    "wikidataClub": "Q845137",
+    "wikidataStadium": "Q387213",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "arminia-bielefeld",
+    "city": "Bielefeld",
+    "stadiumName": "Bielefelder Alm",
+    "wikidataClub": "Q105844",
+    "wikidataStadium": "Q706435",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "arsenal",
+    "city": "London",
+    "stadiumName": "Emirates Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "as-monaco",
+    "city": "Fontvieille",
+    "stadiumName": "Stade Louis II",
+    "wikidataClub": "Q180305",
+    "wikidataStadium": "Q318851",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "as-nancy-lorraine",
+    "city": "Tomblaine",
+    "stadiumName": "Stade Marcel Picot",
+    "wikidataClub": "Q19523",
+    "wikidataStadium": "Q1341607",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "as-saint-etienne",
+    "city": "Saint-Étienne",
+    "stadiumName": "Stade Geoffroy-Guichard",
+    "wikidataClub": "Q19521",
+    "wikidataStadium": "Q861000",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ascoli",
+    "city": "Ascoli Piceno",
+    "stadiumName": "Stadio Cino e Lillo Del Duca",
+    "wikidataClub": "Q6630",
+    "wikidataStadium": "Q94591",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "atalanta",
+    "city": "Bergamo",
+    "stadiumName": "Stadio Atleti Azzurri d'Italia",
+    "wikidataClub": "Q1886",
+    "wikidataStadium": "Q780526",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "athletic-bilbao",
+    "city": "Bilbao",
+    "stadiumName": "San Mamés",
+    "source": "known"
+  },
+  {
+    "slug": "atletico-madrid",
+    "city": "Madrid",
+    "stadiumName": "Riyadh Air Metropolitano",
+    "source": "known"
+  },
+  {
+    "slug": "avellino",
+    "city": "Avellino",
+    "stadiumName": "Stadio Partenio-Adriano Lombardi",
+    "wikidataClub": "Q298217",
+    "wikidataStadium": "Q2298028",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "barcelona",
+    "city": "Barcelona",
+    "stadiumName": "Spotify Camp Nou",
+    "source": "known"
+  },
+  {
+    "slug": "barnsley",
+    "city": "Barnsley",
+    "stadiumName": "Oakwell",
+    "wikidataClub": "Q19442",
+    "wikidataStadium": "Q1138270",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bayer-leverkusen",
+    "city": "Leverkusen",
+    "stadiumName": "BayArena",
+    "wikidataClub": "Q104761",
+    "wikidataStadium": "Q156630",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bayern-munich",
+    "city": "Munich",
+    "stadiumName": "Allianz Arena",
+    "source": "known"
+  },
+  {
+    "slug": "benevento",
+    "city": "Benevento",
+    "stadiumName": "Stadio Ciro Vigorito",
+    "wikidataClub": "Q652516",
+    "wikidataStadium": "Q1671970",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "birmingham-city",
+    "city": "Birmingham",
+    "stadiumName": "St Andrew's",
+    "wikidataClub": "Q19444",
+    "wikidataStadium": "Q819179",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "blackpool",
+    "city": "Blackpool",
+    "stadiumName": "Bloomfield Road",
+    "wikidataClub": "Q19449",
+    "wikidataStadium": "Q870859",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bologna",
+    "city": "Bologna",
+    "stadiumName": "Stadio Renato Dall'Ara",
+    "wikidataClub": "Q1893",
+    "wikidataStadium": "Q757182",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "borussia-dortmund",
+    "city": "Dortmund",
+    "stadiumName": "Signal Iduna Park",
+    "source": "known"
+  },
+  {
+    "slug": "bournemouth",
+    "city": "Bournemouth",
+    "stadiumName": "Dean Court",
+    "wikidataClub": "Q19568",
+    "wikidataStadium": "Q619094",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bradford-city",
+    "city": "Unknown",
+    "stadiumName": "Valley Parade",
+    "wikidataClub": "Q48879",
+    "wikidataStadium": "Q969279",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bristol-city",
+    "city": "City of Bristol",
+    "stadiumName": "Ashton Gate Stadium",
+    "wikidataClub": "Q19456",
+    "wikidataStadium": "Q726370",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "bromley",
+    "city": "Bromley",
+    "stadiumName": "Hayes Lane",
+    "wikidataClub": "Q1584552",
+    "wikidataStadium": "Q3986424",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "burgos-cf",
+    "city": "Burgos",
+    "stadiumName": "Estadio El Plantío",
+    "wikidataClub": "Q852079",
+    "wikidataStadium": "Q3321211",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "burnley",
+    "city": "Burnley",
+    "stadiumName": "Turf Moor",
+    "wikidataClub": "Q19458",
+    "wikidataStadium": "Q683112",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "burton-albion",
+    "city": "Burton upon Trent",
+    "stadiumName": "Pirelli Stadium",
+    "wikidataClub": "Q48929",
+    "wikidataStadium": "Q619136",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cagliari",
+    "city": "Cagliari",
+    "stadiumName": "Unipol Domus",
+    "wikidataClub": "Q1900",
+    "wikidataStadium": "Q30880646",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "calcio-padova",
+    "city": "Padua",
+    "stadiumName": "Stadio Euganeo",
+    "wikidataClub": "Q8428",
+    "wikidataStadium": "Q115585",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cambridge-united",
+    "city": "Cambridge",
+    "stadiumName": "Abbey Stadium",
+    "wikidataClub": "Q18509",
+    "wikidataStadium": "Q2444574",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cardiff-city",
+    "city": "Cardiff",
+    "stadiumName": "Cardiff City Stadium",
+    "wikidataClub": "Q18662",
+    "wikidataStadium": "Q867902",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "catanzaro",
+    "city": "Catanzaro",
+    "stadiumName": "Stadio Nicola Ceravolo",
+    "wikidataClub": "Q501372",
+    "wikidataStadium": "Q1059142",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cd-castellon",
+    "city": "Castellón de la Plana",
+    "stadiumName": "Nou Estadi Castalia",
+    "wikidataClub": "Q743557",
+    "wikidataStadium": "Q264581",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cd-eldense",
+    "city": "Elda",
+    "stadiumName": "Estadio Municipal Nuevo Pepico Amat",
+    "wikidataClub": "Q600232",
+    "wikidataStadium": "Q26709118",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "celta-vigo",
+    "city": "Vigo",
+    "stadiumName": "Abanca Balaídos Stadium",
+    "wikidataClub": "Q8749",
+    "wikidataStadium": "Q1326578",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "celtic",
+    "city": "Glasgow",
+    "stadiumName": "Celtic Park",
+    "source": "known"
+  },
+  {
+    "slug": "cesena",
+    "city": "Cesena",
+    "stadiumName": "Stadio Dino Manuzzi",
+    "wikidataClub": "Q6664",
+    "wikidataStadium": "Q94625",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "charlton-athletic",
+    "city": "Charlton",
+    "stadiumName": "The Valley",
+    "wikidataClub": "Q19462",
+    "wikidataStadium": "Q958319",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "chelsea",
+    "city": "London",
+    "stadiumName": "Stamford Bridge",
+    "wikidataClub": "Q9616",
+    "wikidataStadium": "Q171458",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "clermont-foot-63",
+    "city": "Clermont-Ferrand",
+    "stadiumName": "Stade Gabriel Montpied",
+    "wikidataClub": "Q870182",
+    "wikidataStadium": "Q1128263",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "como",
+    "city": "Como",
+    "stadiumName": "Stadio Giuseppe Sinigaglia",
+    "wikidataClub": "Q1120838",
+    "wikidataStadium": "Q115372",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cordoba-cf",
+    "city": "Córdoba",
+    "stadiumName": "Estadio Nuevo Arcángel",
+    "wikidataClub": "Q5202721",
+    "wikidataStadium": "Q121879",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "coventry-city",
+    "city": "Coventry",
+    "stadiumName": "Coventry Building Society Arena",
+    "wikidataClub": "Q19580",
+    "wikidataStadium": "Q842077",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "cremonese",
+    "city": "Cremona",
+    "stadiumName": "Stadio Giovanni Zini",
+    "wikidataClub": "Q759482",
+    "wikidataStadium": "Q245799",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "crystal-palace",
+    "city": "London",
+    "stadiumName": "Selhurst Park",
+    "wikidataClub": "Q19467",
+    "wikidataStadium": "Q1066373",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "darmstadt-98",
+    "city": "Darmstadt",
+    "stadiumName": "Stadion am Böllenfalltor",
+    "wikidataClub": "Q479351",
+    "wikidataStadium": "Q878622",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "deportivo-la-coruna",
+    "city": "A Coruña",
+    "stadiumName": "Estadio Municipal de Abanca Riazor",
+    "wikidataClub": "Q8760",
+    "wikidataStadium": "Q22130",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "dijon-fco",
+    "city": "Dijon",
+    "stadiumName": "Stade Gaston Gérard",
+    "wikidataClub": "Q503317",
+    "wikidataStadium": "Q1848312",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "doncaster-rovers",
+    "city": "Doncaster",
+    "stadiumName": "Keepmoat Stadium",
+    "wikidataClub": "Q19589",
+    "wikidataStadium": "Q1336402",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "elche",
+    "city": "Elche",
+    "stadiumName": "Estadio Manuel Martínez Valero",
+    "wikidataClub": "Q10512",
+    "wikidataStadium": "Q953600",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "empoli",
+    "city": "Empoli",
+    "stadiumName": "Stadio Carlo Castellani",
+    "wikidataClub": "Q6703",
+    "wikidataStadium": "Q94633",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "en-avant-guingamp",
+    "city": "Guingamp",
+    "stadiumName": "Stade de Roudourou",
+    "wikidataClub": "Q459148",
+    "wikidataStadium": "Q1817621",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "estac-troyes",
+    "city": "Troyes",
+    "stadiumName": "Stade de l'Aube",
+    "wikidataClub": "Q501693",
+    "wikidataStadium": "Q2001732",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "everton",
+    "city": "Liverpool",
+    "stadiumName": "Hill Dickinson Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "fc-annecy",
+    "city": "Annecy",
+    "stadiumName": "Parc des Sports, Annecy",
+    "wikidataClub": "Q1140695",
+    "wikidataStadium": "Q428115",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "fc-lorient",
+    "city": "Lorient",
+    "stadiumName": "Stade du Moustoir",
+    "wikidataClub": "Q48911",
+    "wikidataStadium": "Q39189",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "fc-nantes",
+    "city": "Nantes",
+    "stadiumName": "Stade de la Beaujoire",
+    "wikidataClub": "Q192071",
+    "wikidataStadium": "Q1053455",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "fc-sochaux-montbeliard",
+    "city": "Montbéliard",
+    "stadiumName": "Stade Auguste Bonal",
+    "wikidataClub": "Q19512",
+    "wikidataStadium": "Q1341629",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "fiorentina",
+    "city": "Florence",
+    "stadiumName": "Stadio Artemio Franchi",
+    "wikidataClub": "Q2052",
+    "wikidataStadium": "Q270474",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "frosinone",
+    "city": "Frosinone",
+    "stadiumName": "Benito Stirpe Stadium",
+    "wikidataClub": "Q845043",
+    "wikidataStadium": "Q29655396",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "fulham",
+    "city": "London",
+    "stadiumName": "Craven Cottage",
+    "wikidataClub": "Q18708",
+    "wikidataStadium": "Q318043",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "genoa",
+    "city": "Genoa",
+    "stadiumName": "Stadio Luigi Ferraris",
+    "wikidataClub": "Q2074",
+    "wikidataStadium": "Q271568",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "getafe",
+    "city": "Getafe",
+    "stadiumName": "Estadio Coliseum",
+    "wikidataClub": "Q8806",
+    "wikidataStadium": "Q929109",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "granada-cf",
+    "city": "Granada",
+    "stadiumName": "Estadio Nuevo Los Cármeness",
+    "wikidataClub": "Q8812",
+    "wikidataStadium": "Q574565",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "grenoble-foot-38",
+    "city": "Grenoble",
+    "stadiumName": "Stade des Alpes",
+    "wikidataClub": "Q209509",
+    "wikidataStadium": "Q2299298",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "hamburger-sv",
+    "city": "Altona",
+    "stadiumName": "Volksparkstadion",
+    "wikidataClub": "Q97905930",
+    "wikidataStadium": "Q150933",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "hellas-verona",
+    "city": "Verona",
+    "stadiumName": "Stadio Marcantonio Bentegodi",
+    "wikidataClub": "Q8639",
+    "wikidataStadium": "Q737093",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "huddersfield-town",
+    "city": "Kirklees",
+    "stadiumName": "Kirklees Stadium",
+    "wikidataClub": "Q19473",
+    "wikidataStadium": "Q619407",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "hull-city",
+    "city": "Hull",
+    "stadiumName": "MKM Stadium",
+    "wikidataClub": "Q19477",
+    "wikidataStadium": "Q630160",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "inter-milan",
+    "city": "Milan",
+    "stadiumName": "Giuseppe Meazza Stadium",
+    "wikidataClub": "Q631",
+    "wikidataStadium": "Q133566",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ipswich-town",
+    "city": "Ipswich",
+    "stadiumName": "Portman Road",
+    "wikidataClub": "Q9653",
+    "wikidataStadium": "Q619558",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "juve-stabia",
+    "city": "Castellammare di Stabia",
+    "stadiumName": "Stadio Romeo Menti",
+    "wikidataClub": "Q6748",
+    "wikidataStadium": "Q276784",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "juventus",
+    "city": "Turin",
+    "stadiumName": "Allianz Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "lazio",
+    "city": "Rome",
+    "stadiumName": "Stadio Olimpico",
+    "wikidataClub": "Q2609",
+    "wikidataStadium": "Q159884",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "le-havre",
+    "city": "Le Havre",
+    "stadiumName": "Stade Océane",
+    "wikidataClub": "Q328658",
+    "wikidataStadium": "Q219462",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "le-mans",
+    "city": "Le Mans",
+    "stadiumName": "stade Marie-Marvingt",
+    "wikidataClub": "Q210864",
+    "wikidataStadium": "Q1862372",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "lecce",
+    "city": "Lecce",
+    "stadiumName": "Stadio Via del Mare",
+    "wikidataClub": "Q13391",
+    "wikidataStadium": "Q684727",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "levante",
+    "city": "Valencia",
+    "stadiumName": "Estadi Ciutat de València",
+    "wikidataClub": "Q8823",
+    "wikidataStadium": "Q1122715",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "leyton-orient",
+    "city": "Leyton",
+    "stadiumName": "Brisbane Road",
+    "wikidataClub": "Q19595",
+    "wikidataStadium": "Q917727",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "lincoln-city",
+    "city": "Lincoln",
+    "stadiumName": "Sincil Bank",
+    "wikidataClub": "Q18519",
+    "wikidataStadium": "Q619105",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "liverpool",
+    "city": "Liverpool",
+    "stadiumName": "Anfield",
+    "source": "known"
+  },
+  {
+    "slug": "losc-lille",
+    "city": "Villeneuve-d'Ascq",
+    "stadiumName": "Pierre Mauroy Stadium",
+    "wikidataClub": "Q19516",
+    "wikidataStadium": "Q1410402",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "lr-vicenza",
+    "city": "Vicenza",
+    "stadiumName": "Stadio Romeo Menti",
+    "wikidataClub": "Q56542463",
+    "wikidataStadium": "Q94612",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "luton-town",
+    "city": "Luton",
+    "stadiumName": "Kenilworth Road",
+    "wikidataClub": "Q18520",
+    "wikidataStadium": "Q1613767",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "malaga",
+    "city": "La Rosaleda",
+    "stadiumName": "La Rosaleda Stadium",
+    "wikidataClub": "Q8857",
+    "wikidataStadium": "Q695879",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "manchester-city",
+    "city": "Manchester",
+    "stadiumName": "Etihad Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "manchester-united",
+    "city": "Manchester",
+    "stadiumName": "Old Trafford",
+    "source": "known"
+  },
+  {
+    "slug": "mansfield-town",
+    "city": "Mansfield",
+    "stadiumName": "Field Mill",
+    "wikidataClub": "Q18522",
+    "wikidataStadium": "Q619071",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "mantova",
+    "city": "Mantua",
+    "stadiumName": "Stadio Danilo Martelli",
+    "wikidataClub": "Q430993",
+    "wikidataStadium": "Q245720",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "marseille",
+    "city": "Marseille",
+    "stadiumName": "Orange Vélodrome",
+    "source": "known"
+  },
+  {
+    "slug": "middlesbrough",
+    "city": "Middlesbrough",
+    "stadiumName": "Riverside Stadium",
+    "wikidataClub": "Q18661",
+    "wikidataStadium": "Q822886",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "milton-keynes-dons",
+    "city": "Milton Keynes",
+    "stadiumName": "Stadium MK",
+    "wikidataClub": "Q248188",
+    "wikidataStadium": "Q1144973",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "modena",
+    "city": "Modena",
+    "stadiumName": "Stadio Alberto Braglia",
+    "wikidataClub": "Q8408",
+    "wikidataStadium": "Q94646",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "montpellier-hsc",
+    "city": "Montpellier",
+    "stadiumName": "Stade de la Mosson",
+    "wikidataClub": "Q19513",
+    "wikidataStadium": "Q815833",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "monza",
+    "city": "Monza",
+    "stadiumName": "Stadio Brianteo",
+    "wikidataClub": "Q289482",
+    "wikidataStadium": "Q1851616",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "napoli",
+    "city": "Naples",
+    "stadiumName": "Diego Armando Maradona",
+    "source": "known"
+  },
+  {
+    "slug": "newcastle-united",
+    "city": "Newcastle",
+    "stadiumName": "St James' Park",
+    "source": "known"
+  },
+  {
+    "slug": "norwich-city",
+    "city": "Norwich",
+    "stadiumName": "Carrow Road",
+    "wikidataClub": "Q18721",
+    "wikidataStadium": "Q123017",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "nottingham-forest",
+    "city": "Nottingham",
+    "stadiumName": "City Ground",
+    "wikidataClub": "Q7063643",
+    "wikidataStadium": "Q593446",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "notts-county",
+    "city": "City of Nottingham",
+    "stadiumName": "Meadow Lane",
+    "wikidataClub": "Q19598",
+    "wikidataStadium": "Q1192396",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ogc-nice",
+    "city": "Nice",
+    "stadiumName": "Allianz Riviera",
+    "wikidataClub": "Q185163",
+    "wikidataStadium": "Q127372",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "olympique-lyon",
+    "city": "Décines-Charpieu",
+    "stadiumName": "Parc Olympique Lyonnais",
+    "wikidataClub": "Q704",
+    "wikidataStadium": "Q8507",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "osasuna",
+    "city": "Pamplona",
+    "stadiumName": "El Sadar Stadium",
+    "wikidataClub": "Q10286",
+    "wikidataStadium": "Q735783",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "oxford-united",
+    "city": "Oxford",
+    "stadiumName": "Kassam Stadium",
+    "wikidataClub": "Q48946",
+    "wikidataStadium": "Q1672134",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "palermo",
+    "city": "Palermo",
+    "stadiumName": "Stadio Renzo Barbera",
+    "wikidataClub": "Q2674",
+    "wikidataStadium": "Q28500",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "paris-saint-germain",
+    "city": "Paris",
+    "stadiumName": "Parc des Princes",
+    "wikidataClub": "Q483020",
+    "wikidataStadium": "Q193431",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "parma",
+    "city": "Parma",
+    "stadiumName": "Stadio Ennio Tardini",
+    "wikidataClub": "Q2693",
+    "wikidataStadium": "Q610546",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "pau-fc",
+    "city": "Bizanos",
+    "stadiumName": "Nouste Camp",
+    "wikidataClub": "Q288419",
+    "wikidataStadium": "Q63975205",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "peterborough-united",
+    "city": "City of Peterborough",
+    "stadiumName": "London Road Stadium",
+    "wikidataClub": "Q19495",
+    "wikidataStadium": "Q1156350",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "pisa",
+    "city": "Pisa",
+    "stadiumName": "Arena Garibaldi – Stadio Romeo Anconetani",
+    "wikidataClub": "Q289613",
+    "wikidataStadium": "Q115970",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "portsmouth",
+    "city": "Portsmouth",
+    "stadiumName": "Fratton Park",
+    "wikidataClub": "Q19604",
+    "wikidataStadium": "Q619531",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "preston-north-end",
+    "city": "Preston",
+    "stadiumName": "Deepdale",
+    "wikidataClub": "Q19612",
+    "wikidataStadium": "Q1141958",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "queens-park-rangers",
+    "city": "London",
+    "stadiumName": "Kiyan Prince Foundation Stadium",
+    "wikidataClub": "Q18723",
+    "wikidataStadium": "Q31670",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "racing-santander",
+    "city": "Santander",
+    "stadiumName": "Campos de Sport de El Sardinero",
+    "wikidataClub": "Q12236",
+    "wikidataStadium": "Q195391",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "rb-leipzig",
+    "city": "Leipzig",
+    "stadiumName": "Red Bull Arena",
+    "wikidataClub": "Q702455",
+    "wikidataStadium": "Q210466",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "rc-lens",
+    "city": "Lens",
+    "stadiumName": "Stade Bollaert-Delelis",
+    "wikidataClub": "Q191843",
+    "wikidataStadium": "Q854122",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "rc-strasbourg",
+    "city": "Strasbourg",
+    "stadiumName": "Stade de la Meinau",
+    "wikidataClub": "Q126334",
+    "wikidataStadium": "Q374883",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "reading",
+    "city": "Reading",
+    "stadiumName": "Madejski Stadium",
+    "wikidataClub": "Q18729",
+    "wikidataStadium": "Q31656",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "real-betis",
+    "city": "Seville",
+    "stadiumName": "Estadio Benito Villamarín",
+    "wikidataClub": "Q8723",
+    "wikidataStadium": "Q126844",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "real-madrid",
+    "city": "Madrid",
+    "stadiumName": "Santiago Bernabéu",
+    "source": "known"
+  },
+  {
+    "slug": "red-star-fc",
+    "city": "Saint-Ouen-sur-Seine",
+    "stadiumName": "Stade de Paris",
+    "wikidataClub": "Q522283",
+    "wikidataStadium": "Q1320249",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "rodez-aveyron",
+    "city": "Rodez",
+    "stadiumName": "Stade Paul-Lignon",
+    "wikidataClub": "Q292231",
+    "wikidataStadium": "Q2325894",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "roma",
+    "city": "Rome",
+    "stadiumName": "Stadio Olimpico",
+    "source": "known"
+  },
+  {
+    "slug": "sassuolo",
+    "city": "Reggio Emilia",
+    "stadiumName": "Mapei Stadium - Città del Tricolore",
+    "wikidataClub": "Q8603",
+    "wikidataStadium": "Q1887221",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "schalke-04",
+    "city": "Gelsenkirchen-Nord",
+    "stadiumName": "Arena AufSchalke",
+    "wikidataClub": "Q32494",
+    "wikidataStadium": "Q150961",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sd-eibar",
+    "city": "Eibar",
+    "stadiumName": "Ipurúa Municipal Stadium",
+    "wikidataClub": "Q770740",
+    "wikidataStadium": "Q3320428",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sevilla",
+    "city": "Seville",
+    "stadiumName": "Ramón Sánchez Pizjuán Stadium",
+    "wikidataClub": "Q10329",
+    "wikidataStadium": "Q275429",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sheffield-wednesday",
+    "city": "Owlerton",
+    "stadiumName": "Hillsborough Stadium",
+    "wikidataClub": "Q7492779",
+    "wikidataStadium": "Q642557",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "southampton",
+    "city": "Southampton",
+    "stadiumName": "St Mary's Stadium",
+    "wikidataClub": "Q18732",
+    "wikidataStadium": "Q567339",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ss-arezzo",
+    "city": "Arezzo",
+    "stadiumName": "Stadio Città di Arezzo",
+    "wikidataClub": "Q297430",
+    "wikidataStadium": "Q1569166",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "st-pauli",
+    "city": "Hamburg",
+    "stadiumName": "Millerntor-Stadion",
+    "source": "known"
+  },
+  {
+    "slug": "stade-de-reims",
+    "city": "Reims",
+    "stadiumName": "Stade Auguste Delaune",
+    "wikidataClub": "Q208228",
+    "wikidataStadium": "Q530735",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "stade-lavallois",
+    "city": "Laval",
+    "stadiumName": "Stade Francis Le Basser",
+    "wikidataClub": "Q760736",
+    "wikidataStadium": "Q1128228",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "stade-rennais",
+    "city": "Rennes",
+    "stadiumName": "Roazhon Park",
+    "wikidataClub": "Q19509",
+    "wikidataStadium": "Q1121760",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "stevenage",
+    "city": "Stevenage",
+    "stadiumName": "Broadhall Way",
+    "wikidataClub": "Q9426",
+    "wikidataStadium": "Q619353",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "stockport-county",
+    "city": "Stockport",
+    "stadiumName": "Edgeley Park",
+    "wikidataClub": "Q18526",
+    "wikidataStadium": "Q1284381",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "stoke-city",
+    "city": "City of Stoke-on-Trent",
+    "stadiumName": "Britannia Stadium",
+    "wikidataClub": "Q7618447",
+    "wikidataStadium": "Q500922",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sudtirol",
+    "city": "Bolzano",
+    "stadiumName": "Stadio Druso",
+    "wikidataClub": "Q1387710",
+    "wikidataStadium": "Q1261440",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sunderland",
+    "city": "Sunderland",
+    "stadiumName": "Stadium of Light",
+    "wikidataClub": "Q18739",
+    "wikidataStadium": "Q31969",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "sv-elversberg",
+    "city": "Spiesen-Elversberg",
+    "stadiumName": "Waldstadion an der Kaiserlinde",
+    "wikidataClub": "Q692691",
+    "wikidataStadium": "Q474858",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "torino",
+    "city": "Turin",
+    "stadiumName": "Stadio Olimpico Grande Torino",
+    "wikidataClub": "Q2768",
+    "wikidataStadium": "Q214629",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "tottenham-hotspur",
+    "city": "London",
+    "stadiumName": "Tottenham Hotspur Stadium",
+    "source": "known"
+  },
+  {
+    "slug": "toulouse-fc",
+    "city": "Toulouse",
+    "stadiumName": "Stadium Municipal",
+    "wikidataClub": "Q7828889",
+    "wikidataStadium": "Q738044",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "tsg-hoffenheim",
+    "city": "Sinsheim",
+    "stadiumName": "SNP Arena",
+    "wikidataClub": "Q22707",
+    "wikidataStadium": "Q129870",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "ud-almeria",
+    "city": "Almería",
+    "stadiumName": "Estadio Municipal Juan Rojas",
+    "wikidataClub": "Q2569964",
+    "wikidataStadium": "Q3773347",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "union-berlin",
+    "city": "Berlin",
+    "stadiumName": "Stadion An der Alten Försterei",
+    "wikidataClub": "Q141971",
+    "wikidataStadium": "Q749172",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "us-boulogne-cote-d-opale",
+    "city": "Boulogne-sur-Mer",
+    "stadiumName": "Stade de la Libération",
+    "wikidataClub": "Q309400",
+    "wikidataStadium": "Q2067371",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "usl-dunkerque",
+    "city": "Dunkirk",
+    "stadiumName": "Stade Marcel Tribut",
+    "wikidataClub": "Q1815297",
+    "wikidataStadium": "Q2325881",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "venezia",
+    "city": "Venice",
+    "stadiumName": "Stadio Pierluigi Penzo",
+    "wikidataClub": "Q501245",
+    "wikidataStadium": "Q588926",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "vfb-stuttgart",
+    "city": "Bad Cannstatt",
+    "stadiumName": "MHPArena",
+    "wikidataClub": "Q4512",
+    "wikidataStadium": "Q152349",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "villarreal",
+    "city": "Villarreal",
+    "stadiumName": "Estadio de la Cerámica",
+    "wikidataClub": "Q12297",
+    "wikidataStadium": "Q741157",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "watford",
+    "city": "Watford",
+    "stadiumName": "Vicarage Road",
+    "wikidataClub": "Q2714",
+    "wikidataStadium": "Q10626",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "werder-bremen",
+    "city": "Östliche Vorstadt",
+    "stadiumName": "Weserstadion",
+    "wikidataClub": "Q51976",
+    "wikidataStadium": "Q154475",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "west-ham-united",
+    "city": "Stratford",
+    "stadiumName": "London Stadium",
+    "wikidataClub": "Q18747",
+    "wikidataStadium": "Q172190",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "wolverhampton-wanderers",
+    "city": "Wolverhampton",
+    "stadiumName": "Molineux Stadium",
+    "wikidataClub": "Q19500",
+    "wikidataStadium": "Q380823",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "wrexham",
+    "city": "Unknown",
+    "stadiumName": "Racecourse Ground",
+    "wikidataClub": "Q18529",
+    "wikidataStadium": "Q1202579",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "wycombe-wanderers",
+    "city": "High Wycombe",
+    "stadiumName": "Adams Park",
+    "wikidataClub": "Q48953",
+    "wikidataStadium": "Q351946",
+    "source": "wikidata-p115"
+  },
+  {
+    "slug": "wydad-casablanca",
+    "city": "Casablanca",
+    "stadiumName": "Stade Mohammed V",
+    "source": "known"
+  }
+]

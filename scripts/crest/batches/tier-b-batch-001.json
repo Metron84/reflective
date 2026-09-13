@@ -1,0 +1,188 @@
+{
+  "batch": 1,
+  "id": "tier-b-batch-001",
+  "club_count": 20,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "1. FC Heidenheim",
+      "common_name": "1. FC Heidenheim",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "1-fc-heidenheim"
+    },
+    {
+      "name": "1. FC Kaiserslautern",
+      "common_name": "1. FC Kaiserslautern",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "1-fc-kaiserslautern"
+    },
+    {
+      "name": "1. FC Magdeburg",
+      "common_name": "1. FC Magdeburg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "1-fc-magdeburg"
+    },
+    {
+      "name": "1. FC Nurnberg",
+      "common_name": "1. FC Nurnberg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "1-fc-nurnberg"
+    },
+    {
+      "name": "Arminia Bielefeld",
+      "common_name": "Arminia Bielefeld",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "arminia-bielefeld"
+    },
+    {
+      "name": "Darmstadt 98",
+      "common_name": "Darmstadt 98",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "darmstadt-98"
+    },
+    {
+      "name": "Dynamo Dresden",
+      "common_name": "Dynamo Dresden",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "dynamo-dresden"
+    },
+    {
+      "name": "Eintracht Braunschweig",
+      "common_name": "Eintracht Braunschweig",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "eintracht-braunschweig"
+    },
+    {
+      "name": "Energie Cottbus",
+      "common_name": "Energie Cottbus",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "energie-cottbus"
+    },
+    {
+      "name": "Greuther Furth",
+      "common_name": "Greuther Furth",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "greuther-furth"
+    },
+    {
+      "name": "Hannover 96",
+      "common_name": "Hannover 96",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "hannover-96"
+    },
+    {
+      "name": "Hertha BSC",
+      "common_name": "Hertha BSC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "hertha-bsc"
+    },
+    {
+      "name": "Holstein Kiel",
+      "common_name": "Holstein Kiel",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "holstein-kiel"
+    },
+    {
+      "name": "Karlsruher SC",
+      "common_name": "Karlsruher SC",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "karlsruher-sc"
+    },
+    {
+      "name": "VfL Bochum",
+      "common_name": "VfL Bochum",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "vfl-bochum"
+    },
+    {
+      "name": "VfL Osnabruck",
+      "common_name": "VfL Osnabruck",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "vfl-osnabruck"
+    },
+    {
+      "name": "VfL Wolfsburg",
+      "common_name": "VfL Wolfsburg",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "2. Bundesliga",
+      "slug_suggested": "vfl-wolfsburg"
+    },
+    {
+      "name": "1. FC Koln",
+      "common_name": "1. FC Koln",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "1-fc-koln"
+    },
+    {
+      "name": "Bayer Leverkusen",
+      "common_name": "Bayer Leverkusen",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "bayer-leverkusen"
+    },
+    {
+      "name": "Borussia Monchengladbach",
+      "common_name": "Borussia Monchengladbach",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Bundesliga",
+      "slug_suggested": "borussia-monchengladbach"
+    }
+  ]
+}

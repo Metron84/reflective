@@ -1,0 +1,116 @@
+{
+  "batch": 10,
+  "id": "tier-b-batch-010",
+  "club_count": 12,
+  "instructions": "Paste clubs into Perplexity with the Tier B scoring prompt in docs/crest-club-set-expansion.md. Set tier B and competition on each scored row before import.",
+  "clubs": [
+    {
+      "name": "Empoli",
+      "common_name": "Empoli",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "empoli"
+    },
+    {
+      "name": "Hellas Verona",
+      "common_name": "Hellas Verona",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "hellas-verona"
+    },
+    {
+      "name": "Juve Stabia",
+      "common_name": "Juve Stabia",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "juve-stabia"
+    },
+    {
+      "name": "LR Vicenza",
+      "common_name": "LR Vicenza",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "lr-vicenza"
+    },
+    {
+      "name": "Mantova",
+      "common_name": "Mantova",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "mantova"
+    },
+    {
+      "name": "Modena",
+      "common_name": "Modena",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "modena"
+    },
+    {
+      "name": "Palermo",
+      "common_name": "Palermo",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "palermo"
+    },
+    {
+      "name": "Pisa",
+      "common_name": "Pisa",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "pisa"
+    },
+    {
+      "name": "Sampdoria",
+      "common_name": "Sampdoria",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "sampdoria"
+    },
+    {
+      "name": "SS Arezzo",
+      "common_name": "SS Arezzo",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "ss-arezzo"
+    },
+    {
+      "name": "Sudtirol",
+      "common_name": "Sudtirol",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "sudtirol"
+    },
+    {
+      "name": "Virtus Entella",
+      "common_name": "Virtus Entella",
+      "city": "",
+      "country": "",
+      "founded": 0,
+      "competition": "Serie B",
+      "slug_suggested": "virtus-entella"
+    }
+  ]
+}

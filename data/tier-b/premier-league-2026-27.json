@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "aston-villa",
+    "name": "Aston Villa",
+    "city": "Birmingham",
+    "cluster": "midlands",
+    "competition": "Premier League",
+    "kit_family": "claret"
+  },
+  {
+    "slug": "bournemouth",
+    "name": "AFC Bournemouth",
+    "city": "Bournemouth",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "red"
+  },
+  {
+    "slug": "brentford",
+    "name": "Brentford",
+    "city": "London",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "red"
+  },
+  {
+    "slug": "brighton",
+    "name": "Brighton & Hove Albion",
+    "city": "Brighton",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "blue"
+  },
+  {
+    "slug": "chelsea",
+    "name": "Chelsea",
+    "city": "London",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "blue"
+  },
+  {
+    "slug": "coventry-city",
+    "name": "Coventry City",
+    "city": "Coventry",
+    "cluster": "midlands",
+    "competition": "Premier League",
+    "kit_family": "blue"
+  },
+  {
+    "slug": "crystal-palace",
+    "name": "Crystal Palace",
+    "city": "London",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "red"
+  },
+  {
+    "slug": "fulham",
+    "name": "Fulham",
+    "city": "London",
+    "cluster": "england-london",
+    "competition": "Premier League",
+    "kit_family": "white"
+  },
+  {
+    "slug": "hull-city",
+    "name": "Hull City",
+    "city": "Hull",
+    "cluster": "england-north",
+    "competition": "Premier League",
+    "kit_family": "yellow"
+  },
+  {
+    "slug": "ipswich-town",
+    "name": "Ipswich Town",
+    "city": "Ipswich",
+    "cluster": "midlands",
+    "competition": "Premier League",
+    "kit_family": "blue"
+  },
+  {
+    "slug": "leeds-united",
+    "name": "Leeds United",
+    "city": "Leeds",
+    "cluster": "england-north",
+    "competition": "Premier League",
+    "kit_family": "white"
+  },
+  {
+    "slug": "nottingham-forest",
+    "name": "Nottingham Forest",
+    "city": "Nottingham",
+    "cluster": "midlands",
+    "competition": "Premier League",
+    "kit_family": "red"
+  },
+  {
+    "slug": "sunderland",
+    "name": "Sunderland",
+    "city": "Sunderland",
+    "cluster": "england-north",
+    "competition": "Premier League",
+    "kit_family": "red"
+  }
+]
