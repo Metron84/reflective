@@ -524,7 +524,7 @@
     ],
     "identity_summary": "Derby's civic club. An old league name, local in feeling, not a locked idea.",
     "kit_family": "white",
-    "exclusion_clubs": [],
+    "exclusion_clubs": ["nottingham-forest"],
     "vector_version": "1.1",
     "research_status": "draft",
     "source_quality_notes": "Founded 1884. Civic Derby club. Stay near 4 except local scale. Division is not identity."
@@ -700,7 +700,7 @@
     ],
     "identity_summary": "Norwich's civic club, the Canaries. The city and the yellow shirt are the identity.",
     "kit_family": "yellow",
-    "exclusion_clubs": [],
+    "exclusion_clubs": ["ipswich-town"],
     "vector_version": "1.1",
     "research_status": "draft",
     "source_quality_notes": "Founded 1902. Civic Norwich club. Stay near 4 except local scale. Division is not identity."
@@ -832,7 +832,7 @@
     ],
     "identity_summary": "QPR is a west London civic club. The hoops are colour, not a locked idea.",
     "kit_family": "blue",
-    "exclusion_clubs": [],
+    "exclusion_clubs": ["brentford"],
     "vector_version": "1.1",
     "research_status": "draft",
     "source_quality_notes": "Founded 1882. Civic London club. Stay near 4 except local scale. Division is not identity."
