@@ -20,6 +20,9 @@ export default function Bracket() {
 
   const cards = useMemo(() => matchesForRound(round), [round]);
   const route = useMemo(() => routeFor(hot), [hot]);
+  const qf = matchesForRound("QF");
+  const sf = matchesForRound("SF");
+  const final = matchesForRound("F");
 
   return (
     <section className={styles.wrap} aria-labelledby="kotb-bracket">
@@ -54,83 +57,85 @@ export default function Bracket() {
           </div>
           <div className={styles.list}>
             {cards.map((match) => (
-              <MatchCard
-                key={match.id}
-                match={match}
-                onOpen={setOpen}
-              />
+              <MatchCard key={match.id} match={match} onOpen={setOpen} />
             ))}
           </div>
         </>
       ) : (
         <div className={styles.scroller}>
           <div className={styles.tree}>
-            <Column
-              title="Quarters"
-              matches={matchesForRound("QF")}
-              onOpen={setOpen}
+            <p className={`${styles.colTitle} ${styles.headQ}`}>Quarters</p>
+            <p className={`${styles.colTitle} ${styles.headS}`}>Semis</p>
+            <p className={`${styles.colTitle} ${styles.headF}`}>Final</p>
+
+            <Slot
+              className={styles.qf1}
+              match={qf[0]}
               route={route}
               onHot={setHot}
-            />
-            <span className={styles.gutter} aria-hidden="true" />
-            <Column
-              title="Semis"
-              matches={matchesForRound("SF")}
               onOpen={setOpen}
+            />
+            <Slot
+              className={styles.qf2}
+              match={qf[1]}
               route={route}
               onHot={setHot}
-            />
-            <span className={styles.gutter} aria-hidden="true" />
-            <Column
-              title="Final"
-              matches={matchesForRound("F")}
               onOpen={setOpen}
+            />
+            <Slot
+              className={styles.qf3}
+              match={qf[2]}
               route={route}
               onHot={setHot}
+              onOpen={setOpen}
             />
-            <svg
-              className={styles.wires}
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <path
-                className={route.has("qf1") ? styles.wireHot : styles.wire}
-                d="M31 16 H48 V28 H53"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-              <path
-                className={route.has("qf2") ? styles.wireHot : styles.wire}
-                d="M31 38 H48 V28 H53"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-              <path
-                className={route.has("qf3") ? styles.wireHot : styles.wire}
-                d="M31 62 H48 V72 H53"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-              <path
-                className={route.has("qf4") ? styles.wireHot : styles.wire}
-                d="M31 84 H48 V72 H53"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-              <path
-                className={route.has("sf1") ? styles.wireHot : styles.wire}
-                d="M69 28 H84 V50 H88"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-              <path
-                className={route.has("sf2") ? styles.wireHot : styles.wire}
-                d="M69 72 H84 V50 H88"
-                vectorEffect="non-scaling-stroke"
-                fill="none"
-              />
-            </svg>
+            <Slot
+              className={styles.qf4}
+              match={qf[3]}
+              route={route}
+              onHot={setHot}
+              onOpen={setOpen}
+            />
+
+            <Gutter
+              className={styles.wireQf12}
+              hotA={route.has("qf1")}
+              hotB={route.has("qf2")}
+            />
+            <Gutter
+              className={styles.wireQf34}
+              hotA={route.has("qf3")}
+              hotB={route.has("qf4")}
+            />
+
+            <Slot
+              className={styles.sf1}
+              match={sf[0]}
+              route={route}
+              onHot={setHot}
+              onOpen={setOpen}
+            />
+            <Slot
+              className={styles.sf2}
+              match={sf[1]}
+              route={route}
+              onHot={setHot}
+              onOpen={setOpen}
+            />
+
+            <Gutter
+              className={styles.wireSf}
+              hotA={route.has("sf1")}
+              hotB={route.has("sf2")}
+            />
+
+            <Slot
+              className={styles.f1}
+              match={final[0]}
+              route={route}
+              onHot={setHot}
+              onOpen={setOpen}
+            />
           </div>
         </div>
       )}
@@ -140,29 +145,48 @@ export default function Bracket() {
   );
 }
 
-function Column({ title, matches, onOpen, route, onHot }) {
+function Slot({ className, match, route, onHot, onOpen }) {
+  if (!match) return null;
+  const dim = route.size > 0 && !route.has(match.id);
+
   return (
-    <div className={styles.col}>
-      <p className={styles.colTitle}>{title}</p>
-      <div className={styles.colStack}>
-        {matches.map((match) => (
-          <div
-            key={match.id}
-            className={`${styles.slot} ${!route.has(match.id) && route.size ? styles.dim : ""}`}
-            onMouseEnter={() => onHot(match.id)}
-            onMouseLeave={() => onHot(null)}
-            onFocus={() => onHot(match.id)}
-            onBlur={() => onHot(null)}
-          >
-            <MatchCard
-              match={match}
-              onOpen={onOpen}
-              highlight={route.has(match.id) && route.size > 0}
-            />
-          </div>
-        ))}
-      </div>
+    <div
+      className={`${styles.slot} ${className} ${dim ? styles.dim : ""}`}
+      onMouseEnter={() => onHot(match.id)}
+      onMouseLeave={() => onHot(null)}
+      onFocus={() => onHot(match.id)}
+      onBlur={() => onHot(null)}
+    >
+      <MatchCard
+        match={match}
+        onOpen={onOpen}
+        highlight={route.has(match.id) && route.size > 0}
+      />
     </div>
+  );
+}
+
+function Gutter({ className, hotA, hotB }) {
+  return (
+    <svg
+      className={`${styles.gutterSvg} ${className}`}
+      viewBox="0 0 48 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        className={hotA ? styles.wireHot : styles.wire}
+        d="M0 25 H24 V50 H48"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+      <path
+        className={hotB ? styles.wireHot : styles.wire}
+        d="M0 75 H24 V50 H48"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+    </svg>
   );
 }
 

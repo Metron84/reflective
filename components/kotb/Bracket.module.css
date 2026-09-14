@@ -83,16 +83,16 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(260px, 86vw) 24px minmax(260px, 86vw) 24px minmax(280px, 86vw);
+  grid-template-rows: auto repeat(4, minmax(0, auto));
+  column-gap: 0;
+  row-gap: 16px;
+  align-items: center;
   min-width: min-content;
   padding-bottom: 8px;
 }
 
-.col {
-  scroll-snap-align: start;
-}
-
 .colTitle {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -100,28 +100,84 @@
   color: #5f5e5a;
 }
 
-.colStack {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 16px;
-  min-height: 100%;
+.headQ {
+  grid-column: 1;
+  grid-row: 1;
+  scroll-snap-align: start;
 }
 
-.gutter {
-  display: block;
+.headS {
+  grid-column: 3;
+  grid-row: 1;
+  scroll-snap-align: start;
+}
+
+.headF {
+  grid-column: 5;
+  grid-row: 1;
+  scroll-snap-align: start;
+}
+
+.qf1 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.qf2 {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.qf3 {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.qf4 {
+  grid-column: 1;
+  grid-row: 5;
+}
+
+.sf1 {
+  grid-column: 3;
+  grid-row: 2 / 4;
+}
+
+.sf2 {
+  grid-column: 3;
+  grid-row: 4 / 6;
+}
+
+.f1 {
+  grid-column: 5;
+  grid-row: 2 / 6;
+}
+
+.wireQf12,
+.wireQf34,
+.wireSf {
+  display: none;
 }
 
 .slot {
+  min-width: 0;
+  z-index: 1;
   transition: opacity 0.15s ease;
+}
+
+.slot article {
+  max-width: none;
 }
 
 .dim {
   opacity: 0.45;
 }
 
-.wires {
-  display: none;
+.gutterSvg {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .wire,
@@ -149,19 +205,29 @@
 @media (min-width: 1100px) {
   .scroller {
     overflow: visible;
+    scroll-snap-type: none;
   }
 
   .tree {
     grid-template-columns: minmax(260px, 320px) 48px minmax(260px, 320px) 48px minmax(280px, 340px);
   }
 
-  .wires {
+  .wireQf12 {
     display: block;
-    position: absolute;
-    inset: 28px 0 0;
-    width: 100%;
-    height: calc(100% - 28px);
-    pointer-events: none;
+    grid-column: 2;
+    grid-row: 2 / 4;
+  }
+
+  .wireQf34 {
+    display: block;
+    grid-column: 2;
+    grid-row: 4 / 6;
+  }
+
+  .wireSf {
+    display: block;
+    grid-column: 4;
+    grid-row: 2 / 6;
   }
 }
 

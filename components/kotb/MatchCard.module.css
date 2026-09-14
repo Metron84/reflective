@@ -1,6 +1,7 @@
 .card {
   width: 100%;
   max-width: 360px;
+  overflow: hidden;
   background: #fff;
   border: 1px solid #d3d1c7;
   border-radius: 4px;
@@ -8,13 +9,13 @@
 }
 
 .cardHot {
-  outline: 2px solid #d8232a;
-  outline-offset: 2px;
+  box-shadow: inset 0 0 0 2px #d8232a;
 }
 
 .open {
   display: block;
   width: 100%;
+  min-width: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -42,8 +43,9 @@
 .row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-height: 72px;
+  min-width: 0;
   padding: 12px;
 }
 
@@ -77,16 +79,18 @@
 }
 
 .names {
-  flex: 1 1 auto;
-  min-width: 92px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .venue {
   margin: 0;
+  overflow: hidden;
   font-family: var(--font-archivo), var(--font-body), sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.25;
+  text-overflow: ellipsis;
   color: #0a111f;
 }
 
