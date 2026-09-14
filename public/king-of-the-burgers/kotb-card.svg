@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="King of the Burgers: two clubs score the same burger, winner goes through">
+  <rect width="800" height="450" fill="#0A111F"/>
+
+  <g fill="#F2EDE4">
+    <rect x="32" y="48" width="148" height="28" rx="4"/>
+    <rect x="32" y="84" width="148" height="28" rx="4"/>
+    <rect x="32" y="140" width="148" height="28" rx="4"/>
+    <rect x="32" y="176" width="148" height="28" rx="4"/>
+    <rect x="32" y="232" width="148" height="28" rx="4"/>
+    <rect x="32" y="268" width="148" height="28" rx="4"/>
+    <rect x="32" y="324" width="148" height="28" rx="4"/>
+    <rect x="32" y="360" width="148" height="28" rx="4"/>
+  </g>
+
+  <g fill="none" stroke="#F2EDE4" stroke-width="2">
+    <path d="M180 62 H196 V98 H180 M196 80 H214"/>
+    <path d="M180 154 H196 V190 H180 M196 172 H214"/>
+    <path d="M180 246 H196 V282 H180 M196 264 H214"/>
+    <path d="M180 338 H196 V374 H180 M196 356 H214"/>
+  </g>
+
+  <g fill="#F2EDE4" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="0.08em">
+    <text x="222" y="84">QF</text>
+    <text x="222" y="176">QF</text>
+    <text x="222" y="268">QF</text>
+    <text x="222" y="360">QF</text>
+  </g>
+
+  <g fill="#F2EDE4">
+    <rect x="268" y="96" width="168" height="72" rx="4"/>
+    <rect x="268" y="268" width="168" height="72" rx="4"/>
+  </g>
+
+  <g fill="#0A111F" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="0.08em">
+    <text x="400" y="124">SF</text>
+    <text x="400" y="296">SF</text>
+  </g>
+
+  <rect x="478" y="40" width="18" height="370" fill="#D8232A"/>
+
+  <g transform="translate(596 118)">
+    <path fill="#F2EDE4" d="M28 46 L36 8 L54 32 L72 4 L90 32 L108 8 L116 46 Z"/>
+    <rect x="28" y="46" width="88" height="8" rx="2" fill="#F2EDE4"/>
+    <path fill="#F2EDE4" d="M20 78 C20 54 124 54 124 78 L124 92 L20 92 Z"/>
+    <rect x="24" y="96" width="96" height="18" rx="9" fill="#D8232A"/>
+    <path fill="#F2EDE4" d="M20 120 L124 120 C124 148 20 148 20 120 Z"/>
+  </g>
+
+  <g fill="none" stroke="#F2EDE4" stroke-width="2">
+    <path d="M748 168 H764 V248 H748 M764 208 H780"/>
+  </g>
+  <text x="788" y="212" fill="#F2EDE4" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="0.08em" text-anchor="end">F</text>
+</svg>

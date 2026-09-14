@@ -25,6 +25,14 @@
     "cover": null
   },
   {
+    "slug": "king-of-the-burgers",
+    "title": "King of the Burgers",
+    "hook": "Eight Dubai burgers. Two supporters clubs judge each one.",
+    "status": "live",
+    "href": "/king-of-the-burgers",
+    "cover": "/king-of-the-burgers/kotb-card.svg"
+  },
+  {
     "slug": "the-stand",
     "title": "The Stand",
     "hook": "Club, nation, or player. Five questions a day. Save your chapter.",

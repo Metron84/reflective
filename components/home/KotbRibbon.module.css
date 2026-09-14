@@ -1,0 +1,83 @@
+.ribbon {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  background: var(--color-navy);
+  color: var(--color-paper);
+  outline: none;
+  border-bottom: 1px solid rgba(from var(--color-paper) r g b / 0.2);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.ribbon:hover {
+  opacity: 0.92;
+}
+
+.ribbon:active {
+  opacity: 0.8;
+  transform: scale(0.992);
+}
+
+.ribbon:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 3px;
+}
+
+.copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  text-align: left;
+}
+
+.mainRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.main {
+  font-family: var(--font-body);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  font-size: 0.9375rem;
+  color: var(--color-paper);
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: #d8232a;
+  transition: transform 0.15s ease;
+}
+
+.ribbon:hover .arrow,
+.ribbon:focus-visible .arrow {
+  transform: translateX(4px);
+}
+
+@media (min-width: 768px) {
+  .main {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon,
+  .arrow {
+    transition: none;
+  }
+
+  .ribbon:active {
+    transform: none;
+  }
+
+  .ribbon:hover .arrow,
+  .ribbon:focus-visible .arrow {
+    transform: none;
+  }
+}

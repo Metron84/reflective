@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { HOME_HERO_STILL, LALIGA_CAMPAIGN_ENABLED, SITE_SECTIONS } from "@/lib/config";
+import { HOME_HERO_STILL, SITE_SECTIONS } from "@/lib/config";
 import HeroCta from "./HeroCta";
 import HeroPromoVideo from "./HeroPromoVideo";
-import LaLigaRibbon from "./LaLigaRibbon";
 import TreeDoor from "./TreeDoor";
 import { useTreeEntrance } from "./useTreeEntrance";
 import styles from "./HomeTree.module.css";
@@ -68,6 +67,7 @@ export default function HomeTree({
   doorMeta,
   promoVideoSrc = "/promo/promo.mp4",
   isSignedIn: _isSignedIn = false,
+  ribbon = null,
 }) {
   const { skipEntrance, animate } = useTreeEntrance();
   const doorRefs = useRef([]);
@@ -132,7 +132,7 @@ export default function HomeTree({
           </div>
 
           <div className={styles.ctaSlot}>
-            {LALIGA_CAMPAIGN_ENABLED ? <LaLigaRibbon /> : null}
+            {ribbon}
             <HeroCta />
           </div>
         </div>

@@ -1,0 +1,184 @@
+.page {
+  width: 100%;
+  background: #f2ede4;
+  color: #0a111f;
+  font-family: var(--font-archivo), var(--font-body), sans-serif;
+}
+
+.hero {
+  width: 100%;
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.heroInner,
+.inner {
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 48px 16px;
+}
+
+.heroInner {
+  padding: 56px 16px 64px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d8232a;
+}
+
+.title {
+  margin: 12px 0 0;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+
+.heroLine {
+  margin: 16px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: rgb(242 237 228 / 0.82);
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 24px;
+  color: #d8232a;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.block {
+  width: 100%;
+}
+
+.h2,
+.applyTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.steps {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.steps li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.stepNum {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #d3d1c7;
+}
+
+.steps p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.scoreLead {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5f5e5a;
+}
+
+.measures {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.measureLabel {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.measureBody {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #5f5e5a;
+}
+
+.bracketBand {
+  width: 100%;
+}
+
+.bracketInner {
+  margin: 0 auto;
+  max-width: 72rem;
+}
+
+.apply {
+  width: 100%;
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+.applyEyebrow {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d8232a;
+}
+
+.applyTitle {
+  margin: 10px 0 0;
+  color: #f2ede4;
+}
+
+.applyLead {
+  margin: 10px 0 24px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgb(242 237 228 / 0.78);
+}
+
+@media (min-width: 768px) {
+  .heroInner,
+  .inner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .title {
+    font-size: 56px;
+  }
+
+  .h2,
+  .applyTitle {
+    font-size: 32px;
+  }
+}

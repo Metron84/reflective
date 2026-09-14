@@ -1,7 +1,12 @@
 import HomeTree from "@/components/home/HomeTree";
 import TrainingRibbon from "@/components/home/TrainingRibbon";
+import KotbRibbon from "@/components/home/KotbRibbon";
+import LaLigaRibbon from "@/components/home/LaLigaRibbon";
 import ReportSection from "@/components/home/ReportSection";
 import {
+  HOME_RIBBON,
+  KOTB_ENABLED,
+  LALIGA_CAMPAIGN_ENABLED,
   SITE_DESCRIPTION,
   SITE_URL,
   SOCIAL_LINKS,
@@ -75,6 +80,18 @@ const structuredData = {
   ],
 };
 
+export const revalidate = 60;
+
+function HomeCampaignRibbon() {
+  if (HOME_RIBBON === "laliga" && LALIGA_CAMPAIGN_ENABLED) {
+    return <LaLigaRibbon />;
+  }
+  if (HOME_RIBBON === "kotb" && KOTB_ENABLED) {
+    return <KotbRibbon />;
+  }
+  return null;
+}
+
 export default async function Home() {
   const { isSignedIn } = await getAuthContext();
   const doorMeta = getHomepageDoorMeta();
@@ -90,6 +107,7 @@ export default async function Home() {
         doorMeta={doorMeta}
         promoVideoSrc={promoVideoSrc}
         isSignedIn={isSignedIn}
+        ribbon={<HomeCampaignRibbon />}
       />
       {TRAINING_ENABLED ? <TrainingRibbon /> : null}
       <ReportSection />

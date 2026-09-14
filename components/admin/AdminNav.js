@@ -27,6 +27,12 @@ export default function AdminNav({ active, newCount = 0 }) {
       >
         Ultima
       </Link>
+      <Link
+        href="/admin/kotb"
+        className={active === "kotb" ? styles.active : styles.link}
+      >
+        Burgers
+      </Link>
     </nav>
   );
 }

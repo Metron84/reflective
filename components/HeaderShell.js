@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
+import { KOTB_ENABLED, SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
+import { KOTB_PATH } from "@/lib/kotb";
+import DoorPendingLine from "./nav/DoorPendingLine";
 import MobileMenu from "./MobileMenu";
 
 function isActiveSection(pathname, href) {
@@ -115,6 +117,29 @@ export default function HeaderShell({ auth }) {
               >
                 Training
                 {isActiveSection(pathname, "/training") ? (
+                  <span
+                    className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
+                    aria-hidden
+                  />
+                ) : null}
+              </Link>
+            ) : null}
+            {KOTB_ENABLED ? (
+              <Link
+                href={KOTB_PATH}
+                aria-current={
+                  isActiveSection(pathname, KOTB_PATH) ? "page" : undefined
+                }
+                className={`relative py-1 text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 motion-reduce:active:scale-100 ${
+                  isActiveSection(pathname, KOTB_PATH) ? "text-navy" : ""
+                }`}
+              >
+                <span className="hidden min-[1280px]:inline">
+                  King of the Burgers
+                </span>
+                <span className="min-[1280px]:hidden">Burgers</span>
+                <DoorPendingLine />
+                {isActiveSection(pathname, KOTB_PATH) ? (
                   <span
                     className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
                     aria-hidden

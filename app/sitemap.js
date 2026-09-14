@@ -1,4 +1,7 @@
 import {
+  FATF_ENABLED,
+  FATF_INDEXABLE,
+  KOTB_ENABLED,
   LALIGA_CAMPAIGN_ENABLED,
   SITE_URL,
   STAND_ENABLED,
@@ -28,8 +31,14 @@ export default function sitemap() {
     ...(LALIGA_CAMPAIGN_ENABLED
       ? [{ path: "/laliga", changeFrequency: "weekly", priority: 0.8 }]
       : []),
+    ...(FATF_ENABLED && FATF_INDEXABLE
+      ? [{ path: "/for-all-the-fans", changeFrequency: "daily", priority: 0.85 }]
+      : []),
     ...(TRAINING_ENABLED
       ? [{ path: "/training", changeFrequency: "weekly", priority: 0.8 }]
+      : []),
+    ...(KOTB_ENABLED
+      ? [{ path: "/king-of-the-burgers", changeFrequency: "weekly", priority: 0.8 }]
       : []),
     ...(ULTIMA_ENABLED
       ? [

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
+import { KOTB_ENABLED, SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
+import { KOTB_PATH } from "@/lib/kotb";
+import DoorPendingLine from "./nav/DoorPendingLine";
 
 function isActiveSection(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -67,6 +69,25 @@ function MenuOverlay({ onClose, auth }) {
           >
             Training
             {isActiveSection(pathname, "/training") ? (
+              <span
+                className="absolute inset-x-0 -bottom-1 h-0.5 bg-signal"
+                aria-hidden
+              />
+            ) : null}
+          </Link>
+        ) : null}
+        {KOTB_ENABLED ? (
+          <Link
+            href={KOTB_PATH}
+            onClick={onClose}
+            aria-current={
+              isActiveSection(pathname, KOTB_PATH) ? "page" : undefined
+            }
+            className="relative w-fit font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
+          >
+            King of the Burgers
+            <DoorPendingLine />
+            {isActiveSection(pathname, KOTB_PATH) ? (
               <span
                 className="absolute inset-x-0 -bottom-1 h-0.5 bg-signal"
                 aria-hidden

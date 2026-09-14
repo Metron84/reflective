@@ -1,0 +1,151 @@
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fieldset > legend {
+  float: none;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.labelBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-family: var(--font-archivo), var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #f2ede4;
+}
+
+.hint {
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(242 237 228 / 0.62);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgb(242 237 228 / 0.28);
+  background: #0a111f;
+  color: #f2ede4;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.input:focus {
+  outline: 2px solid #d8232a;
+  outline-offset: 1px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.option,
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #f2ede4;
+  cursor: pointer;
+}
+
+.option input,
+.check input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: #d8232a;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.error {
+  margin: 0;
+  font-size: 13px;
+  color: #d8232a;
+}
+
+.submit {
+  appearance: none;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  background: #d8232a;
+  color: #f2ede4;
+  padding: 13px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgb(242 237 228 / 0.62);
+}
+
+.confirmTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #f2ede4;
+}
+
+.confirmBody {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgb(242 237 228 / 0.78);
+}
