@@ -3,12 +3,26 @@ import GameCoverBySlug from "@/components/covers/GameCoverBySlug";
 import styles from "./GuesserHeroCard.module.css";
 
 function isWideCover(slug) {
-  return slug === "ultima" || slug === "king-of-the-burgers";
+  return (
+    slug === "ultima" ||
+    slug === "the-crest" ||
+    slug === "king-of-the-burgers"
+  );
+}
+
+function isExternalHref(href) {
+  return typeof href === "string" && /^https?:\/\//i.test(href);
 }
 
 export default function LiveGameCard({ game, strapline }) {
   return (
-    <Link href={game.href} className={styles.card}>
+    <Link
+      href={game.href}
+      className={styles.card}
+      {...(isExternalHref(game.href)
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
       <div className={isWideCover(game.slug) ? styles.coverUltima : styles.cover}>
         {game.cover ? (
           /* eslint-disable-next-line @next/next/no-img-element */

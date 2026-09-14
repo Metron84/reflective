@@ -9,7 +9,7 @@ import styles from "./page.module.css";
 export const metadata = {
   title: "Games",
   description:
-    "Ultima, Codemaster, and The Guesser. Play from The Reflective Football.",
+    "Ultima, The Crest, King of the Burgers, Codemaster, and The Guesser. Play from The Reflective Football.",
   alternates: { canonical: "/games" },
 };
 

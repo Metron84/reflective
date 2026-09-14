@@ -9,6 +9,22 @@
     "statusLabel": "Invite only"
   },
   {
+    "slug": "the-crest",
+    "title": "The Crest",
+    "hook": "The club that sounds like you.",
+    "status": "live",
+    "href": "https://crest.thereflectivefootball.com",
+    "cover": "/crest/crest-card.png"
+  },
+  {
+    "slug": "king-of-the-burgers",
+    "title": "King of the Burgers",
+    "hook": "Eight Dubai burgers. Two supporters clubs judge each one.",
+    "status": "live",
+    "href": "/king-of-the-burgers",
+    "cover": "/king-of-the-burgers/kotb-card.svg"
+  },
+  {
     "slug": "codemaster",
     "title": "Codemaster",
     "hook": "Decode two decades of football, one grid at a time.",
@@ -23,14 +39,6 @@
     "status": "live",
     "href": "/guesser",
     "cover": null
-  },
-  {
-    "slug": "king-of-the-burgers",
-    "title": "King of the Burgers",
-    "hook": "Eight Dubai burgers. Two supporters clubs judge each one.",
-    "status": "live",
-    "href": "/king-of-the-burgers",
-    "cover": "/king-of-the-burgers/kotb-card.svg"
   },
   {
     "slug": "the-stand",
