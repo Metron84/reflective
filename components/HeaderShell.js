@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { KOTB_ENABLED, SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
-import { KOTB_PATH } from "@/lib/kotb";
+import { FATF_ENABLED, SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
+import { FATF_PATH } from "@/lib/fatf";
 import DoorPendingLine from "./nav/DoorPendingLine";
 import MobileMenu from "./MobileMenu";
 
@@ -124,22 +124,22 @@ export default function HeaderShell({ auth }) {
                 ) : null}
               </Link>
             ) : null}
-            {KOTB_ENABLED ? (
+            {FATF_ENABLED ? (
               <Link
-                href={KOTB_PATH}
+                href={FATF_PATH}
                 aria-current={
-                  isActiveSection(pathname, KOTB_PATH) ? "page" : undefined
+                  isActiveSection(pathname, FATF_PATH) ? "page" : undefined
                 }
                 className={`relative py-1 text-navy/70 transition-[color,opacity,transform] duration-100 hover:text-navy active:scale-[0.98] active:opacity-75 motion-reduce:active:scale-100 ${
-                  isActiveSection(pathname, KOTB_PATH) ? "text-navy" : ""
+                  isActiveSection(pathname, FATF_PATH) ? "text-navy" : ""
                 }`}
               >
                 <span className="hidden min-[1280px]:inline">
-                  King of the Burgers
+                  For All The Fans
                 </span>
-                <span className="min-[1280px]:hidden">Burgers</span>
+                <span className="min-[1280px]:hidden">Fans</span>
                 <DoorPendingLine />
-                {isActiveSection(pathname, KOTB_PATH) ? (
+                {isActiveSection(pathname, FATF_PATH) ? (
                   <span
                     className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
                     aria-hidden

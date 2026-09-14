@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { KOTB_ENABLED, SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
-import { KOTB_PATH } from "@/lib/kotb";
+import { FATF_ENABLED, SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
+import { FATF_PATH } from "@/lib/fatf";
 import DoorPendingLine from "./nav/DoorPendingLine";
 
 function isActiveSection(pathname, href) {
@@ -76,18 +76,18 @@ function MenuOverlay({ onClose, auth }) {
             ) : null}
           </Link>
         ) : null}
-        {KOTB_ENABLED ? (
+        {FATF_ENABLED ? (
           <Link
-            href={KOTB_PATH}
+            href={FATF_PATH}
             onClick={onClose}
             aria-current={
-              isActiveSection(pathname, KOTB_PATH) ? "page" : undefined
+              isActiveSection(pathname, FATF_PATH) ? "page" : undefined
             }
             className="relative w-fit font-display text-3xl text-paper transition-[opacity,transform] duration-100 hover:opacity-80 active:scale-[0.985] active:opacity-70 motion-reduce:active:scale-100"
           >
-            King of the Burgers
+            For All The Fans
             <DoorPendingLine />
-            {isActiveSection(pathname, KOTB_PATH) ? (
+            {isActiveSection(pathname, FATF_PATH) ? (
               <span
                 className="absolute inset-x-0 -bottom-1 h-0.5 bg-signal"
                 aria-hidden
