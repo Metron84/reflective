@@ -549,20 +549,21 @@
     "competition": "LaLiga",
     "cluster": "spain-valencia",
     "vector": [
-      4,
-      4,
-      3,
-      4,
-      4,
-      4,
-      4,
-      4,
       5,
+      4,
+      4,
       6,
       4,
-      5
+      4,
+      4,
+      4,
+      6,
+      6,
+      6,
+      6
     ],
     "confidence": [
+      2,
       1,
       1,
       2,
@@ -570,19 +571,18 @@
       1,
       1,
       1,
-      1,
       2,
       2,
-      1,
+      2,
       2
     ],
-    "identity_summary": "Valencia's giant: Mestalla, the bat, a city club that once expected Europe as normal.",
+    "identity_summary": "Mestalla people who stood outside their own ground for years rather than accept the owner.",
     "exclusion_clubs": [
       "levante"
     ],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Founded 1919. Mestalla and the bat are the civic marks. Recent financial chaos ignored as ownership era; H1 stays 4 because the enduring story is a big club, not a suffering cult. Derby with Levante.",
+    "source_quality_notes": "Was civic heritage. Lim-era boycotts, delayed entry, shareholder action. Journey, defiance, meaning. Not a virtue rank.",
     "kit_family": "white"
   },
   {
@@ -825,7 +825,7 @@
       5,
       6,
       4,
-      4,
+      5,
       6
     ],
     "confidence": [
@@ -839,14 +839,14 @@
       2,
       2,
       1,
-      1,
+      2,
       2
     ],
-    "identity_summary": "A development club that built a football school to stay in the Bundesliga without buying the table.",
+    "identity_summary": "A member development club that stood with the league-wide fight against outside investors.",
     "exclusion_clubs": [],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Founded 30 May 1904. Official football-school philosophy: one of the first German clubs to position as a development club in the late 1990s (scfreiburg.com). This is the clearest M3/S4 German identity in the batch.",
+    "source_quality_notes": "S3 to 5. Academy scores stay. Collective anti-investor action, not a unique cult.",
     "kit_family": "red"
   },
   {

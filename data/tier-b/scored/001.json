@@ -63,7 +63,7 @@
       4,
       6,
       5,
-      4,
+      5,
       5
     ],
     "confidence": [
@@ -77,14 +77,14 @@
       1,
       2,
       2,
-      1,
+      2,
       2
     ],
-    "identity_summary": "A civic rossoblu club from Bologna, old enough to feel like the city's own team.",
+    "identity_summary": "Bologna's civic rossoblu. The city comes first, and the curve shows up for the national fights.",
     "exclusion_clubs": [],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Official history: founded 3 Oct 1909 at the Ronzani beer house (bolognafc.it/en/history). Civic identity is clear. Playing ideology is not distinctive enough to leave 4.",
+    "source_quality_notes": "S3 to 5. Collective away-restriction and affordability action, not a locked idea.",
     "kit_family": "red"
   },
   {
@@ -195,7 +195,7 @@
       4,
       6,
       6,
-      4,
+      5,
       6
     ],
     "confidence": [
@@ -203,23 +203,23 @@
       1,
       2,
       2,
-      1,
+      2,
       1,
       1,
       1,
       2,
       2,
-      1,
+      2,
       2
     ],
-    "identity_summary": "Florence's purple club, civic and stubborn, rebuilt after bankruptcy without becoming a trophy machine.",
+    "identity_summary": "Florence's purple club. Civic and stubborn, including when the club sells what the city loved.",
     "exclusion_clubs": [
       "juventus",
       "empoli"
     ],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Official club history: founded 29 Aug 1926, purple identity, Stadio Artemio Franchi from 1931 (acffiorentina.com). Bankruptcy and restart as Florentia Viola in 2002 is documented. M1 at 5 is a light aesthetic read, confidence 1. Not a serial winner.",
+    "source_quality_notes": "S3 to 5. Challenge over sales is enacted. Personal abuse is not a vector. Style left light.",
     "kit_family": "purple"
   },
   {
@@ -773,35 +773,35 @@
       4,
       4,
       5,
-      4,
+      5,
       4,
       4,
       4,
       4,
       6,
       4,
-      4,
-      4
+      6,
+      5
     ],
     "confidence": [
       1,
       1,
-      1,
-      1,
+      2,
+      2,
       1,
       1,
       1,
       1,
       2,
       1,
-      1,
-      1
+      2,
+      2
     ],
-    "identity_summary": "A Basque civic club from Vitoria-Gasteiz, local in scale more than globally famous.",
+    "identity_summary": "A Basque civic club that emptied its stands rather than accept Monday football.",
     "exclusion_clubs": [],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Official foundation date 23 Jan 1921 (Wikipedia). 2001 UEFA Cup final is a moment, not a whole identity. Stay near 4 except locality.",
+    "source_quality_notes": "S3 to 6. Empty-stand scheduling protest is enacted local defiance. Playing idea left at 4.",
     "kit_family": "blue"
   },
   {

@@ -63,13 +63,13 @@
       4,
       6,
       4,
-      4,
-      4
+      5,
+      5
     ],
     "confidence": [
       1,
       1,
-      1,
+      2,
       1,
       1,
       1,
@@ -77,14 +77,14 @@
       1,
       2,
       1,
-      1,
-      1
+      2,
+      2
     ],
-    "identity_summary": "Mainz's carnival-city club. Civic first, without a locked playing idea across eras.",
+    "identity_summary": "Mainz's carnival-city club. Civic, and present in the fight to keep member football.",
     "exclusion_clubs": [],
     "vector_version": "1.1",
     "research_status": "draft",
-    "source_quality_notes": "Founded 16 Mar 1905. Klopp-era press is a coach era, so M2 stays 4. Civic Mainz is the safe move.",
+    "source_quality_notes": "S3 to 5 for documented investor-campaign participation. Still not Union or St Pauli.",
     "kit_family": "red"
   },
   {

@@ -64,12 +64,12 @@
       3,
       7,
       6,
-      7,
-      7,
-      4,
-      6,
       5,
-      6
+      6,
+      3,
+      5,
+      3,
+      5
     ],
     "confidence": [
       3,
@@ -85,14 +85,14 @@
       3,
       3
     ],
-    "identity_summary": "A way of playing treated as a belief system, taught to children before they are trusted with the first team.",
+    "identity_summary": "A way of playing treated as belief, and a member club that often behaves like a global company.",
     "exclusion_clubs": [
       "real-madrid",
       "espanyol"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "M3 off 7: academy is say, the market is do. S3 off 5: Super League and asset votes are establishment when useful. M1 7 stays as the football idea.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -117,9 +117,9 @@
       2,
       5,
       6,
-      6,
-      6,
       5,
+      6,
+      4,
       6
     ],
     "confidence": [
@@ -136,13 +136,13 @@
       3,
       3
     ],
-    "identity_summary": "Built on resistance and effort, and proud that its glory has always been taken rather than expected.",
+    "identity_summary": "Built on resistance and effort. The outsider story sits next to a club that now wants scale.",
     "exclusion_clubs": [
       "real-madrid"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "S3 off 5. Anti-establishment self-image; enacted commercial growth. Identity stays struggle, not a moral rank.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -212,7 +212,7 @@
       4,
       6,
       2,
-      5,
+      6,
       5,
       5,
       4,
@@ -236,14 +236,14 @@
       3,
       3
     ],
-    "identity_summary": "A city's emotional language, sung before kickoff and carried a long way from home.",
+    "identity_summary": "A city's emotional language, sung before kickoff, and a crowd that will walk out on its own club.",
     "exclusion_clubs": [
       "everton",
       "manchester-united"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "H4 moved for documented walkouts and spending pressure. H1 stays 4: they expect to compete, and they also pay a cost. Not an integrity rank.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -310,18 +310,18 @@
     "country": null,
     "cluster": "england-london",
     "vector": [
-      6,
-      6,
+      3,
+      4,
+      3,
+      3,
+      4,
       4,
       5,
-      5,
-      5,
-      5,
       4,
-      5,
-      5,
       4,
-      5
+      3,
+      3,
+      4
     ],
     "confidence": [
       3,
@@ -337,13 +337,13 @@
       3,
       3
     ],
-    "identity_summary": "Ambition and heartbreak in the same shirt, year after year, told with dark humour.",
+    "identity_summary": "North London ambition. They want to win now, not to be known for almost winning.",
     "exclusion_clubs": [
       "arsenal"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "Recut from heartbreak myth. To Dare Is To Do is glory, not suffering. Levy control and the new ground are enacted modernity. Super League then retreat is establishment appetite.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -364,12 +364,12 @@
       3,
       3,
       2,
-      6,
+      5,
       4,
       3,
-      7,
+      4,
       3,
-      3,
+      2,
       2,
       3
     ],
@@ -387,13 +387,13 @@
       3,
       3
     ],
-    "identity_summary": "A single idea executed to the last centimetre, with the resources to keep executing it.",
+    "identity_summary": "A modern project built to win. The crowd chose that project, then argued about tickets.",
     "exclusion_clubs": [
       "manchester-united"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "M4 was Pep-era ideology. Codebook ignores current manager. Softened. Ownership exceptionalism is the people, not a reason to hide the club.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -410,18 +410,18 @@
     "country": null,
     "cluster": "england-north",
     "vector": [
-      2,
+      4,
       5,
       1,
+      5,
+      4,
+      4,
+      5,
+      4,
       3,
-      5,
-      5,
       6,
       4,
-      4,
-      6,
-      2,
-      4
+      5
     ],
     "confidence": [
       3,
@@ -437,14 +437,14 @@
       3,
       3
     ],
-    "identity_summary": "Youth, comebacks and scale, a club that became a global habit.",
+    "identity_summary": "A global club whose match-going people have spent years fighting the owners, not only the table.",
     "exclusion_clubs": [
       "manchester-city",
       "liverpool"
     ],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "H1 off 2. The people have been in the wilderness. H4 and S3 move for a long protest record across owners. Still mass belonging. Not a virtue score.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
@@ -471,7 +471,7 @@
       3,
       7,
       6,
-      4,
+      3,
       6
     ],
     "confidence": [
@@ -488,11 +488,11 @@
       3,
       3
     ],
-    "identity_summary": "One city, one club, and a crowd that turns up whatever the table says.",
+    "identity_summary": "One city, one club. The crowd stayed through the dark, then chose the power that ended it.",
     "exclusion_clubs": [],
     "vector_version": "1.1",
     "research_status": "sample",
-    "source_quality_notes": "SAMPLE editorial estimate, not researched. Replace with Perplexity batch output.",
+    "source_quality_notes": "S3 to 3. The takeover surveys are enacted choice, not a sin mark. Local 7 and hardship stay.",
     "founding_context": null,
     "academy_reputation": {
       "rating": null,
