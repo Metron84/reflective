@@ -1,0 +1,43 @@
+.main {
+  width: 100%;
+  background: var(--color-paper);
+}
+
+.heroSlot {
+  width: 100%;
+  background: #0a111f;
+}
+
+.section {
+  width: 100%;
+  background: var(--color-paper);
+  color: var(--color-navy);
+  padding: 3rem 0;
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 0 1rem;
+}
+
+.label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a847c;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 4rem 0;
+  }
+
+  .inner {
+    max-width: 48rem;
+    padding: 0 1.5rem;
+  }
+}

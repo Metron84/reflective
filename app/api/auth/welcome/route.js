@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { defaultNameFromEmail } from "@/lib/auth/config";
+import { FATF_CONSENT_VERSION, FATF_SIGNUP_SOURCE } from "@/lib/fatf";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request) {
@@ -40,14 +41,36 @@ export async function POST(request) {
     preferredName = preferredName.slice(0, 40);
   }
 
+  const fatfInterest = Boolean(body.fatfInterest);
+  if (fatfInterest && !Boolean(body.fatfConsent)) {
+    return NextResponse.json(
+      { message: "Please agree so we can email you about the nights." },
+      { status: 400 },
+    );
+  }
+  if (fatfInterest && !Boolean(body.ageAttested)) {
+    return NextResponse.json(
+      { message: "You need to be 18 or over for this." },
+      { status: 400 },
+    );
+  }
+
+  const patch = {
+    preferred_name: preferredName,
+    clubs,
+    marketing_consent: marketingConsent,
+    welcome_completed: true,
+  };
+  if (fatfInterest) {
+    patch.fatf_interest = true;
+    patch.fatf_interest_at = new Date().toISOString();
+    patch.consent_wording_version = FATF_CONSENT_VERSION;
+    patch.signup_source = FATF_SIGNUP_SOURCE;
+  }
+
   const { data, error } = await supabase
     .from("profiles")
-    .update({
-      preferred_name: preferredName,
-      clubs,
-      marketing_consent: marketingConsent,
-      welcome_completed: true,
-    })
+    .update(patch)
     .eq("id", user.id)
     .select("preferred_name, member_number")
     .single();

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import WelcomeForm from "@/components/auth/WelcomeForm";
 import { getClubOptions } from "@/lib/auth/clubs";
 import { getAuthContext } from "@/lib/auth/session";
+import { isFatfNext } from "@/lib/fatf";
 
 export const metadata = {
   title: "Welcome",
@@ -25,6 +26,7 @@ export default async function WelcomePage({ searchParams }) {
         email={user.email ?? ""}
         clubOptions={getClubOptions()}
         nextPath={nextPath}
+        fatfFlow={isFatfNext(nextPath) || params?.intent === "fatf"}
       />
     </div>
   );

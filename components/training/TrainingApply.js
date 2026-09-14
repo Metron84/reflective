@@ -4,6 +4,12 @@ import { useState } from "react";
 import { TRAINING_TERMS } from "@/lib/training/terms";
 import styles from "./TrainingApply.module.css";
 
+const WHY_PLACEHOLDER =
+  "Example: I post match clips from my phone and want them to look like films. I want a reel I can actually show people.";
+
+const SUBMIT_ERROR_MESSAGE =
+  "Something went wrong. Email melo@thereflectivefootball.com and we will hold your place.";
+
 const MESSAGES = {
   "full_name-required": "Add your full name.",
   "full_name-too-long": "That name is too long. Shorten it.",
@@ -23,6 +29,21 @@ const MESSAGES = {
   "invalid-request": "Could not send. Try again in a moment.",
 };
 
+function missingHelperText({ fullName, email, whatsapp, why, acceptedAll }) {
+  const missing = [];
+  if (!fullName.trim()) missing.push("your name");
+  if (!email.trim()) missing.push("your email");
+  if (!whatsapp.trim()) missing.push("your WhatsApp number");
+  if (!why.trim()) missing.push("why you want a seat");
+  if (!acceptedAll) missing.push("accept the terms");
+
+  if (missing.length === 0) return null;
+  if (missing.length === 1) return `Add ${missing[0]} to continue.`;
+
+  const last = missing.pop();
+  return `Add ${missing.join(", ")} and ${last} to continue.`;
+}
+
 export default function TrainingApply() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +54,7 @@ export default function TrainingApply() {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [submitError, setSubmitError] = useState("");
 
   const fieldsComplete =
     Boolean(fullName.trim()) &&
@@ -41,6 +63,13 @@ export default function TrainingApply() {
     Boolean(why.trim());
 
   const canSubmit = fieldsComplete && acceptedAll && !submitting;
+  const helperText = missingHelperText({
+    fullName,
+    email,
+    whatsapp,
+    why,
+    acceptedAll,
+  });
 
   function messageFor(reason) {
     return MESSAGES[reason] ?? MESSAGES["server-error"];
@@ -77,6 +106,7 @@ export default function TrainingApply() {
 
     setSubmitting(true);
     setError("");
+    setSubmitError("");
 
     try {
       const res = await fetch("/api/training", {
@@ -95,13 +125,13 @@ export default function TrainingApply() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.ok === false) {
-        setError(messageFor(data.reason));
+        setSubmitError(SUBMIT_ERROR_MESSAGE);
         setSubmitting(false);
         return;
       }
       setSent(true);
     } catch {
-      setError(messageFor("server-error"));
+      setSubmitError(SUBMIT_ERROR_MESSAGE);
     } finally {
       setSubmitting(false);
     }
@@ -149,6 +179,7 @@ export default function TrainingApply() {
                 type="text"
                 name="full_name"
                 autoComplete="name"
+                placeholder="Your name"
                 required
                 disabled={submitting}
                 value={fullName}
@@ -166,6 +197,7 @@ export default function TrainingApply() {
                 type="email"
                 name="email"
                 autoComplete="email"
+                placeholder="you@email.com"
                 required
                 disabled={submitting}
                 value={email}
@@ -183,6 +215,7 @@ export default function TrainingApply() {
                 type="tel"
                 name="whatsapp"
                 autoComplete="tel"
+                placeholder="+971 50 000 0000"
                 required
                 disabled={submitting}
                 value={whatsapp}
@@ -200,7 +233,7 @@ export default function TrainingApply() {
                 name="why_seat"
                 required
                 maxLength={500}
-                placeholder="A few lines is enough."
+                placeholder={WHY_PLACEHOLDER}
                 disabled={submitting}
                 value={why}
                 onChange={(event) => setWhy(event.target.value)}
@@ -209,6 +242,7 @@ export default function TrainingApply() {
             </div>
 
             <div className={styles.terms}>
+              <p className={styles.termsEyebrow}>Read before you accept</p>
               <h3 className={styles.termsHeading}>The terms</h3>
               <ul className={styles.termsList}>
                 {TRAINING_TERMS.map((line) => (
@@ -246,14 +280,26 @@ export default function TrainingApply() {
 
             <button
               type="submit"
-              className={styles.submit}
+              className={
+                canSubmit ? styles.submit : `${styles.submit} ${styles.submitDisabled}`
+              }
               disabled={!canSubmit}
               aria-disabled={!canSubmit}
             >
-              {submitting
-                ? "Sending…"
-                : "Confirm and request payment details"}
+              {submitting ? "Sending" : "Confirm and request payment details"}
             </button>
+
+            {helperText ? (
+              <p className={styles.helper} aria-live="polite">
+                {helperText}
+              </p>
+            ) : null}
+
+            {submitError ? (
+              <p className={styles.submitError} role="alert">
+                {submitError}
+              </p>
+            ) : null}
 
             <p className={styles.footnote}>
               We reply within 3 days. If a seat is available we send payment

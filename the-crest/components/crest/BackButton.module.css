@@ -1,0 +1,19 @@
+.back {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  padding: 14px 0 0;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.backJourney {
+  color: var(--cream);
+}
+
+.back:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 2px;
+}

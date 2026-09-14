@@ -1,0 +1,78 @@
+.shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  padding: 12px 0 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(242 237 228 / 0.72);
+}
+
+.hudLabel {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.homing {
+  flex: 1;
+  min-width: 12ch;
+  color: rgb(242 237 228 / 0.92);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 13px;
+}
+
+.homingMuted {
+  flex: 1;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 13px;
+}
+
+.hudProgress {
+  font-variant-numeric: tabular-nums;
+  color: rgb(242 237 228 / 0.55);
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 0 20px;
+  color: var(--cream);
+}
+
+.panel :global(.crest-journey-q),
+.panel :global(h1),
+.panel :global(h2) {
+  color: var(--cream);
+}
+
+.panel :global(.crest-journey-muted) {
+  color: rgb(242 237 228 / 0.78);
+}
+
+.panel p {
+  color: rgb(242 237 228 / 0.88);
+}
+
+.panel a {
+  color: rgb(242 237 228 / 0.9);
+}

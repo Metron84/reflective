@@ -1,0 +1,42 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: #f2ede4;
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+.overlayWhite {
+  opacity: 1;
+}
+
+.overlayClear {
+  opacity: 0;
+  transition-duration: 800ms;
+}
+
+.ground {
+  position: absolute;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: none;
+  }
+
+  .overlayClear {
+    transition: none;
+  }
+
+  .reducedFade {
+    transition: none;
+  }
+}

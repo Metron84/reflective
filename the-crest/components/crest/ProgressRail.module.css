@@ -1,0 +1,82 @@
+.wrap {
+  margin-bottom: 22px;
+}
+
+.label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+
+.rail {
+  display: flex;
+  gap: 4px;
+}
+
+.tick {
+  height: 3px;
+  flex: 1;
+  background: var(--edge);
+  border-radius: 1px;
+  transition: background 0.2s ease;
+}
+
+.done {
+  background: var(--navy);
+}
+
+.now {
+  background: var(--red);
+}
+
+.wrapJourney .label {
+  color: rgb(242 237 228 / 0.65);
+}
+
+.wrapJourney .tick {
+  background: rgb(242 237 228 / 0.18);
+}
+
+.wrapJourney .done {
+  background: rgb(242 237 228 / 0.55);
+}
+
+.wrapJourney .now {
+  background: var(--red);
+}
+
+.arc {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+.arcIdle {
+  stroke: rgb(242 237 228 / 0.2);
+}
+
+.arcDone {
+  stroke: rgb(242 237 228 / 0.7);
+}
+
+.arcNow {
+  stroke: var(--red);
+}
+
+.arcLabel {
+  fill: rgb(242 237 228 / 0.7);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tick {
+    transition: none;
+  }
+}

@@ -17,6 +17,10 @@ const NEVER_CACHE_API_PATHS = new Set([
   "/api/laliga",
   "/api/codemaster/progress",
   "/api/codemaster/solve",
+  "/api/fatf/me",
+  "/api/fatf/interest",
+  "/api/fatf/role",
+  "/api/fatf/event",
 ]);
 
 function isArchivePagePath(pathname) {

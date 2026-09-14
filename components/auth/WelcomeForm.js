@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { formatMemberNumber } from "@/lib/auth/config";
+import { FATF_CONSENT_LINE } from "@/lib/fatf";
 
 function ClubPicker({ options, selected, onToggle }) {
   const [query, setQuery] = useState("");
@@ -52,10 +54,13 @@ export default function WelcomeForm({
   email,
   clubOptions,
   nextPath = "/",
+  fatfFlow = false,
 }) {
   const [preferredName, setPreferredName] = useState("");
   const [clubs, setClubs] = useState([]);
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [fatfConsent, setFatfConsent] = useState(false);
+  const [ageAttested, setAgeAttested] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const [complete, setComplete] = useState(null);
@@ -69,6 +74,14 @@ export default function WelcomeForm({
   }
 
   async function submit({ skipName = false, skipClubs = false } = {}) {
+    if (fatfFlow && !ageAttested) {
+      setError("You need to be 18 or over for this.");
+      return;
+    }
+    if (fatfFlow && !fatfConsent) {
+      setError("Please agree so we can email you about the nights.");
+      return;
+    }
     setError(null);
     setPending(true);
     try {
@@ -81,6 +94,9 @@ export default function WelcomeForm({
           marketingConsent,
           skipName,
           skipClubs,
+          fatfInterest: fatfFlow,
+          fatfConsent: fatfFlow ? fatfConsent : false,
+          ageAttested: fatfFlow ? ageAttested : false,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -121,7 +137,9 @@ export default function WelcomeForm({
         Welcome aboard
       </h1>
       <p className="mt-3 text-sm text-navy/70">
-        Two quick questions, then you are in.
+        {fatfFlow
+          ? "Two quick questions, then you are on the list."
+          : "Two quick questions, then you are in."}
       </p>
 
       <div className="mt-8 space-y-8">
@@ -149,6 +167,35 @@ export default function WelcomeForm({
         </div>
 
         <ClubPicker options={clubOptions} selected={clubs} onToggle={toggleClub} />
+
+        {fatfFlow ? (
+          <>
+            <label className="flex items-start gap-3 text-sm text-navy/80">
+              <input
+                type="checkbox"
+                checked={ageAttested}
+                onChange={(e) => setAgeAttested(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-navy/30"
+              />
+              <span>I confirm I am 18 or over.</span>
+            </label>
+            <label className="flex items-start gap-3 text-sm text-navy/80">
+              <input
+                type="checkbox"
+                checked={fatfConsent}
+                onChange={(e) => setFatfConsent(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-navy/30"
+              />
+              <span>
+                {FATF_CONSENT_LINE}{" "}
+                <Link href="/privacy" className="underline underline-offset-2">
+                  Privacy notice
+                </Link>
+                .
+              </span>
+            </label>
+          </>
+        ) : null}
 
         <label className="flex items-start gap-3 text-sm text-navy/80">
           <input

@@ -3,6 +3,7 @@ import {
   FATF_INDEXABLE,
   KOTB_ENABLED,
   LALIGA_CAMPAIGN_ENABLED,
+  CREST_ENABLED,
   SITE_URL,
   STAND_ENABLED,
   TRAINING_ENABLED,
@@ -20,6 +21,9 @@ export default function sitemap() {
     { path: "/guesser", changeFrequency: "daily", priority: 0.9 },
     { path: "/codemaster", changeFrequency: "weekly", priority: 0.8 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
+    ...(CREST_ENABLED
+      ? [{ path: "/crest", changeFrequency: "weekly", priority: 0.8 }]
+      : []),
     { path: "/concierge", changeFrequency: "weekly", priority: 0.8 },
     { path: "/archive", changeFrequency: "weekly", priority: 0.85 },
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },

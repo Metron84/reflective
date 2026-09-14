@@ -27,12 +27,14 @@ function GoogleLogo({ className }) {
   );
 }
 
-export default function SignInForm({ nextPath = "/" }) {
+export default function SignInForm({ nextPath = "/", fatfFlow = false }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
+  const [ageAttested, setAgeAttested] = useState(false);
   const googleEnabled = isGoogleAuthEnabled();
+  const ageBlocked = fatfFlow && !ageAttested;
 
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -47,6 +49,10 @@ export default function SignInForm({ nextPath = "/" }) {
 
   async function sendMagicLink(event) {
     event.preventDefault();
+    if (ageBlocked) {
+      setError("You need to be 18 or over for this.");
+      return;
+    }
     setError(null);
     setPending(true);
     try {
@@ -75,6 +81,10 @@ export default function SignInForm({ nextPath = "/" }) {
   }
 
   async function signInWithGoogle() {
+    if (ageBlocked) {
+      setError("You need to be 18 or over for this.");
+      return;
+    }
     setError(null);
     setPending(true);
     try {
@@ -104,7 +114,9 @@ export default function SignInForm({ nextPath = "/" }) {
         Sign in to The Reflective Football
       </h1>
       <p className="mt-3 text-sm text-navy/70">
-        Free account. Live results, daily games, and your programme in one place.
+        {fatfFlow
+          ? "Free account. We email you when the first night is set."
+          : "Free account. Live results, daily games, and your programme in one place."}
       </p>
 
       {sent ? (
@@ -113,12 +125,23 @@ export default function SignInForm({ nextPath = "/" }) {
         </p>
       ) : (
         <div className="mt-8">
+          {fatfFlow ? (
+            <label className="mb-6 flex items-start gap-3 text-sm text-navy/80">
+              <input
+                type="checkbox"
+                checked={ageAttested}
+                onChange={(e) => setAgeAttested(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-navy/30"
+              />
+              <span>I confirm I am 18 or over.</span>
+            </label>
+          ) : null}
           {googleEnabled ? (
             <>
               <button
                 type="button"
                 onClick={signInWithGoogle}
-                disabled={pending}
+                disabled={pending || ageBlocked}
                 className="flex w-full items-center gap-3 rounded-full bg-navy px-5 py-3.5 font-body text-sm font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
               >
                 <GoogleLogo className="h-5 w-5 shrink-0" />
@@ -158,7 +181,7 @@ export default function SignInForm({ nextPath = "/" }) {
             </div>
             <button
               type="submit"
-              disabled={pending}
+              disabled={pending || ageBlocked}
               className="w-full rounded-full border border-navy/25 bg-transparent px-5 py-2.5 font-body text-sm text-navy/80 transition-colors hover:border-navy/45 hover:text-navy disabled:opacity-60"
             >
               {pending ? "Sending…" : "Send sign-in link"}

@@ -1,0 +1,66 @@
+@import "../../public/crest/fonts/fonts.css";
+
+.crestPlay {
+  --cream: #f2ede4;
+  --navy: #0a111f;
+  --red: #d8232a;
+  --ink: #2a3547;
+  --edge: #ded3c2;
+  --font-ui: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --pad: clamp(20px, 5vw, 40px);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - 4rem);
+  background-color: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.45;
+  overflow: clip;
+}
+
+.crestPlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+}
+
+.crestMain {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100svh - 4rem);
+  display: flex;
+  flex-direction: column;
+  padding: var(--pad);
+  padding-top: max(var(--pad), env(safe-area-inset-top));
+  padding-bottom: max(var(--pad), env(safe-area-inset-bottom));
+}
+
+.crestPlay :global(.crest-starfield) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (min-width: 760px) {
+  .crestPlay {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crestPlay * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

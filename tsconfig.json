@@ -15,7 +15,8 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@the-crest/*": ["./the-crest/*"]
     },
     "plugins": [{ "name": "next" }]
   },

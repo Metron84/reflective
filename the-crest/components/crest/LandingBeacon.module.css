@@ -1,0 +1,71 @@
+.beacon {
+  position: relative;
+  width: clamp(140px, 38vw, 200px);
+  height: clamp(140px, 38vw, 200px);
+  display: grid;
+  place-items: center;
+}
+
+.halo {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(242 237 228 / 0.28) 0%,
+    rgb(242 237 228 / 0.08) 42%,
+    transparent 70%
+  );
+  animation: crest-breathe 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: crest-breathe-soft 4.2s ease-in-out infinite;
+}
+
+.core {
+  position: absolute;
+  z-index: 2;
+  width: clamp(48px, 13vw, 64px);
+  height: clamp(48px, 13vw, 64px);
+  border-radius: 50%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgb(242 237 228 / 0.35));
+}
+
+@keyframes crest-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes crest-breathe-soft {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo,
+  .svg {
+    animation: none;
+    opacity: 0.9;
+    transform: none;
+  }
+}
