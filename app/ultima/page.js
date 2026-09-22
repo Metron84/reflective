@@ -12,7 +12,7 @@ import { getHubStatus } from "@/lib/ultima/server/admin";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
-import { getEuropeDesk } from "@/lib/ultima/server/europe-board";
+import { ensureEuropeDesk } from "@/lib/ultima/server/europe-board";
 import { safeResolve, withTimeout } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -24,6 +24,7 @@ export const metadata = {
 };
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export default async function UltimaPage() {
   const auth = await safeResolve(getAuthContext(), {
@@ -57,7 +58,7 @@ export default async function UltimaPage() {
     news = await safeResolve(getCompetitionNews(competition.id), []);
     tradeCards = await safeResolve(listHubTradeCards(competition.id, manager.id), []);
     try {
-      europeDesk = await withTimeout(getEuropeDesk(competition.id), 12000);
+      europeDesk = await withTimeout(ensureEuropeDesk(competition.id), 45000);
     } catch {
       europeDesk = {
         gameweek: null,
