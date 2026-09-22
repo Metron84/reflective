@@ -493,7 +493,11 @@ export default function UltimaEuropeDesk({
   }, [desk]);
 
   useEffect(() => {
-    if (desk?.emptyReason !== "sync") return undefined;
+    const leagues = new Set((desk?.form?.teams?.all ?? []).map((row) => row.league));
+    const missingForm = ["pl", "laliga", "seriea", "bundesliga", "ligue1"].some(
+      (league) => !leagues.has(league),
+    );
+    if (desk?.emptyReason !== "sync" && !missingForm) return undefined;
     let cancelled = false;
     setRefreshing(true);
     fetch("/api/ultima/europe?refresh=1")
@@ -508,7 +512,7 @@ export default function UltimaEuropeDesk({
     return () => {
       cancelled = true;
     };
-  }, [desk?.emptyReason]);
+  }, [desk?.emptyReason, desk?.lastOkAt, desk?.form?.teams?.all]);
 
   if (!live && !doors && !lead) return null;
 

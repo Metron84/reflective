@@ -13,7 +13,11 @@ import { getHubStatus } from "@/lib/ultima/server/admin";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
-import { getEuropeDesk, kickEuropeSync } from "@/lib/ultima/server/europe-board";
+import {
+  getEuropeDesk,
+  kickEuropeSync,
+  shouldRefreshEuropeForm,
+} from "@/lib/ultima/server/europe-board";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -84,7 +88,7 @@ export default async function UltimaPage() {
       ratingsAvailable: null,
     };
     draftState = ds?.state ?? hubStatus?.draft ?? "lobby";
-    if (!europeDesk.fixtures?.length) {
+    if (shouldRefreshEuropeForm(europeDesk)) {
       kickEuropeSync(competition.id);
     }
   }
