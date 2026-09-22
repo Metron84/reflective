@@ -46,6 +46,12 @@ function hideBreadcrumb(pathname) {
   return false;
 }
 
+function isPaperPath(pathname) {
+  if (pathname.startsWith("/ultima/rules")) return true;
+  if (pathname.startsWith("/ultima/join")) return true;
+  return false;
+}
+
 function isActive(pathname, href) {
   if (href === "/ultima") return pathname === "/ultima";
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -94,14 +100,18 @@ function crumbsFor(pathname) {
   ];
 }
 
-export default function UltimaShell({ manager, isCommissioner, children }) {
+export default function UltimaShell({ manager, isCommissioner, teamColour, children }) {
   const pathname = usePathname() ?? "";
+  const office = Boolean(manager) && !isPaperPath(pathname);
   const showRail = Boolean(manager) && !hideRail(pathname);
-  const showCrumb = !hideBreadcrumb(pathname);
+  const showCrumb = !office && !hideBreadcrumb(pathname);
   useEffect(() => {
     document.body.classList.add("ultima-root");
-    return () => document.body.classList.remove("ultima-root");
-  }, []);
+    if (office) document.body.classList.add("ultima-office");
+    return () => {
+      document.body.classList.remove("ultima-root", "ultima-office");
+    };
+  }, [office]);
 
   const navItems = [
     ...NAV,
@@ -111,7 +121,10 @@ export default function UltimaShell({ manager, isCommissioner, children }) {
   ];
 
   return (
-    <div className={styles.ultimaRoot}>
+    <div
+      className={office ? `${styles.ultimaRoot} ${styles.office}` : styles.ultimaRoot}
+      style={office && teamColour ? { "--team": teamColour } : undefined}
+    >
       {showCrumb ? <Breadcrumb items={crumbsFor(pathname)} /> : null}
 
       <div className={showRail ? styles.shell : undefined}>

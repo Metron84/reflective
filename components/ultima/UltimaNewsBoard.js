@@ -9,8 +9,8 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
 
   if (!items.length) {
     return (
-      <section className={styles.newsBoard} id="ultima-news" aria-label="Ultima news">
-        <h2 className={styles.sectionTitle}>Ultima League News</h2>
+      <section className={styles.officePanel} id="ultima-news" aria-label="Ultima news">
+        <h2 className={styles.panelTitle}>League mail</h2>
         <p className={styles.hubNote}>
           Picks, seats, XI locks, market moves and trades land here as they happen.
         </p>
@@ -19,15 +19,16 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
   }
 
   return (
-    <section className={styles.newsBoard} id="ultima-news" aria-label="Ultima news">
-      <h2 className={styles.sectionTitle}>Ultima League News</h2>
-      <ul className={styles.newsList}>
+    <section className={styles.officePanel} id="ultima-news" aria-label="Ultima news">
+      <h2 className={styles.panelTitle}>League mail</h2>
+      <ul className={styles.inboxList}>
         {items.map((item) => (
-          <li key={item.id} className={styles.newsItem}>
-            <time className={styles.newsTime} dateTime={item.at}>
+          <li key={item.id} className={styles.inboxItem}>
+            <span className={styles.inboxStamp}>Ultima</span>
+            <span className={styles.inboxLine}>{item.line}</span>
+            <time className={styles.inboxMeta} dateTime={item.at}>
               {formatStamp(item.at)}
             </time>
-            <span>{item.line}</span>
           </li>
         ))}
       </ul>
@@ -98,8 +99,8 @@ export function UltimaTradeDesk({ initialCards = [], managerId }) {
   if (!cards.length) return null;
 
   return (
-    <section className={styles.tradeDesk} id="ultima-decisions" aria-label="Open trades">
-      <h2 className={styles.sectionTitle}>Needs a decision</h2>
+    <section className={styles.officePanel} id="ultima-decisions" aria-label="Open trades">
+      <h2 className={styles.panelTitle}>Needs a decision</h2>
       <ul className={styles.tradeDeskList}>
         {cards.map((card) => (
           <li key={card.id} className={styles.tradeDeskCard}>
@@ -150,7 +151,7 @@ export function UltimaTradeDesk({ initialCards = [], managerId }) {
                 ) : (
                   <button
                     type="button"
-                    className={styles.secondaryBtn}
+                    className={styles.vetoBtn}
                     disabled={busyId === card.id}
                     onClick={() => act(card.id, { veto: true })}
                   >
@@ -225,8 +226,8 @@ export function UltimaChat({ managerId }) {
   }
 
   return (
-    <section className={styles.chatBoard} aria-label="Manager chat">
-      <h2 className={styles.sectionTitle}>Room</h2>
+    <section className={`${styles.chatBoard} ${styles.officePanel}`} aria-label="Staff radio">
+      <h2 className={styles.panelTitle}>Staff radio</h2>
       <p className={styles.hubNote}>Ten seats. Keep it about the league.</p>
       <ul className={styles.chatList}>
         {messages.length === 0 ? (

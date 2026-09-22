@@ -87,6 +87,64 @@ function buildLead({ draftState, hubStatus, tradeCards, news }) {
   };
 }
 
+function buildBriefing({ draftState, hubStatus, tradeCards, europeDesk }) {
+  const items = [];
+
+  if (hubStatus?.draft === "live" || draftState === "live") {
+    items.push({
+      text: "The draft is live. The clock is running.",
+      href: "/ultima/draft",
+      cta: "Enter the draft",
+    });
+  }
+
+  const veto = (tradeCards ?? []).find((c) => c.can_veto && !c.already_vetoed);
+  if (veto) {
+    items.push({
+      text: `${veto.proposer_name} to ${veto.receiver_name} is in league review.`,
+      href: "#ultima-decisions",
+      cta: "Review",
+    });
+  }
+
+  const accept = (tradeCards ?? []).find((c) => c.can_accept);
+  if (accept) {
+    items.push({
+      text: `${accept.proposer_name} sent you a trade.`,
+      href: "#ultima-decisions",
+      cta: "Open",
+    });
+  }
+
+  if (draftState === "complete" && hubStatus?.standings) {
+    items.push({
+      text: hubStatus.standings,
+      href: "/ultima/squad",
+      cta: "My squad",
+    });
+  }
+
+  if (draftState === "complete" && hubStatus?.market) {
+    items.push({
+      text: hubStatus.market,
+      href: "/ultima/market",
+      cta: "Market",
+    });
+  }
+
+  const rising = europeDesk?.movers?.rising?.length ?? 0;
+  const falling = europeDesk?.movers?.falling?.length ?? 0;
+  if (rising || falling) {
+    items.push({
+      text: `${rising} rising · ${falling} falling in the last ratings.`,
+      href: "#ultima-form",
+      cta: "Form",
+    });
+  }
+
+  return items.slice(0, 3);
+}
+
 export default function UltimaHub({
   isSignedIn,
   manager,
@@ -102,6 +160,54 @@ export default function UltimaHub({
   const columnNews = lead?.newsId
     ? news.filter((item) => item.id !== lead.newsId)
     : news;
+
+  const doors = manager ? (
+    <div className={styles.hubDoors}>
+      <Link href="/ultima/draft" className={styles.hubDoor}>
+        <span className={styles.hubDoorKicker}>Season</span>
+        <strong>Draft</strong>
+      </Link>
+      <Link href="/ultima/practice" className={styles.hubDoor}>
+        <span className={styles.hubDoorKicker}>Does not count</span>
+        <strong>Pre-draft</strong>
+      </Link>
+    </div>
+  ) : null;
+
+  const briefing = manager
+    ? buildBriefing({ draftState, hubStatus, tradeCards, europeDesk })
+    : [];
+
+  const leadNode =
+    manager && lead ? (
+      <article className={lead.live ? styles.leadLive : styles.lead}>
+        <p className={styles.leadKicker}>{lead.kicker}</p>
+        <h2 className={styles.leadTitle}>{lead.title}</h2>
+        <p className={styles.leadBody}>{lead.body}</p>
+        {lead.cta && lead.href ? (
+          <Link href={lead.href} className={styles.primaryBtn}>
+            {lead.cta}
+          </Link>
+        ) : null}
+      </article>
+    ) : null;
+
+  const briefingNode =
+    manager && briefing.length ? (
+      <section className={styles.officePanel} aria-label="Manager briefing">
+        <h2 className={styles.panelTitle}>Your briefing</h2>
+        <ul className={styles.briefingList}>
+          {briefing.map((item) => (
+            <li key={item.text} className={styles.briefingItem}>
+              <p className={styles.briefingText}>{item.text}</p>
+              <Link href={item.href} className={styles.quietLink}>
+                {item.cta}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null;
 
   return (
     <div className={styles.hub}>
@@ -127,44 +233,19 @@ export default function UltimaHub({
       ) : null}
 
       {manager ? (
-        <div className={styles.hubDoors}>
-          <Link href="/ultima/draft" className={styles.hubDoor}>
-            <span className={styles.hubDoorKicker}>Season</span>
-            <strong>Draft</strong>
-          </Link>
-          <Link href="/ultima/practice" className={styles.hubDoor}>
-            <span className={styles.hubDoorKicker}>Does not count</span>
-            <strong>Pre-draft</strong>
-          </Link>
-        </div>
-      ) : null}
-
-      {manager && lead ? (
-        <div className={styles.newsCentre}>
-          <UltimaEuropeDesk desk={europeDesk} />
-
-          <div className={styles.ultimaDesk}>
-            <p className={styles.deskLabel}>Ultima</p>
-            <article className={lead.live ? styles.leadLive : styles.lead}>
-              <p className={styles.leadKicker}>{lead.kicker}</p>
-              <h2 className={styles.leadTitle}>{lead.title}</h2>
-              <p className={styles.leadBody}>{lead.body}</p>
-              {lead.cta && lead.href ? (
-                <Link href={lead.href} className={styles.primaryBtn}>
-                  {lead.cta}
-                </Link>
-              ) : null}
-            </article>
-
-            <div className={styles.newsCentreGrid}>
-              <div className={styles.storiesColumn}>
-                <UltimaTradeDesk initialCards={tradeCards} managerId={manager.id} />
-                <UltimaNewsBoard initialItems={columnNews} />
-              </div>
-              <UltimaChat managerId={manager.id} />
-            </div>
-          </div>
-        </div>
+        <UltimaEuropeDesk
+          desk={europeDesk}
+          doors={doors}
+          lead={leadNode}
+          briefing={briefingNode}
+          inboxExtra={
+            <>
+              <UltimaTradeDesk initialCards={tradeCards} managerId={manager.id} />
+              <UltimaNewsBoard initialItems={columnNews} />
+            </>
+          }
+          radio={<UltimaChat managerId={manager.id} />}
+        />
       ) : null}
 
       {manager ? <UltimaInstallHint /> : null}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_LABELS } from "@/lib/ultima/constants";
+import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
 import styles from "./ultima.module.css";
 
 const LEAGUE_FILTERS = ["all", ...ULTIMA_LEAGUES];
@@ -44,45 +44,52 @@ export default function UltimaMarketClient({ freeAgents, roster }) {
 
   return (
     <div className={styles.marketPage}>
-      <p className={styles.lede}>Free agent. Add him and someone has to go.</p>
-
-      <div className={styles.leagueTabs}>
-        {LEAGUE_FILTERS.map((l) => (
-          <button
-            key={l}
-            type="button"
-            className={league === l ? styles.leagueTabActiveCream : styles.leagueTabCream}
-            onClick={() => setLeague(l)}
-          >
-            {l === "all" ? "All" : ULTIMA_LEAGUE_LABELS[l]}
-          </button>
-        ))}
-      </div>
-
-      <ul className={styles.playerListCream}>
-        {filtered.map((p) => (
-          <li key={p.id} className={styles.playerRowCream}>
-            <div>
-              <strong>{p.name}</strong>
-              <span className={styles.playerMeta}>{p.club}</span>
-              {p.bolt_eligible ? <span className={styles.boltTag}>Bolt</span> : null}
-            </div>
-            <button type="button" className={styles.secondaryBtn} onClick={() => setSelected(p)}>
-              Add
+      <section className={styles.officePanel}>
+        <p className={styles.hubNote}>Free agent. Add him and someone has to go.</p>
+        <div className={styles.deskTabs}>
+          {LEAGUE_FILTERS.map((l) => (
+            <button
+              key={l}
+              type="button"
+              className={league === l ? styles.deskTabOn : styles.deskTab}
+              onClick={() => setLeague(l)}
+            >
+              {l === "all" ? "All" : ULTIMA_LEAGUE_SHORT[l]}
             </button>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      </section>
 
-      {filtered.length === 0 ? (
-        <p className={styles.emptyState}>No free agents in this league right now.</p>
-      ) : null}
+      <section className={styles.officePanel} aria-label="Free agents">
+        <h2 className={styles.panelTitle}>Free agents</h2>
+        {filtered.length === 0 ? (
+          <p className={styles.hubNote}>No free agents in this league right now.</p>
+        ) : (
+          <ul className={styles.inboxList}>
+            {filtered.map((p) => (
+              <li key={p.id} className={styles.inboxItem}>
+                <span className={styles.inboxStamp}>{ULTIMA_LEAGUE_SHORT[p.league] || "EUR"}</span>
+                <span className={styles.inboxLine}>
+                  {p.name}
+                  {p.bolt_eligible ? " · Bolt" : ""}
+                </span>
+                <span className={styles.marketRowAction}>
+                  <span className={styles.inboxMeta}>{p.club}</span>
+                  <button type="button" className={styles.secondaryBtn} onClick={() => setSelected(p)}>
+                    Add
+                  </button>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {selected ? (
         <div className={styles.sheetBackdrop}>
           <div className={styles.sheet}>
             <p className={styles.sheetTitle}>Add {selected.name}</p>
-            <p>Drop someone from your squad:</p>
+            <p className={styles.hubNote}>Drop someone from your squad:</p>
             <select
               className={styles.fieldSelect}
               value={dropId}

@@ -3810,4 +3810,837 @@
   }
 }
 
+/* FM24 office: seated manager night room. Cream stays on invite and rules. */
+.office {
+  --office-bg: #12151c;
+  --office-ink: #e6e1d8;
+  --office-muted: rgba(230, 225, 216, 0.58);
+  --office-line: rgba(230, 225, 216, 0.12);
+  --office-panel: #181c25;
+  --office-panel-hi: #1e2430;
+  --office-chrome: rgba(230, 225, 216, 0.16);
+  --office-glow: rgba(0, 0, 0, 0.42);
+  --team: #4a5568;
+  background: var(--office-bg);
+  color: var(--office-ink);
+  min-height: 100vh;
+}
+
+.office .ultimaPage {
+  background: var(--office-bg);
+  background-image:
+    radial-gradient(900px 420px at 50% -8%, rgba(255, 255, 255, 0.045), transparent 58%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='og'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23og)' opacity='0.28'/%3E%3C/svg%3E");
+  background-size: auto, 180px 180px;
+  color: var(--office-ink);
+}
+
+.office .ultimaPage h1,
+.office .ultimaPage h2,
+.office .ultimaPage h3,
+.office .ultimaPage p,
+.office .ultimaPage li,
+.office .ultimaPage th,
+.office .ultimaPage td,
+.office .ultimaPage label,
+.office .ultimaPage dt,
+.office .ultimaPage dd {
+  color: inherit;
+}
+
+.office .ultimaPage input,
+.office .ultimaPage select,
+.office .ultimaPage textarea {
+  background: #12151c;
+  color: var(--office-ink);
+  border-color: var(--office-chrome);
+}
+
+.office .inner {
+  padding-top: 1.5rem;
+}
+
+.clubBar {
+  margin: 0 0 1.35rem;
+  padding: 0.15rem 0 0.15rem 1rem;
+  border-left: 4px solid var(--team, #4a5568);
+}
+
+.clubSeason {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(10, 17, 31, 0.65));
+  margin: 0 0 0.4rem;
+}
+
+.clubName {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: clamp(2.2rem, 8vw, 3.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.officeHome {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.officeGrid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.officeCol,
+.officeSide {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.officePanel,
+.nextMatch,
+.nextMatchLive {
+  background: var(--office-panel, #181c25);
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow, rgba(0, 0, 0, 0.4));
+  padding: 1rem 1.1rem 1.15rem;
+  margin: 0;
+}
+
+.nextMatch,
+.nextMatchLive {
+  padding: 1.25rem 1.2rem 1.35rem;
+}
+
+.nextMatchLive {
+  box-shadow:
+    inset 0 2px 0 #d8232a,
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow, rgba(0, 0, 0, 0.4));
+}
+
+.nextKicker,
+.panelTitle {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.nextTitle {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 0.4rem;
+}
+
+.nextSides {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.15rem 0 0.7rem;
+}
+
+.nextHome,
+.nextAway {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: clamp(1.05rem, 3.4vw, 1.55rem);
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.nextHome {
+  text-align: right;
+}
+
+.nextAway {
+  text-align: left;
+}
+
+.nextScore {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  opacity: 0.92;
+  min-width: 2.4rem;
+  text-align: center;
+}
+
+.nextMeta {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  margin: 0;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.inboxList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.inboxItem {
+  display: grid;
+  grid-template-columns: 4.1rem 1fr;
+  gap: 0.2rem 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.inboxItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0.15rem;
+}
+
+.inboxStamp {
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+  padding-top: 0.2rem;
+}
+
+.inboxLine {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.inboxMeta {
+  grid-column: 2;
+  font-size: 0.75rem;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.vetoBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1.35rem;
+  border: 1px solid #d8232a;
+  color: #d8232a;
+  background: transparent;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.vetoBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.office .eyebrow,
+.office .dateline,
+.office .lede,
+.office .phaseNote,
+.office .hubNote,
+.office .leadBody,
+.office .leadKicker,
+.office .deskKicker,
+.office .formMeta,
+.office .formSplitLine,
+.office .gwMeta,
+.office .europeLeague,
+.office .installLine,
+.office .tradeDeskMeta,
+.office .newsTime,
+.office .chatName {
+  color: var(--office-muted);
+}
+
+.office .displayTitle,
+.office .title,
+.office .deskLabel,
+.office .deskTitle,
+.office .leadTitle,
+.office .tradeDeskTitle,
+.office .sectionTitle,
+.office .quietLink,
+.office .tableHead,
+.office .formBtn,
+.office .installLine button,
+.office .chatMine {
+  color: var(--office-ink);
+}
+
+.office .rule,
+.office .lead,
+.office .leadLive,
+.office .deskTitle,
+.office .sectionTitle,
+.office .gwRow,
+.office .formList li,
+.office .tableList li,
+.office .newsItem,
+.office .tradeDesk,
+.office .tradeDeskCard,
+.office .tableHead {
+  border-color: var(--office-line);
+}
+
+.office .hubDoor {
+  background: var(--office-panel);
+  border: 1px solid var(--office-chrome);
+  color: var(--office-ink);
+  min-height: 5.6rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 28px var(--office-glow);
+}
+
+.office .hubDoor strong {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.office .hubDoorKicker {
+  color: var(--office-muted);
+}
+
+.office .hubDoors {
+  margin: 0;
+}
+
+.office .lead,
+.office .leadLive {
+  background: var(--office-panel);
+  border: 1px solid var(--office-chrome);
+  border-bottom: 1px solid var(--office-chrome);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow);
+  padding: 1rem 1.1rem 1.15rem;
+  margin: 0;
+}
+
+.office .leadLive {
+  box-shadow:
+    inset 0 2px 0 #d8232a,
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow);
+}
+
+.office .leadTitle {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.office .leadLive .leadKicker {
+  color: #d8232a;
+}
+
+.office .primaryBtn {
+  background: #e6e1d8;
+  color: #12151c;
+}
+
+.office .secondaryBtn {
+  border-color: var(--office-chrome);
+  color: var(--office-ink);
+}
+
+.office .deskTab,
+.office .deskTabOn {
+  border-color: var(--office-chrome);
+  color: var(--office-ink);
+  background: transparent;
+}
+
+.office .deskTabOn {
+  background: var(--office-ink);
+  color: #12151c;
+  border-color: var(--office-ink);
+}
+
+.office .pill_W,
+.office .pill_D,
+.office .pill_L {
+  border-color: var(--office-chrome);
+}
+
+.office .pill_W {
+  background: #e6e1d8;
+  color: #12151c;
+  border-color: #e6e1d8;
+}
+
+.office .pill_L {
+  color: #d8232a;
+  border-color: #d8232a;
+}
+
+.office .diff_easy {
+  background: #8b8578;
+}
+
+.office .diff_mid {
+  background: #e6e1d8;
+}
+
+.office .badgeLive {
+  color: #d8232a;
+}
+
+.office .moveDown {
+  color: #d8232a;
+}
+
+.office .chatList {
+  border-top-color: var(--office-line);
+}
+
+.office .chatForm input {
+  background: #12151c;
+  border-color: var(--office-chrome);
+  color: var(--office-ink);
+}
+
+.office .chatForm input::placeholder {
+  color: var(--office-muted);
+}
+
+.office .rail {
+  background: #0e1117;
+  border-color: var(--office-line);
+}
+
+.office .railLink,
+.office .railLinkActive {
+  color: var(--office-ink);
+}
+
+.office .railLinkActive {
+  box-shadow: inset 0 2px 0 #e6e1d8;
+}
+
+.office .standingsTable th,
+.office .standingsTable td {
+  border-color: var(--office-line);
+}
+
+.office .door,
+.office .doorList {
+  border-color: var(--office-line);
+  color: var(--office-ink);
+}
+
+.office .draftRoom {
+  --draft-bg: #f2ede4;
+  --draft-ink: #0a111f;
+  --draft-muted: rgba(10, 17, 31, 0.72);
+  --draft-line: rgba(10, 17, 31, 0.22);
+  --draft-fill: rgba(10, 17, 31, 0.06);
+  background: var(--draft-bg);
+  background-image: url("/brand/texture-cream-site-bg.png");
+  color: var(--draft-ink);
+}
+
+.office .navyRoom {
+  background: #0a111f;
+  color: #f2ede4;
+}
+
+@media (min-width: 900px) {
+  .officeGrid {
+    grid-template-columns: 1.35fr 0.85fr;
+    align-items: start;
+  }
+
+  .inboxItem {
+    grid-template-columns: 4.2rem 1fr auto;
+    align-items: baseline;
+  }
+
+  .inboxLine {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .inboxMeta {
+    grid-column: auto;
+    text-align: right;
+  }
+
+  .office .rail {
+    background: #0e1117;
+    border-right-color: var(--office-line);
+  }
+
+  .office .railLinkActive {
+    box-shadow: inset 3px 0 0 #e6e1d8;
+  }
+}
+
+.roomHead {
+  margin: 0 0 1.15rem;
+}
+
+.roomKicker {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.roomHeadRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.roomTitle {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 650;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.roomMeta {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  margin: 0.4rem 0 0;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.roomHeadSticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-bottom: 0.65rem;
+  background: var(--office-bg, #12151c);
+}
+
+.tableBoard {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tableBoardRow {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  gap: 0.35rem 0.75rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.tableBoardRow:last-child {
+  border-bottom: none;
+}
+
+.tableBoardTeam {
+  min-width: 0;
+}
+
+.tableBoardPts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.marketRowAction {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  grid-column: 2;
+}
+
+.tradeCardList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.tradeCardTitle {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 650;
+  margin: 0.2rem 0 0.35rem;
+}
+
+.tradeDeskPage .hubDoors {
+  grid-template-columns: 1fr;
+}
+
+button.hubDoor {
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.office .ledgerHead,
+.office .roomHeadSticky,
+.office .saveBar,
+.office .tradeFooter {
+  background: #0e1117;
+  color: var(--office-ink);
+  border-color: var(--office-line);
+}
+
+.office .ledgerTitle,
+.office .ledgerAll,
+.office .ledgerGw,
+.office .ledgerKicker,
+.office .ledgerCount,
+.office .saveReason,
+.office .saveReset,
+.office .xvGroupName,
+.office .xiSlotName,
+.office .xiChoose {
+  color: var(--office-ink);
+}
+
+.office .xvGroup,
+.office .xvGroupLocked {
+  background: var(--office-panel);
+  border: 1px solid var(--office-chrome);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow);
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.office .xvGroupLocked {
+  box-shadow:
+    inset 0 2px 0 #d8232a,
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 36px var(--office-glow);
+}
+
+.office .xiRow,
+.office .xiRowEmpty,
+.office .squadRow,
+.office .playerRowCream {
+  border-color: var(--office-line);
+}
+
+.office .saveXv {
+  background: #e6e1d8;
+  color: #12151c;
+}
+
+.office .saveXvOff {
+  background: rgba(230, 225, 216, 0.1);
+  color: var(--office-muted);
+}
+
+.office .sheet {
+  background: #181c25;
+  color: var(--office-ink);
+}
+
+.office .sheetTitle,
+.office .sheetRow,
+.office .xiSlotMeta {
+  color: var(--office-ink);
+}
+
+.office .leagueTabCream {
+  border-color: var(--office-chrome);
+  color: var(--office-ink);
+}
+
+.office .leagueTabActiveCream {
+  background: #e6e1d8;
+  color: #12151c;
+  border-color: #e6e1d8;
+}
+
+.office .marketPage,
+.office .tradeBuilder,
+.office .tradeDeskPage {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-top: 0;
+}
+
+@media (min-width: 700px) {
+  .tableBoardRow {
+    grid-template-columns: 1.6rem 1fr auto auto auto;
+    align-items: baseline;
+  }
+
+  .tableBoardPts {
+    min-width: 3.5rem;
+    text-align: right;
+  }
+
+  .marketRowAction {
+    grid-column: auto;
+  }
+}
+
+.briefingList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.briefingItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.briefingItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.briefingText {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.scoutActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.playerMarket {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.playerCard {
+  padding: 0.75rem 0 0.15rem;
+  border-top: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.playerCardTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ticketRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+}
+
+.ticket {
+  min-width: 4.5rem;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ticket strong {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 0.1rem;
+}
+
+.ticket_easy {
+  border-color: #1e7b63;
+}
+
+.ticket_hard {
+  border-color: #d8232a;
+}
+
+.spark {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+}
+
+.sparkOn,
+.sparkOff {
+  min-width: 1.1rem;
+  padding: 0.1rem 0.2rem;
+  text-align: center;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+}
+
+.sparkOn {
+  background: #1e7b63;
+  color: #e6e1d8;
+  border-color: #1e7b63;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+}
+
+.formTag {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+}
+
+.moveFlat {
+  font-size: 0.6875rem;
+  opacity: 0.55;
+}
+
+.office .moveUp {
+  color: #1e7b63;
+}
+
 

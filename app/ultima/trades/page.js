@@ -1,4 +1,5 @@
 import UltimaTradesClient from "@/components/ultima/UltimaTradesClient";
+import UltimaRoomHead from "@/components/ultima/UltimaRoomHead";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import { listTrades } from "@/lib/ultima/server/trades";
@@ -42,8 +43,7 @@ export default async function UltimaTradesPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Trades</h1>
+        <UltimaRoomHead title="Trade" kicker="Desk" />
         <UltimaTradesClient
           trades={trades}
           managers={managers ?? []}

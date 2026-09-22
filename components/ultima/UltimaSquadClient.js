@@ -193,13 +193,14 @@ export default function UltimaSquadClient({
 
   return (
     <div className={`${styles.squadPage} ${showSave ? styles.squadPageSavePad : ""}`}>
-      <header className={styles.ledgerHead}>
-        <div className={styles.ledgerHeadRow}>
-          <h1 className={styles.ledgerTitle}>My squad</h1>
+      <header className={`${styles.roomHead} ${styles.roomHeadSticky}`}>
+        <p className={styles.roomKicker}>Office</p>
+        <div className={styles.roomHeadRow}>
+          <h1 className={styles.roomTitle}>Squad</h1>
           {view === "xv" ? (
             <button
               type="button"
-              className={styles.ledgerAll}
+              className={styles.quietLink}
               onClick={() => setView("all30")}
             >
               All 30
@@ -207,7 +208,7 @@ export default function UltimaSquadClient({
           ) : (
             <button
               type="button"
-              className={styles.ledgerAll}
+              className={styles.quietLink}
               onClick={() => setView("xv")}
             >
               Back to XV
@@ -215,7 +216,7 @@ export default function UltimaSquadClient({
           )}
         </div>
         {gameweek?.number ? (
-          <p className={styles.ledgerGw}>Gameweek {gameweek.number}</p>
+          <p className={styles.roomMeta}>Gameweek {gameweek.number}</p>
         ) : null}
         {live ? (
           <div className={styles.liveStrip}>

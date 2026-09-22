@@ -1,4 +1,5 @@
 import UltimaSquadClient from "@/components/ultima/UltimaSquadClient";
+import UltimaRoomHead from "@/components/ultima/UltimaRoomHead";
 import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
@@ -37,9 +38,10 @@ export default async function UltimaSquadPage() {
       <div className={styles.inner}>
         {roster.length === 0 ? (
           <>
-            <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-            <h1 className={styles.title}>My squad</h1>
-            <p className={styles.lede}>Your squad fills on draft night.</p>
+            <UltimaRoomHead title="Squad" kicker="Office" />
+            <section className={styles.officePanel}>
+              <p className={styles.hubNote}>Your squad fills on draft night.</p>
+            </section>
           </>
         ) : (
           <UltimaSquadClient

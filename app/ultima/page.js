@@ -3,6 +3,7 @@ import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
+import { ultimaColourHex } from "@/lib/ultima/constants";
 import {
   getActiveCompetition,
   getManagerForUser,
@@ -12,8 +13,8 @@ import { getHubStatus } from "@/lib/ultima/server/admin";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
-import { ensureEuropeDesk } from "@/lib/ultima/server/europe-board";
-import { safeResolve, withTimeout } from "@/lib/ultima/server/safe";
+import { getEuropeDesk, kickEuropeSync } from "@/lib/ultima/server/europe-board";
+import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima",
@@ -24,7 +25,6 @@ export const metadata = {
 };
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
 
 export default async function UltimaPage() {
   const auth = await safeResolve(getAuthContext(), {
@@ -51,53 +51,61 @@ export default async function UltimaPage() {
     }
   }
   if (competition && manager) {
-    hubStatus = await safeResolve(
-      getHubStatus(competition.id, manager.id),
-      null,
-    );
-    news = await safeResolve(getCompetitionNews(competition.id), []);
-    tradeCards = await safeResolve(listHubTradeCards(competition.id, manager.id), []);
-    try {
-      europeDesk = await withTimeout(ensureEuropeDesk(competition.id), 45000);
-    } catch {
-      europeDesk = {
-        gameweek: null,
-        fixtures: [],
-        emptyReason: "sync",
-        syncError: "The Europe board did not load.",
-        standings: {},
-        form: { teams: { hot: [], cold: [] }, players: [] },
-        movers: { rising: [], falling: [], manOfRound: [], upsets: [] },
-        trending: { added: [], dropped: [], started: [], differentials: [], scorers: [] },
-        ratingsAvailable: null,
-      };
-    }
     const db = getUltimaDb();
-    if (db) {
-      const ds = await safeResolve(
-        db
-          .from("ultima_draft_state")
-          .select("state")
-          .eq("competition_id", competition.id)
-          .maybeSingle()
-          .then(({ data }) => data),
-        null,
-      );
-      draftState = ds?.state ?? hubStatus?.draft ?? "lobby";
-    } else {
-      draftState = hubStatus?.draft ?? "lobby";
+    const [status, leagueNews, cards, desk, ds] = await Promise.all([
+      safeResolve(getHubStatus(competition.id, manager.id), null),
+      safeResolve(getCompetitionNews(competition.id), []),
+      safeResolve(listHubTradeCards(competition.id, manager.id), []),
+      safeResolve(getEuropeDesk(competition.id), null),
+      db
+        ? safeResolve(
+            db
+              .from("ultima_draft_state")
+              .select("state")
+              .eq("competition_id", competition.id)
+              .maybeSingle()
+              .then(({ data }) => data),
+            null,
+          )
+        : Promise.resolve(null),
+    ]);
+    hubStatus = status;
+    news = leagueNews;
+    tradeCards = cards;
+    europeDesk = desk ?? {
+      gameweek: null,
+      fixtures: [],
+      emptyReason: "sync",
+      syncError: "The Europe board did not load.",
+      standings: {},
+      form: { teams: { hot: [], cold: [] }, players: [] },
+      movers: { rising: [], falling: [], manOfRound: [], upsets: [] },
+      trending: { added: [], dropped: [], started: [], differentials: [], scorers: [] },
+      ratingsAvailable: null,
+    };
+    draftState = ds?.state ?? hubStatus?.draft ?? "lobby";
+    if (!europeDesk.fixtures?.length) {
+      kickEuropeSync(competition.id);
     }
   }
 
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
-        <p className={styles.eyebrow}>Ultima</p>
-        <h1 className={styles.displayTitle}>Ultima</h1>
         {manager ? (
-          <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
+          <header
+            className={styles.clubBar}
+            style={{ "--team": ultimaColourHex(manager.colour) }}
+          >
+            <p className={styles.clubSeason}>
+              {formatDateline(competition?.season_label, gameweekNumber)}
+            </p>
+            <h1 className={styles.clubName}>{manager.team_name || "Ultima"}</h1>
+          </header>
         ) : (
           <>
+            <p className={styles.eyebrow}>Ultima</p>
+            <h1 className={styles.displayTitle}>Ultima</h1>
             <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
             <p className={styles.lede}>
               Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.
@@ -107,7 +115,7 @@ export default async function UltimaPage() {
         {!ULTIMA_ENABLED ? (
           <p className={styles.phaseNote}>Invite only. Opens when the commissioner is ready.</p>
         ) : null}
-        <hr className={styles.rule} />
+        {manager ? null : <hr className={styles.rule} />}
         <UltimaHub
           isSignedIn={auth.isSignedIn}
           manager={manager}

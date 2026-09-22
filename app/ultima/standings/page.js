@@ -1,4 +1,6 @@
+import UltimaRoomHead from "@/components/ultima/UltimaRoomHead";
 import { requireUltimaManager } from "@/lib/ultima/gates";
+import { ultimaColourHex } from "@/lib/ultima/constants";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import {
   getStandings,
@@ -23,54 +25,55 @@ export default async function UltimaStandingsPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Standings</h1>
+        <UltimaRoomHead title="Table" kicker="League" />
 
-        <table className={styles.standingsTable}>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>GW</th>
-              <th>Season</th>
-              <th>Bolt</th>
-            </tr>
-          </thead>
-          <tbody>
-            {standings.map((row) => (
-              <tr key={row.id}>
-                <td>{row.rank}</td>
-                <td>
-                  <span
-                    className={styles.colourDot}
-                    style={{ background: row.colour === "navy" ? "#0A111F" : "#4A5568" }}
-                  />
-                  {row.team_name}
-                  {row.is_bot
-                    ? ` · BOT${row.persona_name ? ` · ${row.persona_name}` : ""}`
-                    : ""}
-                </td>
-                <td>{row.gameweekPoints ?? "—"}</td>
-                <td>{row.seasonPoints}</td>
-                <td>{row.boltPoints}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {standings.length === 0 ? (
-          <p className={styles.lede}>No scores yet. Set your XI for the first gameweek.</p>
-        ) : null}
-
-        <section className={styles.rulesSection}>
-          <h2>Bolt board</h2>
-          {boltBoard.length === 0 ? (
-            <p>No Bolt bonuses yet.</p>
+        <section className={styles.officePanel} aria-label="Ultima table">
+          {standings.length === 0 ? (
+            <p className={styles.hubNote}>No scores yet. Set your XI for the first gameweek.</p>
           ) : (
-            <ul>
+            <ol className={styles.tableBoard}>
+              {standings.map((row) => (
+                <li key={row.id} className={styles.tableBoardRow}>
+                  <span className={styles.tablePos}>{row.rank}</span>
+                  <span className={styles.tableBoardTeam}>
+                    <span
+                      className={styles.colourDot}
+                      style={{ background: ultimaColourHex(row.colour) }}
+                    />
+                    {row.team_name}
+                    {row.is_bot
+                      ? ` · BOT${row.persona_name ? ` · ${row.persona_name}` : ""}`
+                      : ""}
+                  </span>
+                  <span className={styles.tableBoardPts}>
+                    <span className={styles.inboxStamp}>GW</span>
+                    {row.gameweekPoints ?? "—"}
+                  </span>
+                  <span className={styles.tableBoardPts}>
+                    <span className={styles.inboxStamp}>Season</span>
+                    {row.seasonPoints}
+                  </span>
+                  <span className={styles.tableBoardPts}>
+                    <span className={styles.inboxStamp}>Bolt</span>
+                    {row.boltPoints}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+
+        <section className={styles.officePanel} aria-label="Bolt board">
+          <h2 className={styles.panelTitle}>Bolt board</h2>
+          {boltBoard.length === 0 ? (
+            <p className={styles.hubNote}>No Bolt bonuses yet.</p>
+          ) : (
+            <ul className={styles.inboxList}>
               {boltBoard.map((b) => (
-                <li key={b.manager_id}>
-                  {b.team_name}: {b.bolt} Bolt pts
+                <li key={b.manager_id} className={styles.inboxItem}>
+                  <span className={styles.inboxStamp}>Bolt</span>
+                  <span className={styles.inboxLine}>{b.team_name}</span>
+                  <span className={styles.inboxMeta}>{b.bolt} pts</span>
                 </li>
               ))}
             </ul>

@@ -1,4 +1,5 @@
 import UltimaMarketClient from "@/components/ultima/UltimaMarketClient";
+import UltimaRoomHead from "@/components/ultima/UltimaRoomHead";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { getFreeAgents } from "@/lib/ultima/server/players";
@@ -32,10 +33,11 @@ export default async function UltimaMarketPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Market</h1>
+        <UltimaRoomHead title="Market" kicker="Transfer" />
         {draftState?.state !== "complete" ? (
-          <p className={styles.lede}>Free agents open after the draft completes.</p>
+          <section className={styles.officePanel}>
+            <p className={styles.hubNote}>Free agents open after the draft completes.</p>
+          </section>
         ) : (
           <UltimaMarketClient freeAgents={freeAgents} roster={roster} />
         )}

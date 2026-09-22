@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
+import { isLiveStatus } from "@/lib/ultima/fixture-status";
 import styles from "./ultima.module.css";
 
 const LEAGUE_FILTERS = ["all", ...ULTIMA_LEAGUES];
@@ -19,7 +21,7 @@ function formatKickoff(value) {
 }
 
 function scoreText(row) {
-  if (row.homeScore == null || row.awayScore == null) return null;
+  if (row?.homeScore == null || row?.awayScore == null) return null;
   return `${row.homeScore}-${row.awayScore}`;
 }
 
@@ -29,47 +31,197 @@ function badge(status) {
   return null;
 }
 
-function GameweekStrip({ desk }) {
-  if (desk.emptyReason === "sync") {
+function countdownTo(value) {
+  if (!value) return null;
+  const ms = new Date(value).getTime() - Date.now();
+  if (!Number.isFinite(ms) || ms <= 0) return null;
+  const days = Math.floor(ms / 86_400_000);
+  const hours = Math.floor((ms % 86_400_000) / 3_600_000);
+  if (days > 0) return `${days}d ${hours}h`;
+  const minutes = Math.floor((ms % 3_600_000) / 60_000);
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  return `${Math.max(1, minutes)}m`;
+}
+
+function clubKey(name) {
+  return String(name ?? "").trim().toLowerCase();
+}
+
+function fixturesForClub(fixtures, club) {
+  const key = clubKey(club);
+  if (!key) return [];
+  return (fixtures ?? [])
+    .filter((row) => clubKey(row.home) === key || clubKey(row.away) === key)
+    .slice(0, 3)
+    .map((row) => {
+      const home = clubKey(row.home) === key;
+      return {
+        opponent: home ? row.away : row.home,
+        venue: home ? "H" : "A",
+        difficulty: home ? row.homeDifficulty : row.awayDifficulty,
+      };
+    });
+}
+
+function playerTags(row) {
+  const tags = [];
+  if (row.ratingDelta != null && row.ratingDelta >= 0.2) tags.push("Rising");
+  if (row.ratingDelta != null && row.ratingDelta <= -0.2) tags.push("Cooling");
+  if ((row.last3?.goals ?? 0) + (row.last3?.assists ?? 0) >= 3) tags.push("Hot");
+  if (row.minutesFlag) tags.push("Minutes risk");
+  if (row.owner === "Free agent") tags.push("Free agent");
+  return tags;
+}
+
+function pickHeadline(fixtures) {
+  if (!fixtures?.length) return null;
+  const live = fixtures.find((row) => isLiveStatus(row.status));
+  if (live) return live;
+  const now = Date.now() - 3 * 60 * 60 * 1000;
+  const upcoming = [...fixtures]
+    .filter((row) => row.status === "NS" || row.status === "POSTP")
+    .sort((a, b) => new Date(a.kickoff) - new Date(b.kickoff))
+    .find((row) => new Date(row.kickoff).getTime() >= now);
+  if (upcoming) return upcoming;
+  return fixtures[0];
+}
+
+function ScoutActions() {
+  return (
+    <div className={styles.scoutActions}>
+      <Link href="/ultima/market" className={styles.primaryBtn}>
+        Scout the market
+      </Link>
+      <Link href="/ultima/squad" className={styles.secondaryBtn}>
+        My squad
+      </Link>
+    </div>
+  );
+}
+
+function NextMatch({ desk, refreshing }) {
+  const rising = desk?.movers?.rising?.length ?? 0;
+  const falling = desk?.movers?.falling?.length ?? 0;
+  const signals =
+    rising || falling ? `${rising} rising · ${falling} falling` : null;
+
+  if (desk?.emptyReason === "sync") {
     return (
-      <section className={styles.deskBlock} aria-label="This Gameweek">
-        <h3 className={styles.deskTitle}>Fixtures</h3>
-        <p className={styles.hubNote}>The Europe board did not sync. Try again after the next cron.</p>
-      </section>
+      <article className={styles.nextMatch} aria-label="Scouting window">
+        <p className={styles.nextKicker}>Scouting window</p>
+        <h2 className={styles.nextTitle}>The market stays open</h2>
+        <p className={styles.nextMeta}>
+          {refreshing
+            ? "Filling the Europe desk from Sportmonks."
+            : "The Europe board has not synced yet. Scout while it fills."}
+        </p>
+        {signals ? <p className={styles.nextMeta}>{signals}</p> : null}
+        <ScoutActions />
+      </article>
     );
   }
 
-  if (desk.emptyReason === "break" || !desk.fixtures?.length) {
+  if (desk?.emptyReason === "break" || !desk?.fixtures?.length) {
     return (
-      <section className={styles.deskBlock} aria-label="This Gameweek">
-        <h3 className={styles.deskTitle}>
-          {desk.gameweek ? `This Gameweek ${desk.gameweek}` : "Fixtures"}
-        </h3>
-        <p className={styles.hubNote}>No gameweek this week. The leagues are on a break.</p>
-      </section>
+      <article className={styles.nextMatch} aria-label="Scouting window">
+        <p className={styles.nextKicker}>League break</p>
+        <h2 className={styles.nextTitle}>The market stays open</h2>
+        <p className={styles.nextMeta}>
+          No gameweek on the slate. Scout form and free agents before lock.
+        </p>
+        {signals ? <p className={styles.nextMeta}>{signals}</p> : null}
+        <ScoutActions />
+      </article>
     );
   }
+
+  const row = pickHeadline(desk.fixtures);
+  if (!row) return null;
+
+  const score = scoreText(row);
+  const mark = badge(row.status);
+  const live = isLiveStatus(row.status);
+  const until = !live && row.status !== "FT" ? countdownTo(row.kickoff) : null;
 
   return (
-    <section className={styles.deskBlock} aria-label="This Gameweek">
-      <h3 className={styles.deskTitle}>
-        {desk.gameweek ? `This Gameweek ${desk.gameweek}` : "Fixtures"}
-      </h3>
-      <ul className={styles.gwList}>
-        {desk.fixtures.map((row) => {
+    <article className={live ? styles.nextMatchLive : styles.nextMatch} aria-label="Next match">
+      <p className={styles.nextKicker}>
+        {live ? "Live now" : row.status === "FT" ? "Last result" : "Next match"}
+        {row.leagueCode ? ` · ${row.leagueCode}` : ""}
+        {desk.gameweek ? ` · Gameweek ${desk.gameweek}` : ""}
+      </p>
+      <div className={styles.nextSides}>
+        <strong className={styles.nextHome}>{row.home || "Home"}</strong>
+        <span className={styles.nextScore}>{score ?? "v"}</span>
+        <strong className={styles.nextAway}>{row.away || "Away"}</strong>
+      </div>
+      <p className={styles.nextMeta}>
+        {mark ? (
+          <span className={mark === "FT" ? styles.badgeFt : styles.badgeLive}>{mark}</span>
+        ) : null}
+        {until ? `Kickoff in ${until} · ` : null}
+        {formatKickoff(row.kickoff)}
+        {row.ownedCount ? ` · ${row.ownedCount} owned` : ""}
+      </p>
+      {signals ? <p className={styles.nextMeta}>{signals}</p> : null}
+    </article>
+  );
+}
+
+function FixtureTickets({ tickets }) {
+  if (!tickets?.length) return null;
+  return (
+    <ul className={styles.ticketRow} aria-label="Next fixtures">
+      {tickets.map((fix, i) => (
+        <li key={`${fix.opponent}-${i}`} className={`${styles.ticket} ${styles[`ticket_${fix.difficulty}`] || ""}`}>
+          <span>{fix.venue}</span>
+          <strong>{fix.opponent || "TBD"}</strong>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function FormSpark({ recent }) {
+  if (!recent?.length) return null;
+  return (
+    <span className={styles.spark} aria-label="Recent output">
+      {recent.map((row, i) => {
+        const n = (row.goals ?? 0) + (row.assists ?? 0);
+        return (
+          <span key={i} className={n > 0 ? styles.sparkOn : styles.sparkOff}>
+            {n}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+function FixtureInbox({ desk }) {
+  const headline = pickHeadline(desk?.fixtures);
+  const rest = (desk?.fixtures ?? []).filter((row) => row.id !== headline?.id);
+
+  if (!rest.length) return null;
+
+  return (
+    <section className={styles.officePanel} aria-label="Europe inbox">
+      <h3 className={styles.panelTitle}>Europe</h3>
+      <ul className={styles.inboxList}>
+        {rest.map((row) => {
           const score = scoreText(row);
           const mark = badge(row.status);
           return (
-            <li key={row.id} className={styles.gwRow}>
-              <span className={styles.gwLeague}>{row.leagueCode}</span>
-              <span className={styles.gwMatch}>
-                <span className={`${styles.diffDot} ${styles[`diff_${row.homeDifficulty}`]}`} />
-                {row.home || row.away ? `${row.home ?? ""} vs ${row.away ?? ""}` : "Fixture"}
+            <li key={row.id} className={styles.inboxItem}>
+              <span className={styles.inboxStamp}>{row.leagueCode || "EUR"}</span>
+              <span className={styles.inboxLine}>
+                {row.home || row.away ? `${row.home ?? ""} v ${row.away ?? ""}` : "Fixture"}
                 {score ? ` ${score}` : ""}
-                <span className={`${styles.diffDot} ${styles[`diff_${row.awayDifficulty}`]}`} />
               </span>
-              <span className={styles.gwMeta}>
-                {mark ? <span className={mark === "FT" ? styles.badgeFt : styles.badgeLive}>{mark}</span> : null}
+              <span className={styles.inboxMeta}>
+                {mark ? (
+                  <span className={mark === "FT" ? styles.badgeFt : styles.badgeLive}>{mark}</span>
+                ) : null}
                 {formatKickoff(row.kickoff)}
                 {row.ownedCount ? ` · ${row.ownedCount} owned` : ""}
               </span>
@@ -81,8 +233,7 @@ function GameweekStrip({ desk }) {
   );
 }
 
-function FormGuide({ form }) {
-  const [tab, setTab] = useState("teams");
+function FormGuide({ form, fixtures, tab, setTab }) {
   const [league, setLeague] = useState("all");
   const [openId, setOpenId] = useState("");
 
@@ -102,8 +253,8 @@ function FormGuide({ form }) {
   if (!form?.teams?.all?.length && !form?.players?.length) return null;
 
   return (
-    <section className={styles.deskBlock} aria-label="Form Guide">
-      <h3 className={styles.deskTitle}>Form Guide</h3>
+    <section className={styles.officePanel} id="ultima-form" aria-label="Form Guide">
+      <h3 className={styles.panelTitle}>Form</h3>
       <div className={styles.deskTabs}>
         <button type="button" className={tab === "teams" ? styles.deskTabOn : styles.deskTab} onClick={() => setTab("teams")}>
           Teams
@@ -169,25 +320,48 @@ function FormGuide({ form }) {
           </div>
         </div>
       ) : (
-        <ul className={styles.formList}>
-          {players.map((row) => (
-            <li key={row.playerId}>
-              <strong>{row.name}</strong>
-              <span className={styles.formMeta}>
-                {row.club}
-                {row.last3.rating != null && row.seasonRating != null ? (
-                  <>
-                    {" · "}
-                    {row.ratingDelta >= 0 ? "↑" : "↓"} {Math.abs(row.ratingDelta).toFixed(2)}
-                  </>
+        players.length === 0 ? (
+          <p className={styles.hubNote}>Player data for this league is being prepared.</p>
+        ) : (
+        <ul className={styles.playerMarket}>
+          {players.map((row) => {
+            const tags = playerTags(row);
+            const tickets = fixturesForClub(fixtures, row.club);
+            const up = row.ratingDelta != null && row.ratingDelta >= 0;
+            return (
+              <li key={row.playerId} className={styles.playerCard}>
+                <div className={styles.playerCardTop}>
+                  <strong>{row.name}</strong>
+                  <span className={styles.inboxStamp}>{row.leagueCode || ULTIMA_LEAGUE_SHORT[row.league]}</span>
+                </div>
+                <p className={styles.formMeta}>
+                  {row.club}
+                  {row.owner ? ` · ${row.owner}` : ""}
+                </p>
+                <p className={styles.formMeta}>
+                  {`3: ${row.last3.goals}g ${row.last3.assists}a`}
+                  {` · 5: ${row.last5.goals}g ${row.last5.assists}a`}
+                  {row.last3.rating != null ? ` · Form ${row.last3.rating.toFixed(1)}` : ""}
+                  {row.ratingDelta != null ? (
+                    <span className={up ? styles.moveUp : styles.moveDown}>
+                      {` ${up ? "↗" : "↘"} ${Math.abs(row.ratingDelta).toFixed(2)}`}
+                    </span>
+                  ) : null}
+                </p>
+                <FormSpark recent={row.recent} />
+                <FixtureTickets tickets={tickets} />
+                {tags.length ? (
+                  <p className={styles.tagRow}>
+                    {tags.map((tag) => (
+                      <span key={tag} className={styles.formTag}>{tag}</span>
+                    ))}
+                  </p>
                 ) : null}
-                {` · 3: ${row.last3.goals}g ${row.last3.assists}a`}
-                {` · 5: ${row.last5.goals}g ${row.last5.assists}a`}
-                {row.minutesFlag ? " · mins < 60" : ""}
-              </span>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
+        )
       )}
     </section>
   );
@@ -203,8 +377,8 @@ function Movers({ movers }) {
   if (!lists.some(([, rows]) => rows?.length)) return null;
 
   return (
-    <section className={styles.deskBlock} aria-label="Movers">
-      <h3 className={styles.deskTitle}>Movers</h3>
+    <section className={styles.officePanel} aria-label="Movers">
+      <h3 className={styles.panelTitle}>Movers</h3>
       {lists.map(([label, rows]) =>
         rows?.length ? (
           <div key={label}>
@@ -239,8 +413,8 @@ function Trending({ trending }) {
   if (!visible.length) return null;
 
   return (
-    <section className={styles.deskBlock} aria-label="Trending in Ultima">
-      <h3 className={styles.deskTitle}>Trending in Ultima</h3>
+    <section className={styles.officePanel} aria-label="Trending in Ultima">
+      <h3 className={styles.panelTitle}>Trending</h3>
       {visible.map(([label, rows, fmt]) => (
         <div key={label}>
           <p className={styles.deskKicker}>{label}</p>
@@ -266,8 +440,8 @@ function Tables({ standings }) {
   if (!hasRows) return null;
 
   return (
-    <section className={styles.deskBlock} aria-label="Tables">
-      <h3 className={styles.deskTitle}>Tables</h3>
+    <section className={styles.officePanel} aria-label="Tables">
+      <h3 className={styles.panelTitle}>Tables</h3>
       {ULTIMA_LEAGUES.map((league) => {
         const rows = standings?.[league] ?? [];
         if (!rows.length) return null;
@@ -288,8 +462,9 @@ function Tables({ standings }) {
                     <span className={styles.tablePos}>{row.position}</span>
                     <span>{row.club_name}</span>
                     <span className={styles.tablePts}>{row.points}</span>
-                    {move > 0 ? <span className={styles.moveUp}>↑</span> : null}
-                    {move < 0 ? <span className={styles.moveDown}>↓</span> : null}
+                    {move > 0 ? <span className={styles.moveUp}>↗ {move}</span> : null}
+                    {move < 0 ? <span className={styles.moveDown}>↘ {Math.abs(move)}</span> : null}
+                    {move === 0 ? <span className={styles.moveFlat}>stable</span> : null}
                   </li>
                 );
               })}
@@ -301,17 +476,65 @@ function Tables({ standings }) {
   );
 }
 
-export default function UltimaEuropeDesk({ desk }) {
-  if (!desk) return null;
+export default function UltimaEuropeDesk({
+  desk,
+  doors = null,
+  lead = null,
+  briefing = null,
+  inboxExtra = null,
+  radio = null,
+}) {
+  const [live, setLive] = useState(desk);
+  const [refreshing, setRefreshing] = useState(false);
+  const [tab, setTab] = useState("teams");
+
+  useEffect(() => {
+    setLive(desk);
+  }, [desk]);
+
+  useEffect(() => {
+    if (desk?.emptyReason !== "sync") return undefined;
+    let cancelled = false;
+    setRefreshing(true);
+    fetch("/api/ultima/europe?refresh=1")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data.desk) setLive(data.desk);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setRefreshing(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [desk?.emptyReason]);
+
+  if (!live && !doors && !lead) return null;
 
   return (
-    <div className={styles.europeDesk}>
-      <p className={styles.deskLabel}>Europe</p>
-      <GameweekStrip desk={desk} />
-      <FormGuide form={desk.form} />
-      <Movers movers={desk.movers} />
-      <Trending trending={desk.trending} />
-      <Tables standings={desk.standings} />
+    <div className={styles.officeHome}>
+      <NextMatch desk={live} refreshing={refreshing} />
+      {doors}
+      {briefing}
+      {lead}
+      <div className={styles.officeGrid}>
+        <div className={styles.officeCol}>
+          {inboxExtra}
+          {live ? <FixtureInbox desk={live} /> : null}
+        </div>
+        <div className={styles.officeSide}>
+          {radio}
+          {live && tab === "teams" ? <Tables standings={live.standings} /> : null}
+        </div>
+      </div>
+      {live ? (
+        <>
+          <FormGuide form={live.form} fixtures={live.fixtures} tab={tab} setTab={setTab} />
+          <Movers movers={live.movers} />
+          <Trending trending={live.trending} />
+        </>
+      ) : null}
     </div>
   );
 }

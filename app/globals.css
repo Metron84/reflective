@@ -147,3 +147,8 @@ body:has(.ultima-live-chrome-off) > header {
     display: none;
   }
 }
+
+/* Seated Ultima: night office behind the site chrome. */
+body.ultima-office {
+  background: #12151c;
+}
