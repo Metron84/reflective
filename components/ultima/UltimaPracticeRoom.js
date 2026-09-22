@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import EmptyState from "@/components/EmptyState";
 import UltimaDraftRoom from "./UltimaDraftRoom";
 import styles from "./ultima.module.css";
 
@@ -10,7 +9,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
   const [lobby, setLobby] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const autoStarted = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -51,15 +49,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
     }
   }, [code]);
 
-  // A solo room has nobody to wait for, so it starts itself on arrival. The work
-  // now happens here rather than inside the request that created the room.
-  useEffect(() => {
-    if (autoStarted.current) return;
-    if (!lobby?.solo || !isHost || lobby.state !== "lobby") return;
-    autoStarted.current = true;
-    start();
-  }, [lobby, isHost, start]);
-
   if (!lobby) {
     return (
       <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
@@ -72,28 +61,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
     );
   }
 
-  if (lobby.state === "lobby" && lobby.solo && isHost) {
-    return (
-      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-        <EmptyState
-          tone="cream"
-          heading="Setting up your practice"
-          body="Seating nine bots and drawing the order. This takes a moment."
-          actionLabel="Exit"
-          actionHref="/ultima/practice"
-        />
-        {error ? (
-          <>
-            <p className={styles.messageError}>{error}</p>
-            <button type="button" className={styles.primaryBtn} onClick={start} disabled={busy}>
-              {busy ? "Starting…" : "Try again"}
-            </button>
-          </>
-        ) : null}
-      </div>
-    );
-  }
-
   if (lobby.state === "lobby") {
     return (
       <div className={styles.ultimaPage}>
@@ -101,7 +68,9 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
           <p className={styles.eyebrow}>GAMES · ULTIMA · PRACTICE</p>
           <h1 className={styles.title}>Room {code}</h1>
           <p className={styles.lede}>
-            Share this code with other invitees. Bots fill empty seats when the host starts.
+            {lobby.solo
+              ? "You plus nine bots. Start when you are ready."
+              : "Share this code with other invitees. Bots fill empty seats when the host starts."}
           </p>
           <p className={styles.hubNote}>
             {(lobby.humans ?? []).length} human{(lobby.humans ?? []).length === 1 ? "" : "s"} in the lobby.

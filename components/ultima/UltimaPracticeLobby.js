@@ -48,11 +48,14 @@ export default function UltimaPracticeLobby() {
         setError(data.message ?? "That did not work.");
         return null;
       }
-      if (data.code && (action === "create_solo" || action === "create_room" || action === "join")) {
+      if (data.code && action === "join") {
         router.push(`/ultima/practice/${data.code}`);
         return data;
       }
       await loadRooms();
+      if (data.code && (action === "create_solo" || action === "create_room")) {
+        setToast(`Room ${data.code} ready. Resume when you want.`);
+      }
       return data;
     } catch {
       setError("Connection lost. Try again.");
@@ -193,14 +196,14 @@ export default function UltimaPracticeLobby() {
 
       <section className={styles.adminSection}>
         <h2 className={styles.sectionTitle}>Start alone</h2>
-        <p className={styles.hubNote}>You plus nine bots.</p>
+        <p className={styles.hubNote}>You plus nine bots. The room waits until you start.</p>
         <button
           type="button"
           className={styles.primaryBtn}
           disabled={Boolean(busy)}
           onClick={() => act("create_solo")}
         >
-          {busy === "create_solo" ? "Starting…" : "Start solo practice"}
+          {busy === "create_solo" ? "Creating…" : "Create solo room"}
         </button>
       </section>
 

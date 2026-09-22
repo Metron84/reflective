@@ -7,6 +7,7 @@ import {
   ULTIMA_LEAGUE_SHORT,
 } from "@/lib/ultima/constants";
 import { wouldBreakFloor } from "@/lib/ultima/draft/floor";
+import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import styles from "./ultima.module.css";
 
 const PAGE = 25;
@@ -28,8 +29,8 @@ function formatRate(value) {
   return value ? value.toFixed(2) : "0.00";
 }
 
-function formatRating(value) {
-  return value ? value.toFixed(1) : "0.0";
+function formatPts(value) {
+  return Number.isFinite(value) ? value.toFixed(1) : "0.0";
 }
 
 function PlusGlyph() {
@@ -139,7 +140,7 @@ export default function UltimaDraftPicker({
         const bBad = wouldBreakFloor(floor.counts ?? {}, b.league, floor.slotsLeft ?? 0);
         if (aBad !== bBad) return aBad ? 1 : -1;
       }
-      const gap = metric(b, "rating_avg") - metric(a, "rating_avg");
+      const gap = expectedUltimaPoints(b) - expectedUltimaPoints(a);
       if (gap) return gap;
       return String(a.name ?? "").localeCompare(String(b.name ?? ""));
     });
@@ -326,7 +327,7 @@ export default function UltimaDraftPicker({
             {visible.map((p, index) => {
               const fill = ULTIMA_LEAGUE_COLOURS[p.league] ?? "#E4DED3";
               const inQueue = queuedIds.has(p.id);
-              const stats = `${formatRating(metric(p, "rating_avg"))} · ${formatRate(metric(p, "goals_rate"))} G · ${formatRate(metric(p, "assists_rate"))} A`;
+              const stats = `${formatPts(expectedUltimaPoints(p))} pts · ${formatRate(metric(p, "goals_rate"))} G · ${formatRate(metric(p, "assists_rate"))} A`;
               const blocked = Boolean(
                 floor && wouldBreakFloor(floor.counts ?? {}, p.league, floor.slotsLeft ?? 0),
               );
