@@ -114,6 +114,86 @@
   margin: 0;
 }
 
+.hubDoors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0 0 1.75rem;
+}
+
+.hubDoor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 4.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(10, 17, 31, 0.18);
+  text-decoration: none;
+  color: #0a111f;
+}
+
+.hubDoor strong {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.hubDoorKicker {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.europeBoard {
+  margin: 0 0 2rem;
+}
+
+.europeList,
+.europeMovers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.europeList li,
+.europeMovers li {
+  display: grid;
+  gap: 0.15rem 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.europeLeague {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.installLine {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 1.5rem 0 0;
+  color: rgba(10, 17, 31, 0.75);
+}
+
+.installLine button {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #0a111f;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
 .leadBody {
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.9375rem;
@@ -200,6 +280,11 @@
 
 .primaryBtn:active {
   opacity: 0.88;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .secondaryBtn {
@@ -352,12 +437,18 @@
   }
 }
 
-/* Draft room (Phase C) */
+/* Draft room: cream paper, navy type. Live and practice share this. */
 .draftRoom {
   --ultima-draft-sticky: 0px;
-  background: #0a111f;
-  background-image: none;
-  color: #f2ede4;
+  --draft-bg: #f2ede4;
+  --draft-ink: #0a111f;
+  --draft-muted: rgba(10, 17, 31, 0.72);
+  --draft-line: rgba(10, 17, 31, 0.22);
+  --draft-fill: rgba(10, 17, 31, 0.06);
+  background: var(--draft-bg);
+  background-image: url("/brand/texture-cream-site-bg.png");
+  background-size: 512px 512px;
+  color: var(--draft-ink);
   min-height: 100vh;
   min-height: 100dvh;
   max-width: 100%;
@@ -377,7 +468,7 @@
   margin-right: calc(-1 * max(1.15rem, env(safe-area-inset-right)));
   padding: 0.55rem max(1.15rem, env(safe-area-inset-right)) 0.65rem max(1.15rem, env(safe-area-inset-left));
   padding-top: max(0.55rem, env(safe-area-inset-top));
-  background: #0a111f;
+  background: var(--draft-bg, #f2ede4);
 }
 
 .draftSticky {
@@ -390,8 +481,8 @@
   padding: 0.45rem max(1.15rem, env(safe-area-inset-right)) 0.5rem
     max(1.15rem, env(safe-area-inset-left));
   padding-top: max(0.45rem, env(safe-area-inset-top));
-  background: #0a111f;
-  border-bottom: 1px solid rgba(242, 237, 228, 0.18);
+  background: var(--draft-bg, #f2ede4);
+  border-bottom: 1px solid var(--draft-line, rgba(10, 17, 31, 0.22));
 }
 
 .draftStickyRow {
@@ -407,7 +498,7 @@
   margin: 0;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.9375rem;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -418,7 +509,7 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
   min-width: 2.5rem;
   text-align: right;
 }
@@ -437,7 +528,7 @@
   padding: 0;
   border: none;
   background: transparent;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
   cursor: pointer;
 }
 
@@ -461,8 +552,8 @@
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.02em;
-  color: #f2ede4;
-  border: 1px solid rgba(242, 237, 228, 0.22);
+  color: var(--draft-ink, #0a111f);
+  border: 1px solid var(--draft-line, rgba(10, 17, 31, 0.22));
   padding: 0.2rem 0.5rem;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -472,7 +563,7 @@
   display: flex;
   gap: 0;
   margin: 0.75rem 0 0.35rem;
-  border: 1px solid rgba(242, 237, 228, 0.28);
+  border: 1px solid var(--draft-line, rgba(10, 17, 31, 0.22));
 }
 
 .draftSeg,
@@ -485,11 +576,11 @@
   cursor: pointer;
   border: none;
   background: transparent;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
 }
 
 .draftSegActive {
-  background: rgba(242, 237, 228, 0.14);
+  background: var(--draft-fill, rgba(10, 17, 31, 0.06));
 }
 
 .draftSegDot {
@@ -524,9 +615,9 @@
   height: 32px;
   padding: 0 0.55rem 0 0.65rem;
   border: none;
-  border-left: 3px solid #f2ede4;
-  background: rgba(242, 237, 228, 0.1);
-  color: #f2ede4;
+  border-left: 3px solid var(--draft-ink, #0a111f);
+  background: var(--draft-fill, rgba(10, 17, 31, 0.06));
+  color: var(--draft-ink, #0a111f);
   font-family: var(--font-archivo), sans-serif;
   font-size: 13px;
   line-height: 1;
@@ -558,7 +649,7 @@
 
   .botSpinner {
     animation: none;
-    border-top-color: #f2ede4;
+    border-top-color: #0a111f;
   }
 }
 
@@ -566,8 +657,8 @@
   flex: 0 0 auto;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(242, 237, 228, 0.28);
-  border-top-color: #f2ede4;
+  border: 2px solid rgba(10, 17, 31, 0.22);
+  border-top-color: #0a111f;
   border-radius: 50%;
   animation: ultimaSpin 0.7s linear infinite;
 }
@@ -587,7 +678,7 @@
   padding: 0.55rem 0.75rem;
   border: 1px solid #d8232a;
   background: transparent;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.875rem;
   text-align: left;
@@ -622,7 +713,7 @@
   padding: 0 0.35rem 0 0;
   border: none;
   background: transparent;
-  color: #f2ede4;
+  color: var(--draft-ink, #0a111f);
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.8125rem;
   cursor: pointer;
@@ -642,18 +733,18 @@
 
 .draftSkeletonBar {
   height: 44px;
-  background: rgba(242, 237, 228, 0.12);
+  background: rgba(10, 17, 31, 0.08);
 }
 
 .draftSkeletonChip {
   height: 28px;
   width: 70%;
-  background: rgba(242, 237, 228, 0.1);
+  background: rgba(10, 17, 31, 0.07);
 }
 
 .draftSkeletonBody {
   height: 12rem;
-  background: rgba(242, 237, 228, 0.08);
+  background: rgba(10, 17, 31, 0.06);
 }
 
 .moreSheet {
@@ -723,8 +814,8 @@
   border: none;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.9375rem;
-  color: #f2ede4;
-  opacity: 0.65;
+  color: var(--draft-muted, rgba(10, 17, 31, 0.72));
+  opacity: 0.9;
   text-align: center;
 }
 
@@ -732,7 +823,7 @@
   position: fixed;
   inset: 0;
   z-index: 30;
-  background: rgba(10, 17, 31, 0.55);
+  background: rgba(10, 17, 31, 0.4);
 }
 
 .draftOverflowPanel {
@@ -741,8 +832,8 @@
   right: 0;
   bottom: 0;
   z-index: 31;
-  background: #0a111f;
-  border-top: 1px solid rgba(242, 237, 228, 0.18);
+  background: #f2ede4;
+  border-top: 1px solid rgba(10, 17, 31, 0.22);
   padding: 0.5rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
@@ -756,7 +847,7 @@
   padding: 0.5rem 0.75rem;
   border: none;
   background: transparent;
-  color: #f2ede4;
+  color: #0a111f;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.9375rem;
   text-align: left;
@@ -780,7 +871,7 @@
     top: calc(100% + 0.25rem);
     bottom: auto;
     width: 14rem;
-    border: 1px solid rgba(242, 237, 228, 0.18);
+    border: 1px solid rgba(10, 17, 31, 0.22);
     padding: 0.35rem 0;
   }
 }
@@ -1761,38 +1852,882 @@
 }
 
 .pausedBanner {
-  background: rgba(242, 237, 228, 0.1);
+  background: rgba(10, 17, 31, 0.06);
   padding: 0.5rem 0.75rem;
   margin-top: 0.75rem;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.875rem;
 }
 
-/* Squad (Phase D) */
-.squadPage {
-  margin-top: 1rem;
+/* Cream draft desk: navy ink on paper for picker, board, feed, clock. */
+.draftRoom .pickerPick,
+.draftRoom .pickerSticky,
+.draftRoom .pickerNameCol,
+.draftRoom .pickerNameCell,
+.draftRoom .draftHeader {
+  background: #f2ede4;
+}
+
+.draftRoom .pickerSticky {
+  border-bottom-color: rgba(10, 17, 31, 0.22);
+}
+
+.draftRoom .pickerSearchWrap {
+  background: #f2ede4;
+  color: #0a111f;
+  border: 1px solid rgba(10, 17, 31, 0.35);
+}
+
+.draftRoom .pickerCount,
+.draftRoom .pickerHintBanner,
+.draftRoom .pickerHintDismiss,
+.draftRoom .pickerClearFilters,
+.draftRoom .pickerMore,
+.draftRoom .pickerRowName,
+.draftRoom .pickerQueueBtn,
+.draftRoom .pickerQueueBtnOn,
+.draftRoom .pickerPickBtnOff,
+.draftRoom .pickerSort,
+.draftRoom .pickerActionHead,
+.draftRoom .boardLegendItem,
+.draftRoom .boardJumpBtn,
+.draftRoom .boardCorner,
+.draftRoom .boardHead,
+.draftRoom .boardHeadYou,
+.draftRoom .boardRound,
+.draftRoom .boardCell,
+.draftRoom .queueBtn,
+.draftRoom .queueBtnOn,
+.draftRoom .timerLabel,
+.draftRoom .timerChip,
+.draftRoom .timerChipActive,
+.draftRoom .navyText,
+.draftRoom .navyTitle,
+.draftRoom .quietLinkLight {
+  color: #0a111f;
+}
+
+.draftRoom .pickerRowLine2 {
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.draftRoom .pickerRow {
+  border-bottom-color: rgba(10, 17, 31, 0.12);
+  border-left-color: #0a111f;
+}
+
+.draftRoom .pickerLeagueChip,
+.draftRoom .pickerLeagueChipOn {
+  color: #0a111f;
+  border-color: rgba(10, 17, 31, 0.35);
+}
+
+.draftRoom .pickerLeagueChipOn,
+.draftRoom .queueBtnOn,
+.draftRoom .timerChipActive {
+  background: rgba(10, 17, 31, 0.06);
+  border-color: #0a111f;
+}
+
+.draftRoom .pickerQueueBtn,
+.draftRoom .pickerQueueBtnOn,
+.draftRoom .queueBtn,
+.draftRoom .timerChip,
+.draftRoom .boardJumpBtn {
+  border-color: rgba(10, 17, 31, 0.35);
+}
+
+.draftRoom .pickerPickBtnOff {
+  border-color: rgba(10, 17, 31, 0.28);
+  opacity: 0.55;
+}
+
+.draftRoom .pickerTable th,
+.draftRoom .pickerTable td,
+.draftRoom .feedRow {
+  border-bottom-color: rgba(10, 17, 31, 0.12);
+}
+
+.draftRoom .boardCorner,
+.draftRoom .boardHead,
+.draftRoom .boardHeadYou,
+.draftRoom .boardRound {
+  background: #f2ede4;
+  border-bottom-color: rgba(10, 17, 31, 0.22);
+  border-right-color: rgba(10, 17, 31, 0.22);
+}
+
+.draftRoom .boardHeadYou,
+.draftRoom .boardCellYou {
+  background: rgba(10, 17, 31, 0.05);
+  border-left-color: #0a111f;
+}
+
+.draftRoom .boardCell,
+.draftRoom .boardCellEmpty,
+.draftRoom .boardCellOnClock {
+  border-bottom-color: rgba(10, 17, 31, 0.1);
+  border-right-color: rgba(10, 17, 31, 0.1);
+}
+
+.draftRoom .boardCellEmpty,
+.draftRoom .boardCellOnClock {
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.draftRoom .boardCellOnClock {
+  color: #0a111f;
+}
+
+.draftRoom .pickerPickBtn {
+  background: #f2ede4;
+  color: #0a111f;
+  border: 1px solid #0a111f;
+}
+
+.draftDesk {
+  padding-bottom: max(5.5rem, calc(4rem + env(safe-area-inset-bottom)));
+}
+
+.deskRoundPick {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: #0a111f;
+}
+
+.deskAutoChip {
+  flex: 0 0 auto;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.deskMoment,
+.deskMomentYou {
+  position: relative;
+  margin: 0.45rem 0 0;
+}
+
+.deskRedRule {
+  height: 2px;
+  background: #d8232a;
+  margin: 0 0 0.45rem;
+}
+
+.deskMomentTitle {
+  margin: 0;
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.35rem;
+  line-height: 1.15;
+  color: #0a111f;
+}
+
+.deskMomentClock {
+  margin: 0.2rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  color: #0a111f;
+}
+
+.deskMomentSub {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.deskFloor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin: 0.45rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0a111f;
+}
+
+.deskFloorSub,
+.deskMuted,
+.deskForced,
+.deskOtherLabel,
+.deskPathEyebrow {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.deskForced {
+  color: #0a111f;
+  font-weight: 600;
+}
+
+.deskOtherLabel {
+  margin: 0.85rem 0 0.35rem;
+  font-weight: 600;
+  color: #0a111f;
+}
+
+.deskCommissioner {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  margin-top: 0.45rem;
+  padding-bottom: 0.15rem;
+}
+
+.deskBody {
+  min-width: 0;
+}
+
+.deskPaneDesk,
+.deskPanePath,
+.deskPanePicks,
+.deskPaneQueue,
+.deskPaneHistory {
+  display: none;
+  min-width: 0;
+}
+
+.deskPaneDesk[data-active="true"],
+.deskPanePath[data-active="true"],
+.deskPanePicks[data-active="true"],
+.deskPaneQueue[data-active="true"],
+.deskPaneHistory[data-active="true"] {
+  display: block;
+}
+
+.deskQueueStrip {
+  display: none;
+}
+
+.deskDock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 14;
+  display: flex;
+  border-top: 1px solid rgba(10, 17, 31, 0.22);
+  background: #f2ede4;
+  padding: 0.15rem 0.35rem max(0.15rem, env(safe-area-inset-bottom));
+}
+
+.deskDockBtn,
+.deskDockOn {
+  flex: 1;
+  min-height: 48px;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.deskDockOn {
+  font-weight: 700;
+}
+
+.deskHome {
+  display: block;
+  margin: 0.75rem 0 0;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.deskPathRound,
+.deskPathMine,
+.deskPathNeeds,
+.deskQueueList {
+  list-style: none;
+  margin: 0.35rem 0 1rem;
+  padding: 0;
+}
+
+.deskPathItem,
+.deskPathCurrent {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr 1fr;
+  gap: 0.4rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+}
+
+.deskPathCurrent {
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 #0a111f;
+  padding-left: 0.5rem;
+}
+
+.deskPathNum {
   font-variant-numeric: tabular-nums;
 }
 
-.squadHeader {
+.deskQueueAuto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.deskQueueAutoCopy {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.deskQueueAutoBtn {
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 1px solid #0a111f;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  cursor: pointer;
+}
+
+.deskQueueRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+}
+
+.deskQueueIndex {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  width: 1.6rem;
+}
+
+.deskQueueInfo {
+  flex: 1;
+  min-width: 8rem;
+}
+
+.deskQueueName,
+.deskQueueMeta {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+}
+
+.deskQueueName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.deskQueueMeta {
+  font-size: 0.75rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.deskQueueActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.deskQueueMove,
+.deskQueueRemove {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 0.65rem;
+  border: 1px solid rgba(10, 17, 31, 0.35);
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.deskQueueStripItem {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.deskQueueStripOpen {
+  margin-left: auto;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .draftDesk {
+    padding-bottom: 3rem;
+  }
+
+  .deskBody {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) minmax(0, 0.7fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .deskPaneDesk,
+  .deskPanePath,
+  .deskPanePicks {
+    display: block;
+  }
+
+  .deskPaneQueue,
+  .deskPaneHistory {
+    display: none;
+  }
+
+  .deskPaneQueue[data-active="true"],
+  .deskPaneHistory[data-active="true"] {
+    display: block;
+    grid-column: 1 / -1;
+  }
+
+  .deskDock,
+  .deskHome {
+    display: none;
+  }
+
+  .deskPaneDesk .lastPicksStrip {
+    display: none;
+  }
+
+  .deskQueueStrip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid rgba(10, 17, 31, 0.18);
+  }
+
+  .deskBody:has(.deskPaneQueue[data-active="true"]) .deskPaneDesk,
+  .deskBody:has(.deskPaneQueue[data-active="true"]) .deskPanePath,
+  .deskBody:has(.deskPaneQueue[data-active="true"]) .deskPanePicks,
+  .deskBody:has(.deskPaneHistory[data-active="true"]) .deskPaneDesk,
+  .deskBody:has(.deskPaneHistory[data-active="true"]) .deskPanePath,
+  .deskBody:has(.deskPaneHistory[data-active="true"]) .deskPanePicks {
+    display: none;
+  }
+}
+
+/* Squad ledger */
+.squadPage {
+  margin-top: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.squadPageSavePad {
+  padding-bottom: 6.5rem;
+}
+
+.ledgerHead {
   position: sticky;
   top: 0;
-  background: #f2ede4;
-  padding-bottom: 0.75rem;
   z-index: 2;
+  background: #f2ede4;
+  padding: 0.15rem 0 0.65rem;
+}
+
+.ledgerHeadRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 52px;
+}
+
+.ledgerTitle {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a111f;
+}
+
+.ledgerAll {
+  min-height: 44px;
+  padding: 0 0.15rem;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.ledgerGw,
+.ledgerKicker,
+.ledgerCount {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  color: #0a111f;
+}
+
+.ledgerGw {
+  font-size: 0.8125rem;
+  opacity: 0.72;
+}
+
+.ledgerCount {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0.85rem 0 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ledgerKicker {
+  margin: 0 0 1.1rem;
+  font-size: 0.875rem;
+}
+
+.xvGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.xvGroup,
+.xvGroupLocked {
+  margin: 0;
+}
+
+.xvGroupLocked {
+  background: #0a111f;
+  color: #f2ede4;
+  padding: 0.65rem 0.7rem 0.75rem;
+}
+
+.xvGroupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.xvGroupName,
+.xvGroupCount {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.xvGroupCount {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.72;
+}
+
+.xvGroupNote,
+.xvLockedLabel,
+.xiAuto {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: inherit;
+  opacity: 0.78;
+}
+
+.xvGroupNote:empty {
+  display: none;
+}
+
+.xiChoose {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.saveBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 19;
+  padding: 0.45rem 1.15rem max(0.55rem, env(safe-area-inset-bottom));
+  background: #f2ede4;
+  border-top: 1px solid rgba(10, 17, 31, 0.18);
+}
+
+.saveReason {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: #0a111f;
+}
+
+.saveBarRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.saveReset {
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.saveXv,
+.saveXvOff {
+  flex: 1;
+  min-height: 56px;
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.saveXv {
+  background: #d8232a;
+  color: #f2ede4;
+}
+
+.saveXvOff {
+  background: rgba(10, 17, 31, 0.08);
+  color: #0a111f;
+  cursor: not-allowed;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.sheetRowMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.xiSlotMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.xiSlotName {
+  display: block;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xiSlotMeta {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.72;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xiSlotPts {
+  flex: 0 0 2rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lockGlyph {
+  flex: 0 0 auto;
+  display: block;
+}
+
+.liveTotal {
+  font-size: 2.35rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #f2ede4;
+}
+
+.squadRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  position: relative;
+  padding: 0.65rem 0;
+}
+
+.squadRowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.squadMenuBtn {
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: #0a111f;
+  font-family: var(--font-archivo), sans-serif;
+  cursor: pointer;
+}
+
+.squadMenu {
+  position: absolute;
+  right: 0;
+  top: 2.6rem;
+  z-index: 3;
+  min-width: 10rem;
+  background: #f2ede4;
+  border: 1px solid rgba(10, 17, 31, 0.22);
+  padding: 0.25rem 0;
+}
+
+.squadMenuItem {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-archivo), sans-serif;
+  color: #0a111f;
+  cursor: pointer;
+}
+
+.squadMenuItem:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sheetKicker {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.sheetList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sheetRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sheetPpg {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  opacity: 0.72;
+}
+
+.sheetActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+
+.deleteQuiet {
+  border: none;
+  background: transparent;
+  color: #d8232a;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.sampleBanner {
+  margin: 0 0 1rem;
+  padding: 0.45rem 0.75rem;
+  background: #0a111f;
+  color: #f2ede4;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sampleLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.15rem;
+  margin: 0 0 1.25rem;
+}
+
+.sampleLinks a {
+  text-decoration: underline;
 }
 
 .xiList,
 .squadList {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0.35rem 0 0;
 }
 
 .xiRow,
 .xiRowLocked,
+.xiRowEmpty,
 .squadRow {
   border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+}
+
+.xvGroupLocked .xiRow,
+.xvGroupLocked .xiRowEmpty {
+  border-bottom-color: rgba(242, 237, 228, 0.14);
 }
 
 .xiRowLocked {
@@ -1800,16 +2735,29 @@
   color: #f2ede4;
 }
 
-.xiSlotBtn {
+.xiSlotBtn,
+.xiSlotEmpty {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   width: 100%;
   text-align: left;
-  padding: 0.75rem 0;
+  padding: 0.65rem 0;
   background: transparent;
   border: none;
   font-family: var(--font-archivo), sans-serif;
   color: inherit;
-  min-height: 44px;
+  min-height: 52px;
   cursor: pointer;
+}
+
+.xiSlotEmpty {
+  justify-content: flex-start;
+}
+
+.xiSlotBtn:disabled,
+.xiSlotEmpty:disabled {
+  cursor: default;
 }
 
 .xiSlotLabel {
@@ -1821,12 +2769,15 @@
 }
 
 .liveStrip {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
   background: #0a111f;
   color: #f2ede4;
-  padding: 0.5rem 0.75rem;
+  padding: 0.45rem 0.65rem;
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.875rem;
-  margin-bottom: 0.75rem;
+  margin: 0.55rem 0 0;
 }
 
 .sheetBackdrop {
@@ -1849,18 +2800,24 @@
 }
 
 .sheetTitle {
-  font-family: var(--font-display), "Bodoni Moda", serif;
-  margin: 0 0 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .sheetRow {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
   text-align: left;
   padding: 0.75rem 0;
   border: none;
   background: transparent;
   font-family: var(--font-archivo), sans-serif;
-  min-height: 44px;
+  min-height: 52px;
   border-bottom: 1px solid rgba(10, 17, 31, 0.08);
   cursor: pointer;
 }
@@ -2226,14 +3183,14 @@
   align-items: center;
   justify-content: center;
   gap: 0.1rem;
-  min-width: 3.15rem;
+  min-width: 2.7rem;
   min-height: 44px;
   flex: 1 0 auto;
-  padding: 0.25rem 0.2rem;
+  padding: 0.2rem 0.12rem;
   color: #0a111f;
   text-decoration: none;
   font-family: var(--font-archivo), sans-serif;
-  font-size: 0.5625rem;
+  font-size: 0.5rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -2518,6 +3475,12 @@
   }
 }
 
+@media (max-width: 899px) {
+  .shellMain .saveBar {
+    bottom: 4.75rem;
+  }
+}
+
 @media (min-width: 900px) {
   .shell {
     flex-direction: row;
@@ -2546,7 +3509,7 @@
     bottom: auto;
     left: auto;
     right: auto;
-    width: 5.25rem;
+    width: 5.75rem;
     min-height: calc(100vh - 6rem);
     border-top: none;
     border-right: 1px solid rgba(10, 17, 31, 0.12);

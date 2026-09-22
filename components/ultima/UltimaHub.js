@@ -1,13 +1,15 @@
 import Link from "next/link";
 import UltimaNewsBoard, { UltimaChat, UltimaTradeDesk } from "./UltimaNewsBoard";
+import UltimaInstallHint from "./UltimaInstallHint";
 import styles from "./ultima.module.css";
+import { ULTIMA_LEAGUE_LABELS } from "@/lib/ultima/constants";
 
 function buildLead({ draftState, hubStatus, tradeCards, news }) {
   if (hubStatus?.draft === "live" || draftState === "live") {
     return {
       kicker: "Live",
       title: "The draft is live",
-      body: "The clock is running. Open the draft room from the rail.",
+      body: "The clock is running for you. Bots pick at once.",
       href: "/ultima/draft",
       cta: "Enter the draft",
       live: true,
@@ -78,11 +80,79 @@ function buildLead({ draftState, hubStatus, tradeCards, news }) {
   return {
     kicker: "League",
     title: "Waiting for the commissioner to start the draft",
-    body: "Ten seats. Practice does not count.",
+    body: "Ten seats. Pre-draft does not count.",
     href: "/ultima/practice",
-    cta: "Open practice",
+    cta: "Open pre-draft",
     live: false,
   };
+}
+
+function fixtureLine(row) {
+  const home = row.home || "Home";
+  const away = row.away || "Away";
+  const status = String(row.status ?? "scheduled").toLowerCase();
+  const when = row.kickoff
+    ? new Intl.DateTimeFormat("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Asia/Dubai",
+      }).format(new Date(row.kickoff))
+    : "";
+  if (status === "live") return `${home} vs ${away} · live`;
+  if (status === "finished" || status === "ft" || status === "complete") {
+    return `${home} vs ${away} · played`;
+  }
+  return when ? `${home} vs ${away} · ${when}` : `${home} vs ${away}`;
+}
+
+function EuropeBoard({ board }) {
+  const fixtures = board?.fixtures ?? [];
+  const movers = board?.movers ?? [];
+  const empty = !fixtures.length && !movers.length;
+
+  return (
+    <section className={styles.europeBoard} aria-label="Latest game news">
+      <h2 className={styles.sectionTitle}>
+        Latest game news
+        {board?.gameweek ? ` · Gameweek ${board.gameweek}` : ""}
+      </h2>
+      {empty ? (
+        <p className={styles.hubNote}>
+          Players, teams, form and standings of the five leagues land here when the weekend is live.
+        </p>
+      ) : (
+        <>
+          {fixtures.length ? (
+            <ul className={styles.europeList}>
+              {fixtures.map((row) => (
+                <li key={row.id}>
+                  <span className={styles.europeLeague}>
+                    {row.leagueLabel ?? ULTIMA_LEAGUE_LABELS[row.league] ?? row.league}
+                  </span>
+                  <span>{fixtureLine(row)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {movers.length ? (
+            <ul className={styles.europeMovers}>
+              {movers.map((row) => (
+                <li key={`${row.name}-${row.club}`}>
+                  {row.name}
+                  {row.goals ? ` · ${row.goals}g` : ""}
+                  {row.assists ? ` · ${row.assists}a` : ""}
+                  {row.club ? ` · ${row.club}` : ""}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </>
+      )}
+    </section>
+  );
 }
 
 export default function UltimaHub({
@@ -92,6 +162,7 @@ export default function UltimaHub({
   hubStatus = null,
   news = [],
   tradeCards = [],
+  europeBoard = null,
 }) {
   const lead = manager
     ? buildLead({ draftState, hubStatus, tradeCards, news })
@@ -123,6 +194,19 @@ export default function UltimaHub({
         </p>
       ) : null}
 
+      {manager ? (
+        <div className={styles.hubDoors}>
+          <Link href="/ultima/draft" className={styles.hubDoor}>
+            <span className={styles.hubDoorKicker}>Season</span>
+            <strong>Draft</strong>
+          </Link>
+          <Link href="/ultima/practice" className={styles.hubDoor}>
+            <span className={styles.hubDoorKicker}>Does not count</span>
+            <strong>Pre-draft</strong>
+          </Link>
+        </div>
+      ) : null}
+
       {manager && lead ? (
         <div className={styles.newsCentre}>
           <article className={lead.live ? styles.leadLive : styles.lead}>
@@ -136,6 +220,8 @@ export default function UltimaHub({
             ) : null}
           </article>
 
+          <EuropeBoard board={europeBoard} />
+
           <div className={styles.newsCentreGrid}>
             <div className={styles.storiesColumn}>
               <UltimaTradeDesk initialCards={tradeCards} managerId={manager.id} />
@@ -145,6 +231,8 @@ export default function UltimaHub({
           </div>
         </div>
       ) : null}
+
+      {manager ? <UltimaInstallHint /> : null}
     </div>
   );
 }

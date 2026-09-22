@@ -18,7 +18,7 @@ import {
 
 export const runtime = "nodejs";
 /** Hobby ceiling. Bot chains must finish inside this, which is why the pool is cached. */
-export const maxDuration = 10;
+export const maxDuration = 30;
 
 async function requireSeasonManager(user) {
   const manager = await getManagerForUser(user.id);

@@ -22,7 +22,8 @@ function isPublicPath(pathname) {
     pathname.startsWith("/swe-worker") ||
     pathname === "/offline" ||
     pathname === "/manifest.webmanifest" ||
-    pathname === "/manifest.json"
+    pathname === "/manifest.json" ||
+    pathname === "/ultima/manifest.webmanifest"
   ) {
     return true;
   }

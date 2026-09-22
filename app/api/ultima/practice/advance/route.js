@@ -9,7 +9,7 @@ import {
 } from "@/lib/ultima/server/practice";
 
 export const runtime = "nodejs";
-export const maxDuration = 10;
+export const maxDuration = 30;
 
 export async function POST(request) {
   const user = await getSessionUser();

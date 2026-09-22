@@ -1,27 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./ultima.module.css";
 
-const PRIMARY = [
+const NAV = [
   { href: "/ultima", label: "Hub", icon: HubIcon },
+  { href: "/ultima/practice", label: "Pre-draft", icon: PracticeIcon },
   { href: "/ultima/draft", label: "Draft", icon: DraftIcon },
   { href: "/ultima/squad", label: "Squad", icon: SquadIcon },
   { href: "/ultima/standings", label: "Table", icon: TableIcon },
-];
-
-const MORE = [
   { href: "/ultima/market", label: "Market", icon: MarketIcon },
-  { href: "/ultima/trades", label: "Trades", icon: TradesIcon },
-  { href: "/ultima/practice", label: "Practice", icon: PracticeIcon },
-];
-
-const DESKTOP = [
-  ...PRIMARY,
-  ...MORE,
+  { href: "/ultima/trades", label: "Trade", icon: TradesIcon },
 ];
 
 const CRUMB_LABELS = {
@@ -30,13 +22,14 @@ const CRUMB_LABELS = {
   "/ultima/squad": "Squad",
   "/ultima/standings": "Table",
   "/ultima/market": "Market",
-  "/ultima/trades": "Trades",
-  "/ultima/practice": "Practice",
+  "/ultima/trades": "Trade",
+  "/ultima/practice": "Pre-draft",
   "/ultima/admin": "Admin",
   "/ultima/rules": "Rules",
   "/ultima/join": "Join",
   "/ultima/profile": "Profile",
   "/ultima/log": "Log",
+  "/ultima/sample": "SAMPLE",
 };
 
 function hideRail(pathname) {
@@ -49,6 +42,7 @@ function hideRail(pathname) {
 function hideBreadcrumb(pathname) {
   if (pathname === "/ultima/draft" || pathname.startsWith("/ultima/draft/")) return true;
   if (/^\/ultima\/practice\/[A-Z0-9]{4}/i.test(pathname)) return true;
+  if (pathname === "/ultima/sample" || pathname.startsWith("/ultima/sample")) return true;
   return false;
 }
 
@@ -104,41 +98,17 @@ export default function UltimaShell({ manager, isCommissioner, children }) {
   const pathname = usePathname() ?? "";
   const showRail = Boolean(manager) && !hideRail(pathname);
   const showCrumb = !hideBreadcrumb(pathname);
-  const [moreOpen, setMoreOpen] = useState(false);
-
   useEffect(() => {
     document.body.classList.add("ultima-root");
     return () => document.body.classList.remove("ultima-root");
   }, []);
 
-  useEffect(() => {
-    setMoreOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!moreOpen) return undefined;
-    function onKey(event) {
-      if (event.key === "Escape") setMoreOpen(false);
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [moreOpen]);
-
-  const moreItems = [
-    ...MORE,
+  const navItems = [
+    ...NAV,
     ...(isCommissioner
       ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
       : []),
   ];
-
-  const desktopItems = [
-    ...DESKTOP,
-    ...(isCommissioner
-      ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
-      : []),
-  ];
-
-  const moreActive = moreItems.some((item) => isActive(pathname, item.href));
 
   return (
     <div className={styles.ultimaRoot}>
@@ -148,7 +118,7 @@ export default function UltimaShell({ manager, isCommissioner, children }) {
         {showRail ? (
           <>
             <nav className={`${styles.rail} ${styles.railDesktop}`} aria-label="Ultima">
-              {desktopItems.map((item) => {
+              {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(pathname, item.href);
                 return (
@@ -166,7 +136,7 @@ export default function UltimaShell({ manager, isCommissioner, children }) {
             </nav>
 
             <nav className={`${styles.rail} ${styles.railMobile}`} aria-label="Ultima">
-              {PRIMARY.map((item) => {
+              {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(pathname, item.href);
                 return (
@@ -181,49 +151,12 @@ export default function UltimaShell({ manager, isCommissioner, children }) {
                   </Link>
                 );
               })}
-              <button
-                type="button"
-                className={moreActive || moreOpen ? styles.railLinkActive : styles.railLink}
-                aria-expanded={moreOpen}
-                aria-label="More"
-                onClick={() => setMoreOpen((open) => !open)}
-              >
-                <MoreIcon />
-                <span className={styles.railLabel}>More</span>
-              </button>
             </nav>
           </>
         ) : null}
 
         <div className={showRail ? styles.shellMain : undefined}>{children}</div>
       </div>
-
-      {moreOpen ? (
-        <div className={styles.moreSheet} role="dialog" aria-modal="true" aria-label="More">
-          <div
-            className={styles.moreBackdrop}
-            aria-hidden
-            onClick={() => setMoreOpen(false)}
-          />
-          <div className={styles.morePanel}>
-            {moreItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(pathname, item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={active ? styles.moreItemActive : styles.moreItem}
-                  onClick={() => setMoreOpen(false)}
-                >
-                  <Icon />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -301,12 +234,3 @@ function AdminIcon() {
   );
 }
 
-function MoreIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-      <circle cx="5" cy="12" r="1.8" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.8" fill="currentColor" />
-      <circle cx="19" cy="12" r="1.8" fill="currentColor" />
-    </svg>
-  );
-}

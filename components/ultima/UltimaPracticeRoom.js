@@ -62,7 +62,7 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
 
   if (!lobby) {
     return (
-      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
         <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading practice room">
           <div className={styles.draftSkeletonBar} />
           <div className={styles.draftSkeletonChip} />
@@ -74,9 +74,9 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
 
   if (lobby.state === "lobby" && lobby.solo && isHost) {
     return (
-      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
         <EmptyState
-          tone="navy"
+          tone="cream"
           heading="Setting up your practice"
           body="Seating nine bots and drawing the order. This takes a moment."
           actionLabel="Exit"

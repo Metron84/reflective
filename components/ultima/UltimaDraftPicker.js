@@ -6,6 +6,7 @@ import {
   ULTIMA_LEAGUE_COLOURS,
   ULTIMA_LEAGUE_SHORT,
 } from "@/lib/ultima/constants";
+import { wouldBreakFloor } from "@/lib/ultima/draft/floor";
 import styles from "./ultima.module.css";
 
 const PAGE = 25;
@@ -82,8 +83,13 @@ export default function UltimaDraftPicker({
   queue = [],
   loadingPool = false,
   isYourTurn = false,
+  canForcePick = false,
   pickBusy = false,
+  floor = null,
+  compact = false,
+  onSearchActive,
   onDraft,
+  onForce,
   onQueue,
   onUnqueue,
   onClearQueue,
@@ -128,13 +134,18 @@ export default function UltimaDraftPicker({
     }
 
     const sorted = [...list].sort((a, b) => {
+      if (floor) {
+        const aBad = wouldBreakFloor(floor.counts ?? {}, a.league, floor.slotsLeft ?? 0);
+        const bBad = wouldBreakFloor(floor.counts ?? {}, b.league, floor.slotsLeft ?? 0);
+        if (aBad !== bBad) return aBad ? 1 : -1;
+      }
       const gap = metric(b, "rating_avg") - metric(a, "rating_avg");
       if (gap) return gap;
       return String(a.name ?? "").localeCompare(String(b.name ?? ""));
     });
 
     return sorted;
-  }, [available, league, query]);
+  }, [available, league, query, floor]);
 
   useEffect(() => {
     setHiddenIds((current) => {
@@ -220,6 +231,10 @@ export default function UltimaDraftPicker({
               setQuery(e.target.value);
               setShown(PAGE);
             }}
+            onFocus={() => onSearchActive?.(true)}
+            onBlur={() => {
+              if (!query.trim()) onSearchActive?.(false);
+            }}
           />
           {query ? (
             <button
@@ -228,6 +243,7 @@ export default function UltimaDraftPicker({
               onClick={() => {
                 setQuery("");
                 setShown(PAGE);
+                onSearchActive?.(false);
               }}
               aria-label="Clear search"
             >
@@ -249,7 +265,7 @@ export default function UltimaDraftPicker({
                 style={
                   selected
                     ? { background: colour, borderColor: colour, color: "#0a111f" }
-                    : { background: "transparent", borderColor: colour, color: "#f2ede4" }
+                    : { background: "transparent", borderColor: colour, color: "#0a111f" }
                 }
                 onClick={() => {
                   setLeague(t.id);
@@ -267,16 +283,16 @@ export default function UltimaDraftPicker({
         {matched.length} available
       </p>
 
-      {showHint && !queued.length ? (
+      {compact || !showHint || queued.length ? null : (
         <p className={styles.pickerHintBanner}>
           <span>Queue is your backup if the clock runs out.</span>
           <button type="button" className={styles.pickerHintDismiss} onClick={dismissHint}>
             Got it
           </button>
         </p>
-      ) : null}
+      )}
 
-      {queued.length ? (
+      {compact ? null : queued.length ? (
         <div className={styles.queueStrip}>
           <p className={styles.queueStripLabel}>Your queue</p>
           <ul className={styles.queueChips}>
@@ -307,34 +323,55 @@ export default function UltimaDraftPicker({
       ) : (
         <>
           <ul className={styles.pickerRowList}>
-            {visible.map((p) => {
+            {visible.map((p, index) => {
               const fill = ULTIMA_LEAGUE_COLOURS[p.league] ?? "#E4DED3";
               const inQueue = queuedIds.has(p.id);
               const stats = `${formatRating(metric(p, "rating_avg"))} · ${formatRate(metric(p, "goals_rate"))} G · ${formatRate(metric(p, "assists_rate"))} A`;
+              const blocked = Boolean(
+                floor && wouldBreakFloor(floor.counts ?? {}, p.league, floor.slotsLeft ?? 0),
+              );
+              const prevBlocked =
+                index > 0 &&
+                floor &&
+                wouldBreakFloor(
+                  floor.counts ?? {},
+                  visible[index - 1].league,
+                  floor.slotsLeft ?? 0,
+                );
+              const showOther = blocked && !prevBlocked;
+              const canDraft = (isYourTurn || canForcePick) && !blocked;
               return (
-                <li
-                  key={p.id}
-                  className={styles.pickerRow}
-                  style={{ borderLeftColor: fill }}
-                >
+                <li key={p.id}>
+                  {showOther ? (
+                    <p className={styles.deskOtherLabel}>Other players</p>
+                  ) : null}
+                  <div
+                    className={styles.pickerRow}
+                    style={{ borderLeftColor: fill }}
+                  >
                   <div className={styles.pickerRowInfo}>
                     <p className={styles.pickerRowName}>{p.name}</p>
                     <p className={styles.pickerRowLine2}>
                       <span>
                         {p.club} · {ULTIMA_LEAGUE_SHORT[p.league] ?? p.league}
+                        {blocked ? " · Unavailable this pick" : ""}
                       </span>
                       <span className={styles.pickerRowStats}>{stats}</span>
                     </p>
                   </div>
                   <div className={styles.pickerRowActions}>
-                    <button
-                      type="button"
-                      className={isYourTurn ? styles.pickerPickBtn : styles.pickerPickBtnOff}
-                      disabled={!isYourTurn || pickBusy}
-                      onClick={() => pickPlayer(p)}
-                    >
-                      Pick
-                    </button>
+                    {isYourTurn || canForcePick ? (
+                      <button
+                        type="button"
+                        className={canDraft ? styles.pickerPickBtn : styles.pickerPickBtnOff}
+                        disabled={!canDraft || pickBusy}
+                        onClick={() =>
+                          canForcePick && !isYourTurn ? onForce?.(p.id) : pickPlayer(p)
+                        }
+                      >
+                        {canForcePick && !isYourTurn ? "Force" : "Draft"}
+                      </button>
+                    ) : null}
                     <button
                       type="button"
                       className={inQueue ? styles.pickerQueueBtnOn : styles.pickerQueueBtn}
@@ -346,6 +383,7 @@ export default function UltimaDraftPicker({
                     >
                       {inQueue ? <CheckGlyph /> : <PlusGlyph />}
                     </button>
+                  </div>
                   </div>
                 </li>
               );

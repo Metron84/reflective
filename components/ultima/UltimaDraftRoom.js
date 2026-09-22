@@ -3,18 +3,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_COLOURS,
-  ULTIMA_LEAGUE_SHORT,
-  ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
 import { lastPicksNewestFirst, playerSurname } from "@/lib/ultima/draft/last-picks";
-import { countByLeague, remainingSlots } from "@/lib/ultima/draft/floor";
+import {
+  deskFloorLine,
+  deskForcedLine,
+  floorFromState,
+  formatPickDeadline,
+  othersNeedLine,
+} from "@/lib/ultima/draft/desk";
 import EmptyState from "@/components/EmptyState";
 import UltimaDraftBoard from "./UltimaDraftBoard";
+import UltimaDraftFeed from "./UltimaDraftFeed";
+import UltimaDraftPath from "./UltimaDraftPath";
 import UltimaDraftPicker from "./UltimaDraftPicker";
+import UltimaDraftQueue from "./UltimaDraftQueue";
 import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
 import styles from "./ultima.module.css";
 
@@ -55,10 +61,11 @@ export default function UltimaDraftRoom({
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [viewMode, setViewMode] = useState("players");
+  const [viewMode, setViewMode] = useState("desk");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showFeed, setShowFeed] = useState(false);
   const [exitConfirm, setExitConfirm] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
+  const [boardHistory, setBoardHistory] = useState(false);
   const menuRef = useRef(null);
   const stickyRef = useRef(null);
   const allowLeave = useRef(false);
@@ -133,7 +140,10 @@ export default function UltimaDraftRoom({
     if (!viewScope || typeof window === "undefined") return;
     try {
       const stored = sessionStorage.getItem(viewStorageKey(viewScope));
-      if (stored === "players" || stored === "board") setViewMode(stored);
+      if (stored === "desk" || stored === "queue" || stored === "picks" || stored === "board") {
+        setViewMode(stored);
+      }
+      if (stored === "players") setViewMode("desk");
     } catch {
       /* private mode */
     }
@@ -229,9 +239,6 @@ export default function UltimaDraftRoom({
       return;
     }
     if (viewMode === "board") setSeenPicks(pickCount);
-    else if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
-      setSeenPicks(pickCount);
-    }
   }, [state, pickCount, viewMode, seenPicks]);
 
   const draftedIds = useMemo(
@@ -243,6 +250,12 @@ export default function UltimaDraftRoom({
     () => available.filter((p) => !draftedIds.has(p.id)),
     [available, draftedIds],
   );
+
+  const byId = useMemo(() => {
+    const map = new Map();
+    for (const p of pool) map.set(p.id, p);
+    return map;
+  }, [pool]);
 
   async function forcePickPlayer(playerId) {
     if (isPractice || !state?.is_commissioner) return;
@@ -356,9 +369,30 @@ export default function UltimaDraftRoom({
     }
   }
 
+  async function pauseOrResume() {
+    if (isPractice || !state.is_commissioner) return;
+    const action = state.state === "paused" ? "resume_draft" : "pause_draft";
+    setTimerBusy(true);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action }),
+      });
+      const data = await res.json();
+      if (!res.ok) setError(data.message ?? "Could not update the draft.");
+      await fetchState();
+    } catch {
+      setError("Connection lost. Try again.");
+    } finally {
+      setTimerBusy(false);
+    }
+  }
+
   if (!state) {
     return (
-      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
         <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading draft room">
           <div className={styles.draftSkeletonBar} />
           <div className={styles.draftSkeletonChip} />
@@ -403,9 +437,9 @@ export default function UltimaDraftRoom({
 
   if (state.state === "lobby") {
     return (
-      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
         <EmptyState
-          tone="navy"
+          tone="cream"
           heading={isPractice ? "Practice lobby" : "Draft lobby"}
           body={
             isPractice
@@ -421,9 +455,9 @@ export default function UltimaDraftRoom({
 
   if (state.state === "complete") {
     return (
-      <div className={`${styles.navyRoom} ultima-live-chrome-off`}>
+      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
         <EmptyState
-          tone="navy"
+          tone="cream"
           heading={isPractice ? "Practice complete" : "Draft complete"}
           body={
             isPractice
@@ -455,21 +489,31 @@ export default function UltimaDraftRoom({
     state.on_clock &&
     !state.on_clock.is_you;
 
-  const myPicks = (state.picks ?? []).filter((p) => p.manager_id === managerId);
-  const leagueCounts = countByLeague(myPicks.map((p) => p.player).filter(Boolean));
-  const slotsLeft = remainingSlots(myPicks.length);
+  const floor = floorFromState(state);
+  const floorTokens = deskFloorLine(floor);
+  const forcedLine = deskForcedLine(floor);
+  const otherNeed = othersNeedLine(state.others_need);
+  const deadline = state.is_your_turn
+    ? formatPickDeadline(
+        state.turn_expires_at,
+        state.timer_seconds,
+        humanSeconds ?? state.seconds_remaining,
+      )
+    : null;
   const botOnClock = Boolean(state.on_clock?.is_bot);
-  const onClockName = state.on_clock
-    ? state.on_clock.is_you
-      ? "You are on the clock"
-      : botOnClock && stall
-        ? `${state.on_clock.team_name} · BOT stalled`
-        : botOnClock
-          ? `${state.on_clock.team_name} · BOT picking`
-          : state.on_clock.team_name
-    : isPractice
-      ? "Practice"
-      : "Draft";
+  const round = Math.max(1, Math.ceil((state.current_pick || 1) / (state.managers?.length || 10)));
+  const yourTurn = Boolean(state.is_your_turn);
+  const momentTitle = yourTurn
+    ? "YOUR PICK"
+    : botOnClock && stall
+      ? `${state.on_clock.team_name} · BOT stalled`
+      : botOnClock
+        ? `${state.on_clock.team_name} is picking`
+        : state.on_clock
+          ? `${state.on_clock.team_name} is picking`
+          : isPractice
+            ? "Practice"
+            : "Draft";
   const showBotClock = !stall && (botOnClock || botPicking);
   const secondsLabel = showBotClock
     ? null
@@ -478,12 +522,14 @@ export default function UltimaDraftRoom({
       : state.seconds_remaining != null
         ? String(state.seconds_remaining)
         : "—";
-  const lastPicks = lastPicksNewestFirst(state.picks ?? [], 5);
-  const unreadBoard = viewMode !== "board" && pickCount > (seenPicks ?? 0);
+  const lastPicks = lastPicksNewestFirst(state.picks ?? [], 4);
+  const unreadPicks = viewMode !== "picks" && pickCount > (seenPicks ?? 0);
+  const queueCount = state.queue?.length ?? 0;
 
   function chooseView(next) {
     setViewMode(next);
-    setShowFeed(false);
+    setBoardHistory(false);
+    if (next === "picks" || next === "board") setSeenPicks(pickCount);
     if (!viewScope) return;
     try {
       sessionStorage.setItem(viewStorageKey(viewScope), next);
@@ -495,7 +541,18 @@ export default function UltimaDraftRoom({
   function openPickOnBoard(pickNumber) {
     setFocusPick(pickNumber);
     setFocusGen((gen) => gen + 1);
+    setBoardHistory(true);
     chooseView("board");
+  }
+
+  function moveQueue(index, dir) {
+    const ids = (state.queue ?? []).map((q) => q.player_id);
+    const next = index + dir;
+    if (next < 0 || next >= ids.length) return;
+    const copy = [...ids];
+    const [item] = copy.splice(index, 1);
+    copy.splice(next, 0, item);
+    saveQueue(copy);
   }
 
   const picker = (
@@ -505,9 +562,12 @@ export default function UltimaDraftRoom({
         available={pool}
         queue={state.queue ?? []}
         loadingPool={poolLoading}
-        isYourTurn={state.is_your_turn}
+        isYourTurn={yourTurn}
         canForcePick={canForcePick}
         pickBusy={loading}
+        floor={floor}
+        compact
+        onSearchActive={setSearchActive}
         onDraft={draftPlayer}
         onForce={forcePickPlayer}
         onQueue={queuePlayer}
@@ -517,56 +577,53 @@ export default function UltimaDraftRoom({
     </>
   );
 
-  const boardPane = (
-    <UltimaDraftBoard
+  const pathPane = (
+    <UltimaDraftPath
       managers={state.managers ?? []}
       picks={state.picks ?? []}
       currentPick={state.current_pick}
       youId={managerId}
-      mode="full"
-      reveal={viewMode === "board"}
-      focusPick={focusPick}
-      focusGen={focusGen}
+      onOpenHistory={() => {
+        setBoardHistory(true);
+        chooseView("board");
+      }}
     />
   );
 
-  const feedList = (
-    <div className={styles.feedList}>
-      {(state.picks ?? []).length === 0 ? (
-        <p className={styles.navyText}>No picks yet.</p>
-      ) : (
-        [...state.picks].reverse().map((p) => (
-          <div key={p.pick_number} className={styles.feedRow}>
-            <span>R{p.round} · #{p.pick_number}</span>
-            <span>
-              {p.manager_name}
-              {p.is_bot ? " · BOT" : ""}
-            </span>
-            <span>{p.player?.name}</span>
-            {p.forced ? <span className={styles.feedForced}>Forced</span> : null}
-            {p.rationale ? <span className={styles.feedBot}>{p.rationale}</span> : null}
-          </div>
-        ))
-      )}
-    </div>
+  const queuePane = (
+    <UltimaDraftQueue
+      queue={state.queue ?? []}
+      byId={byId}
+      draftedIds={draftedIds}
+      floor={floor}
+      autoDraft={state.auto_draft}
+      autoBusy={autoBusy}
+      onToggleAuto={toggleAutoDraft}
+      onMove={moveQueue}
+      onRemove={unqueuePlayer}
+      onDraft={draftPlayer}
+      isYourTurn={yourTurn}
+      pickBusy={loading}
+    />
   );
 
+  const feedPane = <UltimaDraftFeed picks={state.picks ?? []} />;
+
+  const youPickIn = state.you_pick_in;
+  const autoLabel = state.auto_draft ? "Auto on" : "Auto off";
+
   return (
-    <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
+    <div className={`${styles.draftRoom} ${styles.draftDesk} ultima-live-chrome-off`}>
       <header className={styles.draftSticky} ref={stickyRef}>
         <div className={styles.draftStickyRow}>
           <button type="button" className={styles.draftExit} onClick={requestExit}>
             <ExitChevron />
             Exit
           </button>
-          <p className={styles.draftOnClockName}>{onClockName}</p>
-          {showBotClock ? (
-            <span className={styles.botSpinner} aria-label="Bot picking" />
-          ) : (
-            <span className={styles.draftClockSecs} aria-label="Seconds remaining">
-              {secondsLabel}
-            </span>
-          )}
+          <p className={styles.deskRoundPick}>
+            R{round} · {state.current_pick ?? "—"}
+          </p>
+          <span className={styles.deskAutoChip}>{autoLabel}</span>
           <div className={styles.draftMenuWrap} ref={menuRef}>
             <button
               type="button"
@@ -595,29 +652,6 @@ export default function UltimaDraftRoom({
                     }}
                   >
                     Exit
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.draftOverflowItem}
-                    role="menuitem"
-                    onClick={() => {
-                      setShowFeed((open) => !open);
-                      setMenuOpen(false);
-                    }}
-                  >
-                    Feed
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.draftOverflowItem}
-                    role="menuitem"
-                    onClick={() => {
-                      toggleAutoDraft();
-                      setMenuOpen(false);
-                    }}
-                    disabled={autoBusy}
-                  >
-                    {autoBusy ? "…" : state.auto_draft ? "Auto on" : "Auto off"}
                   </button>
                   {isPractice && state.is_host ? (
                     <>
@@ -652,17 +686,70 @@ export default function UltimaDraftRoom({
             ) : null}
           </div>
         </div>
-        <div className={styles.draftChipRow} aria-label="League floor">
-          {ULTIMA_LEAGUES.map((league) => (
-            <span key={league} className={styles.draftChip}>
-              {ULTIMA_LEAGUE_SHORT[league]} {leagueCounts[league] ?? 0}/{ULTIMA_SQUAD_FLOOR_PER_LEAGUE}
-            </span>
-          ))}
-          <span className={styles.draftChip}>
-            {slotsLeft} pick{slotsLeft === 1 ? "" : "s"} left
-          </span>
+
+        <div className={yourTurn ? styles.deskMomentYou : styles.deskMoment}>
+          {yourTurn ? <div className={styles.deskRedRule} aria-hidden /> : null}
+          <p className={styles.deskMomentTitle}>{momentTitle}</p>
+          <p className={styles.deskMomentClock}>
+            {showBotClock ? (
+              <span className={styles.botSpinner} aria-label="Bot picking" />
+            ) : deadline ? (
+              deadline
+            ) : (
+              secondsLabel
+            )}
+          </p>
+          <p className={styles.deskMomentSub}>
+            {yourTurn
+              ? `Pick ${state.current_pick}`
+              : youPickIn > 0
+                ? `You pick in ${youPickIn}`
+                : youPickIn === 0
+                  ? "Your pick"
+                  : canForcePick
+                    ? `Force pick for ${state.on_clock.team_name}`
+                    : ""}
+          </p>
         </div>
-        {state.is_your_turn ? <div className={styles.redProgress} aria-hidden /> : null}
+
+        <p className={styles.deskFloor} aria-label="League floor">
+          {floorTokens.map((t) => (
+            <span key={t.league}>{t.label}</span>
+          ))}
+        </p>
+        <p className={styles.deskFloorSub}>
+          {floor.slotsLeft} pick{floor.slotsLeft === 1 ? "" : "s"} left
+          {otherNeed ? ` · ${otherNeed}` : ""}
+        </p>
+        {forcedLine && yourTurn ? (
+          <p className={styles.deskForced}>{forcedLine}</p>
+        ) : null}
+
+        {!isPractice && state.is_commissioner ? (
+          <div className={styles.deskCommissioner}>
+            <button
+              type="button"
+              className={styles.timerChip}
+              disabled={timerBusy}
+              onClick={pauseOrResume}
+            >
+              {state.state === "paused" ? "Resume" : "Pause"}
+            </button>
+            {ULTIMA_TIMER_OPTIONS.map((seconds) => (
+              <button
+                key={seconds}
+                type="button"
+                className={
+                  state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
+                }
+                disabled={timerBusy}
+                onClick={() => setLiveTimer(seconds)}
+              >
+                {formatUltimaTimer(seconds)}
+              </button>
+            ))}
+          </div>
+        ) : null}
       </header>
 
       {stall ? (
@@ -682,98 +769,118 @@ export default function UltimaDraftRoom({
       {state.state === "paused" ? (
         <p className={styles.pausedBanner}>Paused by the commissioner</p>
       ) : null}
-      {canForcePick ? (
-        <p className={styles.floorLine}>Force pick for {state.on_clock.team_name}.</p>
-      ) : null}
-      {!isPractice && state.is_commissioner ? (
-        <div className={styles.timerRow}>
-          <span className={styles.timerLabel}>Clock</span>
-          {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-            <button
-              key={seconds}
-              type="button"
-              className={
-                state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
-              }
-              disabled={timerBusy}
-              onClick={() => setLiveTimer(seconds)}
-            >
-              {formatUltimaTimer(seconds)}
-            </button>
-          ))}
-        </div>
-      ) : null}
 
-      <div
-        className={styles.draftViewToggle}
-        role="tablist"
-        aria-label="Draft view"
-      >
-        <button
-          type="button"
-          role="tab"
-          aria-selected={viewMode === "players" && !showFeed}
-          className={viewMode === "players" && !showFeed ? styles.draftSegActive : styles.draftSeg}
-          onClick={() => chooseView("players")}
+      <div className={styles.deskBody}>
+        <div
+          className={styles.deskPaneDesk}
+          data-active={viewMode === "desk" ? "true" : "false"}
         >
-          Players
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={viewMode === "board" && !showFeed}
-          className={viewMode === "board" && !showFeed ? styles.draftSegActive : styles.draftSeg}
-          onClick={() => chooseView("board")}
+          {picker}
+          {searchActive || !lastPicks.length ? null : (
+            <div className={styles.lastPicksStrip} aria-label="Last picks">
+              {lastPicks.map((pick, index) => {
+                const league = pick.player?.league;
+                const label = `${pick.pick_number} · ${playerSurname(pick.player?.name)}`;
+                return (
+                  <button
+                    key={pick.pick_number}
+                    type="button"
+                    className={
+                      index === 0
+                        ? `${styles.lastPickChip} ${styles.lastPickChipEnter}`
+                        : styles.lastPickChip
+                    }
+                    style={{ borderLeftColor: ULTIMA_LEAGUE_COLOURS[league] ?? "#0a111f" }}
+                    onClick={() => openPickOnBoard(pick.pick_number)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <div
+          className={styles.deskPanePath}
+          data-active={viewMode === "board" && !boardHistory ? "true" : "false"}
         >
-          Board
-          {unreadBoard ? (
-            <span className={styles.draftSegDot} aria-label="New picks" />
+          {pathPane}
+        </div>
+        <div
+          className={styles.deskPanePicks}
+          data-active={viewMode === "picks" ? "true" : "false"}
+        >
+          {feedPane}
+        </div>
+        <div
+          className={styles.deskPaneQueue}
+          data-active={viewMode === "queue" ? "true" : "false"}
+        >
+          {queuePane}
+        </div>
+        <div
+          className={styles.deskPaneHistory}
+          data-active={viewMode === "board" && boardHistory ? "true" : "false"}
+        >
+          {boardHistory ? (
+            <UltimaDraftBoard
+              managers={state.managers ?? []}
+              picks={state.picks ?? []}
+              currentPick={state.current_pick}
+              youId={managerId}
+              mode="full"
+              reveal
+              focusPick={focusPick}
+              focusGen={focusGen}
+            />
           ) : null}
+        </div>
+      </div>
+
+      <div className={styles.deskQueueStrip} aria-label="Queue">
+        {(state.queue ?? []).slice(0, 3).map((q, i) => {
+          const player = byId.get(q.player_id);
+          return (
+            <span key={q.player_id} className={styles.deskQueueStripItem}>
+              {i + 1} {player?.name ?? "Queued"}
+            </span>
+          );
+        })}
+        <button type="button" className={styles.deskQueueStripOpen} onClick={() => chooseView("queue")}>
+          Open queue
         </button>
       </div>
 
-      {lastPicks.length ? (
-        <div className={styles.lastPicksStrip} aria-label="Last picks">
-          {lastPicks.map((pick, index) => {
-            const league = pick.player?.league;
-            const label = `${pick.pick_number} · ${playerSurname(pick.player?.name)}`;
-            return (
-              <button
-                key={pick.pick_number}
-                type="button"
-                className={
-                  index === 0 ? `${styles.lastPickChip} ${styles.lastPickChipEnter}` : styles.lastPickChip
-                }
-                style={{ borderLeftColor: ULTIMA_LEAGUE_COLOURS[league] ?? "#F2EDE4" }}
-                onClick={() => openPickOnBoard(pick.pick_number)}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      ) : (
-        <div className={styles.lastPicksStrip} aria-hidden />
-      )}
+      <nav className={styles.deskDock} aria-label="Draft desk">
+        <button
+          type="button"
+          className={viewMode === "queue" ? styles.deskDockOn : styles.deskDockBtn}
+          onClick={() => chooseView("queue")}
+        >
+          Queue{queueCount ? ` ${queueCount}` : ""}
+        </button>
+        <button
+          type="button"
+          className={viewMode === "picks" ? styles.deskDockOn : styles.deskDockBtn}
+          onClick={() => chooseView("picks")}
+        >
+          Picks
+          {unreadPicks ? <span className={styles.draftSegDot} aria-label="New picks" /> : null}
+        </button>
+        <button
+          type="button"
+          className={viewMode === "board" ? styles.deskDockOn : styles.deskDockBtn}
+          onClick={() => chooseView("board")}
+        >
+          Board
+        </button>
+      </nav>
 
-      {showFeed ? (
-        feedList
-      ) : (
-        <div className={styles.draftBodySplit}>
-          <div
-            className={styles.draftPanePlayers}
-            data-active={viewMode === "players" ? "true" : "false"}
-          >
-            {picker}
-          </div>
-          <div
-            className={styles.draftPaneBoard}
-            data-active={viewMode === "board" ? "true" : "false"}
-          >
-            {boardPane}
-          </div>
-        </div>
-      )}
+      {viewMode !== "desk" ? (
+        <button type="button" className={styles.deskHome} onClick={() => chooseView("desk")}>
+          Back to picks
+        </button>
+      ) : null}
 
       {exitConfirm ? (
         <div className={styles.confirmSheet} role="dialog" aria-modal="true">

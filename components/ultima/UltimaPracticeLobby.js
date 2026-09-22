@@ -127,7 +127,7 @@ export default function UltimaPracticeLobby() {
   return (
     <div className={styles.adminPage}>
       <p className={styles.lede}>
-        Practice picks do not count. Thirty-second clock. Bots fill empty seats. Save a board to keep it.
+        Practice picks do not count. Bots pick at once from what their squad still needs. Save a board to keep it.
       </p>
 
       {rooms.length > 0 ? (

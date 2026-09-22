@@ -124,7 +124,7 @@ export default function UltimaDraftBoard({
 
       {empty ? (
         <EmptyState
-          tone="navy"
+          tone="cream"
           heading="Board empty"
           body="First pick coming. Stay on Players until the board fills."
         />

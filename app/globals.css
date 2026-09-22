@@ -141,3 +141,9 @@ body:has(.ultima-live-chrome-off) > footer {
 body:has(.ultima-live-chrome-off) > header {
   display: none;
 }
+
+@media (display-mode: standalone) {
+  body.ultima-root > header {
+    display: none;
+  }
+}

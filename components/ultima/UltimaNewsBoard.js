@@ -9,8 +9,8 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
 
   if (!items.length) {
     return (
-      <section className={styles.newsBoard} id="ultima-news" aria-label="League news">
-        <h2 className={styles.sectionTitle}>League news</h2>
+      <section className={styles.newsBoard} id="ultima-news" aria-label="Ultima news">
+        <h2 className={styles.sectionTitle}>Ultima news</h2>
         <p className={styles.hubNote}>
           Picks, seats, XI locks, market moves and trades land here as they happen.
         </p>
@@ -19,8 +19,8 @@ export default function UltimaNewsBoard({ initialItems = [] }) {
   }
 
   return (
-    <section className={styles.newsBoard} id="ultima-news" aria-label="League news">
-      <h2 className={styles.sectionTitle}>League news</h2>
+    <section className={styles.newsBoard} id="ultima-news" aria-label="Ultima news">
+      <h2 className={styles.sectionTitle}>Ultima news</h2>
       <ul className={styles.newsList}>
         {items.map((item) => (
           <li key={item.id} className={styles.newsItem}>

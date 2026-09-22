@@ -4,6 +4,16 @@ import UltimaShell from "@/components/ultima/UltimaShell";
 import { getManagerForUser, isCommissionerUser } from "@/lib/ultima/server/db";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
+export const metadata = {
+  applicationName: "Ultima",
+  manifest: "/ultima/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Ultima",
+  },
+};
+
 export default async function UltimaLayout({ children }) {
   const auth = await safeResolve(getAuthContext(), {
     user: null,

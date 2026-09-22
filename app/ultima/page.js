@@ -12,6 +12,7 @@ import { getHubStatus } from "@/lib/ultima/server/admin";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
+import { getEuropeBoard } from "@/lib/ultima/server/europe-board";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -41,6 +42,7 @@ export default async function UltimaPage() {
   let news = [];
   let tradeCards = [];
   let gameweekNumber = null;
+  let europeBoard = { gameweek: null, fixtures: [], movers: [] };
   if (competition) {
     const gameweek = await safeResolve(getCurrentGameweek(competition.id), null);
     if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
@@ -54,6 +56,11 @@ export default async function UltimaPage() {
     );
     news = await safeResolve(getCompetitionNews(competition.id), []);
     tradeCards = await safeResolve(listHubTradeCards(competition.id, manager.id), []);
+    europeBoard = await safeResolve(getEuropeBoard(competition.id), {
+      gameweek: null,
+      fixtures: [],
+      movers: [],
+    });
     const db = getUltimaDb();
     if (db) {
       const ds = await safeResolve(
@@ -74,12 +81,18 @@ export default async function UltimaPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
-        <p className={styles.eyebrow}>Games · Ultima</p>
+        <p className={styles.eyebrow}>Ultima</p>
         <h1 className={styles.displayTitle}>Ultima</h1>
-        <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
-        <p className={styles.lede}>
-          Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.
-        </p>
+        {manager ? (
+          <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
+        ) : (
+          <>
+            <p className={styles.dateline}>{formatDateline(competition?.season_label, gameweekNumber)}</p>
+            <p className={styles.lede}>
+              Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.
+            </p>
+          </>
+        )}
         {!ULTIMA_ENABLED ? (
           <p className={styles.phaseNote}>Invite only. Opens when the commissioner is ready.</p>
         ) : null}
@@ -91,6 +104,7 @@ export default async function UltimaPage() {
           hubStatus={hubStatus}
           news={news}
           tradeCards={tradeCards}
+          europeBoard={europeBoard}
         />
         <p className={styles.hubNote}>
           <Link href="/ultima/rules" className={styles.quietLink}>
@@ -114,7 +128,7 @@ function formatDateline(seasonLabel, gameweekNumber) {
     timeZone: "Asia/Dubai",
   }).format(new Date());
 
-  const parts = ["Ultima"];
+  const parts = [];
   if (seasonLabel) parts.push(seasonLabel);
   if (gameweekNumber) parts.push(`Gameweek ${gameweekNumber}`);
   parts.push(date);

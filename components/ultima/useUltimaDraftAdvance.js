@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const BOT_VISIBLE_DELAY_MS = 900;
-const BOT_CHAIN_GAP_MS = 350;
+const BOT_VISIBLE_DELAY_MS = 0;
+const BOT_CHAIN_GAP_MS = 0;
+const PRACTICE_BOT_VISIBLE_DELAY_MS = 0;
+const PRACTICE_BOT_CHAIN_GAP_MS = 0;
 const MAX_STALL_RETRIES = 2;
 const STALE_LOCK_MS = 5000;
 
@@ -207,7 +209,9 @@ export default function useUltimaDraftAdvance({
       advancing.current = true;
       advancingSince.current = Date.now();
       try {
-        await sleep(BOT_VISIBLE_DELAY_MS);
+        await sleep(
+          isPracticeRef.current ? PRACTICE_BOT_VISIBLE_DELAY_MS : BOT_VISIBLE_DELAY_MS,
+        );
         while (!stopped) {
           const snap = stateRef.current;
           if (snap?.state !== "live" || !snap.on_clock?.is_bot) break;
@@ -218,7 +222,9 @@ export default function useUltimaDraftAdvance({
           if (result.ok && afterPick != null && afterPick !== beforePick) {
             stallTries.current = 0;
             if (result.data.on_clock_is_bot === false) break;
-            await sleep(BOT_CHAIN_GAP_MS);
+            await sleep(
+              isPracticeRef.current ? PRACTICE_BOT_CHAIN_GAP_MS : BOT_CHAIN_GAP_MS,
+            );
             continue;
           }
           warnStall(snap, "advance_http", result.message);

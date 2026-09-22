@@ -3,7 +3,7 @@ import styles from "@/components/ultima/ultima.module.css";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 
 export const metadata = {
-  title: "Ultima · Practice draft",
+  title: "Ultima · Pre-draft",
   robots: { index: false, follow: false },
 };
 
@@ -16,8 +16,8 @@ export default async function UltimaPracticePage() {
     return (
       <div className={styles.ultimaPage}>
         <div className={styles.inner}>
-          <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-          <h1 className={styles.title}>Practice draft</h1>
+          <p className={styles.eyebrow}>Ultima</p>
+          <h1 className={styles.title}>Pre-draft</h1>
           <p className={styles.lede}>Complete your profile before you practise.</p>
         </div>
       </div>
@@ -27,8 +27,8 @@ export default async function UltimaPracticePage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Practice draft</h1>
+        <p className={styles.eyebrow}>Ultima</p>
+        <h1 className={styles.title}>Pre-draft</h1>
         <UltimaPracticeLobby />
       </div>
     </div>
