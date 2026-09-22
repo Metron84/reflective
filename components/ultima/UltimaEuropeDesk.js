@@ -33,7 +33,7 @@ function GameweekStrip({ desk }) {
   if (desk.emptyReason === "sync") {
     return (
       <section className={styles.deskBlock} aria-label="This Gameweek">
-        <h3 className={styles.deskTitle}>This Gameweek</h3>
+        <h3 className={styles.deskTitle}>Fixtures</h3>
         <p className={styles.hubNote}>The Europe board did not sync. Try again after the next cron.</p>
       </section>
     );
@@ -43,7 +43,7 @@ function GameweekStrip({ desk }) {
     return (
       <section className={styles.deskBlock} aria-label="This Gameweek">
         <h3 className={styles.deskTitle}>
-          This Gameweek{desk.gameweek ? ` ${desk.gameweek}` : ""}
+          {desk.gameweek ? `This Gameweek ${desk.gameweek}` : "Fixtures"}
         </h3>
         <p className={styles.hubNote}>No gameweek this week. The leagues are on a break.</p>
       </section>
@@ -53,7 +53,7 @@ function GameweekStrip({ desk }) {
   return (
     <section className={styles.deskBlock} aria-label="This Gameweek">
       <h3 className={styles.deskTitle}>
-        This Gameweek{desk.gameweek ? ` ${desk.gameweek}` : ""}
+        {desk.gameweek ? `This Gameweek ${desk.gameweek}` : "Fixtures"}
       </h3>
       <ul className={styles.gwList}>
         {desk.fixtures.map((row) => {
