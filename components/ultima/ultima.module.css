@@ -174,6 +174,222 @@
   color: rgba(10, 17, 31, 0.6);
 }
 
+.europeDesk,
+.ultimaDesk {
+  margin: 0 0 2.25rem;
+}
+
+.deskLabel {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0 0 0.75rem;
+  color: #0a111f;
+}
+
+.deskBlock {
+  margin: 0 0 1.75rem;
+}
+
+.deskTitle {
+  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.18);
+}
+
+.deskKicker {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0.85rem 0 0.4rem;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.deskTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+}
+
+.deskTab,
+.deskTabOn {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(10, 17, 31, 0.18);
+  background: transparent;
+  color: #0a111f;
+}
+
+.deskTabOn {
+  background: #0a111f;
+  color: #f2ede4;
+  border-color: #0a111f;
+}
+
+.gwList,
+.formList,
+.tableList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gwRow,
+.formList li,
+.tableList li {
+  display: grid;
+  gap: 0.15rem 0.6rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.1);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.9375rem;
+}
+
+.gwLeague {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.gwMatch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.gwMeta {
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.7);
+}
+
+.diffDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+  flex: 0 0 0.5rem;
+}
+
+.diff_easy {
+  background: #cfc6b6;
+}
+
+.diff_mid {
+  background: #0a111f;
+}
+
+.diff_hard {
+  background: #d8232a;
+}
+
+.badgeLive,
+.badgeFt {
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-right: 0.4rem;
+}
+
+.badgeLive {
+  color: #d8232a;
+}
+
+.formSplit {
+  display: grid;
+  gap: 1rem;
+}
+
+.formBtn {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.pills {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pill_W,
+.pill_D,
+.pill_L {
+  min-width: 1.15rem;
+  padding: 0.1rem 0.25rem;
+  font-size: 0.6875rem;
+  text-align: center;
+  border: 1px solid rgba(10, 17, 31, 0.2);
+}
+
+.pill_W {
+  background: #0a111f;
+  color: #f2ede4;
+  border-color: #0a111f;
+}
+
+.pill_L {
+  color: #d8232a;
+  border-color: #d8232a;
+}
+
+.formMeta,
+.formSplitLine {
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.7);
+}
+
+.tableHead {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.18);
+  background: none;
+  color: #0a111f;
+}
+
+.tableLeague {
+  margin: 0 0 1rem;
+}
+
+.tableList li {
+  grid-template-columns: 1.5rem 1fr auto auto;
+  align-items: baseline;
+}
+
+.tablePos,
+.tablePts {
+  font-variant-numeric: tabular-nums;
+}
+
+.moveUp,
+.moveDown {
+  font-size: 0.75rem;
+}
+
+.moveDown {
+  color: #d8232a;
+}
+
 .installLine {
   font-family: var(--font-archivo), sans-serif;
   font-size: 0.875rem;
@@ -3533,6 +3749,15 @@
     grid-template-columns: 1.1fr 0.9fr;
     align-items: start;
     gap: 2.5rem;
+  }
+
+  .formSplit {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gwRow {
+    grid-template-columns: 2.75rem 1fr auto;
+    align-items: baseline;
   }
 }
 

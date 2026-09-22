@@ -68,7 +68,8 @@ async function main() {
     console.log(`\nLive Sportmonks fixtures (first 5):`);
     for (const fix of fixtures.slice(0, 5)) {
       const smId = fix.sportmonks_fixture_id;
-      const stats = smId ? await provider.fetchPlayerMatchStats(smId) : [];
+      const fetched = smId ? await provider.fetchPlayerMatchStats(smId) : [];
+      const stats = Array.isArray(fetched) ? fetched : fetched?.rows ?? [];
       const liveSummary = summariseStats(stats);
       console.log(
         `  ${fix.provider_id} @ ${fix.kickoff} [${fix.status}]: ${JSON.stringify(liveSummary)}`,

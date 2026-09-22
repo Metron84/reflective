@@ -12,8 +12,8 @@ import { getHubStatus } from "@/lib/ultima/server/admin";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getCompetitionNews } from "@/lib/ultima/server/news";
 import { listHubTradeCards } from "@/lib/ultima/server/trades";
-import { getEuropeBoard } from "@/lib/ultima/server/europe-board";
-import { safeResolve } from "@/lib/ultima/server/safe";
+import { getEuropeDesk } from "@/lib/ultima/server/europe-board";
+import { safeResolve, withTimeout } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima",
@@ -42,7 +42,7 @@ export default async function UltimaPage() {
   let news = [];
   let tradeCards = [];
   let gameweekNumber = null;
-  let europeBoard = { gameweek: null, fixtures: [], movers: [] };
+  let europeDesk = null;
   if (competition) {
     const gameweek = await safeResolve(getCurrentGameweek(competition.id), null);
     if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
@@ -56,11 +56,21 @@ export default async function UltimaPage() {
     );
     news = await safeResolve(getCompetitionNews(competition.id), []);
     tradeCards = await safeResolve(listHubTradeCards(competition.id, manager.id), []);
-    europeBoard = await safeResolve(getEuropeBoard(competition.id), {
-      gameweek: null,
-      fixtures: [],
-      movers: [],
-    });
+    try {
+      europeDesk = await withTimeout(getEuropeDesk(competition.id), 12000);
+    } catch {
+      europeDesk = {
+        gameweek: null,
+        fixtures: [],
+        emptyReason: "sync",
+        syncError: "The Europe board did not load.",
+        standings: {},
+        form: { teams: { hot: [], cold: [] }, players: [] },
+        movers: { rising: [], falling: [], manOfRound: [], upsets: [] },
+        trending: { added: [], dropped: [], started: [], differentials: [], scorers: [] },
+        ratingsAvailable: null,
+      };
+    }
     const db = getUltimaDb();
     if (db) {
       const ds = await safeResolve(
@@ -104,7 +114,7 @@ export default async function UltimaPage() {
           hubStatus={hubStatus}
           news={news}
           tradeCards={tradeCards}
-          europeBoard={europeBoard}
+          europeDesk={europeDesk}
         />
         <p className={styles.hubNote}>
           <Link href="/ultima/rules" className={styles.quietLink}>
