@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import {
   PRACTICE_MIN_SEATS,
   ULTIMA_DRAFT_ROUNDS,
@@ -19,6 +18,7 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [pickEdit, setPickEdit] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +80,11 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
     [code, isHost],
   );
 
+  const seatsCap = lobby?.seatsCap ?? lobby?.seats?.length ?? ULTIMA_MAX_SEATS;
+  const mySlot =
+    lobby?.seats?.find((seat) => seat.managerId && seat.managerId === managerId)?.slot ?? 1;
+  const pickValue = pickEdit ?? String(mySlot);
+
   if (!lobby) {
     return (
       <div className={`${styles.draftRoom} ${styles.draftOffice} ultima-live-chrome-off`}>
@@ -93,7 +98,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
   }
 
   if (lobby.state === "lobby") {
-    const seatsCap = lobby.seatsCap ?? lobby.seats?.length ?? ULTIMA_MAX_SEATS;
     const humanCount = lobby.humans?.length ?? 1;
     const minCap = Math.max(PRACTICE_MIN_SEATS, humanCount);
     const seats = lobby.seats?.length
@@ -103,6 +107,12 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
           team_name: "Bot",
           bot: true,
         }));
+
+    function commitPick(raw) {
+      const next = Math.min(seatsCap, Math.max(1, Number.parseInt(raw, 10) || 1));
+      setPickEdit(null);
+      if (next !== mySlot) setLobbySettings({ mySlot: next });
+    }
 
     return (
       <div className={`${styles.draftRoom} ${styles.draftOffice} ${styles.dLobby} ultima-live-chrome-off`}>
@@ -151,6 +161,30 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
                 +
               </button>
             ) : null}
+            <label className={styles.prPick}>
+              Your pick
+              {isHost ? (
+                <input
+                  className={styles.prPickInput}
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  max={seatsCap}
+                  value={pickValue}
+                  disabled={busy}
+                  aria-label="Your pick"
+                  onChange={(event) => setPickEdit(event.target.value)}
+                  onBlur={() => commitPick(pickValue)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.currentTarget.blur();
+                    }
+                  }}
+                />
+              ) : (
+                <strong>{mySlot}</strong>
+              )}
+            </label>
           </div>
           {seats.map((seat, index) => {
             const slot = seat.slot ?? index + 1;
@@ -160,33 +194,13 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
                 <UltimaRow
                   yours={mine}
                   primary={`${slot}. ${seat.team_name || "Bot"}`}
-                  meta={mine ? "You" : seat.bot ? "Bot" : "Club"}
+                  meta={mine ? "You" : seat.bot ? "Sit here" : "Club"}
                   onClick={
-                    isHost && seat.bot && !busy
+                    isHost && !mine && !busy
                       ? () => setLobbySettings({ mySlot: slot })
                       : undefined
                   }
                 />
-                {isHost && mine ? (
-                  <div className={styles.prSeatMove}>
-                    <button
-                      type="button"
-                      className={styles.prSeatBtn}
-                      onClick={() => setLobbySettings({ mySlot: slot - 1 })}
-                      disabled={busy || slot <= 1}
-                    >
-                      Up
-                    </button>
-                    <button
-                      type="button"
-                      className={styles.prSeatBtn}
-                      onClick={() => setLobbySettings({ mySlot: slot + 1 })}
-                      disabled={busy || slot >= seatsCap}
-                    >
-                      Down
-                    </button>
-                  </div>
-                ) : null}
               </div>
             );
           })}
@@ -232,9 +246,6 @@ export default function UltimaPracticeRoom({ code, managerId, isHost }) {
             onAction={start}
           />
         ) : null}
-        <Link href="/ultima/practice" className={styles.opPanelAction}>
-          Leave room
-        </Link>
       </div>
     );
   }

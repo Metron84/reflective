@@ -38,10 +38,12 @@ const CRUMB_LABELS = {
 };
 
 function hideRail(pathname) {
+  return pathname.startsWith("/ultima/join");
+}
+
+function isRoomPath(pathname) {
   if (pathname === "/ultima/draft" || pathname.startsWith("/ultima/draft/")) return true;
-  if (pathname.startsWith("/ultima/join")) return true;
-  if (/^\/ultima\/practice\/[A-Z0-9]{4}/i.test(pathname)) return true;
-  return false;
+  return /^\/ultima\/practice\/[A-Z0-9]{4}/i.test(pathname);
 }
 
 function hideBreadcrumb(pathname) {
@@ -132,9 +134,10 @@ export default function UltimaShell({
     ((seated || isCommissioner || sample) && !isPaperPath(pathname, seated)) || sample;
   const showRail = (seated || isCommissioner || sample) && !hideRail(pathname);
   const showCrumb = !office && !hideBreadcrumb(pathname);
+  const showClub = office && showRail && !isRoomPath(pathname);
   const barClub =
     club ??
-    (office && showRail
+    (showClub
       ? {
           teamName: sample ? "SAMPLE" : "Ultima",
           seasonLine: sample ? "Development" : "Commissioner",
@@ -200,7 +203,7 @@ export default function UltimaShell({
         ) : null}
 
         <div className={showRail ? styles.shellMain : undefined}>
-          {office && showRail && barClub ? (
+          {showClub && barClub ? (
             <div className={styles.shellClub}>
               <UltimaClubBar
                 teamName={barClub.teamName}

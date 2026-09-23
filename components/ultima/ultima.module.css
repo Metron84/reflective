@@ -4317,6 +4317,14 @@
   }
 }
 
+@media (min-width: 900px) {
+  :global(body.ultima-app) .office .rail,
+  :global(body:has(.ultima-live-chrome-off)) .office .rail {
+    top: 0;
+    min-height: 100dvh;
+  }
+}
+
 .roomHead {
   margin: 0 0 1.15rem;
 }
@@ -5196,6 +5204,25 @@ button.opRowYours {
   overflow: auto;
 }
 
+.shellMain:has(.draftRoom.draftOffice) {
+  padding: 0;
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shellMain .draftRoom.draftOffice {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+}
+
+.shellMain .draftRoom.draftOffice.dLobby {
+  min-height: 0;
+  overflow: auto;
+}
+
 .dCompleteActions {
   display: flex;
   flex-wrap: wrap;
@@ -5755,6 +5782,7 @@ button.opRowYours {
   display: flex;
   align-items: stretch;
   justify-content: stretch;
+  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
 }
 
 .dClockPanel {
@@ -5826,6 +5854,14 @@ button.opRowYours {
 }
 
 @media (min-width: 900px) {
+  .shellMain:has(.draftRoom.draftOffice) {
+    padding-bottom: 0;
+  }
+
+  .dClock {
+    padding-bottom: 0;
+  }
+
   .dBar {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
     align-items: center;
@@ -6650,14 +6686,35 @@ button.opRowYours {
 
 .prSeatCap {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5rem 0.75rem;
   min-height: 48px;
-  padding: 0 12px;
+  padding: 0.45rem 12px;
   font-family: var(--font-archivo), sans-serif;
   font-size: 13px;
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
   border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.prPick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.prPickInput {
+  width: 3.25rem;
+  min-height: 36px;
+  padding: 0 0.4rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  background: #12151c;
+  color: var(--office-ink, #e6e1d8);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
 }
 
 .prSeatCap strong {
