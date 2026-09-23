@@ -5646,7 +5646,7 @@ button.opRowYours {
 .dSheet {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 50;
 }
 
 .dSheetBackdrop {
@@ -5664,7 +5664,7 @@ button.opRowYours {
   bottom: 0;
   max-height: 80vh;
   overflow: auto;
-  padding: 1rem 16px 1.2rem;
+  padding: 1rem 16px calc(1.2rem + 4.75rem + env(safe-area-inset-bottom));
   background: var(--office-panel-hi, #1e2430);
   border-top: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
 }
@@ -5940,6 +5940,7 @@ button.opRowYours {
     bottom: 0;
     width: min(420px, 40vw);
     max-height: none;
+    padding-bottom: 1.2rem;
     border-top: none;
     border-left: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
   }
