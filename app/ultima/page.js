@@ -3,21 +3,9 @@ import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
-import { ultimaColourHex } from "@/lib/ultima/constants";
-import {
-  getActiveCompetition,
-  getManagerForUser,
-  getUltimaDb,
-} from "@/lib/ultima/server/db";
-import { getHubStatus } from "@/lib/ultima/server/admin";
+import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
-import { getCompetitionNews } from "@/lib/ultima/server/news";
-import { listHubTradeCards } from "@/lib/ultima/server/trades";
-import {
-  getEuropeDesk,
-  kickEuropeSync,
-  shouldRefreshEuropeForm,
-} from "@/lib/ultima/server/europe-board";
+import { getHubOffice } from "@/lib/ultima/server/hub";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -42,71 +30,29 @@ export default async function UltimaPage() {
       ? await getManagerForUser(auth.user.id)
       : null;
 
-  let hubStatus = null;
-  let draftState = "lobby";
-  let news = [];
-  let tradeCards = [];
   let gameweekNumber = null;
-  let europeDesk = null;
-  if (competition) {
+  if (competition && !manager) {
     const gameweek = await safeResolve(getCurrentGameweek(competition.id), null);
     if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
       gameweekNumber = gameweek.number;
     }
   }
-  if (competition && manager) {
-    const db = getUltimaDb();
-    const [status, leagueNews, cards, desk, ds] = await Promise.all([
-      safeResolve(getHubStatus(competition.id, manager.id), null),
-      safeResolve(getCompetitionNews(competition.id), []),
-      safeResolve(listHubTradeCards(competition.id, manager.id), []),
-      safeResolve(getEuropeDesk(competition.id), null),
-      db
-        ? safeResolve(
-            db
-              .from("ultima_draft_state")
-              .select("state")
-              .eq("competition_id", competition.id)
-              .maybeSingle()
-              .then(({ data }) => data),
-            null,
-          )
-        : Promise.resolve(null),
-    ]);
-    hubStatus = status;
-    news = leagueNews;
-    tradeCards = cards;
-    europeDesk = desk ?? {
-      gameweek: null,
-      fixtures: [],
-      emptyReason: "sync",
-      syncError: "The Europe board did not load.",
-      standings: {},
-      form: { teams: { hot: [], cold: [] }, players: [] },
-      movers: { rising: [], falling: [], manOfRound: [], upsets: [] },
-      trending: { added: [], dropped: [], started: [], differentials: [], scorers: [] },
-      ratingsAvailable: null,
-    };
-    draftState = ds?.state ?? hubStatus?.draft ?? "lobby";
-    if (shouldRefreshEuropeForm(europeDesk)) {
-      kickEuropeSync(competition.id);
-    }
-  }
+
+  const office =
+    competition && manager
+      ? await safeResolve(
+          getHubOffice({
+            competitionId: competition.id,
+            managerId: manager.id,
+          }),
+          null,
+        )
+      : null;
 
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
-        {manager ? (
-          <header
-            className={styles.clubBar}
-            style={{ "--team": ultimaColourHex(manager.colour) }}
-          >
-            <p className={styles.clubSeason}>
-              {formatDateline(competition?.season_label, gameweekNumber)}
-            </p>
-            <h1 className={styles.clubName}>{manager.team_name || "Ultima"}</h1>
-          </header>
-        ) : (
+        {manager ? null : (
           <>
             <p className={styles.eyebrow}>Ultima</p>
             <h1 className={styles.displayTitle}>Ultima</h1>
@@ -123,11 +69,7 @@ export default async function UltimaPage() {
         <UltimaHub
           isSignedIn={auth.isSignedIn}
           manager={manager}
-          draftState={draftState}
-          hubStatus={hubStatus}
-          news={news}
-          tradeCards={tradeCards}
-          europeDesk={europeDesk}
+          office={office}
         />
         <p className={styles.hubNote}>
           <Link href="/ultima/rules" className={styles.quietLink}>

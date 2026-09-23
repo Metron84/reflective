@@ -1,6 +1,9 @@
-import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getAdminLog } from "@/lib/ultima/server/admin";
+import UltimaLogClient from "@/components/ultima/UltimaLogClient";
 import styles from "@/components/ultima/ultima.module.css";
+import { requireUltimaManager } from "@/lib/ultima/gates";
+import { getActiveCompetition } from "@/lib/ultima/server/db";
+import { getOfficeLog } from "@/lib/ultima/server/admin";
+import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima · Log",
@@ -11,32 +14,15 @@ export const dynamic = "force-dynamic";
 
 export default async function UltimaLogPage() {
   await requireUltimaManager("/ultima/log");
-  const entries = await getAdminLog(100);
+  const competition = await getActiveCompetition();
+  const entries = competition
+    ? await safeResolve(getOfficeLog(competition.id, 120), [])
+    : [];
 
   return (
     <div className={styles.ultimaPage}>
-      <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA</p>
-        <h1 className={styles.title}>Commissioner log</h1>
-        <p className={styles.lede}>Public audit trail. Append only.</p>
-
-        <ul className={styles.logList}>
-          {entries.map((e) => (
-            <li key={e.id} className={styles.logRow}>
-              <time className={styles.logTime}>
-                {new Date(e.created_at).toLocaleString("en-GB", {
-                  timeZone: "Asia/Dubai",
-                })}
-              </time>
-              <strong>{e.action}</strong>
-              {e.reason ? <span> · {e.reason}</span> : null}
-            </li>
-          ))}
-        </ul>
-
-        {entries.length === 0 ? (
-          <p className={styles.emptyState}>No commissioner actions yet.</p>
-        ) : null}
+      <div className={`${styles.inner} ${styles.innerWide}`}>
+        <UltimaLogClient entries={entries} />
       </div>
     </div>
   );

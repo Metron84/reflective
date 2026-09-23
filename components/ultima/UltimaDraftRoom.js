@@ -3,25 +3,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ULTIMA_LEAGUE_COLOURS,
+  ULTIMA_LEAGUES,
+  ULTIMA_LEAGUE_SHORT,
+  ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
   ULTIMA_TIMER_OPTIONS,
+  ULTIMA_TOTAL_PICKS,
   formatUltimaTimer,
+  ultimaColourHex,
 } from "@/lib/ultima/constants";
-import { lastPicksNewestFirst, playerSurname } from "@/lib/ultima/draft/last-picks";
-import {
-  deskFloorLine,
-  deskForcedLine,
-  floorFromState,
-  formatPickDeadline,
-  othersNeedLine,
-} from "@/lib/ultima/draft/desk";
-import EmptyState from "@/components/EmptyState";
+import { lastPicksNewestFirst } from "@/lib/ultima/draft/last-picks";
+import { floorFromState, formatPickDeadline } from "@/lib/ultima/draft/desk";
 import UltimaDraftBoard from "./UltimaDraftBoard";
-import UltimaDraftFeed from "./UltimaDraftFeed";
-import UltimaDraftPath from "./UltimaDraftPath";
+import UltimaDraftClock from "./UltimaDraftClock";
 import UltimaDraftPicker from "./UltimaDraftPicker";
+import UltimaDraftPicks from "./UltimaDraftPicks";
 import UltimaDraftQueue from "./UltimaDraftQueue";
 import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
+import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
 
 function viewStorageKey(scope) {
@@ -38,17 +36,6 @@ function OverflowIcon() {
   );
 }
 
-function ExitChevron() {
-  return (
-    <svg className={styles.draftExitChevron} viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M14.7 5.3 8 12l6.7 6.7 1.4-1.4L10.8 12l5.3-5.3-1.4-1.4Z"
-      />
-    </svg>
-  );
-}
-
 export default function UltimaDraftRoom({
   managerId,
   variant = "season",
@@ -61,22 +48,18 @@ export default function UltimaDraftRoom({
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [viewMode, setViewMode] = useState("desk");
+  const [viewMode, setViewMode] = useState("players");
   const [menuOpen, setMenuOpen] = useState(false);
   const [exitConfirm, setExitConfirm] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
-  const [boardHistory, setBoardHistory] = useState(false);
+  const [clockOpen, setClockOpen] = useState(true);
+  const [openPlayerId, setOpenPlayerId] = useState(null);
   const menuRef = useRef(null);
-  const stickyRef = useRef(null);
   const allowLeave = useRef(false);
   const [resetting, setResetting] = useState(false);
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
   const [poolLoading, setPoolLoading] = useState(false);
-  const [focusPick, setFocusPick] = useState(null);
-  const [focusGen, setFocusGen] = useState(0);
-  const [seenPicks, setSeenPicks] = useState(null);
 
   const fetchState = useCallback(async () => {
     try {
@@ -107,7 +90,7 @@ export default function UltimaDraftRoom({
     }
   }, [isPractice, roomCode]);
 
-  const { botPicking, humanSeconds, stall, stallDetail, retry } = useUltimaDraftAdvance({
+  const { humanSeconds, stall, retry } = useUltimaDraftAdvance({
     enabled: Boolean(state) && state.state === "live",
     isPractice,
     roomCode,
@@ -140,10 +123,10 @@ export default function UltimaDraftRoom({
     if (!viewScope || typeof window === "undefined") return;
     try {
       const stored = sessionStorage.getItem(viewStorageKey(viewScope));
-      if (stored === "desk" || stored === "queue" || stored === "picks" || stored === "board") {
+      if (stored === "desk" || stored === "players") setViewMode("players");
+      else if (stored === "queue" || stored === "picks" || stored === "board") {
         setViewMode(stored);
       }
-      if (stored === "players") setViewMode("desk");
     } catch {
       /* private mode */
     }
@@ -212,34 +195,14 @@ export default function UltimaDraftRoom({
   }, [exitConfirm]);
 
   useEffect(() => {
-    const el = stickyRef.current;
-    const root = el?.parentElement;
-    if (!el || !root) return undefined;
-    function apply() {
-      root.style.setProperty("--ultima-draft-sticky", `${el.offsetHeight}px`);
-    }
-    apply();
-    const observer = new ResizeObserver(apply);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [state?.on_clock, state?.is_your_turn, state?.state, botPicking, stall]);
-
-  useEffect(() => {
     if (state?.state !== "live" && state?.state !== "paused") return;
     if (available.length) return;
     fetchAvailable();
   }, [available.length, fetchAvailable, state?.state]);
 
-  const pickCount = state?.picks?.length ?? 0;
-
   useEffect(() => {
-    if (!state) return;
-    if (seenPicks == null) {
-      setSeenPicks(pickCount);
-      return;
-    }
-    if (viewMode === "board") setSeenPicks(pickCount);
-  }, [state, pickCount, viewMode, seenPicks]);
+    if (state?.is_your_turn && !state.auto_draft) setClockOpen(true);
+  }, [state?.is_your_turn, state?.auto_draft, state?.current_pick]);
 
   const draftedIds = useMemo(
     () => new Set((state?.picks ?? []).map((p) => p.player?.id).filter(Boolean)),
@@ -295,6 +258,7 @@ export default function UltimaDraftRoom({
       if (!res.ok) {
         return { ok: false, message: data.message ?? "Pick failed." };
       }
+      setOpenPlayerId(null);
       await fetchState();
       return { ok: true };
     } catch {
@@ -390,20 +354,8 @@ export default function UltimaDraftRoom({
     }
   }
 
-  if (!state) {
-    return (
-      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-        <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading draft room">
-          <div className={styles.draftSkeletonBar} />
-          <div className={styles.draftSkeletonChip} />
-          <div className={styles.draftSkeletonBody} />
-        </div>
-      </div>
-    );
-  }
-
   async function resetPractice() {
-    if (!isPractice || !state.is_host) return;
+    if (!isPractice || !state?.is_host) return;
     setResetting(true);
     try {
       await fetch("/api/ultima/practice", {
@@ -418,7 +370,7 @@ export default function UltimaDraftRoom({
   }
 
   async function toggleKeep() {
-    if (!isPractice || !state.is_host) return;
+    if (!isPractice || !state?.is_host) return;
     setKeepBusy(true);
     try {
       await fetch("/api/ultima/practice", {
@@ -435,12 +387,23 @@ export default function UltimaDraftRoom({
     }
   }
 
+  if (!state) {
+    return (
+      <div className={`${styles.draftRoom} ${styles.draftOffice} ultima-live-chrome-off`}>
+        <div className={styles.draftSkeleton} aria-busy="true" aria-label="Loading draft room">
+          <div className={styles.draftSkeletonBar} />
+          <div className={styles.draftSkeletonChip} />
+          <div className={styles.draftSkeletonBody} />
+        </div>
+      </div>
+    );
+  }
+
   if (state.state === "lobby") {
     return (
-      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-        <EmptyState
-          tone="cream"
-          heading={isPractice ? "Practice lobby" : "Draft lobby"}
+      <div className={`${styles.draftRoom} ${styles.draftOffice} ${styles.dLobby} ultima-live-chrome-off`}>
+        <UltimaStaffMessage
+          subject={isPractice ? "Practice lobby" : "Draft lobby"}
           body={
             isPractice
               ? "Waiting for the host to start."
@@ -455,25 +418,24 @@ export default function UltimaDraftRoom({
 
   if (state.state === "complete") {
     return (
-      <div className={`${styles.draftRoom} ultima-live-chrome-off`}>
-        <EmptyState
-          tone="cream"
-          heading={isPractice ? "Practice complete" : "Draft complete"}
+      <div className={`${styles.draftRoom} ${styles.draftOffice} ${styles.dLobby} ultima-live-chrome-off`}>
+        <UltimaStaffMessage
+          subject={isPractice ? "Practice complete" : "Draft complete"}
           body={
             isPractice
-              ? "Save this board to reopen it from Practice. Picks do not count toward the league."
-              : "300 picks made. Set your XV before the first kickoff."
+              ? "Practice complete. Picks do not count toward the league."
+              : "Draft complete. Set your XV."
           }
-          actionLabel={isPractice ? "Practice lobby" : "My squad"}
-          actionHref={isPractice ? "/ultima/practice" : "/ultima/squad"}
+          actionLabel={isPractice ? "Practice lobby" : "Set your XV"}
+          href={isPractice ? "/ultima/practice" : "/ultima/squad"}
         />
         <UltimaDraftBoard managers={state.managers ?? []} picks={state.picks ?? []} youId={managerId} />
         {isPractice && state.is_host ? (
-          <div className={styles.completeActions}>
+          <div className={styles.dCompleteActions}>
             <button type="button" className={styles.primaryBtn} onClick={toggleKeep} disabled={keepBusy}>
               {keepBusy ? "Saving…" : state.keep ? "Saved. Tap to forget" : "Save board"}
             </button>
-            <button type="button" className={styles.queueBtn} onClick={resetPractice} disabled={resetting}>
+            <button type="button" className={styles.secondaryBtn} onClick={resetPractice} disabled={resetting}>
               {resetting ? "Resetting…" : "Reset practice"}
             </button>
           </div>
@@ -490,60 +452,27 @@ export default function UltimaDraftRoom({
     !state.on_clock.is_you;
 
   const floor = floorFromState(state);
-  const floorTokens = deskFloorLine(floor);
-  const forcedLine = deskForcedLine(floor);
-  const otherNeed = othersNeedLine(state.others_need);
-  const deadline = state.is_your_turn
-    ? formatPickDeadline(
-        state.turn_expires_at,
-        state.timer_seconds,
-        humanSeconds ?? state.seconds_remaining,
-      )
-    : null;
-  const botOnClock = Boolean(state.on_clock?.is_bot);
-  const autoOnClock = Boolean(state.on_clock?.auto_seat ?? state.on_clock?.is_bot);
-  const round = Math.max(1, Math.ceil((state.current_pick || 1) / (state.managers?.length || 10)));
+  const you = (state.managers ?? []).find((m) => m.id === managerId);
+  const onClockSeat = (state.managers ?? []).find((m) => m.id === state.on_clock?.id);
+  const seats = state.managers?.length || 10;
+  const totalPicks = seats * 30 || ULTIMA_TOTAL_PICKS;
+  const round = Math.max(1, Math.ceil((state.current_pick || 1) / seats));
   const yourTurn = Boolean(state.is_your_turn);
-  const momentTitle = yourTurn
-    ? "YOUR PICK"
-    : botOnClock && stall
-      ? `${state.on_clock.team_name} · BOT stalled`
-      : botOnClock
-        ? `${state.on_clock.team_name} is picking`
-        : state.on_clock
-          ? `${state.on_clock.team_name} is picking`
-          : isPractice
-            ? "Practice"
-            : "Draft";
-  const showBotClock = !stall && (autoOnClock || botPicking);
-  const secondsLabel = showBotClock
-    ? null
-    : humanSeconds != null
-      ? String(humanSeconds)
-      : state.seconds_remaining != null
-        ? String(state.seconds_remaining)
-        : "—";
-  const lastPicks = lastPicksNewestFirst(state.picks ?? [], 4);
-  const unreadPicks = viewMode !== "picks" && pickCount > (seenPicks ?? 0);
-  const queueCount = state.queue?.length ?? 0;
+  const showClock = yourTurn && state.state === "live" && !state.auto_draft && clockOpen;
+  const lastPick = lastPicksNewestFirst(state.picks ?? [], 1)[0];
+  const ticker =
+    lastPick?.player && (lastPick.is_bot || lastPick.auto_picked)
+      ? `${lastPick.manager_name} took ${lastPick.player.name} (${ULTIMA_LEAGUE_SHORT[lastPick.player.league] ?? lastPick.player.league})`
+      : null;
 
   function chooseView(next) {
     setViewMode(next);
-    setBoardHistory(false);
-    if (next === "picks" || next === "board") setSeenPicks(pickCount);
     if (!viewScope) return;
     try {
       sessionStorage.setItem(viewStorageKey(viewScope), next);
     } catch {
       /* private mode */
     }
-  }
-
-  function openPickOnBoard(pickNumber) {
-    setFocusPick(pickNumber);
-    setFocusGen((gen) => gen + 1);
-    setBoardHistory(true);
-    chooseView("board");
   }
 
   function moveQueue(index, dir) {
@@ -556,40 +485,18 @@ export default function UltimaDraftRoom({
     saveQueue(copy);
   }
 
-  const picker = (
-    <>
-      {error ? <p className={styles.messageError}>{error}</p> : null}
-      <UltimaDraftPicker
-        available={pool}
-        queue={state.queue ?? []}
-        loadingPool={poolLoading}
-        isYourTurn={yourTurn}
-        canForcePick={canForcePick}
-        pickBusy={loading}
-        floor={floor}
-        compact
-        onSearchActive={setSearchActive}
-        onDraft={draftPlayer}
-        onForce={forcePickPlayer}
-        onQueue={queuePlayer}
-        onUnqueue={unqueuePlayer}
-        onClearQueue={() => saveQueue([])}
-      />
-    </>
-  );
-
-  const pathPane = (
-    <UltimaDraftPath
-      managers={state.managers ?? []}
-      picks={state.picks ?? []}
-      currentPick={state.current_pick}
-      youId={managerId}
-      onOpenHistory={() => {
-        setBoardHistory(true);
-        chooseView("board");
-      }}
-    />
-  );
+  const deadline = yourTurn
+    ? formatPickDeadline(
+        state.turn_expires_at,
+        state.timer_seconds,
+        humanSeconds ?? state.seconds_remaining,
+      )
+    : null;
+  const timerLabel =
+    deadline ||
+    (state.timer_seconds && (humanSeconds != null || state.seconds_remaining != null)
+      ? String(humanSeconds ?? state.seconds_remaining)
+      : null);
 
   const queuePane = (
     <UltimaDraftQueue
@@ -597,9 +504,6 @@ export default function UltimaDraftRoom({
       byId={byId}
       draftedIds={draftedIds}
       floor={floor}
-      autoDraft={state.auto_draft}
-      autoBusy={autoBusy}
-      onToggleAuto={toggleAutoDraft}
       onMove={moveQueue}
       onRemove={unqueuePlayer}
       onDraft={draftPlayer}
@@ -608,27 +512,67 @@ export default function UltimaDraftRoom({
     />
   );
 
-  const feedPane = <UltimaDraftFeed picks={state.picks ?? []} />;
+  const picksPane = (
+    <UltimaDraftPicks picks={state.picks ?? []} youId={managerId} floor={floor} />
+  );
 
-  const youPickIn = state.you_pick_in;
-  const autoLabel = state.auto_draft ? "Auto on" : "Auto off";
+  const pickerPane = (
+    <UltimaDraftPicker
+      available={pool}
+      queue={state.queue ?? []}
+      loadingPool={poolLoading}
+      isYourTurn={yourTurn}
+      canForcePick={canForcePick}
+      pickBusy={loading}
+      floor={floor}
+      openPlayerId={openPlayerId}
+      onOpenPlayer={setOpenPlayerId}
+      onClosePlayer={() => setOpenPlayerId(null)}
+      onDraft={draftPlayer}
+      onForce={forcePickPlayer}
+      onQueue={queuePlayer}
+      onUnqueue={unqueuePlayer}
+    />
+  );
 
   return (
-    <div className={`${styles.draftRoom} ${styles.draftDesk} ultima-live-chrome-off`}>
-      <header className={styles.draftSticky} ref={stickyRef}>
-        <div className={styles.draftStickyRow}>
-          <button type="button" className={styles.draftExit} onClick={requestExit}>
-            <ExitChevron />
-            Exit
-          </button>
-          <p className={styles.deskRoundPick}>
-            R{round} · {state.current_pick ?? "—"}
+    <div
+      className={`${styles.draftRoom} ${styles.draftOffice} ultima-live-chrome-off`}
+      style={you?.colour ? { "--team": ultimaColourHex(you.colour) } : undefined}
+    >
+      <header className={styles.dBar}>
+        <div className={styles.dBarYou}>
+          <p className={styles.dBarClub}>{you?.team_name || "Ultima"}</p>
+          <p className={styles.dBarPick}>
+            Round {round} · Pick {state.current_pick ?? "-"} of {totalPicks}
           </p>
-          <span className={styles.deskAutoChip}>{autoLabel}</span>
+        </div>
+        <div
+          className={styles.dBarTurn}
+          style={
+            onClockSeat?.colour
+              ? { "--onclock": ultimaColourHex(onClockSeat.colour) }
+              : undefined
+          }
+        >
+          <p className={styles.dBarTurnName}>
+            {state.on_clock?.team_name || "Waiting"}
+          </p>
+          {timerLabel ? <p className={styles.dBarTimer}>{timerLabel}</p> : null}
+        </div>
+        <div className={styles.dBarRight}>
+          <button
+            type="button"
+            className={state.auto_draft ? styles.dAutoOn : styles.dAutoOff}
+            onClick={toggleAutoDraft}
+            disabled={autoBusy}
+          >
+            {autoBusy ? "…" : "Auto"}
+          </button>
           <div className={styles.draftMenuWrap} ref={menuRef}>
             <button
               type="button"
-              className={styles.draftMenuBtn}
+              className={styles.dMenuBtn}
               aria-label="Draft menu"
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((open) => !open)}
@@ -636,273 +580,161 @@ export default function UltimaDraftRoom({
               <OverflowIcon />
             </button>
             {menuOpen ? (
-              <>
-                <div
-                  className={styles.draftOverflowBackdrop}
-                  aria-hidden
-                  onClick={() => setMenuOpen(false)}
-                />
-                <div className={styles.draftOverflowPanel} role="menu">
-                  <button
-                    type="button"
-                    className={styles.draftOverflowItem}
-                    role="menuitem"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      requestExit();
-                    }}
-                  >
-                    Exit
-                  </button>
-                  {isPractice && state.is_host ? (
-                    <>
+              <div className={styles.dMenu} role="menu">
+                <button type="button" role="menuitem" onClick={() => { setMenuOpen(false); requestExit(); }}>
+                  Exit
+                </button>
+                {!isPractice && state.is_commissioner ? (
+                  <>
+                    <button type="button" role="menuitem" disabled={timerBusy} onClick={() => { pauseOrResume(); setMenuOpen(false); }}>
+                      {state.state === "paused" ? "Resume" : "Pause"}
+                    </button>
+                    {ULTIMA_TIMER_OPTIONS.map((seconds) => (
                       <button
+                        key={seconds}
                         type="button"
-                        className={styles.draftOverflowItem}
                         role="menuitem"
-                        onClick={() => {
-                          toggleKeep();
-                          setMenuOpen(false);
-                        }}
-                        disabled={keepBusy}
+                        disabled={timerBusy}
+                        onClick={() => { setLiveTimer(seconds); setMenuOpen(false); }}
                       >
-                        {keepBusy ? "…" : state.keep ? "Saved" : "Save"}
+                        {formatUltimaTimer(seconds)}
                       </button>
-                      <button
-                        type="button"
-                        className={styles.draftOverflowItem}
-                        role="menuitem"
-                        onClick={() => {
-                          resetPractice();
-                          setMenuOpen(false);
-                        }}
-                        disabled={resetting}
-                      >
-                        {resetting ? "…" : "Reset"}
-                      </button>
-                    </>
-                  ) : null}
-                </div>
-              </>
+                    ))}
+                  </>
+                ) : null}
+                {isPractice && state.is_host ? (
+                  <>
+                    <button type="button" role="menuitem" disabled={keepBusy} onClick={() => { toggleKeep(); setMenuOpen(false); }}>
+                      {keepBusy ? "…" : state.keep ? "Saved" : "Save"}
+                    </button>
+                    <button type="button" role="menuitem" disabled={resetting} onClick={() => { resetPractice(); setMenuOpen(false); }}>
+                      {resetting ? "…" : "Reset"}
+                    </button>
+                  </>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </div>
-
-        <div className={yourTurn ? styles.deskMomentYou : styles.deskMoment}>
-          {yourTurn ? <div className={styles.deskRedRule} aria-hidden /> : null}
-          <p className={styles.deskMomentTitle}>{momentTitle}</p>
-          <p className={styles.deskMomentClock}>
-            {showBotClock ? (
-              <span className={styles.botSpinner} aria-label="Bot picking" />
-            ) : deadline ? (
-              deadline
-            ) : (
-              secondsLabel
-            )}
-          </p>
-          <p className={styles.deskMomentSub}>
-            {yourTurn
-              ? `Pick ${state.current_pick}`
-              : youPickIn > 0
-                ? `You pick in ${youPickIn}`
-                : youPickIn === 0
-                  ? "Your pick"
-                  : canForcePick
-                    ? `Force pick for ${state.on_clock.team_name}`
-                    : ""}
-          </p>
+        <div className={styles.dFloor} aria-label="League floor">
+          {ULTIMA_LEAGUES.map((id) => {
+            const count = floor.counts?.[id] ?? 0;
+            const met = count >= ULTIMA_SQUAD_FLOOR_PER_LEAGUE;
+            return (
+              <span key={id} className={met ? styles.dFloorMet : styles.dFloorNeed}>
+                {ULTIMA_LEAGUE_SHORT[id]} {count}/{ULTIMA_SQUAD_FLOOR_PER_LEAGUE}
+              </span>
+            );
+          })}
         </div>
-
-        <p className={styles.deskFloor} aria-label="League floor">
-          {floorTokens.map((t) => (
-            <span key={t.league}>{t.label}</span>
-          ))}
-        </p>
-        <p className={styles.deskFloorSub}>
-          {floor.slotsLeft} pick{floor.slotsLeft === 1 ? "" : "s"} left
-          {otherNeed ? ` · ${otherNeed}` : ""}
-        </p>
-        {forcedLine && yourTurn ? (
-          <p className={styles.deskForced}>{forcedLine}</p>
-        ) : null}
-
-        {!isPractice && state.is_commissioner ? (
-          <div className={styles.deskCommissioner}>
-            <button
-              type="button"
-              className={styles.timerChip}
-              disabled={timerBusy}
-              onClick={pauseOrResume}
-            >
-              {state.state === "paused" ? "Resume" : "Pause"}
-            </button>
-            {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-              <button
-                key={seconds}
-                type="button"
-                className={
-                  state.timer_seconds === seconds ? styles.timerChipActive : styles.timerChip
-                }
-                disabled={timerBusy}
-                onClick={() => setLiveTimer(seconds)}
-              >
-                {formatUltimaTimer(seconds)}
-              </button>
-            ))}
-          </div>
-        ) : null}
       </header>
 
+      {ticker ? <p className={styles.dTicker}>{ticker}</p> : null}
+
+      <nav className={styles.dTabs} aria-label="Draft views">
+        {[
+          ["players", "Players"],
+          ["queue", "Queue"],
+          ["picks", "Picks"],
+          ["board", "Board"],
+        ].map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            className={viewMode === id ? styles.dTabOn : styles.dTab}
+            onClick={() => chooseView(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+
       {stall ? (
-        <button type="button" className={styles.draftStall} onClick={retry}>
-          {stallDetail ? (
-            <>
-              <span className={styles.draftStallLabel}>Draft stalled</span>
-              <span className={styles.draftStallDetail}>{stallDetail}</span>
-              <span className={styles.draftStallHint}>Tap to retry</span>
-            </>
-          ) : (
-            "Draft stalled, tap to retry"
-          )}
-        </button>
+        <UltimaStaffMessage
+          subject="The draft paused"
+          body="The draft paused. Retry to resume."
+          actionLabel="Retry"
+          onAction={retry}
+        />
       ) : null}
 
       {state.state === "paused" ? (
-        <p className={styles.pausedBanner}>Paused by the commissioner</p>
+        <UltimaStaffMessage
+          subject="Paused"
+          body="The commissioner paused the draft."
+        />
       ) : null}
 
-      <div className={styles.deskBody}>
-        <div
-          className={styles.deskPaneDesk}
-          data-active={viewMode === "desk" ? "true" : "false"}
-        >
-          {picker}
-          {searchActive || !lastPicks.length ? null : (
-            <div className={styles.lastPicksStrip} aria-label="Last picks">
-              {lastPicks.map((pick, index) => {
-                const league = pick.player?.league;
-                const label = `${pick.pick_number} · ${playerSurname(pick.player?.name)}`;
-                return (
-                  <button
-                    key={pick.pick_number}
-                    type="button"
-                    className={
-                      index === 0
-                        ? `${styles.lastPickChip} ${styles.lastPickChipEnter}`
-                        : styles.lastPickChip
-                    }
-                    style={{ borderLeftColor: ULTIMA_LEAGUE_COLOURS[league] ?? "#0a111f" }}
-                    onClick={() => openPickOnBoard(pick.pick_number)}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
+      {error ? (
+        <UltimaStaffMessage subject="The office could not complete that" body={error} />
+      ) : null}
+
+      <div className={styles.dStage}>
+        {viewMode === "players" ? (
+          <div className={styles.dSplit}>
+            <div className={styles.dSplitMain}>{pickerPane}</div>
+            <div className={styles.dSplitSide}>
+              <section className={styles.opPanel} aria-label="Queue">
+                <header className={styles.opPanelHead}>
+                  <h2 className={styles.opPanelTitle}>Queue</h2>
+                </header>
+                {queuePane}
+              </section>
+              <section className={styles.opPanel} aria-label="Your picks">
+                <header className={styles.opPanelHead}>
+                  <h2 className={styles.opPanelTitle}>Your picks</h2>
+                </header>
+                {picksPane}
+              </section>
             </div>
-          )}
-        </div>
-        <div
-          className={styles.deskPanePath}
-          data-active={viewMode === "board" && !boardHistory ? "true" : "false"}
-        >
-          {pathPane}
-        </div>
-        <div
-          className={styles.deskPanePicks}
-          data-active={viewMode === "picks" ? "true" : "false"}
-        >
-          {feedPane}
-        </div>
-        <div
-          className={styles.deskPaneQueue}
-          data-active={viewMode === "queue" ? "true" : "false"}
-        >
-          {queuePane}
-        </div>
-        <div
-          className={styles.deskPaneHistory}
-          data-active={viewMode === "board" && boardHistory ? "true" : "false"}
-        >
-          {boardHistory ? (
-            <UltimaDraftBoard
-              managers={state.managers ?? []}
-              picks={state.picks ?? []}
-              currentPick={state.current_pick}
-              youId={managerId}
-              mode="full"
-              reveal
-              focusPick={focusPick}
-              focusGen={focusGen}
-            />
-          ) : null}
-        </div>
+          </div>
+        ) : null}
+        {viewMode === "queue" ? queuePane : null}
+        {viewMode === "picks" ? picksPane : null}
+        {viewMode === "board" ? (
+          <UltimaDraftBoard
+            managers={state.managers ?? []}
+            picks={state.picks ?? []}
+            currentPick={state.current_pick}
+            youId={managerId}
+          />
+        ) : null}
       </div>
 
-      <div className={styles.deskQueueStrip} aria-label="Queue">
-        {(state.queue ?? []).slice(0, 3).map((q, i) => {
-          const player = byId.get(q.player_id);
-          return (
-            <span key={q.player_id} className={styles.deskQueueStripItem}>
-              {i + 1} {player?.name ?? "Queued"}
-            </span>
-          );
-        })}
-        <button type="button" className={styles.deskQueueStripOpen} onClick={() => chooseView("queue")}>
-          Open queue
-        </button>
-      </div>
-
-      <nav className={styles.deskDock} aria-label="Draft desk">
-        <button
-          type="button"
-          className={viewMode === "queue" ? styles.deskDockOn : styles.deskDockBtn}
-          onClick={() => chooseView("queue")}
-        >
-          Queue{queueCount ? ` ${queueCount}` : ""}
-        </button>
-        <button
-          type="button"
-          className={viewMode === "picks" ? styles.deskDockOn : styles.deskDockBtn}
-          onClick={() => chooseView("picks")}
-        >
-          Picks
-          {unreadPicks ? <span className={styles.draftSegDot} aria-label="New picks" /> : null}
-        </button>
-        <button
-          type="button"
-          className={viewMode === "board" ? styles.deskDockOn : styles.deskDockBtn}
-          onClick={() => chooseView("board")}
-        >
-          Board
-        </button>
-      </nav>
-
-      {viewMode !== "desk" ? (
-        <button type="button" className={styles.deskHome} onClick={() => chooseView("desk")}>
-          Back to picks
-        </button>
+      {showClock ? (
+        <UltimaDraftClock
+          round={round}
+          pickNumber={state.current_pick}
+          pool={pool}
+          queue={state.queue ?? []}
+          byId={byId}
+          floor={floor}
+          pickBusy={loading}
+          onDraft={draftPlayer}
+          onSeeAll={() => {
+            setClockOpen(false);
+            chooseView("players");
+          }}
+          onAutoPick={draftPlayer}
+        />
       ) : null}
 
       {exitConfirm ? (
-        <div className={styles.confirmSheet} role="dialog" aria-modal="true">
-          <div
-            className={styles.confirmBackdrop}
-            aria-hidden
+        <div className={styles.dSheet} role="dialog" aria-modal="true">
+          <button
+            type="button"
+            className={styles.dSheetBackdrop}
+            aria-label="Stay"
             onClick={() => setExitConfirm(false)}
           />
-          <div className={styles.confirmPanel}>
-            <p className={styles.confirmCopy}>
-              Leave the draft room? Your clock keeps running.
-            </p>
-            <div className={styles.confirmActions}>
-              <button
-                type="button"
-                className={styles.queueBtnDark}
-                onClick={() => setExitConfirm(false)}
-              >
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Leave the draft room?</p>
+            <p className={styles.dSheetMeta}>Your clock keeps running.</p>
+            <div className={styles.dSheetActions}>
+              <button type="button" className={styles.secondaryBtn} onClick={() => setExitConfirm(false)}>
                 Stay
               </button>
-              <button type="button" className={styles.deleteConfirmBtn} onClick={leaveRoom}>
+              <button type="button" className={styles.primaryBtn} onClick={leaveRoom}>
                 Leave
               </button>
             </div>

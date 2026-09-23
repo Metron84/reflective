@@ -6,8 +6,8 @@ const BODY = {
   start_url: "/ultima",
   scope: "/",
   display: "standalone",
-  background_color: "#F2EDE4",
-  theme_color: "#F2EDE4",
+  background_color: "#12151C",
+  theme_color: "#12151C",
   icons: [
     {
       src: "/brand/trf-icon-192.png",

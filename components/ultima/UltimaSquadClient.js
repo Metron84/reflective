@@ -1,432 +1,458 @@
 "use client";
 
-import { Bebas_Neue } from "next/font/google";
 import { useMemo, useState } from "react";
 import {
   ULTIMA_LEAGUES,
-  ULTIMA_LEAGUE_SHORT,
+  ULTIMA_SQUAD_SIZE,
   ULTIMA_XI_FLOOR_PER_LEAGUE,
   ULTIMA_XI_SIZE,
-  leagueLabel,
 } from "@/lib/ultima/constants";
-import { validateXiFloors } from "@/lib/ultima/lineup/slots";
+import { emptyLineupTemplate } from "@/lib/ultima/lineup/slots";
+import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
+import { bestXvLineup, playerExpected, xvDiff } from "@/lib/ultima/squad/best-xv";
+import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaLocalTime from "./UltimaLocalTime";
+import UltimaPanel from "./UltimaPanel";
+import UltimaPlayerSheet from "./UltimaPlayerSheet";
+import UltimaStaffMessage from "./UltimaStaffMessage";
+import UltimaStatsStrip from "./UltimaStatsStrip";
+import UltimaStatusBar from "./UltimaStatusBar";
+import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
 import styles from "./ultima.module.css";
 
-const bebas = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-function Padlock() {
-  return (
-    <svg className={styles.lockGlyph} viewBox="0 0 24 24" width="16" height="16" aria-hidden>
-      <path
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        d="M8 11V8a4 4 0 0 1 8 0v3M7 11h10v10H7z"
-      />
-    </svg>
-  );
+function normalizePlayer(player) {
+  if (!player) return null;
+  const nextFixture =
+    player.nextFixture ??
+    (typeof player.next_fixture === "string"
+      ? { label: player.next_fixture, live: false }
+      : null);
+  return {
+    ...player,
+    expectedPoints: player.expectedPoints ?? expectedUltimaPoints(player),
+    lastGwPoints: player.lastGwPoints ?? player.last_gw_points ?? null,
+    livePoints: player.livePoints ?? null,
+    bolt_eligible: Boolean(player.bolt_eligible),
+    nextFixture,
+    live: Boolean(nextFixture?.live),
+  };
 }
 
-function lastPoints(player) {
-  if (player?.last_gw_points != null) return player.last_gw_points;
-  return "—";
-}
-
-function ppg(player) {
-  const n = Number(player?.points_per_game);
-  if (Number.isFinite(n) && n > 0) return n.toFixed(2);
-  return null;
+function dash(value) {
+  if (value == null || value === "") return "-";
+  if (typeof value === "number" && !Number.isFinite(value)) return "-";
+  return value;
 }
 
 export default function UltimaSquadClient({
-  roster,
-  lineup: initialLineup,
-  gameweek,
-  lockedLeagues = [],
-  liveTotal = null,
+  office = null,
+  roster: rosterProp = [],
+  lineup: lineupProp = [],
+  lockedLeagues: lockedProp = [],
   preview = false,
-  startView = "xv",
   openSheetOnMount = false,
 }) {
-  const [view, setView] = useState(startView === "all30" ? "all30" : "xv");
-  const [lineup, setLineup] = useState(initialLineup);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [sheetSlot, setSheetSlot] = useState(() => {
-    if (!openSheetOnMount) return null;
-    const empty = initialLineup.find((r) => !r.player_id);
-    return empty?.slot ?? null;
-  });
-  const [menuId, setMenuId] = useState(null);
+  const players = useMemo(() => {
+    const raw = office?.players ?? rosterProp;
+    return (raw ?? []).map(normalizePlayer);
+  }, [office, rosterProp]);
 
-  const rosterById = useMemo(() => new Map(roster.map((p) => [p.id, p])), [roster]);
+  const rosterById = useMemo(() => new Map(players.map((p) => [p.id, p])), [players]);
+  const lockedLeagues = office?.lockedLeagues ?? lockedProp;
+  const allLocked = Boolean(office?.allLocked ?? ULTIMA_LEAGUES.every((l) => lockedLeagues.includes(l)));
+  const nextLockAt = office?.nextLockAt ?? null;
+  const stats = office?.stats ?? [
+    { label: "XV set", value: "-" },
+    { label: "Last gameweek", value: "-" },
+    { label: "Season points", value: "-" },
+    { label: "Next lock", value: "-" },
+  ];
+  const squadSize = office?.squadSize ?? players.length;
+  const squadCap = office?.squadCap ?? ULTIMA_SQUAD_SIZE;
+
+  const [lineup, setLineup] = useState(() => {
+    if (office?.lineup?.length) return office.lineup;
+    if (lineupProp?.length) return lineupProp;
+    return emptyLineupTemplate();
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [openId, setOpenId] = useState(() => {
+    if (!openSheetOnMount) return null;
+    return players[0]?.id ?? null;
+  });
+  const [confirmXv, setConfirmXv] = useState(null);
+  const [collapsed, setCollapsed] = useState(() =>
+    Object.fromEntries(ULTIMA_LEAGUES.map((id) => [id, true])),
+  );
+
   const inXv = useMemo(
-    () => new Set(lineup.filter((r) => r.player_id).map((r) => r.player_id)),
+    () => new Set((lineup ?? []).filter((row) => row.player_id).map((row) => row.player_id)),
     [lineup],
   );
   const bench = useMemo(
-    () => roster.filter((p) => !inXv.has(p.id)),
-    [roster, inXv],
+    () =>
+      players
+        .filter((player) => !inXv.has(player.id))
+        .sort((a, b) => playerExpected(b) - playerExpected(a)),
+    [inXv, players],
   );
+  const points = useMemo(() => players.map((p) => playerExpected(p)), [players]);
+  const openPlayer = openId ? rosterById.get(openId) : null;
+  const openInXv = openPlayer ? inXv.has(openPlayer.id) : false;
+  const openLocked = openPlayer ? lockedLeagues.includes(openPlayer.league) : false;
 
-  const counts = useMemo(() => {
-    const next = Object.fromEntries(ULTIMA_LEAGUES.map((l) => [l, 0]));
-    for (const row of lineup) {
-      if (!row.player_id) continue;
-      next[row.slot_group] = (next[row.slot_group] ?? 0) + 1;
-    }
+  function replaceTarget(player) {
+    const slots = (lineup ?? []).filter((row) => row.slot_group === player.league);
+    const empty = slots.find((row) => !row.player_id);
+    if (empty) return { slot: empty, player: null };
+    const weakest = slots
+      .map((row) => rosterById.get(row.player_id))
+      .filter(Boolean)
+      .sort((a, b) => playerExpected(a) - playerExpected(b))[0];
+    const slot = slots.find((row) => row.player_id === weakest?.id);
+    return { slot, player: weakest ?? null };
+  }
+
+  function applyLineup(next) {
+    setLineup(next);
     return next;
-  }, [lineup]);
-
-  const floorCheck = useMemo(
-    () => validateXiFloors(lineup, rosterById),
-    [lineup, rosterById],
-  );
-  const filled = lineup.filter((r) => r.player_id).length;
-  const allLocked = ULTIMA_LEAGUES.every((l) => lockedLeagues.includes(l));
-  const firstOpen = ULTIMA_LEAGUES.find((l) => !lockedLeagues.includes(l));
-  const live =
-    gameweek?.state === "live" || gameweek?.state === "provisional";
-  const canSave =
-    view === "xv" &&
-    !allLocked &&
-    filled === ULTIMA_XI_SIZE &&
-    floorCheck.ok &&
-    !saving;
-  const saveReason = allLocked
-    ? ""
-    : floorCheck.missing?.length
-      ? floorCheck.reason
-      : filled < ULTIMA_XI_SIZE
-        ? `Fill all ${ULTIMA_XI_SIZE} slots to save.`
-        : "";
-  const saveHint = canSave ? "Your XV is ready." : saveReason;
-  const dirty = JSON.stringify(lineup) !== JSON.stringify(initialLineup);
-
-  const kicker = allLocked
-    ? "Your XV is locked."
-    : live && firstOpen
-      ? `${leagueLabel(firstOpen)} stays editable.`
-      : "Set your XV. Three from each league.";
-
-  function benchForSlot(slot) {
-    const row = lineup.find((r) => r.slot === slot);
-    if (!row) return [];
-    return [...bench]
-      .filter((p) => p.league === row.slot_group)
-      .sort((a, b) => Number(b.points_per_game ?? 0) - Number(a.points_per_game ?? 0));
   }
 
-  function assignSlot(slot, playerId) {
-    setLineup((prev) =>
-      prev.map((r) => (r.slot === slot ? { ...r, player_id: playerId } : r)),
-    );
-    setSheetSlot(null);
-  }
-
-  function moveToXv(player) {
-    const empty = lineup.find(
-      (r) => r.slot_group === player.league && !r.player_id,
-    );
-    if (!empty) return;
-    if (lockedLeagues.includes(player.league)) return;
-    assignSlot(empty.slot, player.id);
-    setMenuId(null);
-    setView("xv");
-  }
-
-  async function saveXv() {
-    if (!canSave) return;
-    if (preview) {
-      setMessage("SAMPLE. Not saved.");
-      return;
-    }
+  async function persist(next) {
+    if (preview) return true;
     setSaving(true);
     setError("");
-    setMessage("");
     try {
       const res = await fetch("/api/ultima/lineup/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slots: lineup }),
+        body: JSON.stringify({ slots: next }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.message ?? "Could not save.");
-      } else {
-        setMessage("XV saved.");
+        return false;
       }
+      return true;
     } catch {
       setError("Connection lost. Try again.");
+      return false;
     } finally {
       setSaving(false);
     }
   }
 
-  function resetLineup() {
-    setLineup(initialLineup);
-    setMessage("");
-    setError("");
+  async function startPlayer(player) {
+    if (allLocked || lockedLeagues.includes(player.league)) return;
+    const target = replaceTarget(player);
+    if (!target.slot) return;
+    const next = (lineup ?? []).map((row) =>
+      row.slot === target.slot.slot ? { ...row, player_id: player.id } : row,
+    );
+    applyLineup(next);
+    setOpenId(null);
+    await persist(next);
   }
 
-  const groups = ULTIMA_LEAGUES.map((league) => ({
-    league,
-    locked: lockedLeagues.includes(league),
-    count: counts[league] ?? 0,
-    rows: lineup.filter((r) => r.slot_group === league),
-  }));
+  async function benchPlayer(player) {
+    if (allLocked || lockedLeagues.includes(player.league)) return;
+    const next = (lineup ?? []).map((row) =>
+      row.player_id === player.id ? { ...row, player_id: null } : row,
+    );
+    applyLineup(next);
+    setOpenId(null);
+    await persist(next);
+  }
 
-  const rosterGroups = ULTIMA_LEAGUES.map((league) => ({
-    league,
-    players: roster.filter((p) => p.league === league),
-  }));
+  function proposeAutoFill() {
+    const next = bestXvLineup(players, lineup, lockedLeagues);
+    const { inn, out } = xvDiff(rosterById, lineup, next);
+    setConfirmXv({ next, inn, out });
+  }
 
-  const sheetRow = sheetSlot != null ? lineup.find((r) => r.slot === sheetSlot) : null;
-  const sheetPlayer = sheetRow?.player_id ? rosterById.get(sheetRow.player_id) : null;
-  const sheetLeague = sheetRow ? leagueLabel(sheetRow.slot_group) : "";
+  async function confirmAutoFill() {
+    if (!confirmXv) return;
+    applyLineup(confirmXv.next);
+    setConfirmXv(null);
+    await persist(confirmXv.next);
+  }
 
-  const showSave = view === "xv" && !allLocked;
+  const hideActions = allLocked || squadSize === 0;
+  const filled = (lineup ?? []).filter((row) => row.player_id).length;
 
   return (
-    <div className={`${styles.squadPage} ${showSave ? styles.squadPageSavePad : ""}`}>
-      <header className={`${styles.roomHead} ${styles.roomHeadSticky}`}>
-        <p className={styles.roomKicker}>Office</p>
-        <div className={styles.roomHeadRow}>
-          <h1 className={styles.roomTitle}>Squad</h1>
-          {view === "xv" ? (
-            <button
-              type="button"
-              className={styles.quietLink}
-              onClick={() => setView("all30")}
-            >
-              All 30
-            </button>
-          ) : (
-            <button
-              type="button"
-              className={styles.quietLink}
-              onClick={() => setView("xv")}
-            >
-              Back to XV
-            </button>
-          )}
-        </div>
-        {gameweek?.number ? (
-          <p className={styles.roomMeta}>Gameweek {gameweek.number}</p>
-        ) : null}
-        {live ? (
-          <div className={styles.liveStrip}>
-            <span className={`${styles.liveTotal} ${bebas.className}`}>
-              {liveTotal != null ? liveTotal : "—"}
-            </span>
-            <span>Provisional</span>
-          </div>
-        ) : null}
-      </header>
+    <div className={styles.sqPage}>
+      <UltimaStatsStrip
+        items={stats.map((item, index) =>
+          index === 0 ? { ...item, value: `${filled}/${ULTIMA_XI_SIZE}` } : item,
+        )}
+      />
+      <LockLine nextLockAt={nextLockAt} allLocked={allLocked} />
 
-      {view === "xv" ? (
-        <>
-          <p className={styles.ledgerCount}>
-            XV of {ULTIMA_XI_SIZE}
-            <span>{filled}</span>
-          </p>
-          <p className={styles.ledgerKicker}>{kicker}</p>
+      {squadSize > 0 && squadSize < squadCap ? (
+        <UltimaStaffMessage
+          subject="Squad incomplete"
+          body={`Your squad has ${squadSize} of ${squadCap}. Sign free agents in the Market.`}
+          actionLabel="Market"
+          href="/ultima/market"
+        />
+      ) : null}
 
-          <div className={styles.xvGroups}>
-            {groups.map((group) => {
-              const short = group.count < ULTIMA_XI_FLOOR_PER_LEAGUE;
+      {squadSize === 0 ? (
+        <UltimaStaffMessage
+          subject="Squad empty"
+          body="Your squad fills on draft night."
+        />
+      ) : null}
+
+      {error ? (
+        <UltimaStaffMessage
+          subject="The squad sheet did not save"
+          body={error}
+          actionLabel="Retry"
+          onAction={() => persist(lineup)}
+        />
+      ) : null}
+
+      <div className={styles.sqDesk}>
+        <div className={styles.sqXv}>
+          <UltimaPanel
+            title="Starting XV"
+            raised
+            sample={preview}
+            action={
+              hideActions ? null : (
+                <button type="button" className={styles.opPanelAction} onClick={proposeAutoFill}>
+                  Auto-fill best XV
+                </button>
+              )
+            }
+          >
+            {ULTIMA_LEAGUES.map((league) => {
+              const rows = (lineup ?? []).filter((row) => row.slot_group === league);
+              const count = rows.filter((row) => row.player_id).length;
+              const met = count >= ULTIMA_XI_FLOOR_PER_LEAGUE;
               return (
-                <section
-                  key={group.league}
-                  className={group.locked ? styles.xvGroupLocked : styles.xvGroup}
-                >
-                  <header className={styles.xvGroupHead}>
-                    <h2 className={styles.xvGroupName}>{leagueLabel(group.league)}</h2>
-                    <p className={styles.xvGroupCount}>
-                      {group.count} of {ULTIMA_XI_FLOOR_PER_LEAGUE}
-                    </p>
-                  </header>
-                  <p className={styles.xvGroupNote}>
-                    {group.locked
-                      ? `${leagueLabel(group.league)} is live.`
-                      : short
-                        ? `One more from ${leagueLabel(group.league)}.`
-                        : ""}
-                  </p>
-                  <ul className={styles.xiList}>
-                    {group.rows.map((row) => {
-                      const player = row.player_id ? rosterById.get(row.player_id) : null;
-                      const empty = !player;
-                      return (
-                        <li
-                          key={row.slot}
-                          className={empty ? styles.xiRowEmpty : styles.xiRow}
-                        >
-                          <button
-                            type="button"
-                            className={empty ? styles.xiSlotEmpty : styles.xiSlotBtn}
-                            disabled={group.locked}
-                            onClick={() => setSheetSlot(row.slot)}
-                          >
-                            {empty ? (
-                              <span className={styles.xiChoose}>+ Choose a player</span>
-                            ) : (
-                              <>
-                                <span className={styles.xiSlotLabel}>
-                                  {ULTIMA_LEAGUE_SHORT[row.slot_group] ?? row.slot_group}
-                                </span>
-                                <span className={styles.xiSlotMain}>
-                                  <span className={styles.xiSlotName}>{player.name}</span>
-                                  <span className={styles.xiSlotMeta}>
-                                    {player.club} · {ULTIMA_LEAGUE_SHORT[player.league]}
-                                    {row.auto_started ? " · Auto" : ""}
-                                  </span>
-                                </span>
-                                <span className={styles.xiSlotPts}>{lastPoints(player)}</span>
-                              </>
-                            )}
-                            {group.locked ? <Padlock /> : null}
-                          </button>
-                          {row.auto_started && !empty ? (
-                            <p className={styles.xiAuto}>This slot started automatically.</p>
-                          ) : null}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  {group.locked ? <p className={styles.xvLockedLabel}>Locked</p> : null}
-                </section>
+                <div key={league} className={met ? styles.sqGroup : styles.sqGroupShort}>
+                  <div className={styles.sqGroupHead}>
+                    <UltimaCountryTag league={league} />
+                    <UltimaStatusBar
+                      value={`${count}/${ULTIMA_XI_FLOOR_PER_LEAGUE}`}
+                      ratio={count / ULTIMA_XI_FLOOR_PER_LEAGUE}
+                    />
+                  </div>
+                  {rows.map((row) => {
+                    const player = row.player_id ? rosterById.get(row.player_id) : null;
+                    return (
+                      <PlayerRow
+                        key={row.slot}
+                        player={player}
+                        locked={hideActions}
+                        points={points}
+                        emptyLabel="Empty slot"
+                        onOpen={() => player && setOpenId(player.id)}
+                      />
+                    );
+                  })}
+                </div>
               );
             })}
-          </div>
-        </>
-      ) : (
-        <div className={styles.xvGroups}>
-          {rosterGroups.map((group) => (
-            <section key={group.league} className={styles.xvGroup}>
-              <header className={styles.xvGroupHead}>
-                <h2 className={styles.xvGroupName}>{leagueLabel(group.league)}</h2>
-                <p className={styles.xvGroupCount}>
-                  {group.players.length} / {ULTIMA_XI_FLOOR_PER_LEAGUE} floor
-                </p>
-              </header>
-              <ul className={styles.squadList}>
-                {group.players.map((p) => (
-                  <li key={p.id} className={styles.squadRow}>
-                    <div className={styles.squadRowMain}>
-                      <strong>{p.name}</strong>
-                      <span className={styles.playerMeta}>
-                        {p.club} · {ULTIMA_LEAGUE_SHORT[p.league]} · {p.season_points ?? 0} pts
-                        {p.next_fixture ? ` · ${p.next_fixture}` : ""}
-                        {p.bolt_eligible ? " · Bolt" : ""}
-                        {inXv.has(p.id) ? " · XV" : ""}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      className={styles.squadMenuBtn}
-                      aria-label={`Actions for ${p.name}`}
-                      aria-expanded={menuId === p.id}
-                      onClick={() => setMenuId((id) => (id === p.id ? null : p.id))}
-                    >
-                      ···
-                    </button>
-                    {menuId === p.id ? (
-                      <div className={styles.squadMenu} role="menu">
-                        <button
-                          type="button"
-                          className={styles.squadMenuItem}
-                          role="menuitem"
-                          disabled={
-                            lockedLeagues.includes(p.league) ||
-                            inXv.has(p.id) ||
-                            !lineup.some((r) => r.slot_group === p.league && !r.player_id)
-                          }
-                          onClick={() => moveToXv(p)}
-                        >
-                          Move to XV
-                        </button>
-                      </div>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          </UltimaPanel>
         </div>
-      )}
 
-      {error ? <p className={styles.messageError}>{error}</p> : null}
-      {message ? <p className={styles.messageOk}>{message}</p> : null}
+        <div className={styles.sqBench}>
+          <UltimaPanel
+            title="Bench"
+            sample={preview}
+            action={<span className={styles.opPanelAction}>{bench.length}</span>}
+          >
+            {ULTIMA_LEAGUES.map((league) => {
+              const rows = bench.filter((player) => player.league === league);
+              const closed = collapsed[league];
+              return (
+                <div key={league}>
+                  <button
+                    type="button"
+                    className={styles.sqToggle}
+                    onClick={() =>
+                      setCollapsed((current) => ({ ...current, [league]: !current[league] }))
+                    }
+                    aria-expanded={!closed}
+                  >
+                    <UltimaCountryTag league={league} />
+                    <span>{rows.length}</span>
+                    <span>{closed ? "Show" : "Hide"}</span>
+                  </button>
+                  {closed
+                    ? null
+                    : rows.map((player) => (
+                        <PlayerRow
+                          key={player.id}
+                          player={player}
+                          locked={hideActions || lockedLeagues.includes(league)}
+                          points={points}
+                          actionLabel={
+                            hideActions || lockedLeagues.includes(league) ? null : "Start"
+                          }
+                          onAction={() => startPlayer(player)}
+                          onOpen={() => setOpenId(player.id)}
+                        />
+                      ))}
+                </div>
+              );
+            })}
+          </UltimaPanel>
+        </div>
+      </div>
 
-      {showSave ? (
-        <div className={styles.saveBar}>
-          {saveHint ? <p className={styles.saveReason}>{saveHint}</p> : null}
-          <div className={styles.saveBarRow}>
-            {dirty ? (
-              <button type="button" className={styles.saveReset} onClick={resetLineup}>
-                Reset
-              </button>
+      {openPlayer ? (
+        <UltimaPlayerSheet
+          player={openPlayer}
+          points={points}
+          onClose={() => setOpenId(null)}
+          note={
+            !hideActions && !openInXv && !openLocked
+              ? replaceTarget(openPlayer).player
+                ? `This starts him in place of ${replaceTarget(openPlayer).player.name}.`
+                : "This fills an empty slot from the same country."
+              : null
+          }
+          actions={
+            hideActions || openLocked
+              ? []
+              : openInXv
+                ? [
+                    {
+                      label: "Move to bench",
+                      primary: true,
+                      disabled: saving,
+                      onClick: () => benchPlayer(openPlayer),
+                    },
+                  ]
+                : [
+                    {
+                      label: "Start",
+                      primary: true,
+                      disabled: saving,
+                      onClick: () => startPlayer(openPlayer),
+                    },
+                  ]
+          }
+        />
+      ) : null}
+
+      {confirmXv ? (
+        <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label="Confirm auto-fill">
+          <button
+            type="button"
+            className={styles.dSheetBackdrop}
+            aria-label="Close"
+            onClick={() => setConfirmXv(null)}
+          />
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Auto-fill best XV</p>
+            <p className={styles.dSheetMeta}>Top 3 expected points per country.</p>
+            {confirmXv.inn.length ? (
+              <p className={styles.dSheetMeta}>
+                In: {confirmXv.inn.map((p) => p.name).join(", ")}
+              </p>
             ) : (
-              <span />
+              <p className={styles.dSheetMeta}>No one comes in.</p>
             )}
-            <button
-              type="button"
-              className={canSave ? styles.saveXv : styles.saveXvOff}
-              disabled={!canSave}
-              onClick={saveXv}
-            >
-              {saving ? "Saving…" : "Save XV"}
-            </button>
+            {confirmXv.out.length ? (
+              <p className={styles.dSheetMeta}>
+                Out: {confirmXv.out.map((p) => p.name).join(", ")}
+              </p>
+            ) : (
+              <p className={styles.dSheetMeta}>No one drops to the bench.</p>
+            )}
+            <div className={styles.dSheetActions}>
+              <button type="button" className={styles.primaryBtn} disabled={saving} onClick={confirmAutoFill}>
+                {saving ? "Saving…" : "Save XV"}
+              </button>
+              <button type="button" className={styles.secondaryBtn} onClick={() => setConfirmXv(null)}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
+    </div>
+  );
+}
 
-      {sheetSlot != null ? (
-        <div className={styles.sheetBackdrop} onClick={() => setSheetSlot(null)}>
-          <div
-            className={styles.sheet}
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className={styles.sheetHead}>
-              <p className={styles.sheetTitle}>{sheetLeague} bench</p>
-              <button type="button" className={styles.quietLink} onClick={() => setSheetSlot(null)}>
-                Close
-              </button>
-            </div>
-            <p className={styles.sheetKicker}>
-              {sheetPlayer ? `Replace ${sheetPlayer.name}` : "Choose a player"}
-            </p>
-            <ul className={styles.sheetList}>
-              {benchForSlot(sheetSlot).map((p) => (
-                <li key={p.id}>
-                  <button
-                    type="button"
-                    className={styles.sheetRow}
-                    onClick={() => assignSlot(sheetSlot, p.id)}
-                  >
-                    <span className={styles.sheetRowMain}>
-                      <span className={styles.xiSlotName}>{p.name}</span>
-                      <span className={styles.xiSlotMeta}>
-                        {p.club} · {ULTIMA_LEAGUE_SHORT[p.league]}
-                        {ppg(p) ? ` · ${ppg(p)} PPG` : ""}
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            {!benchForSlot(sheetSlot).length ? (
-              <p className={styles.disabledReason}>No eligible bench players for this slot.</p>
-            ) : null}
-          </div>
-        </div>
+function LockLine({ nextLockAt, allLocked }) {
+  if (allLocked || (nextLockAt && Date.now() >= new Date(nextLockAt).getTime())) {
+    return <p className={styles.sqLockDone}>Locked</p>;
+  }
+  if (!nextLockAt) return null;
+  return (
+    <p className={styles.sqLock}>
+      XV locks <UltimaLocalTime value={nextLockAt} format="weekdayTime" />
+    </p>
+  );
+}
+
+function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, onOpen }) {
+  if (!player) {
+    return (
+      <div className={styles.sqRow}>
+        <p className={styles.sqName}>{emptyLabel}</p>
+      </div>
+    );
+  }
+
+  const expected = playerExpected(player);
+  const lockedPts = player.livePoints ?? player.lastGwPoints;
+  const showLockedPts = locked;
+  const fixture = player.nextFixture;
+
+  return (
+    <div className={styles.sqRow}>
+      <button type="button" className={styles.sqRowMain} onClick={onOpen}>
+        <span className={styles.sqCopy}>
+          <span className={styles.sqName}>
+            {player.name}
+            {player.bolt_eligible ? <span className={styles.sqBolt}>Bolt</span> : null}
+            {player.live ? <span className={styles.sqLive}>LIVE</span> : null}
+          </span>
+          <span className={styles.sqMeta}>
+            {player.club || "-"}
+            {" · "}
+            {player.position || "-"}
+          </span>
+          <span className={styles.sqMeta}>
+            {fixture?.live
+              ? "LIVE"
+              : fixture?.kickoff
+                ? (
+                    <>
+                      {fixture.venue === "A" ? "@" : "v"} {fixture.opponent || "-"}
+                      {" · "}
+                      <UltimaLocalTime value={fixture.kickoff} />
+                    </>
+                  )
+                : fixture?.label || "-"}
+          </span>
+        </span>
+        <span className={styles.sqVals}>
+          <span className={styles.sqPts}>
+            <UltimaValueNumber
+              value={showLockedPts ? lockedPts : expected}
+              percentile={showLockedPts ? null : percentileInList(expected, points)}
+              digits={1}
+            />
+          </span>
+          <span className={styles.sqSub}>
+            {showLockedPts ? "" : dash(player.lastGwPoints)}
+          </span>
+        </span>
+      </button>
+      {actionLabel ? (
+        <button type="button" className={styles.sqStart} onClick={onAction}>
+          {actionLabel}
+        </button>
       ) : null}
     </div>
   );

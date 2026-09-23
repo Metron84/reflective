@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
 
 export default function UltimaJoinForm({ signInHref, mode = "password", code: initialCode = "" }) {
@@ -31,7 +32,7 @@ export default function UltimaJoinForm({ signInHref, mode = "password", code: in
         setError(data.message ?? "That invite did not work. Check with the commissioner.");
         return;
       }
-      router.push("/ultima/profile");
+      router.push("/ultima");
       router.refresh();
     } catch {
       setError("Something went wrong. Try again.");
@@ -61,7 +62,9 @@ export default function UltimaJoinForm({ signInHref, mode = "password", code: in
       <button type="submit" className={styles.primaryBtn} disabled={busy || !secret.trim()}>
         {busy ? "Joining…" : "Join Ultima"}
       </button>
-      {error ? <p className={`${styles.message} ${styles.messageError}`}>{error}</p> : null}
+      {error ? (
+        <UltimaStaffMessage subject="That invite did not open" body={error} />
+      ) : null}
       <p className={styles.hubNote}>
         Not signed in?{" "}
         <a href={signInHref} className={styles.quietLink}>

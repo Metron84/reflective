@@ -1,16 +1,9 @@
 import UltimaSquadClient from "@/components/ultima/UltimaSquadClient";
-import UltimaRoomHead from "@/components/ultima/UltimaRoomHead";
-import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
+import styles from "@/components/ultima/ultima.module.css";
 import { requireUltimaManager } from "@/lib/ultima/gates";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
-import {
-  getManagerRoster,
-  ensureLineupExists,
-  isLeagueLocked,
-} from "@/lib/ultima/server/lineup";
-import { emptyLineupTemplate } from "@/lib/ultima/lineup/slots";
-import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
-import styles from "@/components/ultima/ultima.module.css";
+import { getSquadOffice } from "@/lib/ultima/server/squad";
+import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima · Squad",
@@ -22,34 +15,24 @@ export const dynamic = "force-dynamic";
 export default async function UltimaSquadPage() {
   const { manager } = await requireUltimaManager("/ultima/squad");
   const competition = await getActiveCompetition();
-  const gameweek = competition ? await getCurrentGameweek(competition.id) : null;
-
-  const roster = await getManagerRoster(manager.id);
-  const lineup = gameweek
-    ? await ensureLineupExists(manager.id, gameweek.id)
-    : emptyLineupTemplate();
-
-  const lockedLeagues = ULTIMA_LEAGUES.filter((l) =>
-    gameweek ? isLeagueLocked(gameweek, l) : false,
-  );
+  const office =
+    competition && manager
+      ? await safeResolve(
+          getSquadOffice({
+            competitionId: competition.id,
+            managerId: manager.id,
+          }),
+          null,
+        )
+      : null;
 
   return (
     <div className={styles.ultimaPage}>
-      <div className={styles.inner}>
-        {roster.length === 0 ? (
-          <>
-            <UltimaRoomHead title="Squad" kicker="Office" />
-            <section className={styles.officePanel}>
-              <p className={styles.hubNote}>Your squad fills on draft night.</p>
-            </section>
-          </>
+      <div className={`${styles.inner} ${styles.innerWide}`}>
+        {office ? (
+          <UltimaSquadClient office={office} />
         ) : (
-          <UltimaSquadClient
-            roster={roster}
-            lineup={lineup}
-            gameweek={gameweek}
-            lockedLeagues={lockedLeagues}
-          />
+          <UltimaSquadClient roster={[]} lineup={[]} />
         )}
       </div>
     </div>

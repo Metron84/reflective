@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import UltimaAdminClient from "@/components/ultima/UltimaAdminClient";
 import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
-import { getActiveCompetition, getUltimaDb, isCommissionerUser } from "@/lib/ultima/server/db";
+import { getActiveCompetition, isCommissionerUser } from "@/lib/ultima/server/db";
+import { getAdminOffice } from "@/lib/ultima/server/admin";
+import { safeResolve } from "@/lib/ultima/server/safe";
 import styles from "@/components/ultima/ultima.module.css";
 
 export const metadata = {
@@ -22,33 +24,19 @@ export default async function UltimaAdminPage() {
   }
 
   const competition = await getActiveCompetition();
-  const db = getUltimaDb();
-
-  const [{ data: managers }, { data: gameweeks }] = competition && db
-    ? await Promise.all([
-        db
-          .from("ultima_managers")
-          .select("id, team_name, is_bot")
-          .eq("competition_id", competition.id)
-          .order("team_name"),
-        db
-          .from("ultima_gameweeks")
-          .select("id, number, state")
-          .eq("competition_id", competition.id)
-          .order("number"),
-      ])
-    : [{ data: [] }, { data: [] }];
+  const office = competition
+    ? await safeResolve(getAdminOffice(competition.id), null)
+    : null;
 
   return (
     <div className={styles.ultimaPage}>
-      <div className={styles.inner}>
-        <p className={styles.eyebrow}>GAMES · ULTIMA · ADMIN</p>
-        <h1 className={styles.title}>Commissioner</h1>
+      <div className={`${styles.inner} ${styles.innerWide}`}>
         <UltimaAdminClient
-          seasonLabel={competition?.season_label ?? "2026/27"}
-          timerSeconds={competition?.timer_seconds ?? 60}
-          managers={managers ?? []}
-          gameweeks={gameweeks ?? []}
+          office={office}
+          seasonLabel={office?.seasonLabel ?? competition?.season_label ?? "2026/27"}
+          timerSeconds={office?.timerSeconds ?? competition?.timer_seconds ?? 60}
+          managers={office?.managers ?? []}
+          gameweeks={office?.gameweeks ?? []}
         />
       </div>
     </div>

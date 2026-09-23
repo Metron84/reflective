@@ -1,45 +1,42 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  ULTIMA_LEAGUES,
-  ULTIMA_LEAGUE_COLOURS,
-  ULTIMA_LEAGUE_SHORT,
-} from "@/lib/ultima/constants";
-import { wouldBreakFloor } from "@/lib/ultima/draft/floor";
+import { useMemo, useState } from "react";
+import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
+import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaPlayerSheet from "./UltimaPlayerSheet";
+import UltimaStaffMessage from "./UltimaStaffMessage";
+import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
+import useVirtualList from "./useVirtualList";
 import styles from "./ultima.module.css";
 
-const PAGE = 25;
-const TOAST_MS = 2400;
-
-const LEAGUE_TABS = [
-  { id: "all", label: "All" },
-  ...ULTIMA_LEAGUES.map((id) => ({
-    id,
-    label: ULTIMA_LEAGUE_SHORT[id] ?? id,
-  })),
+const ROW_H = 56;
+const POSITIONS = ["GK", "DEF", "MID", "FWD"];
+const SORTS = [
+  { id: "expected", label: "Expected" },
+  { id: "goals", label: "Goals" },
+  { id: "assists", label: "Assists" },
+  { id: "rating", label: "Rating" },
 ];
 
 function metric(player, key) {
-  return Number(player.seed_metrics?.[key] ?? 0);
+  const n = Number(player?.seed_metrics?.[key]);
+  return Number.isFinite(n) ? n : null;
 }
 
 function formatRate(value) {
-  return value ? value.toFixed(2) : "0.00";
+  if (value == null) return "-";
+  return value.toFixed(2);
 }
 
-function formatPts(value) {
-  return Number.isFinite(value) ? value.toFixed(1) : "0.0";
+function clubKey(name) {
+  return String(name ?? "").trim().toLowerCase();
 }
 
 function PlusGlyph() {
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"
-      />
+      <path fill="currentColor" d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z" />
     </svg>
   );
 }
@@ -55,29 +52,25 @@ function CheckGlyph() {
   );
 }
 
-function SearchGlyph() {
+function StarGlyph({ on = false }) {
   return (
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
       <path
-        fill="currentColor"
-        d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm8.3 12.9-3.5-3.5 1.4-1.4 3.5 3.5-1.4 1.4Z"
+        fill={on ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.6"
+        d="M12 3.8 14.6 9l5.8.8-4.2 4.1 1 5.8L12 16.8 6.8 19.7l1-5.8L3.6 9.8 9.4 9 12 3.8Z"
       />
     </svg>
   );
 }
 
-function ClearGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6 6.4 5Z"
-      />
-    </svg>
-  );
+function sortValue(player, sort) {
+  if (sort === "goals") return metric(player, "goals_rate") ?? -1;
+  if (sort === "assists") return metric(player, "assists_rate") ?? -1;
+  if (sort === "rating") return metric(player, "rating_avg") ?? -1;
+  return expectedUltimaPoints(player);
 }
-
-const HINT_KEY = "ultima-draft-hint-dismissed";
 
 export default function UltimaDraftPicker({
   available = [],
@@ -87,38 +80,35 @@ export default function UltimaDraftPicker({
   canForcePick = false,
   pickBusy = false,
   floor = null,
-  compact = false,
-  onSearchActive,
   onDraft,
   onForce,
   onQueue,
   onUnqueue,
-  onClearQueue,
+  openPlayerId = null,
+  onOpenPlayer,
+  onClosePlayer,
+  mode = "draft",
+  clubFilter = "",
+  onClearClub,
+  watchedIds = [],
+  hideActions = false,
+  embedSheet = false,
+  onWatch,
+  onSign,
 }) {
+  const market = mode === "market";
   const [query, setQuery] = useState("");
   const [league, setLeague] = useState("all");
-  const [shown, setShown] = useState(PAGE);
-  const [hiddenIds, setHiddenIds] = useState(() => new Set());
-  const [toast, setToast] = useState(null);
-  const [showHint, setShowHint] = useState(false);
+  const [position, setPosition] = useState("all");
+  const [needsOnly, setNeedsOnly] = useState(false);
+  const [sort, setSort] = useState("expected");
 
-  const byId = useMemo(() => {
-    const map = new Map();
-    for (const p of available) map.set(p.id, p);
-    return map;
-  }, [available]);
-
-  const queued = useMemo(
+  const queuedIds = useMemo(() => new Set(queue.map((q) => q.player_id)), [queue]);
+  const watched = useMemo(() => new Set(watchedIds), [watchedIds]);
+  const neededLeagues = useMemo(
     () =>
-      queue
-        .map((q) => byId.get(q.player_id))
-        .filter(Boolean),
-    [queue, byId],
-  );
-
-  const queuedIds = useMemo(
-    () => new Set(queue.map((q) => q.player_id)),
-    [queue],
+      ULTIMA_LEAGUES.filter((id) => (floor?.deficits?.[id] ?? 0) > 0),
+    [floor],
   );
 
   const rows = useMemo(() => {
@@ -126,6 +116,17 @@ export default function UltimaDraftPicker({
     let list = available;
 
     if (league !== "all") list = list.filter((p) => p.league === league);
+    if (clubFilter) {
+      list = list.filter((p) => clubKey(p.club) === clubKey(clubFilter));
+    }
+    if (needsOnly && neededLeagues.length) {
+      list = list.filter((p) => neededLeagues.includes(p.league));
+    }
+    if (position !== "all") {
+      list = list.filter(
+        (p) => String(p.position ?? "").toUpperCase() === position,
+      );
+    }
     if (needle) {
       list = list.filter(
         (p) =>
@@ -134,289 +135,320 @@ export default function UltimaDraftPicker({
       );
     }
 
-    const sorted = [...list].sort((a, b) => {
-      if (floor) {
-        const aBad = wouldBreakFloor(floor.counts ?? {}, a.league, floor.slotsLeft ?? 0);
-        const bBad = wouldBreakFloor(floor.counts ?? {}, b.league, floor.slotsLeft ?? 0);
-        if (aBad !== bBad) return aBad ? 1 : -1;
-      }
-      const gap = expectedUltimaPoints(b) - expectedUltimaPoints(a);
+    return [...list].sort((a, b) => {
+      if (a.signedBy && !b.signedBy) return 1;
+      if (!a.signedBy && b.signedBy) return -1;
+      const gap = sortValue(b, market ? sort : "expected") - sortValue(a, market ? sort : "expected");
       if (gap) return gap;
       return String(a.name ?? "").localeCompare(String(b.name ?? ""));
     });
+  }, [available, clubFilter, league, market, neededLeagues, needsOnly, position, query, sort]);
 
-    return sorted;
-  }, [available, league, query, floor]);
+  const points = useMemo(
+    () => rows.map((p) => expectedUltimaPoints(p)),
+    [rows],
+  );
 
-  useEffect(() => {
-    setHiddenIds((current) => {
-      if (!current.size) return current;
-      const still = new Set();
-      const present = new Set(available.map((p) => p.id));
-      for (const id of current) {
-        if (present.has(id)) still.add(id);
-      }
-      return still.size === current.size ? current : still;
-    });
-  }, [available]);
+  const virtual = useVirtualList({
+    count: rows.length,
+    rowHeight: ROW_H,
+  });
 
-  useEffect(() => {
-    if (!toast) return undefined;
-    const timer = window.setTimeout(() => setToast(null), TOAST_MS);
-    return () => window.clearTimeout(timer);
-  }, [toast]);
-
-  useEffect(() => {
-    try {
-      setShowHint(window.localStorage.getItem(HINT_KEY) !== "1");
-    } catch {
-      setShowHint(true);
-    }
-  }, []);
-
-  const matched = rows.filter((p) => !hiddenIds.has(p.id));
-  const visible = matched.slice(0, shown);
+  const openPlayer =
+    openPlayerId ? available.find((p) => p.id === openPlayerId) ?? null : null;
 
   function clearFilters() {
     setQuery("");
     setLeague("all");
-    setShown(PAGE);
+    setPosition("all");
+    setNeedsOnly(false);
+    setSort("expected");
+    onClearClub?.();
   }
 
-  function dismissHint() {
-    setShowHint(false);
-    try {
-      window.localStorage.setItem(HINT_KEY, "1");
-    } catch {
-      /* private mode */
-    }
-  }
+  const searchId = market ? "ultima-market-search" : "ultima-draft-search";
 
-  async function pickPlayer(player) {
-    if (!isYourTurn || pickBusy) return;
-    setHiddenIds((current) => {
-      const next = new Set(current);
-      next.add(player.id);
-      return next;
-    });
-    setToast({ ok: true, text: `Drafted ${player.name}` });
-    const result = await onDraft?.(player.id);
-    if (result?.ok !== false) return;
-    setHiddenIds((current) => {
-      const next = new Set(current);
-      next.delete(player.id);
-      return next;
-    });
-    setToast({ ok: false, text: result.message ?? "Pick failed." });
-  }
+  const sheetActions = openPlayer
+    ? market
+      ? [
+          ...(!hideActions && !openPlayer.signedBy
+            ? [
+                {
+                  label: "Sign",
+                  primary: true,
+                  onClick: () => onSign?.(openPlayer),
+                },
+              ]
+            : []),
+          {
+            label: watched.has(openPlayer.id) ? "Remove star" : "Watch",
+            onClick: () => onWatch?.(openPlayer.id, !watched.has(openPlayer.id)),
+          },
+        ]
+      : [
+          ...(isYourTurn || canForcePick
+            ? [
+                {
+                  label: canForcePick && !isYourTurn ? "Force" : "Draft",
+                  primary: true,
+                  disabled: pickBusy,
+                  onClick: () =>
+                    canForcePick && !isYourTurn
+                      ? onForce?.(openPlayer.id)
+                      : onDraft?.(openPlayer.id),
+                },
+              ]
+            : []),
+          {
+            label: queuedIds.has(openPlayer.id) ? "Remove from queue" : "Add to queue",
+            onClick: () =>
+              queuedIds.has(openPlayer.id)
+                ? onUnqueue?.(openPlayer.id)
+                : onQueue?.(openPlayer.id),
+          },
+        ]
+    : [];
+
+  const sheet = openPlayer ? (
+    <UltimaPlayerSheet
+      player={openPlayer}
+      points={points}
+      onClose={onClosePlayer}
+      embedded={embedSheet}
+      note={
+        openPlayer.signedBy ? `Signed by ${openPlayer.signedBy}` : null
+      }
+      actions={sheetActions}
+    />
+  ) : null;
 
   return (
-    <section className={styles.pickerPick} aria-label="Select a player">
-      <div className={styles.pickerSticky}>
-        <div className={styles.pickerSearchWrap}>
-          <span className={styles.pickerSearchIcon}>
-            <SearchGlyph />
-          </span>
-          <label className={styles.pickerSrOnly} htmlFor="ultima-draft-search">
-            Name or club
-          </label>
-          <input
-            id="ultima-draft-search"
-            className={styles.pickerSearch}
-            type="text"
-            placeholder="Name or club"
-            value={query}
-            autoComplete="off"
-            enterKeyHint="search"
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setShown(PAGE);
-            }}
-            onFocus={() => onSearchActive?.(true)}
-            onBlur={() => {
-              if (!query.trim()) onSearchActive?.(false);
-            }}
-          />
-          {query ? (
+    <section className={styles.dPick} aria-label="Select a player">
+      <div className={styles.dPickSticky}>
+        <label className={styles.dPickSr} htmlFor={searchId}>
+          Name or club
+        </label>
+        <input
+          id={searchId}
+          className={styles.dPickSearch}
+          type="search"
+          placeholder="Name or club"
+          value={query}
+          autoComplete="off"
+          enterKeyHint="search"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div className={styles.dPickFilters} role="tablist" aria-label="Country">
+          <button
+            type="button"
+            className={league === "all" ? styles.deskTabOn : styles.deskTab}
+            onClick={() => setLeague("all")}
+          >
+            All
+          </button>
+          {ULTIMA_LEAGUES.map((id) => (
             <button
+              key={id}
               type="button"
-              className={styles.pickerSearchClear}
-              onClick={() => {
-                setQuery("");
-                setShown(PAGE);
-                onSearchActive?.(false);
-              }}
-              aria-label="Clear search"
+              className={league === id ? styles.deskTabOn : styles.deskTab}
+              onClick={() => setLeague(id)}
             >
-              <ClearGlyph />
+              {ULTIMA_LEAGUE_SHORT[id]}
             </button>
-          ) : null}
+          ))}
         </div>
-        <div className={styles.pickerLeagueRow} role="tablist" aria-label="League filter">
-          {LEAGUE_TABS.map((t) => {
-            const colour = t.id === "all" ? "#f2ede4" : ULTIMA_LEAGUE_COLOURS[t.id];
-            const selected = league === t.id;
-            return (
+        <div className={styles.dPickFilters} role="tablist" aria-label="Position">
+          <button
+            type="button"
+            className={position === "all" ? styles.deskTabOn : styles.deskTab}
+            onClick={() => setPosition("all")}
+          >
+            All
+          </button>
+          {POSITIONS.map((id) => (
+            <button
+              key={id}
+              type="button"
+              className={position === id ? styles.deskTabOn : styles.deskTab}
+              onClick={() => setPosition(id)}
+            >
+              {id}
+            </button>
+          ))}
+          <button
+            type="button"
+            className={needsOnly ? styles.deskTabOn : styles.deskTab}
+            aria-pressed={needsOnly}
+            onClick={() => setNeedsOnly((on) => !on)}
+          >
+            Needs only
+          </button>
+        </div>
+        {market ? (
+          <div className={styles.dPickFilters} role="tablist" aria-label="Sort">
+            {SORTS.map((item) => (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
-                role="tab"
-                aria-selected={selected}
-                className={selected ? styles.pickerLeagueChipOn : styles.pickerLeagueChip}
-                style={
-                  selected
-                    ? { background: colour, borderColor: colour, color: "#0a111f" }
-                    : { background: "transparent", borderColor: colour, color: "#0a111f" }
-                }
-                onClick={() => {
-                  setLeague(t.id);
-                  setShown(PAGE);
-                }}
+                className={sort === item.id ? styles.deskTabOn : styles.deskTab}
+                onClick={() => setSort(item.id)}
               >
-                {t.label}
+                {item.label}
               </button>
-            );
-          })}
-        </div>
+            ))}
+            {clubFilter ? (
+              <button
+                type="button"
+                className={styles.deskTabOn}
+                onClick={() => onClearClub?.()}
+              >
+                {clubFilter}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
-      <p className={styles.pickerCount} aria-live="polite">
-        {matched.length} available
-      </p>
-
-      {compact || !showHint || queued.length ? null : (
-        <p className={styles.pickerHintBanner}>
-          <span>Queue is your backup if the clock runs out.</span>
-          <button type="button" className={styles.pickerHintDismiss} onClick={dismissHint}>
-            Got it
-          </button>
-        </p>
-      )}
-
-      {compact ? null : queued.length ? (
-        <div className={styles.queueStrip}>
-          <p className={styles.queueStripLabel}>Your queue</p>
-          <ul className={styles.queueChips}>
-            {queued.map((p, i) => (
-              <li key={p.id} className={styles.queueChip}>
-                <span>
-                  {i + 1}. {p.name}
-                </span>
-                <button
-                  type="button"
-                  className={styles.queueChipRemove}
-                  onClick={() => onUnqueue(p.id)}
-                  aria-label={`Remove ${p.name} from queue`}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button type="button" className={styles.queueClear} onClick={onClearQueue}>
-            Clear queue
+      {loadingPool && !available.length ? (
+        <UltimaStaffMessage
+          subject="Loading the pool"
+          body="The scouts are fetching undrafted players."
+        />
+      ) : needsOnly && !neededLeagues.length ? (
+        <UltimaStaffMessage
+          subject="Floors are met"
+          body="All country floors are met. Turn off Needs only to see the full list."
+        />
+      ) : !rows.length ? (
+        <div>
+          <UltimaStaffMessage
+            subject="No players match"
+            body={
+              position !== "all"
+                ? "No positions synced yet. The scouts report when Sportmonks does."
+                : market
+                  ? "No free agents match that search."
+                  : "No players match that search."
+            }
+          />
+          <button type="button" className={styles.dPickClear} onClick={clearFilters}>
+            Clear filters
           </button>
         </div>
-      ) : null}
-
-      {loadingPool && !available.length ? (
-        <p className={styles.pickerHint}>Loading players…</p>
       ) : (
-        <>
-          <ul className={styles.pickerRowList}>
-            {visible.map((p, index) => {
-              const fill = ULTIMA_LEAGUE_COLOURS[p.league] ?? "#E4DED3";
-              const inQueue = queuedIds.has(p.id);
-              const stats = `${formatPts(expectedUltimaPoints(p))} pts · ${formatRate(metric(p, "goals_rate"))} G · ${formatRate(metric(p, "assists_rate"))} A`;
-              const blocked = Boolean(
-                floor && wouldBreakFloor(floor.counts ?? {}, p.league, floor.slotsLeft ?? 0),
-              );
-              const prevBlocked =
-                index > 0 &&
-                floor &&
-                wouldBreakFloor(
-                  floor.counts ?? {},
-                  visible[index - 1].league,
-                  floor.slotsLeft ?? 0,
-                );
-              const showOther = blocked && !prevBlocked;
-              const canDraft = (isYourTurn || canForcePick) && !blocked;
-              return (
-                <li key={p.id}>
-                  {showOther ? (
-                    <p className={styles.deskOtherLabel}>Other players</p>
-                  ) : null}
-                  <div
-                    className={styles.pickerRow}
-                    style={{ borderLeftColor: fill }}
-                  >
-                  <div className={styles.pickerRowInfo}>
-                    <p className={styles.pickerRowName}>{p.name}</p>
-                    <p className={styles.pickerRowLine2}>
-                      <span>
-                        {p.club} · {ULTIMA_LEAGUE_SHORT[p.league] ?? p.league}
-                        {blocked ? " · Unavailable this pick" : ""}
-                      </span>
-                      <span className={styles.pickerRowStats}>{stats}</span>
-                    </p>
-                  </div>
-                  <div className={styles.pickerRowActions}>
-                    {isYourTurn || canForcePick ? (
+        <div className={styles.dPickScroll} ref={virtual.ref}>
+          <div className={styles.dPickSpacer} style={{ height: virtual.height }}>
+            <ul
+              className={styles.dPickList}
+              style={{ transform: `translateY(${virtual.offset}px)` }}
+            >
+              {rows.slice(virtual.start, virtual.end).map((player, offset) => {
+                const index = virtual.start + offset;
+                const pts = expectedUltimaPoints(player);
+                const inQueue = queuedIds.has(player.id);
+                const goals = metric(player, "goals_rate");
+                const assists = metric(player, "assists_rate");
+                const watchedOn = watched.has(player.id);
+                return (
+                  <li key={player.id} style={{ height: ROW_H }}>
+                    <div
+                      className={[
+                        styles.dPickRow,
+                        market && !hideActions ? styles.dPickRowMarket : "",
+                        hideActions ? styles.dPickRowSolo : "",
+                        player.signedBy ? styles.dPickRowTaken : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
                       <button
                         type="button"
-                        className={canDraft ? styles.pickerPickBtn : styles.pickerPickBtnOff}
-                        disabled={!canDraft || pickBusy}
-                        onClick={() =>
-                          canForcePick && !isYourTurn ? onForce?.(p.id) : pickPlayer(p)
-                        }
+                        className={styles.dPickMain}
+                        onClick={() => onOpenPlayer?.(player.id)}
                       >
-                        {canForcePick && !isYourTurn ? "Force" : "Draft"}
+                        <span className={styles.dPickRank}>{index + 1}</span>
+                        <span className={styles.dPickCopy}>
+                          <span className={styles.dPickName}>{player.name}</span>
+                          <span className={styles.dPickMeta}>
+                            {player.signedBy
+                              ? `Signed by ${player.signedBy}`
+                              : player.club || "-"}
+                            {player.signedBy ? null : (
+                              <>
+                                {" · "}
+                                {player.position || "-"}{" "}
+                                <UltimaCountryTag league={player.league} />
+                              </>
+                            )}
+                          </span>
+                        </span>
+                        <span className={styles.dPickVals}>
+                          <span className={styles.dPickPts}>
+                            <UltimaValueNumber
+                              value={Number.isFinite(pts) ? pts : null}
+                              percentile={percentileInList(pts, points)}
+                              digits={1}
+                            />
+                          </span>
+                          <span className={styles.dPickRates}>
+                            {`${formatRate(goals)}G · ${formatRate(assists)}A`}
+                          </span>
+                        </span>
                       </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      className={inQueue ? styles.pickerQueueBtnOn : styles.pickerQueueBtn}
-                      onClick={() => (inQueue ? onUnqueue(p.id) : onQueue(p.id))}
-                      aria-label={
-                        inQueue ? `Remove ${p.name} from queue` : `Add ${p.name} to queue`
-                      }
-                      aria-pressed={inQueue}
-                    >
-                      {inQueue ? <CheckGlyph /> : <PlusGlyph />}
-                    </button>
-                  </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          {!visible.length ? (
-            <div className={styles.pickerEmpty}>
-              <p className={styles.pickerHint}>No players match that search.</p>
-              <button type="button" className={styles.pickerClearFilters} onClick={clearFilters}>
-                Clear filters
-              </button>
-            </div>
-          ) : null}
-          {matched.length > shown ? (
-            <button
-              type="button"
-              className={styles.pickerMore}
-              onClick={() => setShown((n) => n + PAGE)}
-            >
-              Show more · {matched.length - shown} left
-            </button>
-          ) : null}
-        </>
+                      {market && !hideActions ? (
+                        <>
+                          <button
+                            type="button"
+                            className={watchedOn ? styles.dPickPlusOn : styles.dPickPlus}
+                            onClick={() => onWatch?.(player.id, !watchedOn)}
+                            aria-label={
+                              watchedOn
+                                ? `Remove ${player.name} from watchlist`
+                                : `Add ${player.name} to watchlist`
+                            }
+                            aria-pressed={watchedOn}
+                          >
+                            <StarGlyph on={watchedOn} />
+                          </button>
+                          {player.signedBy ? (
+                            <span className={styles.dPickSignOff}>-</span>
+                          ) : (
+                            <button
+                              type="button"
+                              className={styles.dPickSign}
+                              onClick={() => onSign?.(player)}
+                            >
+                              Sign
+                            </button>
+                          )}
+                        </>
+                      ) : hideActions ? null : (
+                        <button
+                          type="button"
+                          className={inQueue ? styles.dPickPlusOn : styles.dPickPlus}
+                          onClick={() =>
+                            inQueue ? onUnqueue?.(player.id) : onQueue?.(player.id)
+                          }
+                          aria-label={
+                            inQueue
+                              ? `Remove ${player.name} from queue`
+                              : `Add ${player.name} to queue`
+                          }
+                          aria-pressed={inQueue}
+                        >
+                          {inQueue ? <CheckGlyph /> : <PlusGlyph />}
+                        </button>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       )}
-      {toast ? (
-        <p
-          className={toast.ok ? styles.pickerToast : styles.pickerToastError}
-          role="status"
-        >
-          {toast.text}
-        </p>
-      ) : null}
+
+      {embedSheet ? null : sheet}
     </section>
   );
 }

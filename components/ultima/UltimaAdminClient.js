@@ -3,24 +3,43 @@
 import { useState } from "react";
 import {
   ULTIMA_LEAGUES,
-  ULTIMA_LEAGUE_LABELS,
+  ULTIMA_LEAGUE_SHORT,
   ULTIMA_MIN_POOL_PER_LEAGUE,
   ULTIMA_MIN_POOL_TOTAL,
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import UltimaLocalTime from "./UltimaLocalTime";
+import UltimaPanel from "./UltimaPanel";
+import UltimaRow from "./UltimaRow";
+import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
 
 export default function UltimaAdminClient({
+  office = null,
   seasonLabel,
   timerSeconds = 60,
   managers = [],
   gameweeks = [],
 }) {
+  const desk = office ?? {
+    seasonLabel,
+    timerSeconds,
+    stage: "Draft lobby",
+    gameweek: "No gameweek",
+    window: "Market closed · Trades closed",
+    seats: [],
+    lastSyncAt: null,
+    managers,
+    gameweeks,
+  };
+  const clubs = desk.managers ?? managers;
+  const weeks = desk.gameweeks ?? gameweeks;
+
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [inviteCode, setInviteCode] = useState("");
-  const [clock, setClock] = useState(timerSeconds);
+  const [clock, setClock] = useState(desk.timerSeconds ?? timerSeconds);
   const [undoPick, setUndoPick] = useState("");
   const [undoReason, setUndoReason] = useState("");
   const [overrideManager, setOverrideManager] = useState("");
@@ -31,8 +50,12 @@ export default function UltimaAdminClient({
   const [gwNumber, setGwNumber] = useState("");
   const [gwStart, setGwStart] = useState("");
   const [gwEnd, setGwEnd] = useState("");
+  const [scheduleAt, setScheduleAt] = useState("");
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelConfirm, setCancelConfirm] = useState("");
   const [syncReport, setSyncReport] = useState(null);
   const [busy, setBusy] = useState("");
+  const [confirm, setConfirm] = useState(null);
 
   async function act(action, extra = {}) {
     setMessage("");
@@ -55,6 +78,7 @@ export default function UltimaAdminClient({
           setMessage(data.code ? `Invite: ${data.code}` : "Done.");
         }
         if (data.code) setInviteCode(data.code);
+        setConfirm(null);
       }
     } catch {
       setError("Connection lost.");
@@ -64,64 +88,101 @@ export default function UltimaAdminClient({
   }
 
   return (
-    <div className={styles.adminPage}>
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Draft control</h2>
-        <div className={styles.adminActions}>
+    <div className={styles.utPage}>
+      <UltimaPanel title="League state">
+        <UltimaRow primary="Stage" number={desk.stage} />
+        <UltimaRow primary="Gameweek" number={desk.gameweek} />
+        <UltimaRow primary="Window" meta={desk.window} />
+      </UltimaPanel>
+
+      <UltimaPanel title="Seats">
+        {(desk.seats ?? []).map((seat) => (
+          <UltimaRow
+            key={seat.slot}
+            primary={seat.club}
+            meta={`${seat.manager} · ${seat.status}`}
+            number={seat.slot}
+          />
+        ))}
+      </UltimaPanel>
+
+      <UltimaPanel title="Sync">
+        <UltimaRow
+          primary="Last Sportmonks sync"
+          meta={
+            desk.lastSyncAt ? (
+              <UltimaLocalTime value={desk.lastSyncAt} />
+            ) : (
+              "Not synced yet"
+            )
+          }
+        />
+        <div className={styles.utActions}>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            disabled={busy === "sync_gameweek"}
+            onClick={() => act("sync_gameweek")}
+          >
+            {busy === "sync_gameweek" ? "Syncing…" : "Run sync"}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={busy === "bootstrap"}
+            onClick={() => act("bootstrap")}
+          >
+            {busy === "bootstrap" ? "Syncing players…" : "Sync players"}
+          </button>
+        </div>
+        {syncReport ? <SyncReport report={syncReport} /> : null}
+      </UltimaPanel>
+
+      <UltimaPanel title="Draft controls">
+        <div className={styles.utActions}>
           <button type="button" className={styles.primaryBtn} onClick={() => act("start_draft")}>
             Start draft
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={() => act("pause_draft")}>
-            Pause draft
+            Pause
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={() => act("resume_draft")}>
-            Resume draft
+            Resume
           </button>
         </div>
-        <p className={styles.adminHint}>
-          Clock is {formatUltimaTimer(clock)}. Changing it resets the current turn if the draft is live.
-        </p>
-        <div className={styles.adminActions}>
+        <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
+        <div className={styles.utActions}>
           {ULTIMA_TIMER_OPTIONS.map((seconds) => (
             <button
               key={seconds}
               type="button"
-              className={clock === seconds ? styles.primaryBtn : styles.secondaryBtn}
+              className={clock === seconds ? styles.deskTabOn : styles.deskTab}
               onClick={() => act("set_timer", { timer_seconds: seconds })}
             >
               {formatUltimaTimer(seconds)}
             </button>
           ))}
         </div>
-        <div className={styles.adminActions}>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            onClick={() => {
-              const when = prompt("Draft start time (ISO, e.g. 2026-08-20T18:00:00+04:00):");
-              if (when) act("schedule_draft", { scheduled_at: when });
-            }}
-          >
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("schedule")}>
             Schedule draft
           </button>
         </div>
-      </section>
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Invites</h2>
-        <button type="button" className={styles.secondaryBtn} onClick={() => act("issue_invite")}>
-          Issue invite code
-        </button>
-        {inviteCode ? <p className={styles.messageOk}>Code: {inviteCode}</p> : null}
-      </section>
+      <UltimaPanel title="Invites">
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => act("issue_invite")}>
+            Issue invite code
+          </button>
+        </div>
+        {inviteCode ? <UltimaRow primary="Code" number={inviteCode} /> : null}
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Undo pick</h2>
-        <p className={styles.adminHint}>
-          Emergency only. You cannot undo your own pick. Type a reason for the public log.
-        </p>
-        <div className={styles.adminForm}>
-          <label className={styles.adminField}>
+      <UltimaPanel title="Undo pick">
+        <p className={styles.utNote}>Emergency only. You cannot undo your own pick.</p>
+        <div className={styles.utPad}>
+          <label className={styles.field}>
             Pick number
             <input
               type="number"
@@ -131,38 +192,26 @@ export default function UltimaAdminClient({
               onChange={(e) => setUndoPick(e.target.value)}
             />
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Reason
-            <input
-              type="text"
-              value={undoReason}
-              onChange={(e) => setUndoReason(e.target.value)}
-            />
+            <input type="text" value={undoReason} onChange={(e) => setUndoReason(e.target.value)} />
           </label>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            onClick={() =>
-              act("undo_pick", {
-                pick_number: Number(undoPick),
-                reason: undoReason,
-              })
-            }
-          >
+        </div>
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("undo")}>
             Undo pick
           </button>
         </div>
-      </section>
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Score override</h2>
-        <p className={styles.adminHint}>Writes a public log row. Use a typed reason.</p>
-        <div className={styles.adminForm}>
-          <label className={styles.adminField}>
+      <UltimaPanel title="Score override">
+        <p className={styles.utNote}>Writes a public log row. Use a typed reason.</p>
+        <div className={styles.utPad}>
+          <label className={styles.field}>
             Manager
             <select value={overrideManager} onChange={(e) => setOverrideManager(e.target.value)}>
               <option value="">Choose</option>
-              {managers.map((m) => (
+              {clubs.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.team_name}
                   {m.is_bot ? " · BOT" : ""}
@@ -170,34 +219,26 @@ export default function UltimaAdminClient({
               ))}
             </select>
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Gameweek
             <select value={overrideGw} onChange={(e) => setOverrideGw(e.target.value)}>
               <option value="">Choose</option>
-              {gameweeks.map((gw) => (
+              {weeks.map((gw) => (
                 <option key={gw.id} value={gw.id}>
                   GW{gw.number} · {gw.state}
                 </option>
               ))}
             </select>
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Points
-            <input
-              type="number"
-              value={overridePoints}
-              onChange={(e) => setOverridePoints(e.target.value)}
-            />
+            <input type="number" value={overridePoints} onChange={(e) => setOverridePoints(e.target.value)} />
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Bolt
-            <input
-              type="number"
-              value={overrideBolt}
-              onChange={(e) => setOverrideBolt(e.target.value)}
-            />
+            <input type="number" value={overrideBolt} onChange={(e) => setOverrideBolt(e.target.value)} />
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Reason
             <input
               type="text"
@@ -205,47 +246,31 @@ export default function UltimaAdminClient({
               onChange={(e) => setOverrideReason(e.target.value)}
             />
           </label>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            onClick={() =>
-              act("score_override", {
-                manager_id: overrideManager,
-                gameweek_id: overrideGw,
-                points: Number(overridePoints),
-                bolt_points: Number(overrideBolt),
-                reason: overrideReason,
-              })
-            }
-          >
+        </div>
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("override")}>
             Override score
           </button>
         </div>
-      </section>
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Create gameweek</h2>
-        <p className={styles.adminHint}>
-          Friday 00:00 to Thursday 23:59 GST. Sync fixtures after you create it.
-        </p>
-        <div className={styles.adminForm}>
-          <label className={styles.adminField}>
+      <UltimaPanel title="Create gameweek">
+        <p className={styles.utNote}>Friday 00:00 to Thursday 23:59 GST.</p>
+        <div className={styles.utPad}>
+          <label className={styles.field}>
             Number
-            <input
-              type="number"
-              min="1"
-              value={gwNumber}
-              onChange={(e) => setGwNumber(e.target.value)}
-            />
+            <input type="number" min="1" value={gwNumber} onChange={(e) => setGwNumber(e.target.value)} />
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Window start
             <input type="datetime-local" value={gwStart} onChange={(e) => setGwStart(e.target.value)} />
           </label>
-          <label className={styles.adminField}>
+          <label className={styles.field}>
             Window end
             <input type="datetime-local" value={gwEnd} onChange={(e) => setGwEnd(e.target.value)} />
           </label>
+        </div>
+        <div className={styles.utActions}>
           <button
             type="button"
             className={styles.secondaryBtn}
@@ -261,43 +286,122 @@ export default function UltimaAdminClient({
             Create gameweek
           </button>
         </div>
-      </section>
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Bootstrap and sync</h2>
-        <div className={styles.adminActions}>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            disabled={busy === "bootstrap"}
-            onClick={() => act("bootstrap")}
-          >
-            {busy === "bootstrap" ? "Syncing five leagues…" : "Sync players"}
-          </button>
-          <button type="button" className={styles.secondaryBtn} onClick={() => act("sync_gameweek")}>
-            Sync active gameweek
+      <UltimaPanel title="Cancel draft">
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("cancel")}>
+            Cancel draft
           </button>
         </div>
-        {syncReport ? <SyncReport report={syncReport} /> : null}
-      </section>
+      </UltimaPanel>
 
-      <section className={styles.adminSection}>
-        <h2 className={styles.sectionTitle}>Cancel draft</h2>
-        <button
-          type="button"
-          className={styles.destructiveBtn}
-          onClick={() => {
-            const reason = prompt("Reason for cancellation:");
-            const confirm = prompt(`Type season label to confirm: ${seasonLabel}`);
-            if (reason && confirm) act("cancel_draft", { reason, confirm });
-          }}
+      {message ? <p className={styles.utNote}>{message}</p> : null}
+      {error ? (
+        <UltimaStaffMessage subject="The commission desk could not do that" body={error} />
+      ) : null}
+
+      {confirm === "schedule" ? (
+        <ConfirmSheet
+          title="Schedule draft"
+          body="Set the live draft time."
+          onClose={() => setConfirm(null)}
+          onConfirm={() => act("schedule_draft", { scheduled_at: scheduleAt })}
+          busy={busy === "schedule_draft"}
         >
-          Cancel draft
-        </button>
-      </section>
+          <label className={styles.field}>
+            Start time
+            <input
+              type="datetime-local"
+              value={scheduleAt}
+              onChange={(e) => setScheduleAt(e.target.value)}
+            />
+          </label>
+        </ConfirmSheet>
+      ) : null}
 
-      {message ? <p className={styles.messageOk}>{message}</p> : null}
-      {error ? <p className={styles.messageError}>{error}</p> : null}
+      {confirm === "undo" ? (
+        <ConfirmSheet
+          title="Undo pick"
+          body={`Undo pick ${undoPick || "?"}? This writes a public log row.`}
+          onClose={() => setConfirm(null)}
+          onConfirm={() =>
+            act("undo_pick", {
+              pick_number: Number(undoPick),
+              reason: undoReason,
+            })
+          }
+          busy={busy === "undo_pick"}
+        />
+      ) : null}
+
+      {confirm === "override" ? (
+        <ConfirmSheet
+          title="Override score"
+          body="This writes a public log row. The reason is visible to the league."
+          onClose={() => setConfirm(null)}
+          onConfirm={() =>
+            act("score_override", {
+              manager_id: overrideManager,
+              gameweek_id: overrideGw,
+              points: Number(overridePoints),
+              bolt_points: Number(overrideBolt),
+              reason: overrideReason,
+            })
+          }
+          busy={busy === "score_override"}
+        />
+      ) : null}
+
+      {confirm === "cancel" ? (
+        <ConfirmSheet
+          title="Cancel draft"
+          body={`Type ${desk.seasonLabel} to confirm.`}
+          onClose={() => setConfirm(null)}
+          onConfirm={() =>
+            act("cancel_draft", { reason: cancelReason, confirm: cancelConfirm })
+          }
+          busy={busy === "cancel_draft"}
+        >
+          <label className={styles.field}>
+            Reason
+            <input
+              type="text"
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+            />
+          </label>
+          <label className={styles.field}>
+            Season label
+            <input
+              type="text"
+              value={cancelConfirm}
+              onChange={(e) => setCancelConfirm(e.target.value)}
+            />
+          </label>
+        </ConfirmSheet>
+      ) : null}
+    </div>
+  );
+}
+
+function ConfirmSheet({ title, body, onClose, onConfirm, busy, children }) {
+  return (
+    <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label={title}>
+      <button type="button" className={styles.dSheetBackdrop} aria-label="Close" onClick={onClose} />
+      <div className={styles.dSheetPanel}>
+        <p className={styles.dSheetName}>{title}</p>
+        <p className={styles.dSheetMeta}>{body}</p>
+        {children}
+        <div className={styles.dSheetActions}>
+          <button type="button" className={styles.primaryBtn} disabled={busy} onClick={onConfirm}>
+            {busy ? "Working…" : "Confirm"}
+          </button>
+          <button type="button" className={styles.secondaryBtn} onClick={onClose}>
+            Back
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -313,42 +417,38 @@ function SyncReport({ report }) {
     ULTIMA_LEAGUES.every((l) => (byLeague[l] ?? 0) >= ULTIMA_MIN_POOL_PER_LEAGUE);
 
   return (
-    <div className={styles.syncReport}>
-      <p className={styles.adminHint}>
-        Provider: {report.provider === "sportmonks" ? "Sportmonks" : "Mock seed"}. {total} players
-        in the pool.
-        {statsSeason ? ` Ratings from the ${statsSeason} season.` : null}
-      </p>
-      <ul className={styles.syncList}>
-        {ULTIMA_LEAGUES.map((league) => {
-          const count = byLeague[league] ?? 0;
-          const rated = coverage[league]?.rated;
-          return (
-            <li key={league} className={styles.syncRow}>
-              <span>{ULTIMA_LEAGUE_LABELS[league]}</span>
-              <span
-                className={count >= ULTIMA_MIN_POOL_PER_LEAGUE ? styles.syncOk : styles.syncBad}
-              >
-                {count}
-              </span>
-              {reasons[league] ? (
-                <span className={styles.syncReason}>{reasons[league]}</span>
-              ) : null}
-              {!reasons[league] && typeof rated === "number" ? (
-                <span className={styles.syncReason}>
-                  {rated} rated, {Math.max(count - rated, 0)} on league average
-                  {coverage[league]?.error ? `. ${coverage[league].error}` : ""}
-                </span>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-      <p className={ready ? styles.messageOk : styles.messageError}>
-        {ready
-          ? "Pool is big enough for a full draft."
-          : `Not enough to draft. A full draft needs ${ULTIMA_MIN_POOL_TOTAL} players and at least ${ULTIMA_MIN_POOL_PER_LEAGUE} in every league.`}
-      </p>
-    </div>
+    <>
+      <UltimaRow
+        primary={report.provider === "sportmonks" ? "Sportmonks" : "Mock seed"}
+        meta={statsSeason ? `Ratings from the ${statsSeason} season.` : `${total} players in the pool.`}
+        number={total}
+      />
+      {ULTIMA_LEAGUES.map((league) => {
+        const count = byLeague[league] ?? 0;
+        const rated = coverage[league]?.rated;
+        return (
+          <UltimaRow
+            key={league}
+            primary={ULTIMA_LEAGUE_SHORT[league]}
+            meta={
+              reasons[league]
+                ? reasons[league]
+                : typeof rated === "number"
+                  ? `${rated} rated`
+                  : null
+            }
+            number={count}
+          />
+        );
+      })}
+      {ready ? (
+        <p className={styles.utNote}>Pool is big enough for a full draft.</p>
+      ) : (
+        <UltimaStaffMessage
+          subject="The pool is short"
+          body={`A full draft needs ${ULTIMA_MIN_POOL_TOTAL} players and at least ${ULTIMA_MIN_POOL_PER_LEAGUE} in every league.`}
+        />
+      )}
+    </>
   );
 }

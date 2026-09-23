@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import UltimaPanel from "@/components/ultima/UltimaPanel";
 import UltimaSquadClient from "@/components/ultima/UltimaSquadClient";
 import styles from "@/components/ultima/ultima.module.css";
 import {
@@ -10,11 +11,19 @@ import {
 } from "@/lib/ultima/sample/squad-preview";
 
 export const metadata = {
-  title: "Ultima · SAMPLE squad",
+  title: "Ultima · SAMPLE",
   robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
+
+const VIEWS = [
+  { href: "/ultima/sample", id: "xv", label: "XV" },
+  { href: "/ultima/sample?view=sheet", id: "sheet", label: "Pick sheet" },
+  { href: "/ultima/sample?view=live", id: "live", label: "Matchday" },
+  { href: "/ultima/sample?view=locked", id: "locked", label: "Locked" },
+  { href: "/ultima/sample?view=all30", id: "all30", label: "All 30" },
+];
 
 export default async function UltimaSampleSquadPage({ searchParams }) {
   if (process.env.NODE_ENV === "production") notFound();
@@ -30,41 +39,37 @@ export default async function UltimaSampleSquadPage({ searchParams }) {
           ? sampleSquadTabState()
           : sampleXvState();
 
-  const startView = view === "all30" || view === "squad" ? "all30" : "xv";
-
   return (
     <div className={styles.ultimaPage}>
-      <div className={styles.inner}>
-        <p className={styles.sampleBanner}>
-          SAMPLE preview · not a live squad · development only
-        </p>
-        <nav className={styles.sampleLinks} aria-label="SAMPLE views">
-          <Link href="/ultima/sample" className={styles.quietLink}>
-            XV
-          </Link>
-          <Link href="/ultima/sample?view=sheet" className={styles.quietLink}>
-            Pick sheet
-          </Link>
-          <Link href="/ultima/sample?view=live" className={styles.quietLink}>
-            Matchday
-          </Link>
-          <Link href="/ultima/sample?view=locked" className={styles.quietLink}>
-            Locked
-          </Link>
-          <Link href="/ultima/sample?view=all30" className={styles.quietLink}>
-            All 30
-          </Link>
-        </nav>
-        <UltimaSquadClient
-          roster={pack.roster}
-          lineup={pack.lineup}
-          gameweek={pack.gameweek}
-          lockedLeagues={pack.lockedLeagues}
-          liveTotal={pack.liveTotal}
-          preview
-          startView={startView}
-          openSheetOnMount={view === "sheet"}
-        />
+      <div className={`${styles.inner} ${styles.innerWide}`}>
+        <div className={styles.utPage}>
+          <UltimaPanel title="Views" sample>
+            <nav className={styles.utChips} aria-label="SAMPLE views">
+              {VIEWS.map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={
+                    (view === "squad" ? "all30" : view) === item.id
+                      ? styles.deskTabOn
+                      : styles.deskTab
+                  }
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </UltimaPanel>
+          <UltimaSquadClient
+            roster={pack.roster}
+            lineup={pack.lineup}
+            gameweek={pack.gameweek}
+            lockedLeagues={pack.lockedLeagues}
+            liveTotal={pack.liveTotal}
+            preview
+            openSheetOnMount={view === "sheet"}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/session";
-import { ULTIMA_COLOUR_PALETTE } from "@/lib/ultima/constants";
+import {
+  ULTIMA_COLOUR_PALETTE,
+  normalizeNotifyPrefs,
+} from "@/lib/ultima/constants";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
 import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
@@ -49,6 +52,7 @@ export async function POST(request) {
     typeof payload?.colour === "string" && COLOUR_IDS.has(payload.colour)
       ? payload.colour
       : null;
+  const notifyPrefs = normalizeNotifyPrefs(payload?.notify_prefs);
 
   if (!teamName || !managerName || !colour) {
     return NextResponse.json(
@@ -73,16 +77,28 @@ export async function POST(request) {
     return NextResponse.json(body, { status });
   }
 
-  const { error } = await db
+  const patch = {
+    team_name: teamName,
+    manager_name: managerName,
+    colour,
+    profile_complete: true,
+    notify_prefs: notifyPrefs,
+  };
+
+  let { error } = await db
     .from("ultima_managers")
-    .update({
-      team_name: teamName,
-      manager_name: managerName,
-      colour,
-      profile_complete: true,
-    })
+    .update(patch)
     .eq("id", manager.id)
     .eq("user_id", user.id);
+
+  if (error && /notify_prefs/i.test(error.message ?? "")) {
+    delete patch.notify_prefs;
+    ({ error } = await db
+      .from("ultima_managers")
+      .update(patch)
+      .eq("id", manager.id)
+      .eq("user_id", user.id));
+  }
 
   if (error) {
     if (error.code === "23505") {

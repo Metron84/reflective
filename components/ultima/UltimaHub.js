@@ -1,254 +1,283 @@
 import Link from "next/link";
-import UltimaNewsBoard, { UltimaChat, UltimaTradeDesk } from "./UltimaNewsBoard";
+import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaHubForm from "./UltimaHubForm";
+import UltimaHubInbox from "./UltimaHubInbox";
+import UltimaHubRadio from "./UltimaHubRadio";
+import UltimaHubTrades from "./UltimaHubTrades";
 import UltimaInstallHint from "./UltimaInstallHint";
-import UltimaEuropeDesk from "./UltimaEuropeDesk";
+import UltimaLocalTime from "./UltimaLocalTime";
+import UltimaPanel from "./UltimaPanel";
+import UltimaRow from "./UltimaRow";
+import UltimaStaffMessage from "./UltimaStaffMessage";
+import UltimaStatsStrip from "./UltimaStatsStrip";
 import styles from "./ultima.module.css";
 
-function buildLead({ draftState, hubStatus, tradeCards, news }) {
-  if (hubStatus?.draft === "live" || draftState === "live") {
-    return {
-      kicker: "Live",
-      title: "The draft is live",
-      body: "The clock is running for you. Bots pick at once.",
-      href: "/ultima/draft",
-      cta: "Enter the draft",
-      live: true,
-    };
-  }
-
-  if (draftState === "paused") {
-    return {
-      kicker: "Paused",
-      title: "The commissioner paused the draft",
-      body: "The room waits until the clock starts again.",
-      href: "/ultima/draft",
-      cta: "Open the room",
-      live: false,
-    };
-  }
-
-  const needsVeto = (tradeCards ?? []).find((c) => c.can_veto && !c.already_vetoed);
-  if (needsVeto) {
-    return {
-      kicker: "Veto open",
-      title: `${needsVeto.proposer_name} to ${needsVeto.receiver_name}`,
-      body: `${needsVeto.giving.join(", ") || "Players"} for ${needsVeto.getting.join(", ") || "players"}. League review.`,
-      href: "#ultima-decisions",
-      cta: "Review the trade",
-      live: true,
-    };
-  }
-
-  const needsAccept = (tradeCards ?? []).find((c) => c.can_accept);
-  if (needsAccept) {
-    return {
-      kicker: "Proposal",
-      title: `${needsAccept.proposer_name} sent you a trade`,
-      body: `${needsAccept.giving.join(", ") || "Players"} for ${needsAccept.getting.join(", ") || "players"}.`,
-      href: "#ultima-decisions",
-      cta: "Accept or decline",
-      live: false,
-    };
-  }
-
-  if (draftState === "complete") {
-    return {
-      kicker: "Season",
-      title: hubStatus?.standings?.includes("You are")
-        ? hubStatus.standings
-        : "Draft complete. Set your XV.",
-      body: "Fifteen score each week. Three from every league.",
-      href: "/ultima/squad",
-      cta: "My squad",
-      live: false,
-    };
-  }
-
-  const latest = news?.[0];
-  if (latest) {
-    return {
-      kicker: "Latest",
-      title: latest.line,
-      body: "The league writes here when someone moves.",
-      href: "#ultima-news",
-      cta: null,
-      live: false,
-      newsId: latest.id,
-    };
-  }
-
-  return {
-    kicker: "League",
-    title: "Waiting for the commissioner to start the draft",
-    body: "Ten seats. Pre-draft does not count.",
-    href: "/ultima/practice",
-    cta: "Open pre-draft",
-    live: false,
-  };
+function scoreNumber(row) {
+  if (row?.homeScore == null || row?.awayScore == null) return null;
+  return `${row.homeScore}-${row.awayScore}`;
 }
 
-function buildBriefing({ draftState, hubStatus, tradeCards, europeDesk }) {
-  const items = [];
-
-  if (hubStatus?.draft === "live" || draftState === "live") {
-    items.push({
-      text: "The draft is live. The clock is running.",
-      href: "/ultima/draft",
-      cta: "Enter the draft",
-    });
+function NextMatchPanel({ match, hasRoster }) {
+  if (!hasRoster) {
+    return (
+      <UltimaPanel title="Next match">
+        <UltimaStaffMessage
+          subject="No fixture involving your players"
+          body="Your squad is empty. Draft or market fills this window."
+        />
+      </UltimaPanel>
+    );
   }
 
-  const veto = (tradeCards ?? []).find((c) => c.can_veto && !c.already_vetoed);
-  if (veto) {
-    items.push({
-      text: `${veto.proposer_name} to ${veto.receiver_name} is in league review.`,
-      href: "#ultima-decisions",
-      cta: "Review",
-    });
+  if (!match) {
+    return (
+      <UltimaPanel title="Next match">
+        <UltimaStaffMessage
+          subject="No fixture involving your players"
+          body="No fixture involving your players is on the slate yet. The scouts report when Sportmonks does."
+        />
+      </UltimaPanel>
+    );
   }
 
-  const accept = (tradeCards ?? []).find((c) => c.can_accept);
-  if (accept) {
-    items.push({
-      text: `${accept.proposer_name} sent you a trade.`,
-      href: "#ultima-decisions",
-      cta: "Open",
-    });
-  }
-
-  if (draftState === "complete" && hubStatus?.standings) {
-    items.push({
-      text: hubStatus.standings,
-      href: "/ultima/squad",
-      cta: "My squad",
-    });
-  }
-
-  if (draftState === "complete" && hubStatus?.market) {
-    items.push({
-      text: hubStatus.market,
-      href: "/ultima/market",
-      cta: "Market",
-    });
-  }
-
-  const rising = europeDesk?.movers?.rising?.length ?? 0;
-  const falling = europeDesk?.movers?.falling?.length ?? 0;
-  if (rising || falling) {
-    items.push({
-      text: `${rising} rising · ${falling} falling in the last ratings.`,
-      href: "#ultima-form",
-      cta: "Form",
-    });
-  }
-
-  return items.slice(0, 3);
+  return (
+    <UltimaPanel title="Next match" live={match.live}>
+      <UltimaRow
+        primary={`${match.home} v ${match.away}`}
+        number={scoreNumber(match)}
+        yours
+      >
+        <p className={styles.opRowMeta}>
+          <UltimaCountryTag league={match.league} />
+          {match.live ? " LIVE · " : " "}
+          <UltimaLocalTime value={match.kickoff} />
+        </p>
+      </UltimaRow>
+    </UltimaPanel>
+  );
 }
 
-export default function UltimaHub({
-  isSignedIn,
-  manager,
-  draftState = "lobby",
-  hubStatus = null,
-  news = [],
-  tradeCards = [],
-  europeDesk = null,
-}) {
-  const lead = manager
-    ? buildLead({ draftState, hubStatus, tradeCards, news })
-    : null;
-  const columnNews = lead?.newsId
-    ? news.filter((item) => item.id !== lead.newsId)
-    : news;
+function ScoutingPanel({ groups }) {
+  if (!groups?.length) {
+    return (
+      <UltimaPanel title="Scouting window">
+        <UltimaStaffMessage
+          subject="No fixtures synced yet"
+          body="No fixtures synced yet. The scouts report when Sportmonks does."
+        />
+      </UltimaPanel>
+    );
+  }
 
-  const doors = manager ? (
-    <div className={styles.hubDoors}>
-      <Link href="/ultima/draft" className={styles.hubDoor}>
-        <span className={styles.hubDoorKicker}>Season</span>
-        <strong>Draft</strong>
-      </Link>
-      <Link href="/ultima/practice" className={styles.hubDoor}>
-        <span className={styles.hubDoorKicker}>Does not count</span>
-        <strong>Pre-draft</strong>
-      </Link>
-    </div>
-  ) : null;
-
-  const briefing = manager
-    ? buildBriefing({ draftState, hubStatus, tradeCards, europeDesk })
-    : [];
-
-  const leadNode =
-    manager && lead ? (
-      <article className={lead.live ? styles.leadLive : styles.lead}>
-        <p className={styles.leadKicker}>{lead.kicker}</p>
-        <h2 className={styles.leadTitle}>{lead.title}</h2>
-        <p className={styles.leadBody}>{lead.body}</p>
-        {lead.cta && lead.href ? (
-          <Link href={lead.href} className={styles.primaryBtn}>
-            {lead.cta}
-          </Link>
-        ) : null}
-      </article>
-    ) : null;
-
-  const briefingNode =
-    manager && briefing.length ? (
-      <section className={styles.officePanel} aria-label="Manager briefing">
-        <h2 className={styles.panelTitle}>Your briefing</h2>
-        <ul className={styles.briefingList}>
-          {briefing.map((item) => (
-            <li key={item.text} className={styles.briefingItem}>
-              <p className={styles.briefingText}>{item.text}</p>
-              <Link href={item.href} className={styles.quietLink}>
-                {item.cta}
-              </Link>
-            </li>
+  return (
+    <UltimaPanel title="Scouting window">
+      {groups.map((group) => (
+        <div key={group.key}>
+          <p className={styles.hubDateHead}>{group.label}</p>
+          {group.rows.map((row) => (
+            <UltimaRow
+              key={row.id}
+              primary={`${row.home} v ${row.away}`}
+              number={scoreNumber(row)}
+              yours={row.yours}
+            >
+              <p className={styles.opRowMeta}>
+                <UltimaCountryTag league={row.league} />{" "}
+                {row.live ? "LIVE" : <UltimaLocalTime value={row.kickoff} />}
+              </p>
+            </UltimaRow>
           ))}
-        </ul>
-      </section>
-    ) : null;
+        </div>
+      ))}
+    </UltimaPanel>
+  );
+}
+
+function MoversPanel({ movers }) {
+  const rising = movers?.rising ?? [];
+  const falling = movers?.falling ?? [];
+  if (!rising.length && !falling.length) {
+    return (
+      <UltimaPanel title="Movers">
+        <UltimaStaffMessage
+          subject="No rating movers yet"
+          body="No rating movers yet. The scouts report when Sportmonks does."
+        />
+      </UltimaPanel>
+    );
+  }
+
+  return (
+    <UltimaPanel title="Movers">
+      {rising.map((row) => (
+        <UltimaRow
+          key={`up-${row.playerId}`}
+          primary={row.name}
+          meta={[row.club, row.leagueCode].filter(Boolean).join(" · ")}
+          number={
+            <span className={styles.opStatDeltaUp}>
+              {`+${row.delta.toFixed(2)}`}
+            </span>
+          }
+        />
+      ))}
+      {falling.map((row) => (
+        <UltimaRow
+          key={`down-${row.playerId}`}
+          primary={row.name}
+          meta={[row.club, row.leagueCode].filter(Boolean).join(" · ")}
+          number={
+            <span className={styles.opStatDeltaMuted}>
+              {row.delta.toFixed(2)}
+            </span>
+          }
+        />
+      ))}
+    </UltimaPanel>
+  );
+}
+
+function TablePanel({ table }) {
+  const top4 = table?.top4 ?? [];
+  if (!top4.length) {
+    return (
+      <UltimaPanel title="Table" actionLabel="Full table" actionHref="/ultima/standings">
+        <UltimaStaffMessage
+          subject="The Ultima table is empty"
+          body="The Ultima table is empty. Season points land after the first scored gameweek."
+        />
+      </UltimaPanel>
+    );
+  }
+
+  return (
+    <UltimaPanel title="Table" actionLabel="Full table" actionHref="/ultima/standings">
+      {top4.map((row) => (
+        <UltimaRow
+          key={row.id}
+          yours={row.yours}
+          primary={`${row.rank}. ${row.team_name}`}
+          number={
+            <span className={styles.opValueMid}>
+              {row.seasonPoints}
+            </span>
+          }
+        />
+      ))}
+      {table.youOutside ? (
+        <UltimaRow
+          yours
+          primary={`${table.youOutside.rank}. ${table.youOutside.team_name}`}
+          number={
+            <span className={styles.opValueMid}>
+              {table.youOutside.seasonPoints}
+            </span>
+          }
+        />
+      ) : null}
+    </UltimaPanel>
+  );
+}
+
+export default function UltimaHub({ isSignedIn, manager, office = null }) {
+  if (!manager) {
+    return (
+      <div className={styles.hub}>
+        {!isSignedIn ? (
+          <p className={styles.hubNote}>
+            Invite only.{" "}
+            <Link href="/signin?next=/ultima/join" className={styles.quietLink}>
+              Sign in to join
+            </Link>
+          </p>
+        ) : (
+          <p className={styles.hubNote}>
+            <Link href="/ultima/join" className={styles.quietLink}>
+              Enter your invite password
+            </Link>
+            {" · "}
+            <Link href="/ultima/rules" className={styles.quietLink}>
+              Read the rules
+            </Link>
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  if (!office) {
+    return (
+      <div className={styles.hub}>
+        <UltimaStaffMessage
+          subject="The hub did not load"
+          body="The office could not read league state. Refresh the page."
+        />
+      </div>
+    );
+  }
+
+  const hasTrades = Boolean(office.trades?.length);
+  const inboxEmpty = !office.inbox?.preview?.length && !office.inbox?.rest?.length;
 
   return (
     <div className={styles.hub}>
-      {!isSignedIn ? (
-        <p className={styles.hubNote}>
-          Invite only.{" "}
-          <Link href="/signin?next=/ultima/join" className={styles.quietLink}>
-            Sign in to join
-          </Link>
-        </p>
-      ) : null}
+      <div className={hasTrades ? styles.hubOffice : styles.hubOfficeNoTrade}>
+        <div className={styles.hubStats}>
+          <UltimaPanel title="This week">
+            <UltimaStatsStrip items={office.stats} />
+          </UltimaPanel>
+        </div>
 
-      {!manager && isSignedIn ? (
-        <p className={styles.hubNote}>
-          <Link href="/ultima/join" className={styles.quietLink}>
-            Enter your invite password
-          </Link>
-          {" · "}
-          <Link href="/ultima/rules" className={styles.quietLink}>
-            Read the rules
-          </Link>
-        </p>
-      ) : null}
+        {hasTrades ? (
+          <div className={styles.hubTrade}>
+            <UltimaHubTrades initialCards={office.trades} managerId={office.managerId} />
+          </div>
+        ) : null}
 
-      {manager ? (
-        <UltimaEuropeDesk
-          desk={europeDesk}
-          doors={doors}
-          lead={leadNode}
-          briefing={briefingNode}
-          inboxExtra={
-            <>
-              <UltimaTradeDesk initialCards={tradeCards} managerId={manager.id} />
-              <UltimaNewsBoard initialItems={columnNews} />
-            </>
-          }
-          radio={<UltimaChat managerId={manager.id} />}
-        />
-      ) : null}
+        <div className={styles.hubInbox}>
+          <UltimaPanel title="Inbox">
+            {inboxEmpty ? (
+              <UltimaStaffMessage
+                subject="The inbox is quiet"
+                body="League mail lands when seats, picks, and results move."
+              />
+            ) : (
+              <UltimaHubInbox preview={office.inbox.preview} rest={office.inbox.rest} />
+            )}
+          </UltimaPanel>
+        </div>
 
-      {manager ? <UltimaInstallHint /> : null}
+        <div className={styles.hubNext}>
+          <NextMatchPanel match={office.nextMatch} hasRoster={office.hasRoster} />
+        </div>
+
+        <div className={styles.hubScout}>
+          <ScoutingPanel groups={office.scouting} />
+        </div>
+
+        <div className={styles.hubForm}>
+          <UltimaPanel title="Form">
+            <UltimaHubForm teams={office.form.teams} players={office.form.players} />
+          </UltimaPanel>
+        </div>
+
+        <div className={styles.hubMovers}>
+          <MoversPanel movers={office.movers} />
+        </div>
+
+        <div className={styles.hubTable}>
+          <TablePanel table={office.table} />
+        </div>
+
+        <div className={styles.hubRadio}>
+          <UltimaHubRadio
+            initialMessages={office.chat}
+            managerId={office.managerId}
+          />
+        </div>
+      </div>
+
+      <UltimaInstallHint />
     </div>
   );
 }
