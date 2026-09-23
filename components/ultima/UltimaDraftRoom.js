@@ -501,6 +501,7 @@ export default function UltimaDraftRoom({
       )
     : null;
   const botOnClock = Boolean(state.on_clock?.is_bot);
+  const autoOnClock = Boolean(state.on_clock?.auto_seat ?? state.on_clock?.is_bot);
   const round = Math.max(1, Math.ceil((state.current_pick || 1) / (state.managers?.length || 10)));
   const yourTurn = Boolean(state.is_your_turn);
   const momentTitle = yourTurn
@@ -514,7 +515,7 @@ export default function UltimaDraftRoom({
           : isPractice
             ? "Practice"
             : "Draft";
-  const showBotClock = !stall && (botOnClock || botPicking);
+  const showBotClock = !stall && (autoOnClock || botPicking);
   const secondsLabel = showBotClock
     ? null
     : humanSeconds != null

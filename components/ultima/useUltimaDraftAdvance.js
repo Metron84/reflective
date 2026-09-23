@@ -15,6 +15,10 @@ function sleep(ms) {
   });
 }
 
+function isAutoClock(snap) {
+  return Boolean(snap?.on_clock?.auto_seat ?? snap?.on_clock?.is_bot);
+}
+
 /**
  * Bot / timeout advance driver. Mounted from the draft room root so Players vs
  * Board cannot unmount it.
@@ -150,17 +154,21 @@ export default function useUltimaDraftAdvance({
         stallTries.current += 1;
         const result = await postAdvance(reason);
         await fetchStateRef.current();
-        const moved =
-          result.ok &&
-          result.data.current_pick != null &&
-          result.data.current_pick !== snap?.current_pick;
+        const afterPick = stateRef.current?.current_pick;
+        const moved = afterPick != null && afterPick !== snap?.current_pick;
         if (moved) {
           stallTries.current = 0;
           setStall(false);
           setStallDetail("");
           return;
         }
-        if (!result.ok || result.data.skipped) {
+        if (result.ok && result.data.skipped) {
+          stallTries.current = 0;
+          setStall(false);
+          setStallDetail("");
+          return;
+        }
+        if (!result.ok) {
           if (stallTries.current >= MAX_STALL_RETRIES) {
             markStall(
               result.message
@@ -196,8 +204,8 @@ export default function useUltimaDraftAdvance({
   }, [state?.current_pick]);
 
   useEffect(() => {
-    if (!enabled || state?.state !== "live" || !state.on_clock?.is_bot || stall) {
-      if (!state?.on_clock?.is_bot || stall) setBotPicking(false);
+    if (!enabled || state?.state !== "live" || !isAutoClock(state) || stall) {
+      if (!isAutoClock(state) || stall) setBotPicking(false);
       return undefined;
     }
 
@@ -214,30 +222,44 @@ export default function useUltimaDraftAdvance({
         );
         while (!stopped) {
           const snap = stateRef.current;
-          if (snap?.state !== "live" || !snap.on_clock?.is_bot) break;
+          if (snap?.state !== "live" || !isAutoClock(snap)) break;
           const beforePick = snap.current_pick;
           const result = await postAdvance("bot_loop");
           await fetchStateRef.current();
-          const afterPick = stateRef.current?.current_pick;
-          if (result.ok && afterPick != null && afterPick !== beforePick) {
+          const after = stateRef.current;
+          const afterPick = after?.current_pick;
+          const moved = afterPick != null && afterPick !== beforePick;
+          if (moved) {
             stallTries.current = 0;
-            if (result.data.on_clock_is_bot === false) break;
+            if (!isAutoClock(after) || after?.on_clock?.auto_seat === false) break;
+            if (result.data.on_clock_is_auto === false && !after?.on_clock?.is_bot) break;
             await sleep(
               isPracticeRef.current ? PRACTICE_BOT_CHAIN_GAP_MS : BOT_CHAIN_GAP_MS,
             );
             continue;
           }
-          warnStall(snap, "advance_http", result.message);
-          stallTries.current += 1;
-          if (stallTries.current >= MAX_STALL_RETRIES) {
-            markStall(
-              result.message
-                ? `${result.status || "ERR"} · ${result.message}`
-                : "",
+          if (result.ok && result.data.skipped) {
+            if (!isAutoClock(after)) break;
+            await sleep(
+              isPracticeRef.current ? PRACTICE_BOT_CHAIN_GAP_MS : BOT_CHAIN_GAP_MS,
             );
-            break;
+            continue;
           }
-          await sleep(BOT_CHAIN_GAP_MS);
+          if (!result.ok && isAutoClock(after)) {
+            warnStall(snap, "advance_http", result.message);
+            stallTries.current += 1;
+            if (stallTries.current >= MAX_STALL_RETRIES) {
+              markStall(
+                result.message
+                  ? `${result.status || "ERR"} · ${result.message}`
+                  : "",
+              );
+              break;
+            }
+            await sleep(BOT_CHAIN_GAP_MS);
+            continue;
+          }
+          break;
         }
       } finally {
         advancing.current = false;
@@ -250,7 +272,7 @@ export default function useUltimaDraftAdvance({
     return () => {
       stopped = true;
     };
-  }, [enabled, state?.state, state?.on_clock?.is_bot, loopKey, stall]);
+  }, [enabled, state?.state, state?.on_clock?.auto_seat, state?.on_clock?.is_bot, loopKey, stall]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -259,7 +281,7 @@ export default function useUltimaDraftAdvance({
     }
 
     const human = Boolean(
-      enabled && state?.state === "live" && state.on_clock && !state.on_clock.is_bot,
+      enabled && state?.state === "live" && state.on_clock && !isAutoClock(state),
     );
     if (!human) {
       setHumanSeconds(null);
@@ -272,7 +294,9 @@ export default function useUltimaDraftAdvance({
     setHumanSeconds(start);
 
     if (start <= 0) {
-      void recoverOnce("clock_zero");
+      if (!isPracticeRef.current || stateRef.current?.auto_draft) {
+        void recoverOnce("clock_zero");
+      }
       return undefined;
     }
 
@@ -291,7 +315,9 @@ export default function useUltimaDraftAdvance({
       }
       if (!firedZero) {
         firedZero = true;
-        void recoverOnce("clock_zero");
+        if (!isPracticeRef.current || stateRef.current?.auto_draft) {
+          void recoverOnce("clock_zero");
+        }
       }
     }, 1000);
 
@@ -301,7 +327,7 @@ export default function useUltimaDraftAdvance({
         intervalRef.current = null;
       }
     };
-  }, [enabled, state?.state, state?.current_pick, state?.on_clock?.id, state?.on_clock?.is_bot]);
+  }, [enabled, state?.state, state?.current_pick, state?.on_clock?.id, state?.on_clock?.is_bot, state?.on_clock?.auto_seat]);
 
   async function retry() {
     logAdvance("retry_tap");
@@ -309,7 +335,7 @@ export default function useUltimaDraftAdvance({
     clearStaleLock(true);
     setStall(false);
     setStallDetail("");
-    if (stateRef.current?.on_clock?.is_bot) {
+    if (isAutoClock(stateRef.current)) {
       setLoopKey((key) => key + 1);
       return;
     }
