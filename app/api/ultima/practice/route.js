@@ -13,6 +13,7 @@ import {
   resetPracticeRoom,
   setPracticeAutoDraft,
   setPracticeKeep,
+  setPracticeLobby,
   startPracticeRoom,
 } from "@/lib/ultima/server/practice";
 
@@ -96,6 +97,14 @@ export async function POST(request) {
         userId: user.id,
         seasonManager: gated.manager,
         code: body.code,
+      });
+      break;
+    case "set_lobby":
+      result = await setPracticeLobby({
+        userId: user.id,
+        code: body.code,
+        seatsCap: body.seatsCap,
+        mySlot: body.mySlot,
       });
       break;
     case "start":

@@ -80,7 +80,7 @@ Draft and practice rooms stay full screen with `ultima-live-chrome-off`. The sit
 | Route | FM24 equivalent |
 |---|---|
 | Hub | Home and inbox: briefing, next match, form, movers, league mail, staff radio |
-| Pre-draft | Scouting assignments: room list, lobby, start as a second tap |
+| Pre-draft | Scouting assignments: room list, lobby. Start stays in the top bar. Host can set 2–10 seats and move their pick. Start keeps that order. Season draft stays a random 10. |
 | Draft and practice | Draft room: board, picker, queue, picks, plus the full-screen on-the-clock takeover |
 | Squad | Squad view: XV grouped by country with floor status, bench below |
 | Table | League table: your row highlighted, season points, gameweek, Bolt line |
@@ -112,7 +112,7 @@ Work one step at a time. Stop for review at the end of each step.
 6. Table `/ultima/standings`: season and gameweek views, form squares from real gameweek ranks, Bolt line, club sheet. XV omitted until the current gameweek locks. LIVE only next to the gameweek label.
 7. Market `/ultima/market`: draft picker for free agents, watchlist, scouting tables. No prices. Sign and drop logic unchanged.
 8. Trade `/ultima/trades`: received, sent, league, new offer. Fairness advisory. Red only on live veto. Trade logic unchanged.
-9. Pre-draft `/ultima/practice`: practice rooms as office rows. Solo does not auto-start. Start is a second tap.
+9. Pre-draft `/ultima/practice`: practice rooms as office rows. Solo does not auto-start. Start sits in the lobby top bar. Host sets seat count (2–10) and pick order. Start uses that order. Season `/ultima/draft` still shuffles 10.
 10. Rules: cream for unsigned, night office for seated, one content source. Join stays cream and lands on the hub.
 11. Utility pages: Profile, Admin, Log, Sample. Step 2 primitives only. Kit colours exclude signal red. Destructive admin actions use a confirm sheet and office buttons. Veto stays red. Sample carries a muted SAMPLE chip on the club bar and every panel header.
 12. Final sweep: Archivo only on Ultima. Signal red is LIVE and veto only. Staff messages replace red error boxes. Country tags stay ENG ESP ITA GER FRA. Missing values are a dash. Rows stay 48px with 13px minimum text. Safe-area on seated pages and the PWA. Draft and practice hide site chrome. Cream-desk and old-hub leftovers removed.

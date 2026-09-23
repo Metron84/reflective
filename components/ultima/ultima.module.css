@@ -4718,10 +4718,19 @@ button.hubDoor {
   column-gap: 0.75rem;
   min-height: 48px;
   padding: 0.45rem 16px;
+  border: none;
   border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
   background: transparent;
   color: inherit;
   text-decoration: none;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+}
+
+button.opRow,
+button.opRowYours {
+  cursor: pointer;
 }
 
 .opRow:last-child,
@@ -5181,6 +5190,12 @@ button.hubDoor {
   gap: 0.85rem;
 }
 
+.draftRoom.draftOffice.dLobby {
+  height: auto;
+  min-height: 100dvh;
+  overflow: auto;
+}
+
 .dCompleteActions {
   display: flex;
   flex-wrap: wrap;
@@ -5243,6 +5258,13 @@ button.hubDoor {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+.dBarStart {
+  align-self: center;
+  min-height: 40px;
+  padding: 0 1rem;
+  margin: 0 12px 0 0;
 }
 
 .dAutoOn,
@@ -6624,6 +6646,61 @@ button.hubDoor {
   font-family: var(--font-archivo), sans-serif;
   font-size: 13px;
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.prSeatCap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 12px;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.prSeatCap strong {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--office-ink, #e6e1d8);
+}
+
+.prSeatLine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.prSeatLine:last-child {
+  border-bottom: none;
+}
+
+.prSeatLine .opRow,
+.prSeatLine .opRowYours {
+  border-bottom: none;
+}
+
+.prSeatMove {
+  display: flex;
+  gap: 0.35rem;
+  padding-right: 12px;
+}
+
+.prSeatBtn {
+  min-height: 36px;
+  min-width: 36px;
+  padding: 0 0.55rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  background: transparent;
+  color: var(--office-ink, #e6e1d8);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+}
+
+.prSeatBtn:disabled {
+  opacity: 0.4;
 }
 
 @media (min-width: 900px) {
