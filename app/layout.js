@@ -1,9 +1,12 @@
 import { Bodoni_Moda, Archivo } from "next/font/google";
+import { headers } from "next/headers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
+import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
+import { isUltimaAppHost } from "@/lib/ultima/host";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -17,7 +20,7 @@ const archivo = Archivo({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-export const metadata = {
+const SITE_METADATA = {
   metadataBase: new URL(SITE_URL),
   applicationName: "The Reflective Football",
   title: {
@@ -64,16 +67,57 @@ export const metadata = {
   },
 };
 
-export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F2EDE4" },
-    { media: "(prefers-color-scheme: dark)", color: "#F2EDE4" },
-  ],
-  colorScheme: "light",
-  viewportFit: "cover",
-};
+export async function generateMetadata() {
+  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
+  if (!ultimaApp) return SITE_METADATA;
 
-export default function RootLayout({ children }) {
+  return {
+    ...SITE_METADATA,
+    applicationName: "Ultima",
+    title: {
+      default: "Ultima",
+      template: "%s | Ultima",
+    },
+    description: "Draft Europe's top five. Invite only.",
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: "Ultima",
+    },
+    icons: {
+      icon: [
+        { url: "/ultima/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/ultima/icon-512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: "/ultima/apple-touch-icon.png",
+    },
+  };
+}
+
+export async function generateViewport() {
+  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
+  if (ultimaApp) {
+    return {
+      themeColor: "#12151C",
+      colorScheme: "dark",
+      viewportFit: "cover",
+    };
+  }
+
+  return {
+    themeColor: [
+      { media: "(prefers-color-scheme: light)", color: "#F2EDE4" },
+      { media: "(prefers-color-scheme: dark)", color: "#F2EDE4" },
+    ],
+    colorScheme: "light",
+    viewportFit: "cover",
+  };
+}
+
+export default async function RootLayout({ children }) {
+  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
+
   return (
     <html
       lang="en"
@@ -86,12 +130,12 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://www.youtube.com" />
         <link rel="dns-prefetch" href="https://i.ytimg.com" />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className={ultimaApp ? "flex min-h-full flex-col ultima-app" : "flex min-h-full flex-col"}>
         <NavigationProgress />
-        <Header />
+        {ultimaApp ? null : <Header />}
         <main className="flex flex-1 flex-col">{children}</main>
-        <Footer />
-        <InstallHint />
+        {ultimaApp ? null : <Footer />}
+        {ultimaApp ? <UltimaSwRegister /> : <InstallHint />}
       </body>
     </html>
   );

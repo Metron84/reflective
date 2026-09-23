@@ -152,3 +152,9 @@ body:has(.ultima-live-chrome-off) > header {
 body.ultima-office {
   background: #12151c;
 }
+
+/* Standalone Ultima host: no TRF chrome. */
+body.ultima-app > header,
+body.ultima-app > footer {
+  display: none;
+}

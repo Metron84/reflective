@@ -34,7 +34,16 @@ function isArchiveJsonPath(pathname) {
   return pathname.startsWith("/archive/data/");
 }
 
+function isUltimaAppHost() {
+  try {
+    return String(self.location.hostname ?? "").startsWith("ultima.");
+  } catch {
+    return false;
+  }
+}
+
 function isUltimaPath(pathname) {
+  if (isUltimaAppHost()) return true;
   return pathname === "/ultima" || pathname.startsWith("/ultima/");
 }
 
@@ -92,6 +101,7 @@ const CURRENT_CACHE_NAMES = new Set([
 /** Prefetch HTML for the three warm routes into the pages cache. Fail quietly offline. */
 async function warmHighTrafficPages() {
   try {
+    if (isUltimaAppHost()) return;
     if (typeof navigator !== "undefined" && navigator.onLine === false) {
       return;
     }

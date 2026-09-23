@@ -1,7 +1,9 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import UltimaJoinForm from "@/components/ultima/UltimaJoinForm";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
+import { isUltimaAppHost } from "@/lib/ultima/host";
 import { getManagerForUser } from "@/lib/ultima/server/db";
 
 export const metadata = {
@@ -19,9 +21,12 @@ export default async function UltimaJoinCodePage({ params }) {
     redirect("/ultima");
   }
 
+  const appHost = isUltimaAppHost((await headers()).get("host"));
+  const joinPath = appHost ? `/join/${normalized}` : `/ultima/join/${normalized}`;
+
   const auth = await getAuthContext();
   if (!auth.isSignedIn) {
-    redirect(`/signin?next=${encodeURIComponent(`/ultima/join/${normalized}`)}`);
+    redirect(`/signin?next=${encodeURIComponent(joinPath)}`);
   }
 
   const manager = await getManagerForUser(auth.user.id);
@@ -29,7 +34,7 @@ export default async function UltimaJoinCodePage({ params }) {
     redirect(manager.profile_complete ? "/ultima" : "/ultima/profile");
   }
 
-  const signInHref = `/signin?next=${encodeURIComponent(`/ultima/join/${normalized}`)}`;
+  const signInHref = `/signin?next=${encodeURIComponent(joinPath)}`;
 
   return (
     <div className={styles.ultimaPage}>

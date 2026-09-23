@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import { ultimaCanonicalPath } from "@/lib/ultima/host";
 import UltimaClubBar from "./UltimaClubBar";
 import styles from "./ultima.module.css";
 
@@ -137,7 +138,7 @@ export default function UltimaShell({
   club = null,
   children,
 }) {
-  const pathname = usePathname() ?? "";
+  const pathname = ultimaCanonicalPath(usePathname() ?? "");
   const seated = Boolean(manager);
   const sample = isSamplePath(pathname);
   const office =

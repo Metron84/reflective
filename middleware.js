@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import {
+  isUltimaAppHost,
+  isUltimaAppLeaf,
+  isUltimaPassthrough,
+  withAuthCookieDomain,
+} from "@/lib/ultima/host";
 
 const PUBLIC_PATHS = [
   "/signin",
@@ -30,24 +36,63 @@ function isPublicPath(pathname) {
   return false;
 }
 
+function applyAuthCookies(response, cookiesToSet, host) {
+  cookiesToSet.forEach(({ name, value, options }) => {
+    response.cookies.set(name, value, withAuthCookieDomain(options, host));
+  });
+  return response;
+}
+
+function ultimaHostResponse(request) {
+  const pathname = request.nextUrl.pathname;
+  const url = request.nextUrl.clone();
+
+  if (pathname === "/manifest.webmanifest" || pathname === "/manifest.json") {
+    url.pathname = "/ultima/manifest.webmanifest";
+    return NextResponse.rewrite(url);
+  }
+
+  if (isUltimaPassthrough(pathname)) {
+    return null;
+  }
+
+  if (pathname === "/" || pathname === "") {
+    url.pathname = "/ultima";
+    return NextResponse.rewrite(url);
+  }
+
+  if (isUltimaAppLeaf(pathname)) {
+    url.pathname = `/ultima${pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  url.pathname = "/";
+  url.search = "";
+  return NextResponse.redirect(url);
+}
+
 export async function middleware(request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return NextResponse.next();
+  const host = request.headers.get("host") ?? "";
+  if (!url || !key) {
+    if (isUltimaAppHost(host)) {
+      return ultimaHostResponse(request) ?? NextResponse.next({ request });
+    }
+    return NextResponse.next();
+  }
 
-  let response = NextResponse.next({ request });
+  const cookieBag = [];
   const supabase = createServerClient(url, key, {
+    cookieOptions: withAuthCookieDomain({}, host),
     cookies: {
       getAll() {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => {
-          request.cookies.set(name, value);
-        });
-        response = NextResponse.next({ request });
         cookiesToSet.forEach(({ name, value, options }) => {
-          response.cookies.set(name, value, options);
+          request.cookies.set(name, value);
+          cookieBag.push({ name, value, options });
         });
       },
     },
@@ -58,29 +103,34 @@ export async function middleware(request) {
   } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  if (!user || isPublicPath(pathname)) {
-    return response;
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("welcome_completed")
-    .eq("id", user.id)
-    .maybeSingle();
+  let response = NextResponse.next({ request });
 
   if (
-    profile &&
-    !profile.welcome_completed &&
+    user &&
+    !isPublicPath(pathname) &&
     pathname !== "/welcome" &&
     !pathname.startsWith("/api/auth")
   ) {
-    const welcomeUrl = request.nextUrl.clone();
-    welcomeUrl.pathname = "/welcome";
-    welcomeUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
-    return NextResponse.redirect(welcomeUrl);
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("welcome_completed")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (profile && !profile.welcome_completed) {
+      const welcomeUrl = request.nextUrl.clone();
+      welcomeUrl.pathname = "/welcome";
+      welcomeUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
+      response = NextResponse.redirect(welcomeUrl);
+      return applyAuthCookies(response, cookieBag, host);
+    }
   }
 
-  return response;
+  if (isUltimaAppHost(host)) {
+    response = ultimaHostResponse(request) ?? response;
+  }
+
+  return applyAuthCookies(response, cookieBag, host);
 }
 
 export const config = {

@@ -1,7 +1,10 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import UltimaJoinForm from "@/components/ultima/UltimaJoinForm";
+import UltimaStaffMessage from "@/components/ultima/UltimaStaffMessage";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
+import { isUltimaAppHost } from "@/lib/ultima/host";
 import { getManagerForUser } from "@/lib/ultima/server/db";
 import { isPasswordJoinEnabled } from "@/lib/ultima/server/join";
 
@@ -14,16 +17,21 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaJoinPage() {
-  if (!isPasswordJoinEnabled()) {
+  const appHost = isUltimaAppHost((await headers()).get("host"));
+  const joinNext = appHost ? "/join" : "/ultima/join";
+  const signInHref = `/signin?next=${encodeURIComponent(joinNext)}`;
+
+  if (!isPasswordJoinEnabled() && !appHost) {
     redirect("/ultima");
   }
 
   const auth = await getAuthContext();
-  if (!auth.isSignedIn) {
-    redirect("/signin?next=%2Fultima%2Fjoin");
+  if (!auth.isSignedIn && !appHost) {
+    redirect(signInHref);
   }
 
-  const manager = await getManagerForUser(auth.user.id);
+  const manager =
+    auth.isSignedIn && auth.user ? await getManagerForUser(auth.user.id) : null;
   if (manager) {
     redirect(manager.profile_complete ? "/ultima" : "/ultima/profile");
   }
@@ -34,7 +42,14 @@ export default async function UltimaJoinPage() {
         <p className={styles.eyebrow}>GAMES · ULTIMA</p>
         <h1 className={styles.title}>Join</h1>
         <p className={styles.lede}>Invite only. Enter the password from your invite.</p>
-        <UltimaJoinForm signInHref="/signin?next=%2Fultima%2Fjoin" mode="password" />
+        {isPasswordJoinEnabled() ? (
+          <UltimaJoinForm signInHref={signInHref} mode="password" />
+        ) : (
+          <UltimaStaffMessage
+            subject="Invite only"
+            body="Opens when the commissioner is ready."
+          />
+        )}
       </div>
     </div>
   );

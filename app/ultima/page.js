@@ -1,8 +1,11 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
 import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
+import { isUltimaAppHost } from "@/lib/ultima/host";
 import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { getHubOffice } from "@/lib/ultima/server/hub";
@@ -29,6 +32,11 @@ export default async function UltimaPage() {
     auth.isSignedIn && auth.user
       ? await getManagerForUser(auth.user.id)
       : null;
+  const appHost = isUltimaAppHost((await headers()).get("host"));
+
+  if (appHost && !manager) {
+    redirect("/ultima/join");
+  }
 
   let gameweekNumber = null;
   if (competition && !manager) {
@@ -75,10 +83,14 @@ export default async function UltimaPage() {
           <Link href="/ultima/rules" className={styles.quietLink}>
             Read the rules
           </Link>
-          {" · "}
-          <Link href="/games" className={styles.quietLink}>
-            All games
-          </Link>
+          {appHost ? null : (
+            <>
+              {" · "}
+              <Link href="/games" className={styles.quietLink}>
+                All games
+              </Link>
+            </>
+          )}
         </p>
       </div>
     </div>
