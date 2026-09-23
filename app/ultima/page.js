@@ -8,7 +8,7 @@ import { ULTIMA_ENABLED } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
-import { getHubOffice } from "@/lib/ultima/server/hub";
+import { emptyHubOffice, getHubOffice } from "@/lib/ultima/server/hub";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export const metadata = {
@@ -49,16 +49,18 @@ export default async function UltimaPage() {
     }
   }
 
-  const office =
-    competition && manager
-      ? await safeResolve(
-          getHubOffice({
-            competitionId: competition.id,
-            managerId: manager.id,
-          }),
-          null,
-        )
-      : null;
+  let office = null;
+  if (competition && manager) {
+    try {
+      office = await getHubOffice({
+        competitionId: competition.id,
+        managerId: manager.id,
+      });
+    } catch {
+      office = emptyHubOffice(manager.id);
+    }
+    if (!office) office = emptyHubOffice(manager.id);
+  }
 
   return (
     <div className={styles.ultimaPage}>
