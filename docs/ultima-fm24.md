@@ -47,9 +47,7 @@ Continue routes to the most urgent real task:
 
 Continue label names the task.
 
-Desktop: left rail. Mobile: bottom bar with Hub, Squad, Market, Table, More. More holds Pre-draft, Draft, Trade, Rules, Profile, Log, Admin.
-
-When a draft is live, Draft replaces Market in the bottom bar.
+Desktop left rail and mobile bottom bar show the same doors: Hub, Pre-draft, Draft, Squad, Table, Market, Trade, Rules, Profile, Log, and Admin if you are commissioner. No More sheet. The mobile bar scrolls sideways if the phone is narrow.
 
 Rail icons use office metaphors:
 

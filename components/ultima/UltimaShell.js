@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -8,7 +8,7 @@ import { ultimaCanonicalPath } from "@/lib/ultima/host";
 import UltimaClubBar from "./UltimaClubBar";
 import styles from "./ultima.module.css";
 
-const DESKTOP_NAV = [
+const OFFICE_NAV = [
   { href: "/ultima", label: "Hub", icon: HubIcon },
   { href: "/ultima/practice", label: "Pre-draft", icon: PracticeIcon },
   { href: "/ultima/draft", label: "Draft", icon: DraftIcon },
@@ -16,6 +16,9 @@ const DESKTOP_NAV = [
   { href: "/ultima/standings", label: "Table", icon: TableIcon },
   { href: "/ultima/market", label: "Market", icon: MarketIcon },
   { href: "/ultima/trades", label: "Trade", icon: TradesIcon },
+  { href: "/ultima/rules", label: "Rules", icon: RulesIcon },
+  { href: "/ultima/profile", label: "Profile", icon: ProfileIcon },
+  { href: "/ultima/log", label: "Log", icon: LogIcon },
 ];
 
 const CRUMB_LABELS = {
@@ -106,29 +109,13 @@ function crumbsFor(pathname) {
   ];
 }
 
-function mobilePrimary(draftLive) {
+function officeNav(isCommissioner) {
   return [
-    { href: "/ultima", label: "Hub", icon: HubIcon },
-    { href: "/ultima/squad", label: "Squad", icon: SquadIcon },
-    draftLive
-      ? { href: "/ultima/draft", label: "Draft", icon: DraftIcon }
-      : { href: "/ultima/market", label: "Market", icon: MarketIcon },
-    { href: "/ultima/standings", label: "Table", icon: TableIcon },
+    ...OFFICE_NAV,
+    ...(isCommissioner
+      ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
+      : []),
   ];
-}
-
-function mobileMore({ draftLive, isCommissioner }) {
-  const items = [
-    { href: "/ultima/practice", label: "Pre-draft", icon: PracticeIcon },
-    { href: "/ultima/draft", label: "Draft", icon: DraftIcon },
-    draftLive ? { href: "/ultima/market", label: "Market", icon: MarketIcon } : null,
-    { href: "/ultima/trades", label: "Trade", icon: TradesIcon },
-    { href: "/ultima/rules", label: "Rules", icon: RulesIcon },
-    { href: "/ultima/profile", label: "Profile", icon: ProfileIcon },
-    { href: "/ultima/log", label: "Log", icon: LogIcon },
-    isCommissioner ? { href: "/ultima/admin", label: "Admin", icon: AdminIcon } : null,
-  ];
-  return items.filter(Boolean);
 }
 
 export default function UltimaShell({
@@ -154,9 +141,6 @@ export default function UltimaShell({
           continue: { label: "Go to hub", href: "/ultima" },
         }
       : null);
-  const draftLive = Boolean(club?.draftLive);
-  const [moreOpen, setMoreOpen] = useState(false);
-
   useEffect(() => {
     document.body.classList.add("ultima-root");
     if (office) document.body.classList.add("ultima-office");
@@ -165,19 +149,7 @@ export default function UltimaShell({
     };
   }, [office]);
 
-  useEffect(() => {
-    setMoreOpen(false);
-  }, [pathname]);
-
-  const desktopNav = [
-    ...DESKTOP_NAV,
-    ...(isCommissioner
-      ? [{ href: "/ultima/admin", label: "Admin", icon: AdminIcon }]
-      : []),
-  ];
-  const primary = mobilePrimary(draftLive);
-  const moreItems = mobileMore({ draftLive, isCommissioner });
-  const moreActive = moreItems.some((item) => isActive(pathname, item.href));
+  const nav = officeNav(isCommissioner);
 
   return (
     <div
@@ -190,7 +162,7 @@ export default function UltimaShell({
         {showRail ? (
           <>
             <nav className={`${styles.rail} ${styles.railDesktop}`} aria-label="Ultima">
-              {desktopNav.map((item) => {
+              {nav.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(pathname, item.href);
                 return (
@@ -208,7 +180,7 @@ export default function UltimaShell({
             </nav>
 
             <nav className={`${styles.rail} ${styles.railMobile}`} aria-label="Ultima">
-              {primary.map((item) => {
+              {nav.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(pathname, item.href);
                 return (
@@ -223,16 +195,6 @@ export default function UltimaShell({
                   </Link>
                 );
               })}
-              <button
-                type="button"
-                className={moreActive || moreOpen ? styles.railLinkActive : styles.railLink}
-                aria-expanded={moreOpen}
-                aria-controls="ultima-more"
-                onClick={() => setMoreOpen((open) => !open)}
-              >
-                <MoreIcon />
-                <span className={styles.railLabel}>More</span>
-              </button>
             </nav>
           </>
         ) : null}
@@ -252,32 +214,6 @@ export default function UltimaShell({
         </div>
       </div>
 
-      {moreOpen && showRail ? (
-        <div className={styles.moreSheet} id="ultima-more" role="dialog" aria-modal="true" aria-label="More">
-          <div className={styles.moreBackdrop} onClick={() => setMoreOpen(false)} aria-hidden />
-          <div className={styles.morePanel}>
-            <p className={styles.moreHeading}>More</p>
-            {moreItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(pathname, item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={active ? styles.moreLinkOn : styles.moreLink}
-                  onClick={() => setMoreOpen(false)}
-                >
-                  <Icon />
-                  {item.label}
-                </Link>
-              );
-            })}
-            <button type="button" className={styles.moreClose} onClick={() => setMoreOpen(false)}>
-              Close
-            </button>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -403,13 +339,3 @@ function LogIcon() {
   );
 }
 
-function MoreIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M6 10.4a1.6 1.6 0 1 1 0 3.2 1.6 1.6 0 0 1 0-3.2Zm6 0a1.6 1.6 0 1 1 0 3.2 1.6 1.6 0 0 1 0-3.2Zm6 0a1.6 1.6 0 1 1 0 3.2 1.6 1.6 0 0 1 0-3.2Z"
-      />
-    </svg>
-  );
-}
