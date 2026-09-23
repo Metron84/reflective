@@ -18,15 +18,14 @@ export const dynamic = "force-dynamic";
 
 export default async function UltimaJoinPage() {
   const appHost = isUltimaAppHost((await headers()).get("host"));
-  const joinNext = appHost ? "/join" : "/ultima/join";
-  const signInHref = `/signin?next=${encodeURIComponent(joinNext)}`;
+  const signInHref = appHost ? "/signin?next=/" : "/signin?next=%2Fultima%2Fjoin";
 
   if (!isPasswordJoinEnabled() && !appHost) {
     redirect("/ultima");
   }
 
   const auth = await getAuthContext();
-  if (!auth.isSignedIn && !appHost) {
+  if (!auth.isSignedIn) {
     redirect(signInHref);
   }
 

@@ -34,6 +34,9 @@ export default async function UltimaPage() {
       : null;
   const appHost = isUltimaAppHost((await headers()).get("host"));
 
+  if (appHost && !auth.isSignedIn) {
+    redirect("/signin?next=/");
+  }
   if (appHost && !manager) {
     redirect("/ultima/join");
   }

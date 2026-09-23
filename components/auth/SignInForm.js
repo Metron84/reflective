@@ -27,12 +27,34 @@ function GoogleLogo({ className }) {
   );
 }
 
-export default function SignInForm({ nextPath = "/", fatfFlow = false }) {
+function isIosDevice() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return (
+    /iPad|iPhone|iPod/.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
+function isStandaloneDisplay() {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true
+  );
+}
+
+export default function SignInForm({
+  nextPath = "/",
+  fatfFlow = false,
+  ultimaApp = false,
+}) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const [ageAttested, setAgeAttested] = useState(false);
+  const [hideEmailLink, setHideEmailLink] = useState(false);
   const googleEnabled = isGoogleAuthEnabled();
   const ageBlocked = fatfFlow && !ageAttested;
 
@@ -46,6 +68,12 @@ export default function SignInForm({ nextPath = "/", fatfFlow = false }) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (ultimaApp && isStandaloneDisplay() && isIosDevice()) {
+      setHideEmailLink(true);
+    }
+  }, [ultimaApp]);
 
   async function sendMagicLink(event) {
     event.preventDefault();
@@ -111,12 +139,14 @@ export default function SignInForm({ nextPath = "/", fatfFlow = false }) {
   return (
     <div className="w-full max-w-md border border-navy/10 bg-paper p-8 shadow-[0_12px_40px_rgba(10,17,31,0.08)]">
       <h1 className="font-display text-3xl leading-tight text-navy sm:text-4xl">
-        Sign in to The Reflective Football
+        {ultimaApp ? "Sign in to Ultima" : "Sign in to The Reflective Football"}
       </h1>
       <p className="mt-3 text-sm text-navy/70">
-        {fatfFlow
-          ? "Free account. We email you when the first night is set."
-          : "Free account. Live results, daily games, and your programme in one place."}
+        {ultimaApp
+          ? "Use the account you joined with."
+          : fatfFlow
+            ? "Free account. We email you when the first night is set."
+            : "Free account. Live results, daily games, and your programme in one place."}
       </p>
 
       {sent ? (
@@ -150,43 +180,51 @@ export default function SignInForm({ nextPath = "/", fatfFlow = false }) {
                 </span>
               </button>
 
-              <div className="mt-6 flex items-center gap-3">
-                <span className="h-px flex-1 bg-navy/10" aria-hidden />
-                <span className="text-xs uppercase tracking-widest text-navy/45">
-                  or
-                </span>
-                <span className="h-px flex-1 bg-navy/10" aria-hidden />
-              </div>
+              {hideEmailLink ? null : (
+                <div className="mt-6 flex items-center gap-3">
+                  <span className="h-px flex-1 bg-navy/10" aria-hidden />
+                  <span className="text-xs uppercase tracking-widest text-navy/45">
+                    or
+                  </span>
+                  <span className="h-px flex-1 bg-navy/10" aria-hidden />
+                </div>
+              )}
             </>
           ) : null}
 
-          <form
-            className={googleEnabled ? "mt-6 space-y-3" : "space-y-3"}
-            onSubmit={sendMagicLink}
-          >
-            <div>
-              <label htmlFor="signin-email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="signin-email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full border border-navy/20 bg-transparent px-4 py-2.5 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-navy/40"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={pending || ageBlocked}
-              className="w-full rounded-full border border-navy/25 bg-transparent px-5 py-2.5 font-body text-sm text-navy/80 transition-colors hover:border-navy/45 hover:text-navy disabled:opacity-60"
+          {hideEmailLink ? (
+            <p className="mt-6 text-sm text-navy/70">
+              On iPhone, use Google here, or open ultima.thereflectivefootball.com in Safari for the email link.
+            </p>
+          ) : (
+            <form
+              className={googleEnabled ? "mt-6 space-y-3" : "space-y-3"}
+              onSubmit={sendMagicLink}
             >
-              {pending ? "Sending…" : "Send sign-in link"}
-            </button>
-          </form>
+              <div>
+                <label htmlFor="signin-email" className="sr-only">
+                  Email
+                </label>
+                <input
+                  id="signin-email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full border border-navy/20 bg-transparent px-4 py-2.5 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-navy/40"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={pending || ageBlocked}
+                className="w-full rounded-full border border-navy/25 bg-transparent px-5 py-2.5 font-body text-sm text-navy/80 transition-colors hover:border-navy/45 hover:text-navy disabled:opacity-60"
+              >
+                {pending ? "Sending…" : "Send sign-in link"}
+              </button>
+            </form>
+          )}
         </div>
       )}
 
