@@ -62,7 +62,7 @@ Rail icons use office metaphors:
 
 Safe-area insets at the top of the seated shell and the standalone PWA so nothing sits under the iOS status bar. PWA theme and background are night `#12151C`. `apple-mobile-web-app-status-bar-style` is `black-translucent`.
 
-Draft and practice rooms keep `ultima-live-chrome-off` so the TRF site header and footer stay off. The Ultima rail stays on. Rooms sit in the shell above the mobile bar. Practice pick is a number field or a tap on a slot, not Up / Down.
+Draft and practice rooms keep `ultima-live-chrome-off` so the TRF site header and footer stay off. The Ultima rail stays on and stays pinned to the viewport: mobile bar `position: fixed` at the bottom, document scroll frozen. Only the player list and lobby body scroll. Practice pick is a number field or a tap on a slot, not Up / Down.
 
 ## Primitives
 

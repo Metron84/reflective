@@ -3258,6 +3258,11 @@
   gap: 0;
 }
 
+.shellRoom {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .ultimaRoot {
   min-width: 0;
   font-family: var(--font-archivo), sans-serif;
@@ -3600,12 +3605,32 @@
   .shellMain .saveBar {
     bottom: 4.75rem;
   }
+
+  .shellRoom {
+    height: calc(100dvh - 4.75rem - env(safe-area-inset-bottom));
+  }
+
+  .office .railMobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: auto;
+    min-height: 0;
+    z-index: 40;
+  }
 }
 
 @media (min-width: 900px) {
   .shell {
     flex-direction: row;
     align-items: flex-start;
+  }
+
+  .shell.shellRoom {
+    height: 100dvh;
+    align-items: stretch;
   }
 
   .shellMain {
@@ -3733,6 +3758,13 @@
   min-height: 100vh;
   font-family: var(--font-archivo), sans-serif;
   font-variant-numeric: tabular-nums;
+}
+
+:global(body.ultima-room) .office {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  padding-top: 0;
 }
 
 @media (display-mode: standalone) {
@@ -4261,6 +4293,16 @@
   box-shadow: inset 0 2px 0 #e6e1d8;
 }
 
+.office .railMobile {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: auto;
+  min-height: 0;
+  z-index: 40;
+}
+
 .office .standingsTable th,
 .office .standingsTable td {
   border-color: var(--office-line);
@@ -4318,8 +4360,8 @@
 }
 
 @media (min-width: 900px) {
-  :global(body.ultima-app) .office .rail,
-  :global(body:has(.ultima-live-chrome-off)) .office .rail {
+  :global(body.ultima-app) .office .railDesktop,
+  :global(body.ultima-room) .office .railDesktop {
     top: 0;
     min-height: 100dvh;
   }
@@ -5204,21 +5246,25 @@ button.opRowYours {
   overflow: auto;
 }
 
+.shellRoom .shellMain,
 .shellMain:has(.draftRoom.draftOffice) {
   padding: 0;
-  padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
-  min-height: 100dvh;
+  min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .shellMain .draftRoom.draftOffice {
   flex: 1 1 auto;
-  height: auto;
+  height: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .shellMain .draftRoom.draftOffice.dLobby {
+  height: 100%;
   min-height: 0;
   overflow: auto;
 }
@@ -6341,6 +6387,11 @@ button.opRowYours {
 
 .dPickSignOff {
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
+  cursor: default;
+}
+
+.dPickSign:disabled {
+  opacity: 0.4;
   cursor: default;
 }
 

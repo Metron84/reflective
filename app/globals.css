@@ -153,6 +153,13 @@ body.ultima-office {
   background: #12151c;
 }
 
+/* Draft / practice rooms: freeze the document so the rail stays on the viewport. */
+html:has(body.ultima-room),
+body.ultima-room {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 /* Standalone Ultima host: no TRF chrome. */
 body.ultima-app > header,
 body.ultima-app > footer {

@@ -349,12 +349,13 @@ export default function UltimaDraftPicker({
                 const goals = metric(player, "goals_rate");
                 const assists = metric(player, "assists_rate");
                 const watchedOn = watched.has(player.id);
+                const canPick = !market && (isYourTurn || canForcePick);
                 return (
                   <li key={player.id} style={{ height: ROW_H }}>
                     <div
                       className={[
                         styles.dPickRow,
-                        market && !hideActions ? styles.dPickRowMarket : "",
+                        (market && !hideActions) || canPick ? styles.dPickRowMarket : "",
                         hideActions ? styles.dPickRowSolo : "",
                         player.signedBy ? styles.dPickRowTaken : "",
                       ]
@@ -423,21 +424,37 @@ export default function UltimaDraftPicker({
                           )}
                         </>
                       ) : hideActions ? null : (
-                        <button
-                          type="button"
-                          className={inQueue ? styles.dPickPlusOn : styles.dPickPlus}
-                          onClick={() =>
-                            inQueue ? onUnqueue?.(player.id) : onQueue?.(player.id)
-                          }
-                          aria-label={
-                            inQueue
-                              ? `Remove ${player.name} from queue`
-                              : `Add ${player.name} to queue`
-                          }
-                          aria-pressed={inQueue}
-                        >
-                          {inQueue ? <CheckGlyph /> : <PlusGlyph />}
-                        </button>
+                        <>
+                          <button
+                            type="button"
+                            className={inQueue ? styles.dPickPlusOn : styles.dPickPlus}
+                            onClick={() =>
+                              inQueue ? onUnqueue?.(player.id) : onQueue?.(player.id)
+                            }
+                            aria-label={
+                              inQueue
+                                ? `Remove ${player.name} from queue`
+                                : `Add ${player.name} to queue`
+                            }
+                            aria-pressed={inQueue}
+                          >
+                            {inQueue ? <CheckGlyph /> : <PlusGlyph />}
+                          </button>
+                          {canPick ? (
+                            <button
+                              type="button"
+                              className={styles.dPickSign}
+                              disabled={pickBusy}
+                              onClick={() =>
+                                canForcePick && !isYourTurn
+                                  ? onForce?.(player.id)
+                                  : onDraft?.(player.id)
+                              }
+                            >
+                              {canForcePick && !isYourTurn ? "Force" : "Draft"}
+                            </button>
+                          ) : null}
+                        </>
                       )}
                     </div>
                   </li>

@@ -134,7 +134,8 @@ export default function UltimaShell({
     ((seated || isCommissioner || sample) && !isPaperPath(pathname, seated)) || sample;
   const showRail = (seated || isCommissioner || sample) && !hideRail(pathname);
   const showCrumb = !office && !hideBreadcrumb(pathname);
-  const showClub = office && showRail && !isRoomPath(pathname);
+  const room = isRoomPath(pathname);
+  const showClub = office && showRail && !room;
   const barClub =
     club ??
     (showClub
@@ -147,10 +148,11 @@ export default function UltimaShell({
   useEffect(() => {
     document.body.classList.add("ultima-root");
     if (office) document.body.classList.add("ultima-office");
+    if (room && showRail) document.body.classList.add("ultima-room");
     return () => {
-      document.body.classList.remove("ultima-root", "ultima-office");
+      document.body.classList.remove("ultima-root", "ultima-office", "ultima-room");
     };
-  }, [office]);
+  }, [office, room, showRail]);
 
   const nav = officeNav(isCommissioner);
 
@@ -161,7 +163,11 @@ export default function UltimaShell({
     >
       {showCrumb ? <Breadcrumb items={crumbsFor(pathname)} /> : null}
 
-      <div className={showRail ? styles.shell : undefined}>
+      <div
+        className={
+          showRail && room ? `${styles.shell} ${styles.shellRoom}` : showRail ? styles.shell : undefined
+        }
+      >
         {showRail ? (
           <>
             <nav className={`${styles.rail} ${styles.railDesktop}`} aria-label="Ultima">
