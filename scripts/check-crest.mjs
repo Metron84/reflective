@@ -27,7 +27,7 @@ console.log(`clubs: ${CLUBS.length}`);
 const GROUP_COUNTS = {
   England: 64,
   Germany: 36,
-  Italy: 26,
+  Italy: 25,
   Spain: 25,
   France: 21,
   "Rest of the World": 12,
@@ -417,6 +417,14 @@ if (!leagueProbe.some((row) => row.competition === "Premier League") || !leagueP
   failures++;
   console.log("FAIL league map: Everywhere is missing Premier League or Serie A");
 }
+if (leagueProbe.some((row) => row.competition === "other")) {
+  failures++;
+  console.log("FAIL league map: Other row still present");
+}
+if (CLUBS.some((club) => !club.competition)) {
+  failures++;
+  console.log("FAIL clubs: a club has no competition");
+}
 const englandHand = toAnswers(hands.romanticLocal);
 const englandProbe = leagueMap(englandHand, undefined, { group: "England" });
 if (englandProbe.some((row) => row.competition === "Serie A" || row.competition === "LaLiga")) {
@@ -460,7 +468,7 @@ console.log(
 );
 const flowLeagues = leagueMap(answers);
 const flowColours = colourMap(answers);
-const heroComp = arrival.club.competition || "other";
+const heroComp = arrival.club.competition;
 const heroLeague = flowLeagues.find((row) => row.competition === heroComp);
 if (!heroLeague) {
   failures++;
