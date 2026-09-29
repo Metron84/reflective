@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary, colourMap, leagueMap, userVector } from "@/lib/crest/engine";
 import { buildReport, closeBehindReason, roomPercent } from "@/lib/crest/report";
@@ -57,6 +57,12 @@ export default function CrestArrival({
 }) {
   const [openColour, setOpenColour] = useState(null);
   const [openLeague, setOpenLeague] = useState(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setReady(true), 500);
+    return () => window.clearTimeout(id);
+  }, []);
   const options = useMemo(() => ({ group, stake }), [group, stake]);
   const summary = useMemo(() => arrivalSummary(answers, DEFAULT_ALPHA, options), [answers, options]);
   const rows = useMemo(() => colourMap(answers, DEFAULT_ALPHA, { group, stake }), [answers, group, stake]);
@@ -226,7 +232,7 @@ export default function CrestArrival({
             type="button"
             className={styles.saveCta}
             onClick={onSave}
-            disabled={saveState === "saving" || saveState === "saved"}
+            disabled={!ready || saveState === "saving" || saveState === "saved"}
           >
             {saveState === "saved" ? "Saved." : saveState === "saving" ? "Saving…" : "Save your results"}
           </button>

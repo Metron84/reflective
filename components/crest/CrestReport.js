@@ -185,7 +185,7 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
         <button type="button" className={styles.share} onClick={share}>
           {copied ? "Link copied" : "Share my crest"}
         </button>
-        <Link href={crestSignupHref(club.id)} className={styles.ghost}>
+        <Link href={crestSignupHref(club.slug)} className={styles.ghost}>
           Join The Reflective Football
         </Link>
         <button type="button" className={styles.outline} onClick={onRestart}>
