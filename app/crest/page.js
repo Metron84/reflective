@@ -1,14 +1,8 @@
-import { Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import CrestSwipe from "@/components/crest/CrestSwipe";
 import { CREST_ENABLED } from "@/lib/config";
+import { montserrat } from "./montserrat";
 import styles from "./page.module.css";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-crest-head",
-});
 
 export const metadata = {
   title: "The Crest",
