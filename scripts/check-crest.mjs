@@ -413,16 +413,19 @@ if (!leagueProbe.length) {
   failures++;
   console.log("FAIL league map: no rows");
 }
+if (!leagueProbe.some((row) => row.competition === "Premier League") || !leagueProbe.some((row) => row.competition === "Serie A")) {
+  failures++;
+  console.log("FAIL league map: Everywhere is missing Premier League or Serie A");
+}
 const englandHand = toAnswers(hands.romanticLocal);
 const englandProbe = leagueMap(englandHand, undefined, { group: "England" });
 if (englandProbe.some((row) => row.competition === "Serie A" || row.competition === "LaLiga")) {
   failures++;
   console.log("FAIL league map: England scope leaked another country");
 }
-const englandRoom = playPool(englandHand, undefined, { group: "England" });
-if (englandRoom.some((club) => club.competition === "Premier League") && !englandProbe.some((row) => row.competition === "Premier League")) {
+if (!englandProbe.some((row) => row.competition === "Premier League") || !englandProbe.some((row) => row.competition === "Championship")) {
   failures++;
-  console.log("FAIL league map: England last room has Premier League, list does not");
+  console.log("FAIL league map: England is missing Premier League or Championship");
 }
 
 const answers = [];
@@ -457,20 +460,17 @@ console.log(
 );
 const flowLeagues = leagueMap(answers);
 const flowColours = colourMap(answers);
-const heroLeague = flowLeagues.find((row) => row.clubs.some((entry) => entry.club.slug === arrival.club.slug));
-if (!heroLeague || heroLeague.clubs[0].club.slug !== arrival.club.slug) {
+const heroComp = arrival.club.competition || "other";
+const heroLeague = flowLeagues.find((row) => row.competition === heroComp);
+if (!heroLeague) {
   failures++;
-  console.log(`FAIL last-room: hero is not first in its league (${heroLeague?.clubs[0]?.club.slug || "missing"})`);
-}
-if (heroLeague && roomPercent(heroLeague.clubs[0].probability) !== roomPercent(arrival.probability)) {
-  failures++;
-  console.log("FAIL last-room: league percent is not the hero share");
+  console.log("FAIL league map: hero's league is missing");
 }
 const heroFamily = (arrival.club.colourFamilies || [])[0];
 const heroColour = flowColours.find((row) => row.family === heroFamily);
-if (heroFamily && heroColour && heroColour.clubs[0].club.slug !== arrival.club.slug) {
+if (heroFamily && !heroColour) {
   failures++;
-  console.log(`FAIL last-room: hero is not first in ${heroFamily}`);
+  console.log(`FAIL colour map: ${heroFamily} row missing`);
 }
 
 const reportHands = {
@@ -531,14 +531,9 @@ for (const [name, hand] of Object.entries(reportHands)) {
     failures++;
     console.log(`FAIL report ${name}: England scope leaked another country`);
   }
-  const englandRoomClubs = playPool(hand, undefined, { group: "England" });
-  if (englandRoomClubs.some((club) => club.competition === "Premier League") && !englandComps.includes("Premier League")) {
+  if (!englandComps.includes("Premier League") || !englandComps.includes("Championship")) {
     failures++;
-    console.log(`FAIL report ${name}: England last room has Premier League, list does not`);
-  }
-  if (englandRoomClubs.some((club) => club.competition === "Championship") && !englandComps.includes("Championship")) {
-    failures++;
-    console.log(`FAIL report ${name}: England last room has Championship, list does not`);
+    console.log(`FAIL report ${name}: England is missing Premier League or Championship`);
   }
   const seenComp = new Set();
   for (const row of blendView.leagues) {

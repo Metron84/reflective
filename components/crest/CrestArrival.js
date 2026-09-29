@@ -136,7 +136,7 @@ export default function CrestArrival({
       </div>
 
       <h2 className={styles.subhead}>If you bleed a colour</h2>
-      <p className={styles.hintLeft}>Same last-room share as Your club.</p>
+      <p className={styles.hintLeft}>Closest club in this colour, from where you asked us to look.</p>
       <ul className={styles.colourRows}>
         {rows.map((row) => {
           const best = row.clubs[0];
@@ -176,7 +176,7 @@ export default function CrestArrival({
       </ul>
 
       <h2 className={styles.subhead}>Your club in every league</h2>
-      <p className={styles.hintLeft}>Same last-room share. Highest club still standing in each league.</p>
+      <p className={styles.hintLeft}>Closest club in this league, from where you asked us to look.</p>
       <ul className={styles.colourRows}>
         {leagueRows.map((row) => {
           const best = row.clubs[0];
