@@ -18,7 +18,8 @@
     "generate:stand-nations": "node scripts/generate-stand-nations.mjs",
     "validate:stand-chapter": "node scripts/validate-stand-chapter.mjs",
     "validate:stand-titles": "node scripts/validate-stand-titles.mjs",
-    "validate:stand-all": "node scripts/validate-stand-all.mjs"
+    "validate:stand-all": "node scripts/validate-stand-all.mjs",
+    "check:crest": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-crest.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.12.0",

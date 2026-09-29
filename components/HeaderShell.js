@@ -72,6 +72,7 @@ function UserMenu({ profile }) {
 export default function HeaderShell({ auth }) {
   const signedIn = auth?.isSignedIn && auth?.profile;
   const pathname = usePathname() ?? "";
+  if (pathname === "/crest" || pathname.startsWith("/crest/")) return null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy/10 bg-paper/90 backdrop-blur">

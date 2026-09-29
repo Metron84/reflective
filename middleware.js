@@ -43,6 +43,12 @@ function applyAuthCookies(response, cookiesToSet, host) {
   return response;
 }
 
+function nextWithPath(request) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
 function ultimaHostResponse(request) {
   const pathname = request.nextUrl.pathname;
   const url = request.nextUrl.clone();
@@ -77,9 +83,9 @@ export async function middleware(request) {
   const host = request.headers.get("host") ?? "";
   if (!url || !key) {
     if (isUltimaAppHost(host)) {
-      return ultimaHostResponse(request) ?? NextResponse.next({ request });
+      return ultimaHostResponse(request) ?? nextWithPath(request);
     }
-    return NextResponse.next();
+    return nextWithPath(request);
   }
 
   const cookieBag = [];
@@ -103,7 +109,7 @@ export async function middleware(request) {
   } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  let response = NextResponse.next({ request });
+  let response = nextWithPath(request);
 
   if (
     user &&

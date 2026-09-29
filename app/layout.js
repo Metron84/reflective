@@ -116,7 +116,11 @@ export async function generateViewport() {
 }
 
 export default async function RootLayout({ children }) {
-  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
+  const hdrs = await headers();
+  const ultimaApp = isUltimaAppHost(hdrs.get("host"));
+  const pathname = hdrs.get("x-pathname") || "";
+  const crestApp = pathname === "/crest" || pathname.startsWith("/crest/");
+  const hideChrome = ultimaApp || crestApp;
 
   return (
     <html
@@ -130,12 +134,20 @@ export default async function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://www.youtube.com" />
         <link rel="dns-prefetch" href="https://i.ytimg.com" />
       </head>
-      <body className={ultimaApp ? "flex min-h-full flex-col ultima-app" : "flex min-h-full flex-col"}>
+      <body
+        className={
+          ultimaApp
+            ? "flex min-h-full flex-col ultima-app"
+            : crestApp
+              ? "flex min-h-full flex-col bg-[#0A111F]"
+              : "flex min-h-full flex-col"
+        }
+      >
         <NavigationProgress />
-        {ultimaApp ? null : <Header />}
+        {hideChrome ? null : <Header />}
         <main className="flex flex-1 flex-col">{children}</main>
-        {ultimaApp ? null : <Footer />}
-        {ultimaApp ? <UltimaSwRegister /> : <InstallHint />}
+        {hideChrome ? null : <Footer />}
+        {ultimaApp ? <UltimaSwRegister /> : crestApp ? null : <InstallHint />}
       </body>
     </html>
   );

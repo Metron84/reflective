@@ -31,6 +31,7 @@ function shouldHidePath(pathname) {
   if (pathname === "/concierge" || pathname.startsWith("/concierge/")) return true;
   if (pathname === "/reflections" || pathname.startsWith("/reflections/")) return true;
   if (pathname === "/ultima" || pathname.startsWith("/ultima/")) return true;
+  if (pathname === "/crest" || pathname.startsWith("/crest/")) return true;
   return false;
 }
 
