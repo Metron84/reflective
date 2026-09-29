@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary, colourMap, leagueMap, userVector } from "@/lib/crest/engine";
-import { buildReport, closeBehindReason, roomPercent } from "@/lib/crest/report";
+import { buildReport, closeBehindReason, roomPercent, visibleRoomClubs } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
 import styles from "./CrestSwipe.module.css";
 
@@ -140,36 +140,43 @@ export default function CrestArrival({
       <ul className={styles.colourRows}>
         {rows.map((row) => {
           const best = row.clubs[0];
-          const open = openColour === row.family;
+          const visible = visibleRoomClubs(row.clubs);
+          const canOpen = visible.length >= 2;
+          const open = canOpen && openColour === row.family;
           return (
             <li key={row.family}>
               <button
                 type="button"
                 className={`${styles.colourRow} ${open ? styles.colourRowActive : ""}`}
                 aria-expanded={open}
-                onClick={() => setOpenColour(open ? null : row.family)}
+                onClick={() => {
+                  if (!canOpen) return;
+                  setOpenColour(open ? null : row.family);
+                }}
               >
                 <span className={styles.swatch} style={{ background: FAMILY_SWATCH[row.family] }} />
                 <span className={styles.colourName}>{FAMILY_LABEL[row.family]}</span>
                 <span className={styles.colourBest}>{best.club.name}</span>
                 <span className={styles.colourPct}>{roomPercent(best.probability)}%</span>
               </button>
-              <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
-                <div>
-                  {row.clubs.map((entry, i) => (
-                    <div key={entry.club.slug} className={styles.colourClub}>
-                      <span>{i + 1}</span>
-                      <span>{entry.club.name}</span>
-                      <span>{roomPercent(entry.probability)}%</span>
-                      {entry.club.slug === club.slug ? null : (
-                        <small>
-                          {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}
-                        </small>
-                      )}
-                    </div>
-                  ))}
+              {canOpen ? (
+                <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
+                  <div>
+                    {visible.map((entry, i) => (
+                      <div key={entry.club.slug} className={styles.colourClub}>
+                        <span>{i + 1}</span>
+                        <span>{entry.club.name}</span>
+                        <span>{roomPercent(entry.probability)}%</span>
+                        {entry.club.slug === club.slug ? null : (
+                          <small>
+                            {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}
+                          </small>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </li>
           );
         })}
@@ -180,35 +187,42 @@ export default function CrestArrival({
       <ul className={styles.colourRows}>
         {leagueRows.map((row) => {
           const best = row.clubs[0];
-          const open = openLeague === row.competition;
+          const visible = visibleRoomClubs(row.clubs);
+          const canOpen = visible.length >= 2;
+          const open = canOpen && openLeague === row.competition;
           return (
             <li key={row.competition}>
               <button
                 type="button"
                 className={`${styles.colourRow} ${styles.leagueRow} ${open ? styles.colourRowActive : ""}`}
                 aria-expanded={open}
-                onClick={() => setOpenLeague(open ? null : row.competition)}
+                onClick={() => {
+                  if (!canOpen) return;
+                  setOpenLeague(open ? null : row.competition);
+                }}
               >
                 <span className={styles.colourName}>{row.label}</span>
                 <span className={styles.colourBest}>{best.club.name}</span>
                 <span className={styles.colourPct}>{roomPercent(best.probability)}%</span>
               </button>
-              <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
-                <div>
-                  {row.clubs.map((entry, i) => (
-                    <div key={entry.club.slug} className={styles.colourClub}>
-                      <span>{i + 1}</span>
-                      <span>{entry.club.name}</span>
-                      <span>{roomPercent(entry.probability)}%</span>
-                      {entry.club.slug === club.slug ? null : (
-                        <small>
-                          {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}
-                        </small>
-                      )}
-                    </div>
-                  ))}
+              {canOpen ? (
+                <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
+                  <div>
+                    {visible.map((entry, i) => (
+                      <div key={entry.club.slug} className={styles.colourClub}>
+                        <span>{i + 1}</span>
+                        <span>{entry.club.name}</span>
+                        <span>{roomPercent(entry.probability)}%</span>
+                        {entry.club.slug === club.slug ? null : (
+                          <small>
+                            {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}
+                          </small>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </li>
           );
         })}
