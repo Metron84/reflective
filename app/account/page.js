@@ -7,6 +7,7 @@ import ProgrammeTodayLine from "@/components/account/ProgrammeTodayLine";
 import GuesserSection from "@/components/account/GuesserSection";
 import ReflectionsBallot from "@/components/account/ReflectionsBallot";
 import HonoursSection from "@/components/account/HonoursSection";
+import CrestSection from "@/components/account/CrestSection";
 import SettingsPanel from "@/components/account/SettingsPanel";
 import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./page.module.css";
@@ -45,6 +46,7 @@ export default async function AccountPage() {
           shareStats={programme.shareStats}
         />
         <ReflectionsBallot ballot={programme.ballot} />
+        <CrestSection crest={programme.crest} />
         <HonoursSection honours={programme.honours} />
         <SettingsPanel
           key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
