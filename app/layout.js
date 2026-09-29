@@ -1,4 +1,3 @@
-import { Bodoni_Moda, Archivo } from "next/font/google";
 import { headers } from "next/headers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,18 +6,9 @@ import NavigationProgress from "@/components/NavigationProgress";
 import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
+import { archivo } from "./fonts/archivo";
+import { bodoni } from "./fonts/bodoni";
 import "./globals.css";
-
-const bodoni = Bodoni_Moda({
-  variable: "--font-bodoni",
-  subsets: ["latin"],
-});
-
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 const SITE_METADATA = {
   metadataBase: new URL(SITE_URL),
