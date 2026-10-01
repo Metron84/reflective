@@ -20,7 +20,7 @@ export default async function CrestPage({ searchParams }) {
   const resumeToken = typeof params?.resume === "string" ? params.resume : null;
 
   return (
-    <div className={`${styles.crestPlay} ${montserrat.variable}`}>
+    <div className={`${styles.crestPlay} ${montserrat.variable}`} data-crest-play>
       <CrestSwipe resumeToken={resumeToken} />
     </div>
   );
