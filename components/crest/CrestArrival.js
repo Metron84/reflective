@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary, colourMap, leagueMap, userVector } from "@/lib/crest/engine";
 import { buildReport, closeBehindReason, roomPercent, visibleRoomClubs } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
+import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestSwipe.module.css";
 
 const FAMILY_LABEL = {
@@ -58,6 +59,7 @@ export default function CrestArrival({
   const [openColour, setOpenColour] = useState(null);
   const [openLeague, setOpenLeague] = useState(null);
   const [ready, setReady] = useState(false);
+  const [shareState, setShareState] = useState("idle");
 
   useEffect(() => {
     const id = window.setTimeout(() => setReady(true), 500);
@@ -77,6 +79,19 @@ export default function CrestArrival({
   const roomPct = roomPercent(probability);
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const topName = club.name;
+
+  async function shareResult() {
+    if (!ready || shareState === "busy") return;
+    setShareState("busy");
+    try {
+      const kicker = shareKicker(roomPct, confident);
+      const blob = await renderShareCard(cardDataFrom(summary, roomPct, kicker));
+      const outcome = await shareCard(blob, club.name);
+      setShareState(outcome === "saved" ? "saved" : "idle");
+    } catch {
+      setShareState("idle");
+    }
+  }
 
   return (
     <section className={styles.arrival}>
@@ -252,6 +267,14 @@ export default function CrestArrival({
           </button>
         ) : null}
         {saveMessage ? <p className={styles.saveNote}>{saveMessage}</p> : null}
+        <button
+          type="button"
+          className={styles.again}
+          onClick={shareResult}
+          disabled={!ready || shareState === "busy"}
+        >
+          {shareState === "saved" ? "Card saved, link copied" : "Share your crest"}
+        </button>
         <button type="button" className={styles.again} onClick={onRestart}>
           Swipe again
         </button>

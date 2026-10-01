@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { SITE_URL } from "@/lib/config";
-import { buildReport, trait, REPORT_PHRASES } from "@/lib/crest/report";
+import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/engine";
+import { buildReport, trait, REPORT_PHRASES, roomPercent } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
+import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestReport.module.css";
 
 const GROUPS = ["Heart", "Mind", "Soul"];
@@ -28,7 +29,7 @@ const VIEW_CAPTION = {
 export default function CrestReport({ answers, group, colour, stake = null, onBack, onRestart }) {
   const [view, setView] = useState("blend");
   const [ready, setReady] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [shareState, setShareState] = useState("idle");
   const result = useMemo(() => ({ answers, group, colour, stake }), [answers, group, colour, stake]);
   const blend = useMemo(() => buildReport(result, "blend"), [result]);
   const report = useMemo(() => buildReport(result, view), [result, view]);
@@ -53,25 +54,19 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
   const { club } = blend;
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const meta = [place, club.stadium].filter(Boolean).join(" · ");
-  const shareText = `${blend.opener} Find yours:`;
-  const shareUrl = `${SITE_URL}/crest`;
+  const summary = arrivalSummary(answers, DEFAULT_ALPHA, { group, stake });
+  const roomPct = roomPercent(summary.probability);
+  const kicker = shareKicker(roomPct, summary.confident);
 
   async function share() {
-    const payload = { title: `My Crest: ${club.name}`, text: shareText, url: shareUrl };
+    if (shareState === "busy") return;
+    setShareState("busy");
     try {
-      if (navigator.share) {
-        await navigator.share(payload);
-        return;
-      }
+      const blob = await renderShareCard(cardDataFrom(summary, roomPct, kicker));
+      const outcome = await shareCard(blob, club.name);
+      setShareState(outcome === "saved" ? "saved" : "idle");
     } catch {
-      /* fall through to copy */
-    }
-    try {
-      await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* ignore */
+      setShareState("idle");
     }
   }
 
@@ -182,8 +177,8 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
       </div>
 
       <div className={styles.actions}>
-        <button type="button" className={styles.share} onClick={share}>
-          {copied ? "Link copied" : "Share my crest"}
+        <button type="button" className={styles.share} onClick={share} disabled={shareState === "busy"}>
+          {shareState === "saved" ? "Card saved, link copied" : "Share my crest"}
         </button>
         <Link href={crestSignupHref(club.slug)} className={styles.ghost}>
           Join The Reflective Football

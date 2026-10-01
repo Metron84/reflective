@@ -17,6 +17,7 @@ import SwipeCard from "./SwipeCard";
 import CrestArrival from "./CrestArrival";
 import CrestHome, { readStoredScope, writeStoredScope } from "./CrestHome";
 import CrestReport from "./CrestReport";
+import CrestReveal from "./CrestReveal";
 import CrestWant from "./CrestWant";
 import styles from "./CrestSwipe.module.css";
 
@@ -140,7 +141,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
     const next = [...answers, { cardId: current.card.id, value }];
     setDrag(0);
     setAnswers(next);
-    if (next.length >= TOTAL) setStep("arrival");
+    if (next.length >= TOTAL) setStep("reveal");
   }
 
   function back() {
@@ -217,6 +218,12 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
           onRestart={restart}
         />
       </div>
+    );
+  }
+
+  if (step === "reveal") {
+    return (
+      <CrestReveal answers={answers} group={group} stake={stake} onDone={() => setStep("arrival")} />
     );
   }
 
