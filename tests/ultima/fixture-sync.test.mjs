@@ -84,3 +84,30 @@ test("apply refuses to write when a league could not be read", async () => {
   assert.equal(db.log.filter((q) => q.op === "upsert").length, 0);
   assert.match(report.errors[0], /seriea/);
 });
+
+const { compareExpected } = await import("@/lib/ultima/server/fixture-sync");
+const ONE = { pl: 1, laliga: 0, seriea: 0, bundesliga: 0, ligue1: 0 };
+
+test("compareExpected lists every league that differs and any gameweek without a table", () => {
+  const counts = { 1: { pl: 2, laliga: 0, seriea: 0, bundesliga: 0, ligue1: 0 } };
+  assert.deepEqual(compareExpected(counts, { 1: ONE }, [1]), [{ gameweek: 1, league: "pl", expected: 1, actual: 2 }]);
+  assert.equal(compareExpected(counts, { 1: ONE }, [1, 2]).length, 2);
+});
+
+test("guarded apply writes nothing when counts differ from expected", async () => {
+  world.fetchError = null;
+  world.fixtures = [fx("pl", "2026-10-10 14:00:00", 1), fx("pl", "2026-10-11 14:00:00", 2)];
+  db.log.length = 0;
+  const report = await runFixtureSync({ db, competitionId: "c", numbers: [1], apply: true, expected: { 1: ONE } });
+  assert.equal(report.guard, "mismatch");
+  assert.equal(report.written, 0);
+  assert.equal(db.log.filter((q) => q.op === "upsert").length, 0);
+});
+
+test("guarded apply writes when counts equal expected", async () => {
+  world.fixtures = [fx("pl", "2026-10-10 14:00:00", 1)];
+  db.log.length = 0;
+  const report = await runFixtureSync({ db, competitionId: "c", numbers: [1], apply: true, expected: { 1: ONE } });
+  assert.equal(report.guard, "match");
+  assert.equal(report.written, 1);
+});
