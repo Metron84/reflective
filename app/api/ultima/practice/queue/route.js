@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getUltimaDb } from "@/lib/ultima/server/db";
+import { saveQueue } from "@/lib/ultima/server/queue";
 import {
   getPracticeManager,
   getPracticeRoom,
@@ -37,19 +37,6 @@ export async function POST(request) {
     return NextResponse.json(err, { status });
   }
 
-  const playerIds = Array.isArray(body?.player_ids) ? body.player_ids : [];
-  const db = getUltimaDb();
-  await db.from("ultima_draft_queues").delete().eq("manager_id", manager.id);
-
-  const rows = playerIds.map((playerId, i) => ({
-    manager_id: manager.id,
-    player_id: playerId,
-    position: i + 1,
-  }));
-
-  if (rows.length) {
-    await db.from("ultima_draft_queues").insert(rows);
-  }
-
-  return NextResponse.json({ ok: true });
+  const result = await saveQueue(manager.id, body);
+  return NextResponse.json(result.body, { status: result.status });
 }
