@@ -10,6 +10,7 @@
     "build": "npm run validate:archive && next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "test:ultima": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/ultima/*.test.mjs",
     "sync-films": "node scripts/sync-films.mjs",
     "tag-films": "node scripts/tag-films.mjs",
     "build:stand-entities": "node scripts/build-stand-entities.mjs",
