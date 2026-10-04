@@ -31,17 +31,22 @@ export async function GET() {
     return NextResponse.json(body, { status });
   }
 
-  const ctx = await loadDraftContext(competition.id, { includeAvailable: false });
-  if (!ctx) {
-    return NextResponse.json({ state: "lobby", picks: [] });
-  }
-
   const db = getUltimaDb();
-  const { data: queue } = await db
+  const { data: queue, error: queueError } = await db
     .from("ultima_draft_queues")
     .select("player_id, position")
     .eq("manager_id", manager.id)
     .order("position");
+  // A failed read must not look like an empty queue, or the client could save over it.
+  if (queueError) {
+    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
+    return NextResponse.json(body, { status });
+  }
+
+  const ctx = await loadDraftContext(competition.id, { includeAvailable: false });
+  if (!ctx) {
+    return NextResponse.json({ state: "lobby", picks: [], queue: queue ?? [] });
+  }
 
   const payload = await buildDraftRoomPayload(ctx, {
     manager,

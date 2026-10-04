@@ -18,6 +18,7 @@ import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftClock from "./UltimaDraftClock";
 import UltimaDraftPicker from "./UltimaDraftPicker";
 import UltimaDraftPicks from "./UltimaDraftPicks";
+import { planQueueSave } from "@/lib/ultima/queue-guard";
 import UltimaDraftQueue from "./UltimaDraftQueue";
 import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
 import UltimaStaffMessage from "./UltimaStaffMessage";
@@ -58,11 +59,17 @@ export default function UltimaDraftRoom({
   const [openPlayerId, setOpenPlayerId] = useState(null);
   const menuRef = useRef(null);
   const allowLeave = useRef(false);
+  const savingRef = useRef(false);
+  const stateRef = useRef(null);
   const [resetting, setResetting] = useState(false);
   const [keepBusy, setKeepBusy] = useState(false);
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
   const [poolLoading, setPoolLoading] = useState(false);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   const fetchState = useCallback(async () => {
     try {
@@ -71,7 +78,8 @@ export default function UltimaDraftRoom({
         : "/api/ultima/draft/state";
       const res = await fetch(url);
       const data = await res.json();
-      if (res.ok) setState(data);
+      // A poll that lands mid-save would show the old queue; the save sets the new one.
+      if (res.ok && !savingRef.current) setState(data);
     } catch {
       /* reconnect silently */
     }
@@ -271,35 +279,54 @@ export default function UltimaDraftRoom({
     }
   }
 
-  async function saveQueue(playerIds) {
+  // The queue is only editable once the saved one has loaded, and every save names
+  // the queue it was based on, so a stale tab cannot overwrite a newer one.
+  async function saveQueue(playerIds, { cleared = false } = {}) {
+    const plan = planQueueSave(stateRef.current?.queue, playerIds, { cleared });
+    if (!plan || savingRef.current) return;
     setError("");
+    savingRef.current = true;
     try {
       const res = await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
-        ),
+        body: JSON.stringify(isPractice ? { ...plan, code: roomCode } : plan),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setState((prev) =>
+          prev
+            ? { ...prev, queue: playerIds.map((player_id, i) => ({ player_id, position: i + 1 })) }
+            : prev,
+        );
+      } else if (data.code === "QUEUE_CONFLICT") {
+        setState((prev) => (prev ? { ...prev, queue: data.queue ?? [] } : prev));
+        setError("Your queue changed on another device. Reloaded.");
+      } else {
         setError(data.message ?? "The queue did not save. Try again.");
       }
     } catch {
       setError("Connection lost. The queue did not save.");
+    } finally {
+      savingRef.current = false;
     }
     fetchState();
   }
 
   async function queuePlayer(playerId) {
-    const current = state?.queue?.map((q) => q.player_id) ?? [];
+    if (!Array.isArray(state?.queue)) return;
+    const current = state.queue.map((q) => q.player_id);
     if (current.includes(playerId)) return;
     await saveQueue([...current, playerId]);
   }
 
   async function unqueuePlayer(playerId) {
-    const current = state?.queue?.map((q) => q.player_id) ?? [];
-    await saveQueue(current.filter((id) => id !== playerId));
+    if (!Array.isArray(state?.queue)) return;
+    const current = state.queue.map((q) => q.player_id);
+    await saveQueue(
+      current.filter((id) => id !== playerId),
+      { cleared: true },
+    );
   }
 
   async function toggleAutoDraft() {
@@ -488,7 +515,8 @@ export default function UltimaDraftRoom({
   }
 
   function moveQueue(index, dir) {
-    const ids = (state.queue ?? []).map((q) => q.player_id);
+    if (!Array.isArray(state?.queue)) return;
+    const ids = state.queue.map((q) => q.player_id);
     const next = index + dir;
     if (next < 0 || next >= ids.length) return;
     const copy = [...ids];
