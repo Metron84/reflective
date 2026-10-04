@@ -51,6 +51,36 @@ function floorBreaks(roster, giveIds, incoming) {
   return ULTIMA_LEAGUES.filter((l) => counts[l] < ULTIMA_SQUAD_FLOOR_PER_LEAGUE);
 }
 
+const CLOSED_COPY = {
+  TRADE_TOO_EARLY: "Trades open at gameweek 4.",
+  TRADE_DEADLINE: "The trade deadline has passed.",
+};
+
+function closedLine(office) {
+  return CLOSED_COPY[office.windowReason] ?? "Trades are closed right now.";
+}
+
+/** "Executes Fri 00:00. GER is locked this week." Times are Gulf Standard Time. */
+function holdLine(offer) {
+  if (offer.state !== "awaiting_unlock") return null;
+  const when = offer.unlockAt
+    ? new Intl.DateTimeFormat("en-GB", {
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23",
+        timeZone: "Asia/Dubai",
+      })
+        .format(new Date(offer.unlockAt))
+        .replace(",", "")
+    : "after the gameweek";
+  const tags = (offer.heldLeagues ?? []).map((l) => ULTIMA_LEAGUE_SHORT[l]);
+  const lock = tags.length
+    ? ` ${tags.join(", ")} ${tags.length === 1 ? "is" : "are"} locked this week.`
+    : "";
+  return `Executes ${when}.${lock}`;
+}
+
 function floorLine(broken, prefix) {
   if (!broken.length) return { ok: true, text: `${prefix}Floor holds` };
   const tags = broken.map((l) => ULTIMA_LEAGUE_SHORT[l]).join(", ");
@@ -214,6 +244,7 @@ function Negotiation({
         tone={fair.tone === "teal" ? undefined : "muted"}
       />
 
+      {holdLine(offer) ? <p className={styles.trFloorOk}>{holdLine(offer)}</p> : null}
       <p className={youFloor.ok ? styles.trFloorOk : styles.trFloorBad}>{youFloor.text}</p>
       <p className={themFloor.ok ? styles.trFloorOk : styles.trFloorBad}>{themFloor.text}</p>
 
@@ -261,6 +292,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [lastAct, setLastAct] = useState(null);
+  const [counterOf, setCounterOf] = useState(null);
 
   const offers = office?.offers ?? [];
   const open = offers.find((o) => o.id === openId) ?? null;
@@ -325,6 +357,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
           receiver_id: receiverId,
           give_player_ids: giveIds,
           get_player_ids: getIds,
+          counter_of: counterOf,
         }),
       });
       const data = await res.json();
@@ -347,6 +380,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
     setReceiverId(offer.other.id);
     setGiveIds(offer.youGive.map((p) => p.id));
     setGetIds(offer.youGet.map((p) => p.id));
+    setCounterOf(offer.id);
     setOpenId(null);
     setError("");
   }
@@ -357,6 +391,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
     setReceiverId(toId);
     setGiveIds(giveId ? [giveId] : []);
     setGetIds(getId ? [getId] : []);
+    setCounterOf(null);
     setOpenId(null);
     setError("");
   }
@@ -393,7 +428,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
 
       {!office.windowOpen && tab !== "block" ? (
         <>
-          <UltimaStaffMessage subject="The trade window opens after the gameweek." />
+          <UltimaStaffMessage subject={closedLine(office)} />
           {office.reopenAt ? (
             <p className={styles.mkReopen}>
               Reopens <UltimaLocalTime value={office.reopenAt} />
@@ -414,7 +449,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
           ) : tab === "compose" ? (
             <UltimaPanel raised title="New offer">
               {!office.windowOpen ? (
-                <UltimaStaffMessage subject="The trade window opens after the gameweek." />
+                <UltimaStaffMessage subject={closedLine(office)} />
               ) : step === 1 ? (
                 clubs.map((club) => (
                   <div key={club.id} style={{ "--team": ultimaColourHex(club.colour) }}>
@@ -424,6 +459,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       meta={club.manager_name || "-"}
                       onClick={() => {
                         setReceiverId(club.id);
+                        setCounterOf(null);
                         setGiveIds([]);
                         setGetIds([]);
                         setStep(2);

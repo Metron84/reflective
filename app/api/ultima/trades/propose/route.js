@@ -3,8 +3,6 @@ import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
 import { proposeTrade, previewTradeVerdict } from "@/lib/ultima/server/trades";
-import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
-import { ULTIMA_TRADE_OPENS_GW } from "@/lib/ultima/constants";
 
 export const runtime = "nodejs";
 
@@ -16,7 +14,7 @@ export async function POST(request) {
   }
 
   const manager = await getManagerForUser(user.id);
-  if (!manager) {
+  if (!manager || manager.is_bot) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
     return NextResponse.json(body, { status });
   }
@@ -34,16 +32,14 @@ export async function POST(request) {
     return NextResponse.json(err, { status });
   }
 
-  const gameweek = await getCurrentGameweek(competition.id);
-  const gwNumber = gameweek?.number ?? ULTIMA_TRADE_OPENS_GW;
-
   if (body?.preview) {
     const preview = await previewTradeVerdict({
+      competitionId: competition.id,
       proposerId: manager.id,
       receiverId: body.receiver_id,
       givePlayerIds: body.give_player_ids ?? [],
       getPlayerIds: body.get_player_ids ?? [],
-      gameweekNumber: gwNumber,
+      counterOf: body.counter_of ?? null,
     });
     if (!preview.ok) {
       const { status, body: err } = ultimaErrorResponse(preview.code, {
@@ -60,7 +56,7 @@ export async function POST(request) {
     receiverId: body?.receiver_id,
     givePlayerIds: body?.give_player_ids ?? [],
     getPlayerIds: body?.get_player_ids ?? [],
-    gameweekNumber: gwNumber,
+    counterOf: body?.counter_of ?? null,
   });
 
   if (!result.ok) {

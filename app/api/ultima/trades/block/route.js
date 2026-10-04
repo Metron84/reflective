@@ -12,7 +12,11 @@ import {
 export const runtime = "nodejs";
 
 function fail(result) {
-  const { status, body } = ultimaErrorResponse(result.code, { message: result.message });
+  const status401 = result.code === "SIGN_IN_REQUIRED" ? 401 : undefined;
+  const { status, body } = ultimaErrorResponse(result.code, {
+    message: result.message,
+    ...(status401 ? { status: status401 } : {}),
+  });
   return NextResponse.json(body, { status });
 }
 
