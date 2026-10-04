@@ -49,6 +49,7 @@ export default function UltimaSquadClient({
   roster: rosterProp = [],
   lineup: lineupProp = [],
   lockedLeagues: lockedProp = [],
+  noGameweek: noGameweekProp = false,
   preview = false,
   openSheetOnMount = false,
 }) {
@@ -67,6 +68,7 @@ export default function UltimaSquadClient({
     { label: "Season points", value: "-" },
     { label: "Next lock", value: "-" },
   ];
+  const noGameweek = Boolean(office ? office.noGameweek : noGameweekProp);
   const squadSize = office?.squadSize ?? players.length;
   const squadCap = office?.squadCap ?? ULTIMA_SQUAD_SIZE;
 
@@ -82,9 +84,11 @@ export default function UltimaSquadClient({
     return players[0]?.id ?? null;
   });
   const [confirmXv, setConfirmXv] = useState(null);
-  const [collapsed, setCollapsed] = useState(() =>
-    Object.fromEntries(ULTIMA_LEAGUES.map((id) => [id, true])),
-  );
+  // Bench starts open when no XV is set, so the whole squad is visible.
+  const [collapsed, setCollapsed] = useState(() => {
+    const anyStarter = (lineup ?? []).some((row) => row.player_id);
+    return Object.fromEntries(ULTIMA_LEAGUES.map((id) => [id, anyStarter]));
+  });
 
   const inXv = useMemo(
     () => new Set((lineup ?? []).filter((row) => row.player_id).map((row) => row.player_id)),
@@ -178,7 +182,7 @@ export default function UltimaSquadClient({
     await persist(confirmXv.next);
   }
 
-  const hideActions = allLocked || squadSize === 0;
+  const hideActions = allLocked || squadSize === 0 || noGameweek;
   const filled = (lineup ?? []).filter((row) => row.player_id).length;
 
   return (
@@ -196,6 +200,13 @@ export default function UltimaSquadClient({
           body={`Your squad has ${squadSize} of ${squadCap}. Sign free agents in the Market.`}
           actionLabel="Market"
           href="/ultima/market"
+        />
+      ) : null}
+
+      {noGameweek ? (
+        <UltimaStaffMessage
+          subject="No gameweek yet"
+          body="Lineups open when the next gameweek is set."
         />
       ) : null}
 
