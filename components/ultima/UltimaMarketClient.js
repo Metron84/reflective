@@ -7,6 +7,7 @@ import {
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
+import { pendingTradeLine } from "@/lib/ultima/trades/rules";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaDraftPicker from "./UltimaDraftPicker";
 import UltimaLocalTime from "./UltimaLocalTime";
@@ -57,7 +58,30 @@ function FormDots({ form = [] }) {
 }
 
 function ReleaseSheet({ incoming, options, incomingPts, points, error, loading, onPick, onRetry, onClose, desktop }) {
-  const body = (
+  const [confirming, setConfirming] = useState(null);
+
+  function choose(player) {
+    if (player.pendingTradeTeams?.length) setConfirming(player);
+    else onPick(player.id);
+  }
+
+  const body = confirming ? (
+    <>
+      <p className={styles.dSheetName}>Release {confirming.name}?</p>
+      <p className={styles.dSheetMeta}>{pendingTradeLine(confirming.pendingTradeTeams)}</p>
+      <p className={styles.dSheetMeta}>Then you sign {incoming.name}.</p>
+      <div className={styles.trActions}>
+        <button type="button" className={styles.secondaryBtn} disabled={loading} onClick={() => setConfirming(null)}>
+          Cancel
+        </button>
+        <button type="button" className={styles.secondaryBtn} disabled={loading} onClick={() => onPick(confirming.id)}>
+          Release and sign
+        </button>
+      </div>
+      {error ? <UltimaStaffMessage subject={error} actionLabel="Retry" onAction={onRetry} /> : null}
+      {loading ? <p className={styles.dSheetMeta}>Signing…</p> : null}
+    </>
+  ) : (
     <>
       <p className={styles.dSheetName}>Release to sign {incoming.name}</p>
       <p className={styles.dSheetMeta}>
@@ -83,7 +107,7 @@ function ReleaseSheet({ incoming, options, incomingPts, points, error, loading, 
                   digits={1}
                 />
               }
-              onClick={() => onPick(player.id)}
+              onClick={() => choose(player)}
             />
           );
         })
