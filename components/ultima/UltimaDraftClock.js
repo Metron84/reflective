@@ -24,6 +24,7 @@ export default function UltimaDraftClock({
   queue = [],
   byId,
   floor,
+  schedule = null,
   pickBusy = false,
   onDraft,
   onSeeAll,
@@ -62,6 +63,7 @@ export default function UltimaDraftClock({
           Round {round} · Pick {pickNumber}
         </p>
         <p className={styles.dClockNeed}>{neededLine(floor)}</p>
+        {schedule ? <p className={styles.dClockNeed}>{schedule}</p> : null}
 
         {options.map((row) => {
           const pts = expectedUltimaPoints(row.player);

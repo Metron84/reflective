@@ -6,6 +6,7 @@ import {
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_MIN_POOL_PER_LEAGUE,
   ULTIMA_MIN_POOL_TOTAL,
+  ULTIMA_TIERED_TIMER_TEXT,
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
@@ -214,19 +215,25 @@ export default function UltimaAdminClient({
           meta={savedAt ? `Scheduled ${formatGstTime(savedAt)} GST` : "Not scheduled"}
           number={savedAt ? `${formatGstDateTime(savedAt)} GST` : "-"}
         />
-        <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
-        <div className={styles.utActions}>
-          {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-            <button
-              key={seconds}
-              type="button"
-              className={clock === seconds ? styles.deskTabOn : styles.deskTab}
-              onClick={() => act("set_timer", { timer_seconds: seconds })}
-            >
-              {formatUltimaTimer(seconds)}
-            </button>
-          ))}
-        </div>
+        {desk.timerTiered ? (
+          <UltimaRow primary="Clock" meta={ULTIMA_TIERED_TIMER_TEXT} />
+        ) : (
+          <>
+            <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
+            <div className={styles.utActions}>
+              {ULTIMA_TIMER_OPTIONS.map((seconds) => (
+                <button
+                  key={seconds}
+                  type="button"
+                  className={clock === seconds ? styles.deskTabOn : styles.deskTab}
+                  onClick={() => act("set_timer", { timer_seconds: seconds })}
+                >
+                  {formatUltimaTimer(seconds)}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <div className={styles.utActions}>
           <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("schedule")}>
             Schedule draft
