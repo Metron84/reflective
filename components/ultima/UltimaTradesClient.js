@@ -16,6 +16,7 @@ import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
 import UltimaStatusBar from "./UltimaStatusBar";
+import UltimaTradeBlock from "./UltimaTradeBlock";
 import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
 import styles from "./ultima.module.css";
 
@@ -249,8 +250,8 @@ function Negotiation({
   );
 }
 
-export default function UltimaTradesClient({ office, selectedId = null }) {
-  const [tab, setTab] = useState("received");
+export default function UltimaTradesClient({ office, selectedId = null, preview = false, initialTab = "received", initialBlockView = "board" }) {
+  const [tab, setTab] = useState(initialTab);
   const [openId, setOpenId] = useState(selectedId);
   const [step, setStep] = useState(1);
   const [receiverId, setReceiverId] = useState("");
@@ -350,10 +351,22 @@ export default function UltimaTradesClient({ office, selectedId = null }) {
     setError("");
   }
 
+  function startFromBlock({ receiverId: toId, getId = null, giveId = null }) {
+    setTab("compose");
+    setStep(2);
+    setReceiverId(toId);
+    setGiveIds(giveId ? [giveId] : []);
+    setGetIds(getId ? [getId] : []);
+    setOpenId(null);
+    setError("");
+  }
+
+  const newInterest = (office?.board?.inbox ?? []).filter((i) => i.state === "new").length;
+  const isOffers = tab !== "compose" && tab !== "block";
   const clubs = (office.clubs ?? []).filter((c) => !c.yours && !c.is_bot);
 
   return (
-    <div className={open && tab !== "compose" ? `${styles.trPage} ${styles.trPageOpen}` : styles.trPage}>
+    <div className={open && isOffers ? `${styles.trPage} ${styles.trPageOpen}` : styles.trPage}>
       <UltimaStatsStrip items={office.stats} />
 
       <div className={styles.hubTabs} role="tablist" aria-label="Trades">
@@ -361,6 +374,7 @@ export default function UltimaTradesClient({ office, selectedId = null }) {
           ["received", "Received"],
           ["sent", "Sent"],
           ["league", "League"],
+          ["block", newInterest ? `Block · ${newInterest}` : "Block"],
           ["compose", "New offer"],
         ].map(([id, label]) => (
           <button
@@ -377,7 +391,7 @@ export default function UltimaTradesClient({ office, selectedId = null }) {
         ))}
       </div>
 
-      {!office.windowOpen ? (
+      {!office.windowOpen && tab !== "block" ? (
         <>
           <UltimaStaffMessage subject="The trade window opens after the gameweek." />
           {office.reopenAt ? (
@@ -388,9 +402,16 @@ export default function UltimaTradesClient({ office, selectedId = null }) {
         </>
       ) : null}
 
-      <div className={styles.trDesk}>
+      <div className={tab === "block" ? `${styles.trDesk} ${styles.trDeskSolo}` : styles.trDesk}>
         <div className={styles.trList}>
-          {tab === "compose" ? (
+          {tab === "block" ? (
+            <UltimaTradeBlock
+              office={office}
+              onStartOffer={startFromBlock}
+              preview={preview}
+              initialView={initialBlockView}
+            />
+          ) : tab === "compose" ? (
             <UltimaPanel raised title="New offer">
               {!office.windowOpen ? (
                 <UltimaStaffMessage subject="The trade window opens after the gameweek." />
@@ -564,13 +585,13 @@ export default function UltimaTradesClient({ office, selectedId = null }) {
                 onRetry={() => lastAct && lastAct !== "send" && act(lastAct)}
               />
             </div>
-          ) : tab !== "compose" ? (
+          ) : isOffers ? (
             <p className={styles.mkReopen}>Tap an offer to open the negotiation.</p>
           ) : null}
         </div>
       </div>
 
-      {open && tab !== "compose" ? (
+      {open && isOffers ? (
         <div className={styles.trSheetMobile}>
           <Negotiation
             offer={open}

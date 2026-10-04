@@ -6939,3 +6939,176 @@ button.opRowYours {
 }
 
 
+
+/* Trade block: list a player, open to offers, ask about a player. */
+.blkPage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.blkViews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.blkSeller {
+  border-left: 4px solid var(--team, #4a5568);
+}
+
+.blkMgr {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.blkLooking {
+  margin: 0;
+  padding: 0.6rem 12px 0.2rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  color: var(--office-ink, #e6e1d8);
+}
+
+.blkLookingLabel {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.blkRow {
+  padding: 0.6rem 12px;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+}
+
+.blkRowTop {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.blkRowCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.blkPts {
+  flex: 0 0 auto;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.blkChipListed,
+.blkChipOpen {
+  flex: 0 0 auto;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.blkChipListed {
+  border-color: var(--office-teal, #5cba9a);
+  color: var(--office-teal, #5cba9a);
+}
+
+.blkNote {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.blkActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0 0.15rem;
+}
+
+.blkLink {
+  min-height: 44px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--office-ink, #e6e1d8);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.blkLink:disabled {
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+  text-decoration: none;
+  cursor: default;
+}
+
+.blkSeg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+}
+
+.blkSeg .deskTab,
+.blkSeg .deskTabOn {
+  min-height: 36px;
+}
+
+.blkPrefs {
+  padding: 0 12px 0.8rem;
+}
+
+.blkLeagueChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.2rem 0 0.6rem;
+}
+
+.blkField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.blkNoteEdit {
+  padding-top: 0.45rem;
+}
+
+.blkInput {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  border-radius: 2px;
+  background: var(--office-bg, #12151c);
+  color: var(--office-ink, #e6e1d8);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 16px;
+}
+
+.blkInput:focus-visible {
+  outline: 2px solid var(--office-teal, #5cba9a);
+  outline-offset: 1px;
+}
+
+@media (min-width: 900px) {
+  .trDeskSolo {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 44rem;
+  }
+}
