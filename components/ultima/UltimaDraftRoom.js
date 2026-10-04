@@ -21,6 +21,7 @@ import UltimaDraftPicks from "./UltimaDraftPicks";
 import { planQueueSave } from "@/lib/ultima/queue-guard";
 import UltimaDraftQueue from "./UltimaDraftQueue";
 import useUltimaDraftAdvance from "./useUltimaDraftAdvance";
+import { fetchRetryOn401 } from "@/lib/ultima/fetch-retry";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
 
@@ -66,6 +67,7 @@ export default function UltimaDraftRoom({
   const [autoBusy, setAutoBusy] = useState(false);
   const [timerBusy, setTimerBusy] = useState(false);
   const [poolLoading, setPoolLoading] = useState(false);
+  const [pollAuthLost, setPollAuthLost] = useState(false);
 
   useEffect(() => {
     stateRef.current = state;
@@ -76,7 +78,8 @@ export default function UltimaDraftRoom({
       const url = isPractice
         ? `/api/ultima/practice/state?code=${encodeURIComponent(roomCode)}`
         : "/api/ultima/draft/state";
-      const res = await fetch(url);
+      const res = await fetchRetryOn401(url);
+      setPollAuthLost(res.status === 401);
       const data = await res.json();
       // A poll that lands mid-save would show the old queue; the save sets the new one.
       if (res.ok && !savingRef.current) setState(data);
@@ -101,7 +104,7 @@ export default function UltimaDraftRoom({
     }
   }, [isPractice, roomCode]);
 
-  const { humanSeconds, stall, retry } = useUltimaDraftAdvance({
+  const { humanSeconds, stall, authLost, retry } = useUltimaDraftAdvance({
     enabled: Boolean(state) && state.state === "live",
     isPractice,
     roomCode,
@@ -763,7 +766,16 @@ export default function UltimaDraftRoom({
         ))}
       </nav>
 
-      {stall ? (
+      {authLost || pollAuthLost ? (
+        <UltimaStaffMessage
+          subject="Connection lost"
+          body="Connection lost, refresh."
+          actionLabel="Refresh"
+          onAction={() => window.location.reload()}
+        />
+      ) : null}
+
+      {stall && !(authLost || pollAuthLost) ? (
         <UltimaStaffMessage
           subject="The draft paused"
           body="The draft paused. Retry to resume."

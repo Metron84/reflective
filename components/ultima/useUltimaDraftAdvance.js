@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { fetchRetryOn401 } from "@/lib/ultima/fetch-retry";
 
 const BOT_VISIBLE_DELAY_MS = 0;
 const BOT_CHAIN_GAP_MS = 0;
@@ -37,6 +38,7 @@ export default function useUltimaDraftAdvance({
   const [botPicking, setBotPicking] = useState(false);
   const [humanSeconds, setHumanSeconds] = useState(null);
   const [stall, setStall] = useState(false);
+  const [authLost, setAuthLost] = useState(false);
   const [stallDetail, setStallDetail] = useState("");
   const [loopKey, setLoopKey] = useState(0);
   const stateRef = useRef(state);
@@ -80,7 +82,7 @@ export default function useUltimaDraftAdvance({
     logAdvance("entry", { reason });
     try {
       const practice = isPracticeRef.current;
-      const res = await fetch(
+      const res = await fetchRetryOn401(
         practice ? "/api/ultima/practice/advance" : "/api/ultima/draft/advance",
         {
           method: "POST",
@@ -88,6 +90,7 @@ export default function useUltimaDraftAdvance({
           body: practice ? JSON.stringify({ code: roomCodeRef.current }) : "{}",
         },
       );
+      setAuthLost(res.status === 401);
       let data = {};
       try {
         data = await res.json();
@@ -168,6 +171,7 @@ export default function useUltimaDraftAdvance({
           setStallDetail("");
           return;
         }
+        if (result.status === 401) return;
         if (!result.ok) {
           if (stallTries.current >= MAX_STALL_RETRIES) {
             markStall(
@@ -245,6 +249,7 @@ export default function useUltimaDraftAdvance({
             );
             continue;
           }
+          if (result.status === 401) break;
           if (!result.ok && isAutoClock(after)) {
             warnStall(snap, "advance_http", result.message);
             stallTries.current += 1;
@@ -342,5 +347,5 @@ export default function useUltimaDraftAdvance({
     await recoverOnce("manual_retry", { force: true });
   }
 
-  return { botPicking, humanSeconds, stall, stallDetail, retry };
+  return { botPicking, humanSeconds, stall, stallDetail, authLost, retry };
 }
