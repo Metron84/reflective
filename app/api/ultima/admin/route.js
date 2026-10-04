@@ -12,6 +12,7 @@ import {
   commissionerScoreOverride,
   commissionerIssueInvite,
   commissionerBootstrap,
+  commissionerSyncPool,
   commissionerSetTimer,
   commissionerScheduleDraft,
   commissionerSyncGameweek,
@@ -23,6 +24,7 @@ import {
 } from "@/lib/ultima/server/admin";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function POST(request) {
   const user = await getSessionUser();
@@ -100,6 +102,12 @@ export async function POST(request) {
       result = await commissionerIssueInvite(competition.id, user.id, code);
       break;
     }
+    case "sync_pool":
+      result = await commissionerSyncPool(competition.id, user.id, {
+        league: body.league,
+        dryRun: Boolean(body.dry_run),
+      });
+      break;
     case "bootstrap":
       result = await commissionerBootstrap(competition.id, user.id);
       break;
