@@ -22,6 +22,9 @@ function resetWorld(overrides = {}) {
       return { data: { state: world.draftState, scheduled_at: world.scheduledAt }, error: null };
     }
     if (q.table === "ultima_competition") return { data: { id: "c1", timer_seconds: 60 }, error: null };
+    if (q.table === "ultima_managers") {
+      return { data: [{ id: "m1", draft_slot: 1 }, { id: "m2", draft_slot: 2 }], error: null };
+    }
     return { data: [], error: null };
   });
 }
@@ -107,6 +110,30 @@ test("start route: the commissioner from the env list can start", async () => {
   const res = await post({ action: "start_draft" });
   assert.equal(res.status, 200);
   assert.equal(startDraftCalls.length, 1);
+});
+
+test("start route: the season start keeps the lobby order", async () => {
+  resetWorld({ user: { id: "commissioner-user" } });
+  await post({ action: "start_draft" });
+  assert.deepEqual(startDraftCalls[0].slice(0, 2), ["c1", "commissioner-user"]);
+  assert.deepEqual(startDraftCalls[0][2], { keepOrder: true });
+});
+
+test("start route: a broken slot order is refused before startDraft runs", async () => {
+  resetWorld({ user: { id: "commissioner-user" } });
+  world.db = makeFakeDb((q) => {
+    if (q.table === "profiles") return { data: { is_admin: false }, error: null };
+    if (q.table === "ultima_draft_state") return { data: { state: "lobby", scheduled_at: null }, error: null };
+    if (q.table === "ultima_competition") return { data: { id: "c1", timer_seconds: 60 }, error: null };
+    if (q.table === "ultima_managers") {
+      return { data: [{ id: "m1", draft_slot: 1 }, { id: "m2", draft_slot: null }], error: null };
+    }
+    return { data: [], error: null };
+  });
+  const res = await post({ action: "start_draft" });
+  assert.equal(res.status, 400);
+  assert.equal(res.body.code, "SLOTS_INVALID");
+  assert.equal(startDraftCalls.length, 0);
 });
 
 test("start route: a site admin (profiles.is_admin) can start", async () => {
