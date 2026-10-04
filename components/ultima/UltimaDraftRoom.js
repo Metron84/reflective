@@ -625,17 +625,21 @@ export default function UltimaDraftRoom({
                     <button type="button" role="menuitem" disabled={timerBusy} onClick={() => { pauseOrResume(); setMenuOpen(false); }}>
                       {state.state === "paused" ? "Resume" : "Pause"}
                     </button>
-                    {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-                      <button
-                        key={seconds}
-                        type="button"
-                        role="menuitem"
-                        disabled={timerBusy}
-                        onClick={() => { setLiveTimer(seconds); setMenuOpen(false); }}
-                      >
-                        {formatUltimaTimer(seconds)}
-                      </button>
-                    ))}
+                    {state.timer_tiered ? (
+                      <p role="note">{state.timer_schedule}</p>
+                    ) : (
+                      ULTIMA_TIMER_OPTIONS.map((seconds) => (
+                        <button
+                          key={seconds}
+                          type="button"
+                          role="menuitem"
+                          disabled={timerBusy}
+                          onClick={() => { setLiveTimer(seconds); setMenuOpen(false); }}
+                        >
+                          {formatUltimaTimer(seconds)}
+                        </button>
+                      ))
+                    )}
                   </>
                 ) : null}
                 {isPractice && state.is_host ? (
@@ -791,6 +795,7 @@ export default function UltimaDraftRoom({
           queue={state.queue ?? []}
           byId={byId}
           floor={floor}
+          schedule={state.timer_schedule}
           pickBusy={loading}
           onDraft={draftPlayer}
           onSeeAll={() => {
