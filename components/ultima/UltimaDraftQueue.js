@@ -63,7 +63,13 @@ export default function UltimaDraftQueue({
         );
         const impact = !taken && !ineligible ? floorImpact(player, floor) : null;
         const meta = [
-          taken ? "Taken" : ineligible ? "Not eligible on this pick" : player?.club || "-",
+          taken
+            ? "Taken"
+            : !player
+              ? "Not available. Skipped at pick time."
+              : ineligible
+                ? "Not eligible on this pick"
+                : player.club || "-",
           impact,
         ]
           .filter(Boolean)
@@ -98,6 +104,24 @@ export default function UltimaDraftQueue({
               number={player ? <UltimaCountryTag league={player.league} /> : null}
             />
             <div className={styles.dQueueActions}>
+              <button
+                type="button"
+                className={styles.dQueueRemove}
+                aria-label={`Move ${player?.name ?? "player"} up`}
+                disabled={index === 0}
+                onClick={() => onMove?.(index, -1)}
+              >
+                Up
+              </button>
+              <button
+                type="button"
+                className={styles.dQueueRemove}
+                aria-label={`Move ${player?.name ?? "player"} down`}
+                disabled={index === queue.length - 1}
+                onClick={() => onMove?.(index, 1)}
+              >
+                Down
+              </button>
               {isYourTurn && player && !taken && !ineligible ? (
                 <button
                   type="button"

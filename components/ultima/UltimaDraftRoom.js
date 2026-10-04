@@ -13,8 +13,7 @@ import {
 } from "@/lib/ultima/constants";
 import { lastPicksNewestFirst } from "@/lib/ultima/draft/last-picks";
 import { floorFromState, formatPickDeadline } from "@/lib/ultima/draft/desk";
-import { draftRoomWindow } from "@/lib/ultima/draft-window";
-import { formatCountdown, formatGstTime } from "@/lib/ultima/gst";
+import { formatGstTime } from "@/lib/ultima/gst";
 import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftClock from "./UltimaDraftClock";
 import UltimaDraftPicker from "./UltimaDraftPicker";
@@ -48,7 +47,7 @@ export default function UltimaDraftRoom({
   const exitHref = isPractice ? "/ultima/practice" : "/ultima";
   const [state, setState] = useState(null);
   const seasonLobby = !isPractice && state?.state === "lobby";
-  const [now, setNow] = useState(() => Date.now());
+  const [startOpen, setStartOpen] = useState(false);
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -120,12 +119,6 @@ export default function UltimaDraftRoom({
     const poll = setInterval(fetchState, isPractice ? 2000 : 5000);
     return () => clearInterval(poll);
   }, [fetchState, isPractice]);
-
-  useEffect(() => {
-    if (!seasonLobby) return undefined;
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, [seasonLobby]);
 
   const viewScope = isPractice ? roomCode : managerId;
 
@@ -279,13 +272,22 @@ export default function UltimaDraftRoom({
   }
 
   async function saveQueue(playerIds) {
-    await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
-      ),
-    });
+    setError("");
+    try {
+      const res = await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
+        ),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.message ?? "The queue did not save. Try again.");
+      }
+    } catch {
+      setError("Connection lost. The queue did not save.");
+    }
     fetchState();
   }
 
@@ -495,9 +497,6 @@ export default function UltimaDraftRoom({
     saveQueue(copy);
   }
 
-  const lobbyWin = seasonLobby
-    ? draftRoomWindow({ scheduledAt: state.scheduled_at, now })
-    : null;
   const shownView = seasonLobby && viewMode === "board" ? "players" : viewMode;
 
   async function startSeasonDraft() {
@@ -511,6 +510,7 @@ export default function UltimaDraftRoom({
       });
       const data = await res.json();
       if (!res.ok) setError(data.message ?? "The draft could not start.");
+      setStartOpen(false);
       await fetchState();
     } catch {
       setError("Connection lost.");
@@ -592,11 +592,7 @@ export default function UltimaDraftRoom({
           }
         >
           <p className={styles.dBarTurnName}>
-            {seasonLobby
-              ? lobbyWin.msToStart > 0
-                ? `First pick in ${formatCountdown(lobbyWin.msToStart)}`
-                : "Waiting for the commissioner"
-              : state.on_clock?.team_name || "Waiting"}
+            {seasonLobby ? "Waiting for the commissioner" : state.on_clock?.team_name || "Waiting"}
           </p>
           {!seasonLobby && timerLabel ? <p className={styles.dBarTimer}>{timerLabel}</p> : null}
         </div>
@@ -673,27 +669,46 @@ export default function UltimaDraftRoom({
 
       {seasonLobby ? (
         <UltimaStaffMessage
-          subject={
-            lobbyWin.scheduled
-              ? `The draft room is open. First pick ${formatGstTime(state.scheduled_at)} GST.`
-              : "The draft room is open."
-          }
-          body={
-            state.is_commissioner && lobbyWin.startUnlocked
-              ? "Picks are off until you start. The draft order is drawn at the start."
-              : state.is_commissioner
-                ? `Start unlocks ${formatGstTime(state.scheduled_at)} GST. The draft order is drawn at the start.`
-                : "Picks are off until the commissioner starts. The draft order is drawn at the start. Build your queue now."
-          }
-          actionLabel={
-            state.is_commissioner && lobbyWin.startUnlocked
-              ? loading
-                ? "Starting…"
-                : "Start draft"
-              : undefined
-          }
-          onAction={state.is_commissioner && lobbyWin.startUnlocked && !loading ? startSeasonDraft : undefined}
+          subject="Waiting for the commissioner to start."
+          body={`${
+            state.scheduled_at ? `Scheduled ${formatGstTime(state.scheduled_at)} GST. ` : ""
+          }The draft order is drawn at the start. Build your queue now.`}
+          actionLabel={state.is_commissioner ? "Start draft" : undefined}
+          onAction={state.is_commissioner ? () => setStartOpen(true) : undefined}
         />
+      ) : null}
+
+      {startOpen ? (
+        <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label="Start the draft">
+          <button
+            type="button"
+            className={styles.dSheetBackdrop}
+            aria-label="Cancel"
+            onClick={() => !loading && setStartOpen(false)}
+          />
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Start the draft now?</p>
+            <p className={styles.dSheetMeta}>The order is drawn and pick 1 begins.</p>
+            <div className={styles.dSheetActions}>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                disabled={loading}
+                onClick={() => setStartOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                disabled={loading}
+                onClick={startSeasonDraft}
+              >
+                {loading ? "Starting…" : "Start draft"}
+              </button>
+            </div>
+          </div>
+        </div>
       ) : null}
 
       <nav className={styles.dTabs} aria-label="Draft views">
