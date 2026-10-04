@@ -3,7 +3,7 @@ import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { autoStartBotsForGameweek } from "@/lib/ultima/bots/lineup";
 import { publishUltimaEvent } from "@/lib/ultima/server/events";
 import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
-import { runGameweekSync, getActiveGameweek } from "@/lib/ultima/server/sync";
+import { runGameweekSync, getActiveGameweek, getGameweeksToSync } from "@/lib/ultima/server/sync";
 import { runLineupReminders } from "@/lib/ultima/server/reminders";
 
 export const dynamic = "force-dynamic";
@@ -42,7 +42,13 @@ export async function GET(request) {
     }
   }
 
-  const sync = await runGameweekSync(competition.id, gameweek);
+  // The current gameweek, plus any earlier one still live or provisional, so a
+  // gameweek whose window just ended still gets its final scoring pass.
+  const toSync = await getGameweeksToSync(competition.id);
+  const syncs = [];
+  for (const gw of toSync.length ? toSync : [gameweek]) {
+    syncs.push({ gameweek: gw?.number ?? null, result: await runGameweekSync(competition.id, gw) });
+  }
 
   const reminders = await runLineupReminders(competition.id);
 
@@ -50,7 +56,7 @@ export async function GET(request) {
     ok: true,
     locked,
     gameweek: gameweek?.number ?? null,
-    sync,
+    sync: syncs,
     reminders,
   });
 }
