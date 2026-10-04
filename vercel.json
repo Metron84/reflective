@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/ultima/lineup-lock",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/ultima/open-at-refresh",
+      "schedule": "0 2 * * *"
     }
   ]
 }

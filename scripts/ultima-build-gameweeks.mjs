@@ -4,6 +4,11 @@
  *
  *   node --import ./tests/ultima/helpers/register.mjs --env-file=.env.local \
  *     scripts/ultima-build-gameweeks.mjs [--apply] [--competition <uuid>] [--first-friday 2026-10-09]
+ *     scripts/ultima-build-gameweeks.mjs --refresh [--apply] [--competition <uuid>]
+ *
+ * --refresh updates league_open_at only, for 'upcoming' gameweeks starting within 14 days.
+ * It never changes number or windows and never touches a league whose league_open_at is
+ * already in the past. Dry run unless --apply is also given.
  *
  * Needs SPORTMONKS_API_KEY and the SPORTMONKS_LEAGUE_ID_* vars. --apply also needs
  * NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY. Secrets are never printed.
@@ -11,18 +16,10 @@
  */
 import { createClient } from "@supabase/supabase-js";
 import { buildGameweeks, toGstIso } from "../lib/ultima/gameweek-builder.js";
+import { addDays, leagueIdsFromEnv, makeSportmonks } from "../lib/ultima/sportmonks-fixtures.js";
+import { runOpenAtRefresh } from "../lib/ultima/server/open-at-refresh.js";
 
-const BASE = "https://api.sportmonks.com/v3/football";
-const LEAGUES = {
-  pl: process.env.SPORTMONKS_LEAGUE_ID_PL ?? "8",
-  laliga: process.env.SPORTMONKS_LEAGUE_ID_LALIGA ?? "564",
-  seriea: process.env.SPORTMONKS_LEAGUE_ID_SERIEA ?? "384",
-  bundesliga: process.env.SPORTMONKS_LEAGUE_ID_BUNDESLIGA ?? "82",
-  ligue1: process.env.SPORTMONKS_LEAGUE_ID_LIGUE1 ?? "301",
-};
-const SEASON_NAMES = ["2026/2027", "2026/27"];
 const SEASON_END = "2027-07-31";
-const CHUNK_DAYS = 90;
 
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
@@ -31,6 +28,7 @@ const option = (name, fallback) => {
   return i >= 0 && args[i + 1] ? args[i + 1] : fallback;
 };
 const APPLY = flag("--apply");
+const REFRESH = flag("--refresh");
 const COMPETITION_ID = option("--competition", "3db872dc-8658-4839-be3e-f149fd13276c");
 const FIRST_FRIDAY = option("--first-friday", "2026-10-09");
 
@@ -40,53 +38,24 @@ if (!key) {
   process.exit(1);
 }
 
-async function sm(path, params = {}) {
-  const url = new URL(`${BASE}${path}`);
-  url.searchParams.set("api_token", key);
-  for (const [k, v] of Object.entries(params)) if (v != null) url.searchParams.set(k, String(v));
-  const res = await fetch(url, { headers: { Accept: "application/json" } });
-  if (!res.ok) throw new Error(`Sportmonks ${path} returned ${res.status}`);
-  return res.json();
-}
+const sm = makeSportmonks(key);
 
-async function seasonIdFor(leagueId) {
-  const json = await sm(`/leagues/${leagueId}`, { include: "seasons" });
-  const season = (json?.data?.seasons ?? []).find((s) => SEASON_NAMES.includes(s.name));
-  return season?.id ?? null;
-}
-
-function addDays(ymd, days) {
-  const d = new Date(`${ymd}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + days);
-  return d.toISOString().slice(0, 10);
-}
-
-async function fetchLeagueFixtures(league, leagueId, seasonId) {
-  const out = [];
-  // One day of slack before the first window so a Friday 00:00 GST kickoff is never cut.
-  let from = addDays(FIRST_FRIDAY, -1);
-  while (from <= SEASON_END) {
-    const to = addDays(from, CHUNK_DAYS - 1);
-    for (let page = 1; ; page += 1) {
-      const json = await sm(`/fixtures/between/${from}/${to}`, {
-        include: "state",
-        filters: `fixtureLeagues:${leagueId}`,
-        per_page: 50,
-        page,
-      });
-      for (const f of json?.data ?? []) {
-        if (f.season_id !== seasonId) continue;
-        out.push({
-          league,
-          kickoff: new Date(`${f.starting_at.replace(" ", "T")}Z`).toISOString(),
-          state: f.state?.developer_name ?? f.state?.name ?? null,
-        });
-      }
-      if (!json?.pagination?.has_more) break;
-    }
-    from = addDays(to, 1);
+if (REFRESH) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) {
+    console.error("--refresh needs NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY (reads gameweeks).");
+    process.exit(1);
   }
-  return out;
+  const db = createClient(url, serviceKey, { auth: { persistSession: false } });
+  const report = await runOpenAtRefresh({ db, key, competitionId: COMPETITION_ID, apply: APPLY });
+  console.log(
+    `\nCandidates (upcoming, starting within 14 days): ${report.candidates.length ? report.candidates.map((n) => `GW${n}`).join(", ") : "none"}`,
+  );
+  console.log(`Changes: ${report.changes.length}. Locked leagues left alone: ${report.skippedPast.length}.`);
+  for (const e of report.errors) console.error(`Error${e.league ? ` (${e.league})` : ""}: ${e.message}`);
+  console.log(APPLY ? `Applied to ${report.applied} gameweek(s).` : "DRY RUN. Nothing written. Re-run with --refresh --apply to write.");
+  process.exit(report.errors.length ? 4 : 0);
 }
 
 const gst = (iso) => toGstIso(new Date(iso)).replace("T", " ").slice(0, 16);
@@ -94,12 +63,18 @@ const gst = (iso) => toGstIso(new Date(iso)).replace("T", " ").slice(0, 16);
 const fixtures = [];
 const seasons = {};
 for (const [league, leagueId] of Object.entries(LEAGUES)) {
-  const seasonId = await seasonIdFor(leagueId);
+  const seasonId = await sm.seasonIdFor(leagueId);
   if (!seasonId) {
     console.error(`STOP: no 2026/27 season found for ${league} (league ${leagueId}).`);
     process.exit(2);
   }
-  const rows = await fetchLeagueFixtures(league, leagueId, seasonId);
+  const rows = await sm.fetchLeagueFixtures({
+    league,
+    leagueId,
+    seasonId,
+    from: addDays(FIRST_FRIDAY, -1),
+    to: SEASON_END,
+  });
   if (!rows.length) {
     console.error(`STOP: Sportmonks returned no 2026/27 fixtures for ${league} (season ${seasonId}).`);
     process.exit(2);
