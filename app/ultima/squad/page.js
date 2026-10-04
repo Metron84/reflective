@@ -1,3 +1,4 @@
+import UltimaStaffMessage from "@/components/ultima/UltimaStaffMessage";
 import UltimaSquadClient from "@/components/ultima/UltimaSquadClient";
 import styles from "@/components/ultima/ultima.module.css";
 import { requireUltimaManager } from "@/lib/ultima/gates";
@@ -14,7 +15,21 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaSquadPage() {
-  const { manager } = await requireUltimaManager("/ultima/squad");
+  const { manager, authError } = await requireUltimaManager("/ultima/squad", {
+    tolerateAuthError: true,
+  });
+  if (authError) {
+    return (
+      <div className={styles.ultimaPage}>
+        <div className={`${styles.inner} ${styles.innerWide}`}>
+          <UltimaStaffMessage
+            subject="Couldn't load your squad"
+            body="Refresh to try again."
+          />
+        </div>
+      </div>
+    );
+  }
   const competition = await getActiveCompetition();
   const [office, roster] =
     competition && manager

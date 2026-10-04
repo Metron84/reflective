@@ -104,9 +104,10 @@ export async function middleware(request) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Local JWT verification: no Auth server call per request (429 risk).
+  // getClaims refreshes the session only when the access token has expired.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const user = claimsData?.claims?.sub ? { id: claimsData.claims.sub } : null;
   const pathname = request.nextUrl.pathname;
 
   let response = nextWithPath(request);
