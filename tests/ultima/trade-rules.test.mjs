@@ -37,9 +37,11 @@ test("GW gate: deadline closes the window after its gameweek", () => {
   assert.deepEqual(tradeGate({ gw: { number: 9 }, deadlineGw: 8 }), { ok: false, code: "TRADE_DEADLINE" });
 });
 
-test("GW gate: the default deadline of 4 means none is set", () => {
-  assert.equal(tradeGate({ gw: { number: 12 }, deadlineGw: 4 }).ok, true);
+test("GW gate: a null deadline means none, and a deadline of 4 is a real deadline", () => {
   assert.equal(tradeGate({ gw: { number: 12 }, deadlineGw: null }).ok, true);
+  assert.equal(tradeGate({ gw: { number: 12 }, deadlineGw: undefined }).ok, true);
+  assert.equal(tradeGate({ gw: { number: 4 }, deadlineGw: 4 }).ok, true);
+  assert.deepEqual(tradeGate({ gw: { number: 5 }, deadlineGw: 4 }), { ok: false, code: "TRADE_DEADLINE" });
 });
 
 test("id lists: no 0 for 0, no duplicates, equal sides", () => {
@@ -112,7 +114,14 @@ test("due: review and hold end at their own timestamps", () => {
   assert.equal(isDue({ state: "proposed", review_expires_at: "2020-01-01T00:00:00Z" }, now), false);
 });
 
-import { findBusy, hasLiveOffer, partyGuard, rateLimited } from "../../lib/ultima/trades/rules.js";
+import {
+  acceptTooLate,
+  findBusy,
+  hasLiveOffer,
+  partyGuard,
+  pendingTradeLine,
+  rateLimited,
+} from "../../lib/ultima/trades/rules.js";
 
 test("parties: bots, self and strangers are turned away", () => {
   const comp = "c1";
@@ -150,4 +159,37 @@ test("one live offer between two managers, unless it is the one being countered"
   assert.equal(hasLiveOffer([{ id: "t1" }]), true);
   assert.equal(hasLiveOffer([{ id: "t1" }], "t1"), false);
   assert.equal(hasLiveOffer([]), false);
+});
+
+test("accept: blocked when the 24h review would end after the deadline", () => {
+  const now = Date.parse("2026-10-07T10:00:00Z");
+  const hours = (h) => new Date(now + h * 3_600_000).toISOString();
+  assert.equal(acceptTooLate({ deadlineAt: hours(10), now }), true);
+  assert.equal(acceptTooLate({ deadlineAt: hours(23.9), now }), true);
+  assert.equal(acceptTooLate({ deadlineAt: hours(24), now }), false);
+  assert.equal(acceptTooLate({ deadlineAt: hours(30), now }), false);
+  assert.equal(acceptTooLate({ deadlineAt: hours(-1), now }), true);
+});
+
+test("accept: no deadline, or an unsynced deadline gameweek, never blocks", () => {
+  assert.equal(acceptTooLate({ deadlineAt: null }), false);
+  assert.equal(acceptTooLate({ deadlineAt: undefined }), false);
+  assert.equal(acceptTooLate({ deadlineAt: "not a date" }), false);
+});
+
+test("drop confirm line names the other team", () => {
+  assert.equal(
+    pendingTradeLine(["Doumani Athletic"]),
+    "This voids your pending trade with Doumani Athletic.",
+  );
+  assert.equal(
+    pendingTradeLine(["Team A", "Team B"]),
+    "This voids your pending trades with Team A and Team B.",
+  );
+  assert.equal(
+    pendingTradeLine(["A", "B", "C"]),
+    "This voids your pending trades with A, B and C.",
+  );
+  assert.equal(pendingTradeLine([]), "");
+  assert.equal(pendingTradeLine(undefined), "");
 });
