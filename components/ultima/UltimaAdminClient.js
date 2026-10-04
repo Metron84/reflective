@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_SHORT,
@@ -9,6 +9,8 @@ import {
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import { draftRoomWindow } from "@/lib/ultima/draft-window";
+import { formatGstDateTime, formatGstTime, fromGstInput, toGstInputValue } from "@/lib/ultima/gst";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaPanel from "./UltimaPanel";
 import UltimaRow from "./UltimaRow";
@@ -50,12 +52,22 @@ export default function UltimaAdminClient({
   const [gwNumber, setGwNumber] = useState("");
   const [gwStart, setGwStart] = useState("");
   const [gwEnd, setGwEnd] = useState("");
-  const [scheduleAt, setScheduleAt] = useState("");
+  const [savedAt, setSavedAt] = useState(desk.scheduledAt ?? null);
+  const [scheduleAt, setScheduleAt] = useState(toGstInputValue(desk.scheduledAt));
+  const [now, setNow] = useState(() => Date.now());
   const [cancelReason, setCancelReason] = useState("");
   const [cancelConfirm, setCancelConfirm] = useState("");
   const [syncReport, setSyncReport] = useState(null);
   const [busy, setBusy] = useState("");
   const [confirm, setConfirm] = useState(null);
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const win = draftRoomWindow({ scheduledAt: savedAt, now });
+  const startLocked = (desk.draftState ?? "lobby") === "lobby" && !win.startUnlocked;
 
   async function act(action, extra = {}) {
     setMessage("");
@@ -78,6 +90,11 @@ export default function UltimaAdminClient({
           setMessage(data.code ? `Invite: ${data.code}` : "Done.");
         }
         if (data.code) setInviteCode(data.code);
+        if (action === "schedule_draft" && data.scheduledAt) {
+          setSavedAt(data.scheduledAt);
+          setScheduleAt(toGstInputValue(data.scheduledAt));
+          setMessage(`Draft set for ${formatGstDateTime(data.scheduledAt)} GST.`);
+        }
         setConfirm(null);
       }
     } catch {
@@ -140,8 +157,13 @@ export default function UltimaAdminClient({
 
       <UltimaPanel title="Draft controls">
         <div className={styles.utActions}>
-          <button type="button" className={styles.primaryBtn} onClick={() => act("start_draft")}>
-            Start draft
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            disabled={startLocked || busy === "start_draft"}
+            onClick={() => act("start_draft")}
+          >
+            {startLocked ? `Start unlocks ${formatGstTime(savedAt)} GST` : "Start draft"}
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={() => act("pause_draft")}>
             Pause
@@ -150,6 +172,11 @@ export default function UltimaAdminClient({
             Resume
           </button>
         </div>
+        <UltimaRow
+          primary="Draft time"
+          meta={win.scheduled ? `Room opens ${formatGstTime(win.opensAt)} GST` : "Not scheduled"}
+          number={savedAt ? `${formatGstDateTime(savedAt)} GST` : "-"}
+        />
         <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
         <div className={styles.utActions}>
           {ULTIMA_TIMER_OPTIONS.map((seconds) => (
@@ -304,13 +331,13 @@ export default function UltimaAdminClient({
       {confirm === "schedule" ? (
         <ConfirmSheet
           title="Schedule draft"
-          body="Set the live draft time."
+          body="Set the live draft time. Times are GST (UTC+4)."
           onClose={() => setConfirm(null)}
-          onConfirm={() => act("schedule_draft", { scheduled_at: scheduleAt })}
+          onConfirm={() => act("schedule_draft", { scheduled_at: fromGstInput(scheduleAt) })}
           busy={busy === "schedule_draft"}
         >
           <label className={styles.field}>
-            Start time
+            Start time (GST)
             <input
               type="datetime-local"
               value={scheduleAt}
