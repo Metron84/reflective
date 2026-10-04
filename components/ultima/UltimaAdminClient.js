@@ -368,7 +368,7 @@ export default function UltimaAdminClient({
       {confirm === "start" ? (
         <ConfirmSheet
           title="Start the draft now?"
-          body="The order is drawn and pick 1 begins."
+          body="The order is locked. Pick 1 begins."
           confirmLabel="Start draft"
           cancelLabel="Cancel"
           cancelFirst
