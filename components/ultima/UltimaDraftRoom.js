@@ -13,6 +13,7 @@ import {
 } from "@/lib/ultima/constants";
 import { lastPicksNewestFirst } from "@/lib/ultima/draft/last-picks";
 import { floorFromState, formatPickDeadline } from "@/lib/ultima/draft/desk";
+import { formatGstTime } from "@/lib/ultima/gst";
 import UltimaDraftBoard from "./UltimaDraftBoard";
 import UltimaDraftClock from "./UltimaDraftClock";
 import UltimaDraftPicker from "./UltimaDraftPicker";
@@ -45,6 +46,8 @@ export default function UltimaDraftRoom({
   const router = useRouter();
   const exitHref = isPractice ? "/ultima/practice" : "/ultima";
   const [state, setState] = useState(null);
+  const seasonLobby = !isPractice && state?.state === "lobby";
+  const [startOpen, setStartOpen] = useState(false);
   const [available, setAvailable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -195,10 +198,10 @@ export default function UltimaDraftRoom({
   }, [exitConfirm]);
 
   useEffect(() => {
-    if (state?.state !== "live" && state?.state !== "paused") return;
+    if (state?.state !== "live" && state?.state !== "paused" && !seasonLobby) return;
     if (available.length) return;
     fetchAvailable();
-  }, [available.length, fetchAvailable, state?.state]);
+  }, [available.length, fetchAvailable, seasonLobby, state?.state]);
 
   useEffect(() => {
     if (state?.is_your_turn && !state.auto_draft) setClockOpen(true);
@@ -269,13 +272,22 @@ export default function UltimaDraftRoom({
   }
 
   async function saveQueue(playerIds) {
-    await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
-      ),
-    });
+    setError("");
+    try {
+      const res = await fetch(isPractice ? "/api/ultima/practice/queue" : "/api/ultima/draft/queue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          isPractice ? { player_ids: playerIds, code: roomCode } : { player_ids: playerIds },
+        ),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.message ?? "The queue did not save. Try again.");
+      }
+    } catch {
+      setError("Connection lost. The queue did not save.");
+    }
     fetchState();
   }
 
@@ -399,7 +411,7 @@ export default function UltimaDraftRoom({
     );
   }
 
-  if (state.state === "lobby") {
+  if (state.state === "lobby" && !seasonLobby) {
     return (
       <div className={`${styles.draftRoom} ${styles.draftOffice} ${styles.dLobby} ultima-live-chrome-off`}>
         <UltimaStaffMessage
@@ -457,7 +469,7 @@ export default function UltimaDraftRoom({
   const seats = state.managers?.length || 10;
   const totalPicks = seats * 30 || ULTIMA_TOTAL_PICKS;
   const round = Math.max(1, Math.ceil((state.current_pick || 1) / seats));
-  const yourTurn = Boolean(state.is_your_turn);
+  const yourTurn = !seasonLobby && Boolean(state.is_your_turn);
   const showClock = yourTurn && state.state === "live" && !state.auto_draft && clockOpen;
   const lastPick = lastPicksNewestFirst(state.picks ?? [], 1)[0];
   const ticker =
@@ -483,6 +495,28 @@ export default function UltimaDraftRoom({
     const [item] = copy.splice(index, 1);
     copy.splice(next, 0, item);
     saveQueue(copy);
+  }
+
+  const shownView = seasonLobby && viewMode === "board" ? "players" : viewMode;
+
+  async function startSeasonDraft() {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "start_draft" }),
+      });
+      const data = await res.json();
+      if (!res.ok) setError(data.message ?? "The draft could not start.");
+      setStartOpen(false);
+      await fetchState();
+    } catch {
+      setError("Connection lost.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const deadline = yourTurn
@@ -544,7 +578,9 @@ export default function UltimaDraftRoom({
         <div className={styles.dBarYou}>
           <p className={styles.dBarClub}>{you?.team_name || "Ultima"}</p>
           <p className={styles.dBarPick}>
-            Round {round} · Pick {state.current_pick ?? "-"} of {totalPicks}
+            {seasonLobby
+              ? "Draft lobby"
+              : `Round ${round} · Pick ${state.current_pick ?? "-"} of ${totalPicks}`}
           </p>
         </div>
         <div
@@ -556,9 +592,9 @@ export default function UltimaDraftRoom({
           }
         >
           <p className={styles.dBarTurnName}>
-            {state.on_clock?.team_name || "Waiting"}
+            {seasonLobby ? "Waiting for the commissioner" : state.on_clock?.team_name || "Waiting"}
           </p>
-          {timerLabel ? <p className={styles.dBarTimer}>{timerLabel}</p> : null}
+          {!seasonLobby && timerLabel ? <p className={styles.dBarTimer}>{timerLabel}</p> : null}
         </div>
         <div className={styles.dBarRight}>
           <button
@@ -584,7 +620,7 @@ export default function UltimaDraftRoom({
                 <button type="button" role="menuitem" onClick={() => { setMenuOpen(false); requestExit(); }}>
                   Exit
                 </button>
-                {!isPractice && state.is_commissioner ? (
+                {!isPractice && state.is_commissioner && !seasonLobby ? (
                   <>
                     <button type="button" role="menuitem" disabled={timerBusy} onClick={() => { pauseOrResume(); setMenuOpen(false); }}>
                       {state.state === "paused" ? "Resume" : "Pause"}
@@ -631,17 +667,63 @@ export default function UltimaDraftRoom({
 
       {ticker ? <p className={styles.dTicker}>{ticker}</p> : null}
 
+      {seasonLobby ? (
+        <UltimaStaffMessage
+          subject="Waiting for the commissioner to start."
+          body={`${
+            state.scheduled_at ? `Scheduled ${formatGstTime(state.scheduled_at)} GST. ` : ""
+          }The draft order is drawn at the start. Build your queue now.`}
+          actionLabel={state.is_commissioner ? "Start draft" : undefined}
+          onAction={state.is_commissioner ? () => setStartOpen(true) : undefined}
+        />
+      ) : null}
+
+      {startOpen ? (
+        <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label="Start the draft">
+          <button
+            type="button"
+            className={styles.dSheetBackdrop}
+            aria-label="Cancel"
+            onClick={() => !loading && setStartOpen(false)}
+          />
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Start the draft now?</p>
+            <p className={styles.dSheetMeta}>The order is drawn and pick 1 begins.</p>
+            <div className={styles.dSheetActions}>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                disabled={loading}
+                onClick={() => setStartOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                disabled={loading}
+                onClick={startSeasonDraft}
+              >
+                {loading ? "Starting…" : "Start draft"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <nav className={styles.dTabs} aria-label="Draft views">
         {[
           ["players", "Players"],
           ["queue", "Queue"],
           ["picks", "Picks"],
           ["board", "Board"],
-        ].map(([id, label]) => (
+        ]
+          .filter(([id]) => !(seasonLobby && id === "board"))
+          .map(([id, label]) => (
           <button
             key={id}
             type="button"
-            className={viewMode === id ? styles.dTabOn : styles.dTab}
+            className={shownView === id ? styles.dTabOn : styles.dTab}
             onClick={() => chooseView(id)}
           >
             {label}
@@ -670,7 +752,7 @@ export default function UltimaDraftRoom({
       ) : null}
 
       <div className={styles.dStage}>
-        {viewMode === "players" ? (
+        {shownView === "players" ? (
           <div className={styles.dSplit}>
             <div className={styles.dSplitMain}>{pickerPane}</div>
             <div className={styles.dSplitSide}>
@@ -689,9 +771,9 @@ export default function UltimaDraftRoom({
             </div>
           </div>
         ) : null}
-        {viewMode === "queue" ? queuePane : null}
-        {viewMode === "picks" ? picksPane : null}
-        {viewMode === "board" ? (
+        {shownView === "queue" ? queuePane : null}
+        {shownView === "picks" ? picksPane : null}
+        {shownView === "board" ? (
           <UltimaDraftBoard
             managers={state.managers ?? []}
             picks={state.picks ?? []}

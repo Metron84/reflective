@@ -48,6 +48,7 @@ export async function GET() {
     queue: queue ?? [],
     extra: {
       is_commissioner: await isUltimaCommissioner(user.id),
+      scheduled_at: ctx.state.scheduled_at ?? null,
     },
   });
 

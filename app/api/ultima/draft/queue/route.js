@@ -42,14 +42,35 @@ export async function POST(request) {
     return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
   }
 
-  const playerIds = Array.isArray(body?.player_ids) ? body.player_ids : [];
+  // Strings only, no repeats, a sane length. The queue works in the lobby and in the draft.
+  const requested = Array.isArray(body?.player_ids)
+    ? [...new Set(body.player_ids.filter((id) => typeof id === "string" && id))].slice(0, 150)
+    : [];
   const db = getUltimaDb();
   if (!db) {
     const { status, body: err } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
     return NextResponse.json(err, { status });
   }
 
-  await db.from("ultima_draft_queues").delete().eq("manager_id", manager.id);
+  // Keep only players that exist, in the order sent.
+  let playerIds = requested;
+  if (requested.length) {
+    const { data: known, error: knownError } = await db
+      .from("ultima_players")
+      .select("id")
+      .in("id", requested);
+    if (knownError) {
+      const { status, body: err } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
+      return NextResponse.json(err, { status });
+    }
+    const exists = new Set((known ?? []).map((row) => row.id));
+    playerIds = requested.filter((id) => exists.has(id));
+  }
+
+  const { error: clearError } = await db
+    .from("ultima_draft_queues")
+    .delete()
+    .eq("manager_id", manager.id);
 
   const rows = playerIds.map((playerId, i) => ({
     manager_id: manager.id,
@@ -57,9 +78,16 @@ export async function POST(request) {
     position: i + 1,
   }));
 
-  if (rows.length) {
-    await db.from("ultima_draft_queues").insert(rows);
+  const { error: insertError } = rows.length
+    ? await db.from("ultima_draft_queues").insert(rows)
+    : { error: null };
+
+  if (clearError || insertError) {
+    return NextResponse.json(
+      { code: "UNAVAILABLE", message: "The queue did not save. Try again." },
+      { status: 503 },
+    );
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, saved: rows.length });
 }
