@@ -672,7 +672,7 @@ export default function UltimaDraftRoom({
           subject="Waiting for the commissioner to start."
           body={`${
             state.scheduled_at ? `Scheduled ${formatGstTime(state.scheduled_at)} GST. ` : ""
-          }The draft order is drawn at the start. Build your queue now.`}
+          }The draft order follows seat order. Build your queue now.`}
           actionLabel={state.is_commissioner ? "Start draft" : undefined}
           onAction={state.is_commissioner ? () => setStartOpen(true) : undefined}
         />
@@ -688,7 +688,7 @@ export default function UltimaDraftRoom({
           />
           <div className={styles.dSheetPanel}>
             <p className={styles.dSheetName}>Start the draft now?</p>
-            <p className={styles.dSheetMeta}>The order is drawn and pick 1 begins.</p>
+            <p className={styles.dSheetMeta}>The order is locked. Pick 1 begins.</p>
             <div className={styles.dSheetActions}>
               <button
                 type="button"
