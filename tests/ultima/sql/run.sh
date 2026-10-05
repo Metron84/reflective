@@ -7,7 +7,7 @@ ROOT="$(cd "$HERE/../../.." && pwd)"
 BIN="$(ls -d /usr/lib/postgresql/*/bin | tail -1)"
 D="$(mktemp -d /var/tmp/ultima-sql.XXXXXX)"
 chmod 755 "$D"; chown postgres "$D" 2>/dev/null || true
-cp "$HERE"/*.sql "$D"/; cp "$ROOT"/supabase/migrations/*ultima*.sql "$D"/ 2>/dev/null || true
+cp "$HERE"/*.sql "$HERE"/race.sh "$D"/; cp "$ROOT"/supabase/migrations/*ultima*.sql "$D"/ 2>/dev/null || true
 cp "$ROOT"/supabase/scripts/ultima_damage_*.sql "$D"/
 chmod 644 "$D"/*.sql
 run() { su postgres -c "$*"; }
@@ -21,3 +21,5 @@ run "$P -f $D/stub.sql"
 for f in $(ls "$D"/00*_ultima*.sql | sort); do run "$P -f $f" >/dev/null; done
 run "cd $D && $P -f execute_trade.test.sql"
 run "cd $D && $P -f captains.test.sql"
+run "cd $D && $P -f player_card_trades.test.sql"
+run "bash $D/race.sh $BIN $D"

@@ -271,9 +271,24 @@ begin;
 select tt.setup();
 do $$ declare r jsonb;
 begin
+  -- 0053: no opening gameweek. An early gameweek settles like any other.
   update public.ultima_gameweeks set number = 3;
   r := public.ultima_execute_trade(tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1']));
-  perform tt.assert(r ->> 'reason' = 'not_open', 'before GW4: ' || r::text);
+  perform tt.assert(r ->> 'state' = 'executed', 'GW3 settles: ' || r::text);
+end $$;
+rollback;
+
+-- 9b. Before gameweek 1 no gameweek has started, and the trade still settles.
+begin;
+select tt.setup();
+do $$ declare r jsonb;
+begin
+  update public.ultima_gameweeks
+  set window_start = now() + interval '3 days', window_end = now() + interval '10 days',
+      state = 'upcoming', number = 1;
+  r := public.ultima_execute_trade(tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1']));
+  perform tt.assert(r ->> 'state' = 'executed', 'before GW1 settles: ' || r::text);
+  perform tt.assert(tt.owner('M1-pl-1') = tt.mgr(2), 'player moved before GW1');
 end $$;
 rollback;
 
@@ -408,9 +423,9 @@ do $$ declare a uuid; b uuid; c uuid; d uuid; e uuid; r jsonb;
 begin
   a := tt.trade(1, 2, 'proposed', array['M1-pl-1'], array['M2-pl-1'], null);
   b := tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-2']);
-  c := tt.trade(2, 1, 'proposed', array['M2-laliga-1'], array['M1-pl-1'], null);
+  c := tt.trade(2, 1, 'awaiting_unlock', array['M2-laliga-1'], array['M1-pl-1'], null);
   d := tt.trade(1, 2, 'executed', array['M1-pl-1'], array['M2-pl-3'], null);
-  e := tt.trade(1, 2, 'proposed', array['M1-pl-2'], array['M2-pl-4'], null);
+  e := tt.trade(1, 2, 'review', array['M1-pl-2'], array['M2-pl-4'], null);
 
   r := public.ultima_void_trades_for_players(tt.mgr(1), array[tt.pl('M1-pl-1')], 'player_dropped');
   perform tt.assert(jsonb_array_length(r -> 'voided') = 3, 'a, b and c void: ' || r::text);
@@ -419,7 +434,7 @@ begin
   perform tt.assert((select void_reason from public.ultima_trades where id = a) = 'player_dropped', 'reason');
   perform tt.assert((r #>> '{voided,0,other_manager_id}')::uuid = tt.mgr(2), 'names the other manager');
   perform tt.assert(tt.state(d) = 'executed', 'executed trades are untouched');
-  perform tt.assert(tt.state(e) = 'proposed', 'trades without him are untouched');
+  perform tt.assert(tt.state(e) = 'review', 'trades without him are untouched');
   perform tt.assert(tt.event_count('trade_void') = 3, 'one event per voided trade');
   perform tt.assert((select count(*) from public.ultima_events
                      where event = 'trade_void' and manager_id = tt.mgr(1)
