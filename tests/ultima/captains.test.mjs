@@ -368,3 +368,8 @@ test("setCaptain: a player not in the XV, and a missing gameweek, are refused up
   assert.equal((await setCaptain({ managerId: "m1", gameweekId: "g1", gameweek: null, playerId: "pl1" })).code, "NO_GAMEWEEK");
   assert.equal(world.calls.length, 0);
 });
+
+test("resolveCaptains: captain_off stops last week's captain carrying over", () => {
+  assert.equal(resolveCaptains(xv({ pl1: { captain_off: true } }), { pl: "pl1" }).byLeague.pl, null);
+  assert.equal(resolveCaptains(xv(), { pl: "pl1" }).byLeague.pl, "pl1");
+});

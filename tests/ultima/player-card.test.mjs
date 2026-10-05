@@ -93,9 +93,9 @@ test("actions: a locked slot keeps every XV move visible and disabled with the r
   assert.match(byId(actions, "drop_sign").reason, /locked in your XV/);
 });
 
-test("actions: a carried captain cannot be removed without naming another", () => {
+test("actions: a carried captain can be removed like any other", () => {
   const actions = buildActions({ ...base, inXv: true, captain: true, captainCarried: true });
-  assert.match(byId(actions, "captain_off").reason, /another player captain/);
+  assert.equal(byId(actions, "captain_off").disabled, false);
 });
 
 test("actions: bench players need a free slot, and a full country says so", () => {
