@@ -39,6 +39,7 @@ if (!key) {
 }
 
 const sm = makeSportmonks(key);
+const LEAGUES = leagueIdsFromEnv();
 
 if (REFRESH) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
