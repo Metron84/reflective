@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_LABELS,
@@ -8,7 +8,11 @@ import {
   ultimaColourHex,
 } from "@/lib/ultima/constants";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
+import { BLOCK_CHIPS, filterSellers, sortSellers } from "@/lib/ultima/trades/block-view";
+import { LOOKING_FOR_MAX, UNTOUCHABLE_MAX } from "@/lib/ultima/trades/rules";
 import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaLookingFor from "./UltimaLookingFor";
+import UltimaUntouchableChip from "./UltimaUntouchableChip";
 import UltimaPanel from "./UltimaPanel";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaValueNumber from "./UltimaValueNumber";
@@ -26,13 +30,16 @@ async function post(body) {
   return { ok: res.ok, data };
 }
 
-function PlayerLine({ player, note, chip, children }) {
+function PlayerLine({ player, note, chip, untouchable = false, children }) {
   const value = expectedUltimaPoints(player);
   return (
     <div className={styles.blkRow}>
       <div className={styles.blkRowTop}>
         <span className={styles.blkRowCopy}>
-          <span className={styles.dPickName}>{player.name || "-"}</span>
+          <span className={styles.dPickName}>
+            {player.name || "-"}
+            {untouchable ? <UltimaUntouchableChip /> : null}
+          </span>
           <span className={styles.dPickMeta}>
             {player.club || "-"}
             {" · "}
@@ -55,7 +62,48 @@ function PlayerLine({ player, note, chip, children }) {
 }
 
 function Board({ office, asked, onAsk, onOffer, busyKey }) {
-  const sellers = office.board.sellers;
+  const [chip, setChip] = useState("all");
+  const [sort, setSort] = useState("newest");
+  const untouchable = office.untouchable ?? {};
+  const all = office.board.sellers;
+  const sellers = useMemo(() => sortSellers(filterSellers(all, chip), sort), [all, chip, sort]);
+
+  const filters = (
+    <div className={styles.blkFilters} role="group" aria-label="Filter by country">
+      {BLOCK_CHIPS.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          className={chip === item.id ? styles.deskTabOn : styles.deskTab}
+          aria-pressed={chip === item.id}
+          onClick={() => setChip(item.id)}
+        >
+          {item.label}
+        </button>
+      ))}
+      <button
+        type="button"
+        className={`${sort === "newest" ? styles.deskTabOn : styles.deskTab} ${styles.blkFilterSort}`}
+        aria-pressed={sort === "newest"}
+        onClick={() => setSort((current) => (current === "newest" ? "rank" : "newest"))}
+      >
+        Newest
+      </button>
+    </div>
+  );
+
+  if (all.length && !sellers.length) {
+    return (
+      <>
+        {filters}
+        <UltimaStaffMessage
+          subject="Nobody has listed a player from that country yet."
+          actionLabel="Show all"
+          onAction={() => setChip("all")}
+        />
+      </>
+    );
+  }
   if (!sellers.length) {
     return (
       <UltimaStaffMessage
@@ -64,7 +112,10 @@ function Board({ office, asked, onAsk, onOffer, busyKey }) {
       />
     );
   }
-  return sellers.map((seller) => {
+  return (
+    <>
+      {filters}
+      {sellers.map((seller) => {
     const sellerAsked = asked.has(`${seller.id}:all`);
     return (
       <UltimaPanel
@@ -75,18 +126,19 @@ function Board({ office, asked, onAsk, onOffer, busyKey }) {
       >
         <div className={styles.blkSeller} style={{ "--team": ultimaColourHex(seller.colour) }}>
           {seller.looking_for.length || seller.note ? (
-            <p className={styles.blkLooking}>
-              <span className={styles.blkLookingLabel}>Looking for</span>{" "}
-              {seller.looking_for.map((l) => ULTIMA_LEAGUE_SHORT[l]).join(", ")}
-              {seller.looking_for.length && seller.note ? " · " : ""}
-              {seller.note}
-            </p>
+            <UltimaLookingFor leagues={seller.looking_for} note={seller.note} />
           ) : null}
           {seller.players.map((player) => {
             const key = `${seller.id}:${player.id}`;
             const done = asked.has(key);
             return (
-              <PlayerLine key={player.id} player={player} note={player.note} chip={player.stance}>
+              <PlayerLine
+                key={player.id}
+                player={player}
+                note={player.note}
+                chip={player.stance}
+                untouchable={Boolean(untouchable[player.id])}
+              >
                 <div className={styles.blkActions}>
                   <button
                     type="button"
@@ -96,7 +148,7 @@ function Board({ office, asked, onAsk, onOffer, busyKey }) {
                   >
                     {done ? "Asked" : player.stance === "listed" ? "I'm interested" : "Ask about him"}
                   </button>
-                  {office.windowOpen ? (
+                  {office.windowOpen && !untouchable[player.id] ? (
                     <button
                       type="button"
                       className={styles.secondaryBtn}
@@ -122,10 +174,12 @@ function Board({ office, asked, onAsk, onOffer, busyKey }) {
         </div>
       </UltimaPanel>
     );
-  });
+      })}
+    </>
+  );
 }
 
-function MyBlock({ office, mine, prefs, onStance, onPrefs, busyKey, saved }) {
+function MyBlock({ office, mine, prefs, onStance, onPrefs, onProtect, protectedIds, busyKey, saved }) {
   const [draft, setDraft] = useState(prefs);
   const [notes, setNotes] = useState({});
   const roster = office.myRoster ?? [];
@@ -135,7 +189,7 @@ function MyBlock({ office, mine, prefs, onStance, onPrefs, busyKey, saved }) {
       <UltimaPanel raised title="Looking for">
         <div className={styles.blkPrefs}>
           <p className={styles.dPicksNote}>
-            Tell the league what you want back. Shown on your block.
+            Tell the league what you want back. Shown on your squad and your block.
           </p>
           <div className={styles.blkLeagueChips}>
             {ULTIMA_LEAGUES.map((league) => {
@@ -162,10 +216,12 @@ function MyBlock({ office, mine, prefs, onStance, onPrefs, busyKey, saved }) {
             })}
           </div>
           <label className={styles.blkField}>
-            <span className={styles.blkLookingLabel}>Note</span>
+            <span className={styles.blkLookingLabel}>
+              Line · {draft.note.length}/{LOOKING_FOR_MAX}
+            </span>
             <input
               className={styles.blkInput}
-              maxLength={80}
+              maxLength={LOOKING_FOR_MAX}
               value={draft.note}
               placeholder="A striker who plays every week"
               onChange={(e) => setDraft((d) => ({ ...d, note: e.target.value }))}
@@ -200,10 +256,11 @@ function MyBlock({ office, mine, prefs, onStance, onPrefs, busyKey, saved }) {
           >
             {players.map((player) => {
               const entry = mine[player.id];
+              const isProtected = protectedIds.includes(player.id);
               const stance = entry?.stance ?? null;
               const noteValue = notes[player.id] ?? entry?.note ?? "";
               return (
-                <PlayerLine key={player.id} player={player} note={null}>
+                <PlayerLine key={player.id} player={player} note={null} untouchable={isProtected}>
                   <div className={styles.blkSeg} role="group" aria-label={`Trade status for ${player.name}`}>
                     {[
                       [null, "Off"],
@@ -215,12 +272,29 @@ function MyBlock({ office, mine, prefs, onStance, onPrefs, busyKey, saved }) {
                         type="button"
                         className={stance === value ? styles.deskTabOn : styles.deskTab}
                         aria-pressed={stance === value}
-                        disabled={busyKey === player.id}
+                        disabled={busyKey === player.id || isProtected}
                         onClick={() => onStance({ player, stance: value, note: noteValue })}
                       >
                         {label}
                       </button>
                     ))}
+                  </div>
+                  <div className={styles.blkProtect}>
+                    <button
+                      type="button"
+                      className={isProtected ? styles.deskTabOn : styles.deskTab}
+                      aria-pressed={isProtected}
+                      disabled={
+                        busyKey === `protect:${player.id}` ||
+                        (!isProtected && protectedIds.length >= UNTOUCHABLE_MAX)
+                      }
+                      onClick={() => onProtect({ player, on: !isProtected })}
+                    >
+                      Untouchable
+                    </button>
+                    <span>
+                      {protectedIds.length}/{UNTOUCHABLE_MAX} used
+                    </span>
                   </div>
                   {stance ? (
                     <div className={styles.blkNoteEdit}>
@@ -323,6 +397,7 @@ export default function UltimaTradeBlock({ office, onStartOffer, preview = false
     () => new Set(office.board.asked.map((a) => `${a.to}:${a.player ?? "all"}`)),
   );
   const [inbox, setInbox] = useState(office.board.inbox);
+  const [protectedIds, setProtectedIds] = useState(office.myUntouchable ?? []);
   const [busyKey, setBusyKey] = useState("");
   const [saved, setSaved] = useState("");
   const [error, setError] = useState("");
@@ -354,6 +429,21 @@ export default function UltimaTradeBlock({ office, onStartOffer, preview = false
         return next;
       }),
     );
+  }
+
+  function onProtect({ player, on }) {
+    run(`protect:${player.id}`, { action: "untouchable", player_id: player.id, on }, () => {
+      setProtectedIds((current) =>
+        on ? [...new Set([...current, player.id])] : current.filter((id) => id !== player.id),
+      );
+      if (on) {
+        setMine((current) => {
+          const next = { ...current };
+          delete next[player.id];
+          return next;
+        });
+      }
+    });
   }
 
   function onPrefs(next) {
@@ -436,6 +526,8 @@ export default function UltimaTradeBlock({ office, onStartOffer, preview = false
           prefs={prefs}
           onStance={onStance}
           onPrefs={onPrefs}
+          onProtect={onProtect}
+          protectedIds={protectedIds}
           busyKey={busyKey}
           saved={saved}
         />

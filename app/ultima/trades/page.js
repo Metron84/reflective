@@ -11,7 +11,10 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function UltimaTradesPage() {
+export default async function UltimaTradesPage({ searchParams }) {
+  const query = (await searchParams) ?? {};
+  const initialTab = query.tab === "block" ? "block" : undefined;
+  const initialBlockView = ["board", "mine", "interest"].includes(query.view) ? query.view : undefined;
   const seat = await requireSeat("/ultima/trades");
   if (seat.status === "unavailable") return <UltimaSeatRetry />;
   const { manager, competition } = seat;
@@ -30,7 +33,11 @@ export default async function UltimaTradesPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
-        <UltimaTradesClient office={office} />
+        <UltimaTradesClient
+          office={office}
+          initialTab={initialTab}
+          initialBlockView={initialBlockView}
+        />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
 import UltimaStatusBar from "./UltimaStatusBar";
 import UltimaTradeBlock from "./UltimaTradeBlock";
+import UltimaUntouchableChip from "./UltimaUntouchableChip";
 import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
 import styles from "./ultima.module.css";
 
@@ -90,14 +91,17 @@ function floorLine(broken, prefix) {
   };
 }
 
-function TradePlayerRow({ player, index, selected, onToggle, onOpen, points }) {
+function TradePlayerRow({ player, index, selected, onToggle, onOpen, points, untouchable = false }) {
   const value = pts(player);
   return (
     <div className={`${styles.dPickRow} ${styles.dPickRowMarket}`}>
       <button type="button" className={styles.dPickMain} onClick={() => onOpen(player)}>
         <span className={styles.dPickRank}>{index + 1}</span>
         <span className={styles.dPickCopy}>
-          <span className={styles.dPickName}>{player.name || "-"}</span>
+          <span className={styles.dPickName}>
+            {player.name || "-"}
+            {untouchable ? <UltimaUntouchableChip /> : null}
+          </span>
           <span className={styles.dPickMeta}>
             {player.club || "-"}
             {" · "}
@@ -115,7 +119,7 @@ function TradePlayerRow({ player, index, selected, onToggle, onOpen, points }) {
           </span>
         </span>
       </button>
-      {onToggle ? (
+      {onToggle && !untouchable ? (
         <button
           type="button"
           className={selected ? styles.dPickPlusOn : styles.dPickPlus}
@@ -168,6 +172,7 @@ function Negotiation({
   onDecline,
   onCounter,
   onVeto,
+  onWithdraw,
   onOpenPlayer,
   onRetry,
 }) {
@@ -211,6 +216,7 @@ function Negotiation({
               index={index}
               onOpen={onOpenPlayer}
               points={points}
+              untouchable={Boolean(office.untouchable?.[player.id])}
             />
           ))}
           <p className={styles.trTotal}>
@@ -226,6 +232,7 @@ function Negotiation({
               index={index}
               onOpen={onOpenPlayer}
               points={points}
+              untouchable={Boolean(office.untouchable?.[player.id])}
             />
           ))}
           <p className={styles.trTotal}>
@@ -262,6 +269,14 @@ function Negotiation({
         </div>
       ) : null}
 
+      {offer.canCancel ? (
+        <div className={styles.trActions}>
+          <button type="button" className={styles.trWithdraw} disabled={busy} onClick={onWithdraw}>
+            Withdraw
+          </button>
+        </div>
+      ) : null}
+
       {offer.canVeto ? (
         offer.alreadyVetoed ? (
           <p className={styles.trFloorBad}>You vetoed this.</p>
@@ -293,6 +308,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   const [loading, setLoading] = useState(false);
   const [lastAct, setLastAct] = useState(null);
   const [counterOf, setCounterOf] = useState(null);
+  const [confirmWithdraw, setConfirmWithdraw] = useState(null);
 
   const offers = office?.offers ?? [];
   const open = offers.find((o) => o.id === openId) ?? null;
@@ -480,6 +496,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       player={player}
                       index={index}
                       selected={giveIds.includes(player.id)}
+                      untouchable={Boolean(office.untouchable?.[player.id])}
                       onToggle={(id) => toggle(giveIds, setGiveIds, id)}
                       onOpen={setSheet}
                       points={myRoster.map(pts)}
@@ -492,6 +509,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       player={player}
                       index={index}
                       selected={getIds.includes(player.id)}
+                      untouchable={Boolean(office.untouchable?.[player.id])}
                       onToggle={(id) => toggle(getIds, setGetIds, id)}
                       onOpen={setSheet}
                       points={theirRoster.map(pts)}
@@ -550,6 +568,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       index={index}
                       onOpen={setSheet}
                       points={composePoints}
+                      untouchable={Boolean(office.untouchable?.[player.id])}
                     />
                   ))}
                   <p className={styles.trTotal}>
@@ -565,6 +584,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       index={index}
                       onOpen={setSheet}
                       points={composePoints}
+                      untouchable={Boolean(office.untouchable?.[player.id])}
                     />
                   ))}
                   <p className={styles.trTotal}>
@@ -617,6 +637,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                 onDecline={() => act({ trade_id: open.id, accept: false })}
                 onCounter={() => startCounter(open)}
                 onVeto={() => act({ trade_id: open.id, veto: true })}
+                onWithdraw={() => setConfirmWithdraw(open.id)}
                 onOpenPlayer={setSheet}
                 onRetry={() => lastAct && lastAct !== "send" && act(lastAct)}
               />
@@ -639,12 +660,41 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
             onDecline={() => act({ trade_id: open.id, accept: false })}
             onCounter={() => startCounter(open)}
             onVeto={() => act({ trade_id: open.id, veto: true })}
+                onWithdraw={() => setConfirmWithdraw(open.id)}
             onOpenPlayer={setSheet}
             onRetry={() => lastAct && lastAct !== "send" && act(lastAct)}
           />
           <button type="button" className={styles.opPanelAction} onClick={() => setOpenId(null)}>
             Back
           </button>
+        </div>
+      ) : null}
+
+      {confirmWithdraw ? (
+        <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label="Withdraw this offer">
+          <button
+            type="button"
+            className={styles.dSheetBackdrop}
+            aria-label="Close"
+            onClick={() => setConfirmWithdraw(null)}
+          />
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Withdraw this offer?</p>
+            <div className={styles.dSheetActions}>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                disabled={loading}
+                onClick={() => act({ trade_id: confirmWithdraw, cancel: true })}
+              >
+                {loading ? "Withdrawing…" : "Withdraw"}
+              </button>
+              <button type="button" className={styles.secondaryBtn} onClick={() => setConfirmWithdraw(null)}>
+                Keep
+              </button>
+            </div>
+            {error ? <p className={styles.trFloorBad}>{error}</p> : null}
+          </div>
         </div>
       ) : null}
 

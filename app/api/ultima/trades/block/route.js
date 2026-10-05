@@ -8,6 +8,7 @@ import {
   setBlockStance,
   setTradePrefs,
 } from "@/lib/ultima/server/trade-block";
+import { setUntouchable } from "@/lib/ultima/server/untouchables";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,7 @@ function fail(result) {
 /**
  * One endpoint for the trade block.
  * action: "stance" (list or open a player, or clear), "prefs" (looking for),
+ * "untouchable" (protect or release one of your players),
  * "ask" (interest in a player or a manager), "resolve" (seen, offered, dismissed).
  */
 export async function POST(request) {
@@ -50,6 +52,13 @@ export async function POST(request) {
         playerId: body.player_id,
         stance: body.stance ?? null,
         note: body.note,
+      });
+      break;
+    case "untouchable":
+      result = await setUntouchable({
+        managerId: manager.id,
+        playerId: body.player_id,
+        on: Boolean(body.on),
       });
       break;
     case "prefs":

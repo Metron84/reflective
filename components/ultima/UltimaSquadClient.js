@@ -12,6 +12,8 @@ import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import { bestXvLineup, playerExpected, xvDiff } from "@/lib/ultima/squad/best-xv";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaLocalTime from "./UltimaLocalTime";
+import UltimaLookingFor from "./UltimaLookingFor";
+import UltimaUntouchableChip from "./UltimaUntouchableChip";
 import UltimaPanel from "./UltimaPanel";
 import UltimaPlayerSheet from "./UltimaPlayerSheet";
 import UltimaStaffMessage from "./UltimaStaffMessage";
@@ -193,6 +195,13 @@ export default function UltimaSquadClient({
         )}
       />
       <LockLine nextLockAt={nextLockAt} allLocked={allLocked} />
+      {office?.lookingFor ? (
+        <UltimaLookingFor
+          leagues={office.lookingFor.leagues}
+          note={office.lookingFor.note}
+          editHref="/ultima/trades?tab=block&view=mine"
+        />
+      ) : null}
 
       {squadSize > 0 && squadSize < squadCap ? (
         <UltimaStaffMessage
@@ -427,6 +436,7 @@ function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, 
             {player.name}
             {player.bolt_eligible ? <span className={styles.sqBolt}>Bolt</span> : null}
             {player.live ? <span className={styles.sqLive}>LIVE</span> : null}
+            {player.untouchable ? <UltimaUntouchableChip /> : null}
           </span>
           <span className={styles.sqMeta}>
             {player.club || "-"}
