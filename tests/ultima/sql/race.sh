@@ -50,6 +50,7 @@ echo "race 2: owner is Team1: $([ "$OWNER" = "$M1" ] && echo yes || echo no); lo
 [ "$OWNER" = "$M1" ] || { echo "FAIL: the first signing did not win"; exit 1; }
 echo "$RES" | grep -q '"code": "PICK_TAKEN"' || { echo "FAIL: loser did not get PICK_TAKEN"; exit 1; }
 echo "$RES" | grep -q '"taken_by": "Team1"' || { echo "FAIL: loser was not told who signed him"; exit 1; }
+echo "$RES" | grep -q '"taken_at": "' || { echo "FAIL: loser was not told when he was signed"; exit 1; }
 [ "$(Q -c "select count(*) from public.ultima_rosters where manager_id = '$M2'")" = "20" ] \
   || { echo "FAIL: loser's squad changed"; exit 1; }
 echo "races: all passed"

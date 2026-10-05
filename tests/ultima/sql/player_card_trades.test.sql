@@ -289,6 +289,39 @@ begin
   perform pc.assert(pc.owner('M2-pl-1') = pc.mgr(2), 'second squad untouched');
   r := pc.sign(2, 'M1-pl-2', 'M2-pl-1');
   perform pc.assert(r ->> 'code' = 'PICK_TAKEN', 'owned player is not signable');
+  -- 0056: the refusal also says when he was taken, and signing your own player says so.
+  r := pc.sign(2, 'FA-pl-1', 'M2-pl-1');
+  perform pc.assert((r ->> 'taken_at')::timestamptz > now() - interval '1 minute', 'taken_at is in the answer: ' || r::text);
+  r := pc.sign(1, 'FA-pl-1', 'M1-pl-2');
+  perform pc.assert(r ->> 'code' = 'ALREADY_YOURS', 'own player: ' || r::text);
+  perform pc.assert(pc.owner('M1-pl-2') = pc.mgr(1) and pc.owner('FA-pl-1') = pc.mgr(1), 'no write on a refusal');
+end $$;
+rollback;
+
+-- 9b. 0056: action keys. One row per tap, first claim wins, server only.
+begin;
+select pc.setup();
+do $$ declare n int;
+begin
+  insert into public.ultima_action_keys (key, manager_id, route) values ('tap-00000001', pc.mgr(1), 'lineup/save');
+  begin
+    insert into public.ultima_action_keys (key, manager_id, route) values ('tap-00000001', pc.mgr(1), 'lineup/save');
+    perform pc.assert(false, 'a repeated key must be refused');
+  exception when unique_violation then null;
+  end;
+  -- Another manager can use the same text.
+  insert into public.ultima_action_keys (key, manager_id, route) values ('tap-00000001', pc.mgr(2), 'lineup/save');
+  update public.ultima_action_keys set result = '{"status":200,"body":{"ok":true}}'::jsonb where key = 'tap-00000001' and manager_id = pc.mgr(1);
+  perform pc.assert((select result ->> 'status' from public.ultima_action_keys where manager_id = pc.mgr(1)) = '200', 'result stored');
+  begin
+    insert into public.ultima_action_keys (key, manager_id, route) values ('short', pc.mgr(1), 'x');
+    perform pc.assert(false, 'a short key must be refused');
+  exception when check_violation then null;
+  end;
+  update public.ultima_action_keys set created_at = now() - interval '8 days' where manager_id = pc.mgr(2);
+  n := public.ultima_purge_action_keys(7);
+  perform pc.assert(n = 1, 'purge removes only old keys: ' || n);
+  perform pc.assert((select relrowsecurity from pg_class where relname = 'ultima_action_keys'), 'rls on');
 end $$;
 rollback;
 
