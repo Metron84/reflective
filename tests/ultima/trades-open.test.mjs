@@ -137,9 +137,21 @@ function handler(q) {
 }
 
 let fake = makeFakeDb(handler);
-mock.module("@/lib/ultima/server/db", { namedExports: { getUltimaDb: () => fake } });
+mock.module("@/lib/ultima/server/db", {
+  namedExports: { getUltimaDb: () => fake, getManagerCompetitionId: async () => "c1" },
+});
 mock.module("@/lib/ultima/server/lineup", {
-  namedExports: { getManagerRoster: async (id) => world.rosters[id] ?? [] },
+  namedExports: {
+    getManagerRoster: async (id) => world.rosters[id] ?? [],
+    clearLineupSlots: async () => 0,
+    isLeagueLocked: () => false,
+    squadLeagueCounts: (list) => {
+      const counts = { pl: 0, laliga: 0, seriea: 0, bundesliga: 0, ligue1: 0 };
+      for (const p of list) if (p.league in counts) counts[p.league] += 1;
+      return counts;
+    },
+    ULTIMA_SQUAD_SIZE: 30,
+  },
 });
 mock.module("@/lib/ultima/server/events", { namedExports: { publishUltimaEvent: () => {} } });
 mock.module("@/lib/ultima/server/notify", { namedExports: { notifyTradeProposedAsync: () => {}, notifyManagerOnceAsync: () => {} } });
@@ -240,4 +252,82 @@ test("every trade route gates on requireSeatApi with the write check", async () 
     assert.match(source, /requireSeatApi\(\{ mutating: true \}\)/, `${dir} uses requireSeatApi`);
     assert.doesNotMatch(source, /getSessionUser|getManagerForUser/, `${dir} has no direct session read`);
   }
+});
+
+// ---------------------------------------------------------------------------
+// Equal counts and the locked-XV drop block
+// ---------------------------------------------------------------------------
+
+import { xvSlotLocked } from "../../lib/ultima/lineup/lock.js";
+import { checkIdLists } from "../../lib/ultima/trades/rules.js";
+
+test("unequal counts are refused up front with the plain line", async () => {
+  const res = checkIdLists(["a", "b"], ["c"]);
+  assert.equal(res.code, "TRADE_UNEVEN");
+  const { ULTIMA_ERRORS } = await import("../../lib/ultima/errors.js");
+  assert.equal(ULTIMA_ERRORS.TRADE_UNEVEN, "Trades must be the same number of players each way.");
+});
+
+test("xv lock: after the open time, or live with no open time, never before", () => {
+  const now = Date.parse("2026-10-09T20:00:00Z");
+  const open = { state: "live", league_open_at: { pl: "2026-10-09T18:30:00Z", laliga: "2026-10-10T18:30:00Z" } };
+  assert.equal(xvSlotLocked(open, "pl", now), true);
+  assert.equal(xvSlotLocked(open, "laliga", now), false);
+  assert.equal(xvSlotLocked({ state: "live", league_open_at: {} }, "pl", now), true);
+  assert.equal(xvSlotLocked({ state: "upcoming", league_open_at: {} }, "pl", now), false);
+  assert.equal(xvSlotLocked(null, "pl", now), false);
+});
+
+const xv = { rows: [] };
+let marketFake;
+const dropped = [];
+mock.module("@/lib/ultima/server/bootstrap", { namedExports: { getCurrentGameweek: async () => null } });
+mock.module("@/lib/ultima/server/form", { namedExports: { buildTeamForm: () => [], clubKey: (x) => x } });
+mock.module("@/lib/ultima/server/players", { namedExports: { getFreeAgents: async () => [] } });
+mock.module("@/lib/ultima/server/watchlist", { namedExports: { getWatchlistIds: async () => [] } });
+mock.module("@/lib/ultima/server/trades", {
+  namedExports: {
+    listPendingTradeTeams: async () => new Map(),
+    voidTradesForPlayers: async () => {
+      dropped.push("voided");
+    },
+  },
+});
+
+const market = await import("../../lib/ultima/server/market.js");
+
+function marketDb() {
+  return makeFakeDb((q) => {
+    if (q.table === "ultima_lineups") return { data: xv.rows.length ? xv.rows : [], error: null };
+    return { data: [], error: null };
+  });
+}
+
+test("market drop: a player in a locked XV slot is refused with the plain line", async () => {
+  world.rosters = {
+    m1: [
+      ...roster(["a1", "a2", "a3"], "pl"),
+      ...roster(["l1", "l2", "l3"], "laliga"),
+      ...roster(["s1", "s2", "s3"], "seriea"),
+      ...roster(["g1", "g2", "g3"], "bundesliga"),
+      ...roster(["f1", "f2", "f3", "f4"], "ligue1"),
+    ],
+  };
+  xv.rows = [{ slot: 1 }];
+  fake = marketDb();
+  const gameweek = { id: "gw1", state: "live", league_open_at: {} };
+  const res = await market.dropPlayer({ managerId: "m1", playerId: "a1", gameweekId: "gw1", gameweek });
+  assert.equal(res.ok, false);
+  assert.equal(res.code, "XV_LOCKED");
+  const { ULTIMA_ERRORS } = await import("../../lib/ultima/errors.js");
+  assert.equal(ULTIMA_ERRORS.XV_LOCKED, "He's locked in your XV until Friday.");
+  assert.ok(!fake.log.some((q) => q.table === "ultima_rosters" && q.op === "delete"), "roster untouched");
+});
+
+test("market drop: the same player on the bench of a live gameweek is not blocked by the XV rule", async () => {
+  xv.rows = [];
+  fake = marketDb();
+  const gameweek = { id: "gw1", state: "live", league_open_at: {} };
+  const res = await market.dropPlayer({ managerId: "m1", playerId: "f4", gameweekId: "gw1", gameweek });
+  assert.notEqual(res.code, "XV_LOCKED");
 });

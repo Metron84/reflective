@@ -1,4 +1,5 @@
--- Ultima trades open (Part 2). NOT YET APPLIED. Melo runs this in the Supabase editor.
+-- Applied to production 5 Oct 2026. Do not re-run.
+-- Ultima trades open (Part 2).
 -- Run after 0049_ultima_trade_deadline_and_voids.sql. Idempotent.
 --
 -- 1. ultima_untouchables: up to 3 players per manager that cannot be asked for.
@@ -40,6 +41,7 @@ create policy "ultima_untouchables: participants read"
 create or replace function public.ultima_untouchables_cap()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   if (select count(*) from public.ultima_untouchables where manager_id = new.manager_id) >= 3 then
