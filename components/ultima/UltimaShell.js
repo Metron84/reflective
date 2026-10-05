@@ -10,12 +10,13 @@ import styles from "./ultima.module.css";
 
 const OFFICE_NAV = [
   { href: "/ultima", label: "Hub", icon: HubIcon },
-  { href: "/ultima/practice", label: "Pre-draft", icon: PracticeIcon },
   { href: "/ultima/draft", label: "Draft", icon: DraftIcon },
   { href: "/ultima/squad", label: "Squad", icon: SquadIcon },
+  { href: "/ultima/matchday", label: "Matchday", icon: MatchdayIcon },
   { href: "/ultima/standings", label: "Table", icon: TableIcon },
   { href: "/ultima/market", label: "Market", icon: MarketIcon },
-  { href: "/ultima/trades", label: "Trade", icon: TradesIcon },
+  { href: "/ultima/trades", label: "Trades", icon: TradesIcon },
+  { href: "/ultima/practice", label: "Practice", icon: PracticeIcon },
   { href: "/ultima/rules", label: "Rules", icon: RulesIcon },
   { href: "/ultima/profile", label: "Profile", icon: ProfileIcon },
   { href: "/ultima/log", label: "Log", icon: LogIcon },
@@ -25,10 +26,11 @@ const CRUMB_LABELS = {
   "/ultima": "Ultima",
   "/ultima/draft": "Draft",
   "/ultima/squad": "Squad",
+  "/ultima/matchday": "Matchday",
   "/ultima/standings": "Table",
   "/ultima/market": "Market",
-  "/ultima/trades": "Trade",
-  "/ultima/practice": "Pre-draft",
+  "/ultima/trades": "Trades",
+  "/ultima/practice": "Practice",
   "/ultima/admin": "Admin",
   "/ultima/rules": "Rules",
   "/ultima/join": "Join",
@@ -268,6 +270,17 @@ function SquadIcon() {
       <path
         fill="currentColor"
         d="M8.2 4.4 12 3.2l3.8 1.2 2.4 2.2v4.4c0 4.2-2.4 7.2-6.2 8.8-3.8-1.6-6.2-4.6-6.2-8.8V6.6l2.4-2.2Zm.6 1.8-1.2 1.1v3.7c0 3.2 1.7 5.5 4.4 6.8 2.7-1.3 4.4-3.6 4.4-6.8V7.3L15.2 6.2 12 5.2 8.8 6.2Z"
+      />
+    </svg>
+  );
+}
+
+function MatchdayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M4 6h16v12H4V6Zm1.6 1.6v8.8h12.8V7.6H5.6Zm2 1.6h3.2v1.6H7.6V9.2Zm5.6 0h3.2v1.6h-3.2V9.2Zm-5.6 3.2h3.2V14H7.6v-1.6Zm5.6 0h3.2V14h-3.2v-1.6Z"
       />
     </svg>
   );
