@@ -347,3 +347,15 @@ test("hub news line groups owned club and league moves by manager", () => {
   assert.match(line, /Check your XV/);
   assert.equal(clubSyncNewsLine([]), null);
 });
+
+import { cleanParentClub } from "../../lib/ultima/loan.js";
+
+test("parent club: youth suffixes go and a bare name matches the senior club", () => {
+  const known = ["Tottenham Hotspur", "Arsenal", "Real Madrid"];
+  assert.equal(cleanParentClub("Tottenham U21", known), "Tottenham Hotspur");
+  assert.equal(cleanParentClub("Arsenal U23", known), "Arsenal");
+  assert.equal(cleanParentClub("Real Madrid B", known), "Real Madrid");
+  assert.equal(cleanParentClub("Barcelona II"), "Barcelona");
+  assert.equal(cleanParentClub("Ajax"), "Ajax");
+  assert.equal(cleanParentClub(null), null);
+});
