@@ -60,3 +60,9 @@ test("tolerant reads keep their result and log the job name and Supabase message
   assert.match(lines[0], /\[ultima\/read-error\] cron\/ultima\/notify ultima_notifications: relation missing/);
   assert.match(lines[1], /bots\/seat ultima_managers: boom/);
 });
+
+test("an embed between tables with two foreign keys names the key", () => {
+  const src = readFileSync("lib/ultima/server/europe-board.js", "utf8");
+  assert.match(src, /ultima_players!ultima_transactions_player_id_fkey\(/);
+  assert.doesNotMatch(src, /ultima_transactions"\)\s*\.select\("[^"]*ultima_players\(/);
+});
