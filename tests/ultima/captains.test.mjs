@@ -191,7 +191,7 @@ const slotOf = (slot, stat, captain) => ({
   fixtureStats: [stat],
 });
 
-test("a captain's slot total doubles, Bolt included; others are untouched", () => {
+test("a captain doubles base points only; Bolt is added after and never doubled", () => {
   // 1 goal (3) + rating 7.6 (2) = 5 base; Bolt needs 6, so none. Second player: 2 goals + 7.6 = 8, Bolt +2 = 10.
   const lineup = [
     slotOf(1, { goals: 1, assists: 0, rating: 7.6 }, true),
@@ -200,12 +200,34 @@ test("a captain's slot total doubles, Bolt included; others are untouched", () =
   ];
   const r = scoreLineup(lineup, TH);
   assert.equal(r.slots[0].slotTotal, 10);
-  assert.equal(r.slots[1].slotTotal, 20);
+  assert.equal(r.slots[1].slotTotal, 18); // 8 base x2 = 16, plus Bolt 2
   assert.equal(r.slots[2].slotTotal, 5);
-  assert.equal(r.captainTotal, 5 + 10);
+  assert.equal(r.captainTotal, 5 + 8);
   assert.equal(r.baseTotal, 5 + 8 + 5);
   assert.equal(r.boltTotal, 2);
-  assert.equal(r.total, 18 + 2 + 15);
+  assert.equal(r.total, 18 + 2 + 13);
+});
+
+test("3 base captained = 6, no Bolt", () => {
+  const r = scoreLineup([slotOf(1, { goals: 1, assists: 0, rating: null }, true)], TH);
+  assert.equal(r.slots[0].base, 3);
+  assert.equal(r.slots[0].bolt, 0);
+  assert.equal(r.slots[0].slotTotal, 6);
+});
+
+test("6 base not captained = 8", () => {
+  const r = scoreLineup([slotOf(1, { goals: 2, assists: 0, rating: null }, false)], TH);
+  assert.equal(r.slots[0].bolt, 2);
+  assert.equal(r.slots[0].slotTotal, 8);
+});
+
+test("6 base captained = 14: Bolt is judged on base and added after the multiplier", () => {
+  const r = scoreLineup([slotOf(1, { goals: 2, assists: 0, rating: null }, true)], TH);
+  assert.equal(r.slots[0].bolt, 2);
+  assert.equal(r.slots[0].slotTotal, 14);
+  assert.equal(r.total, 14);
+  assert.equal(r.baseTotal + r.captainTotal, 12);
+  assert.equal(r.boltTotal, 2);
 });
 
 test("no captain, no change: scoring stays as it was", () => {
