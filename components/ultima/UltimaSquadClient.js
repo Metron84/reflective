@@ -7,9 +7,11 @@ import {
   ULTIMA_XI_FLOOR_PER_LEAGUE,
   ULTIMA_XI_SIZE,
 } from "@/lib/ultima/constants";
+import { planCaptainChange, reconcileCaptains, resolveCaptains } from "@/lib/ultima/captains";
 import { emptyLineupTemplate } from "@/lib/ultima/lineup/slots";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import { bestXvLineup, playerExpected, xvDiff } from "@/lib/ultima/squad/best-xv";
+import UltimaCaptainStrip from "./UltimaCaptainStrip";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaLookingFor from "./UltimaLookingFor";
@@ -71,6 +73,7 @@ export default function UltimaSquadClient({
     { label: "Next lock", value: "-" },
   ];
   const noGameweek = Boolean(office ? office.noGameweek : noGameweekProp);
+  const captainLockedLeagues = office?.captainLockedLeagues ?? lockedLeagues;
   const squadSize = office?.squadSize ?? players.length;
   const squadCap = office?.squadCap ?? ULTIMA_SQUAD_SIZE;
 
@@ -107,6 +110,13 @@ export default function UltimaSquadClient({
   const openPlayer = openId ? rosterById.get(openId) : null;
   const openInXv = openPlayer ? inXv.has(openPlayer.id) : false;
   const openLocked = openPlayer ? lockedLeagues.includes(openPlayer.league) : false;
+  const captainByLeague = useMemo(() => resolveCaptains(lineup).byLeague, [lineup]);
+  const captainIds = useMemo(
+    () => new Set(Object.values(captainByLeague).filter(Boolean)),
+    [captainByLeague],
+  );
+  const openIsCaptain = openPlayer ? captainIds.has(openPlayer.id) : false;
+  const openCaptainLocked = openPlayer ? captainLockedLeagues.includes(openPlayer.league) : false;
 
   function replaceTarget(player) {
     const slots = (lineup ?? []).filter((row) => row.slot_group === player.league);
@@ -153,8 +163,11 @@ export default function UltimaSquadClient({
     if (allLocked || lockedLeagues.includes(player.league)) return;
     const target = replaceTarget(player);
     if (!target.slot) return;
-    const next = (lineup ?? []).map((row) =>
-      row.slot === target.slot.slot ? { ...row, player_id: player.id } : row,
+    const next = reconcileCaptains(
+      lineup,
+      (lineup ?? []).map((row) =>
+        row.slot === target.slot.slot ? { ...row, player_id: player.id } : row,
+      ),
     );
     applyLineup(next);
     setOpenId(null);
@@ -163,16 +176,57 @@ export default function UltimaSquadClient({
 
   async function benchPlayer(player) {
     if (allLocked || lockedLeagues.includes(player.league)) return;
-    const next = (lineup ?? []).map((row) =>
-      row.player_id === player.id ? { ...row, player_id: null } : row,
+    const next = reconcileCaptains(
+      lineup,
+      (lineup ?? []).map((row) =>
+        row.player_id === player.id ? { ...row, player_id: null } : row,
+      ),
     );
     applyLineup(next);
     setOpenId(null);
     await persist(next);
   }
 
+  // One tap. The new captain replaces the old one in his country, no confirm.
+  async function makeCaptain(player) {
+    const plan = planCaptainChange({
+      lineup,
+      playerId: player.id,
+      gameweek: office?.gameweek ?? { state: "upcoming", league_open_at: {} },
+    });
+    if (!plan.ok) {
+      setError(CAPTAIN_LINES[plan.code] ?? "Could not set the captain.");
+      setOpenId(null);
+      return;
+    }
+    setOpenId(null);
+    if (plan.noop) return;
+    const before = lineup;
+    applyLineup(plan.lineup);
+    if (preview) return;
+    setSaving(true);
+    setError("");
+    try {
+      const res = await fetch("/api/ultima/lineup/captain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player_id: player.id }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        applyLineup(before);
+        setError(data.message ?? "Could not set the captain.");
+      }
+    } catch {
+      applyLineup(before);
+      setError("Connection lost. Try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   function proposeAutoFill() {
-    const next = bestXvLineup(players, lineup, lockedLeagues);
+    const next = reconcileCaptains(lineup, bestXvLineup(players, lineup, lockedLeagues));
     const { inn, out } = xvDiff(rosterById, lineup, next);
     setConfirmXv({ next, inn, out });
   }
@@ -249,6 +303,12 @@ export default function UltimaSquadClient({
               )
             }
           >
+            <UltimaCaptainStrip
+              captains={captainByLeague}
+              playersById={rosterById}
+              lockedLeagues={captainLockedLeagues}
+              onOpen={(id) => setOpenId(id)}
+            />
             {ULTIMA_LEAGUES.map((league) => {
               const rows = (lineup ?? []).filter((row) => row.slot_group === league);
               const count = rows.filter((row) => row.player_id).length;
@@ -268,6 +328,7 @@ export default function UltimaSquadClient({
                       <PlayerRow
                         key={row.slot}
                         player={player}
+                        captain={Boolean(player && captainIds.has(player.id))}
                         locked={hideActions}
                         points={points}
                         emptyLabel="Empty slot"
@@ -331,21 +392,38 @@ export default function UltimaSquadClient({
           player={openPlayer}
           points={points}
           onClose={() => setOpenId(null)}
+          captain={openIsCaptain}
           note={
-            !hideActions && !openInXv && !openLocked
+            openIsCaptain
+              ? openCaptainLocked
+                ? "Captain. Scores double. Locked for this gameweek."
+                : "Captain. Scores double."
+              : openInXv && openCaptainLocked
+                ? "Captains are locked for this country."
+                : !hideActions && !openInXv && !openLocked
               ? replaceTarget(openPlayer).player
                 ? `This starts him in place of ${replaceTarget(openPlayer).player.name}.`
                 : "This fills an empty slot from the same country."
               : null
           }
-          actions={
-            hideActions || openLocked
+          actions={[
+            ...(!noGameweek && openInXv && !openIsCaptain && !openCaptainLocked
+              ? [
+                  {
+                    label: "Make captain",
+                    primary: true,
+                    disabled: saving,
+                    onClick: () => makeCaptain(openPlayer),
+                  },
+                ]
+              : []),
+            ...(hideActions || openLocked
               ? []
               : openInXv
                 ? [
                     {
                       label: "Move to bench",
-                      primary: true,
+                      primary: !(openInXv && !openIsCaptain && !openCaptainLocked),
                       disabled: saving,
                       onClick: () => benchPlayer(openPlayer),
                     },
@@ -357,8 +435,8 @@ export default function UltimaSquadClient({
                       disabled: saving,
                       onClick: () => startPlayer(openPlayer),
                     },
-                  ]
-          }
+                  ]),
+          ]}
         />
       ) : null}
 
@@ -414,7 +492,13 @@ function LockLine({ nextLockAt, allLocked }) {
   );
 }
 
-function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, onOpen }) {
+const CAPTAIN_LINES = {
+  NOT_IN_XV: "Start him in your XV first.",
+  CAPTAIN_LOCKED: "That country is live. Captains are set.",
+  NO_GAMEWEEK: "No gameweek this week. The leagues are on a break.",
+};
+
+function PlayerRow({ player, captain = false, locked, points, emptyLabel, actionLabel, onAction, onOpen }) {
   if (!player) {
     return (
       <div className={styles.sqRow}>
@@ -424,7 +508,8 @@ function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, 
   }
 
   const expected = playerExpected(player);
-  const lockedPts = player.livePoints ?? player.lastGwPoints;
+  const lockedPts =
+    captain && player.livePoints != null ? player.livePoints * 2 : (player.livePoints ?? player.lastGwPoints);
   const showLockedPts = locked;
   const fixture = player.nextFixture;
 
@@ -434,6 +519,7 @@ function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, 
         <span className={styles.sqCopy}>
           <span className={styles.sqName}>
             {player.name}
+            {captain ? <span className={styles.sqCap} title="Captain, scores double">C</span> : null}
             {player.bolt_eligible ? <span className={styles.sqBolt}>Bolt</span> : null}
             {player.live ? <span className={styles.sqLive}>LIVE</span> : null}
             {player.untouchable ? <UltimaUntouchableChip /> : null}

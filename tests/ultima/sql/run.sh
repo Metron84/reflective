@@ -20,3 +20,4 @@ P="$BIN/psql -h $D -p 5547 -v ON_ERROR_STOP=1 -q postgres"
 run "$P -f $D/stub.sql"
 for f in $(ls "$D"/00*_ultima*.sql | sort); do run "$P -f $f" >/dev/null; done
 run "cd $D && $P -f execute_trade.test.sql"
+run "cd $D && $P -f captains.test.sql"

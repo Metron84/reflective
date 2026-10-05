@@ -21,6 +21,7 @@ export default function UltimaPlayerSheet({
   onClose,
   actions = [],
   note,
+  captain = false,
   embedded = false,
 }) {
   if (!player) return null;
@@ -33,7 +34,10 @@ export default function UltimaPlayerSheet({
 
   const body = (
     <>
-        <p className={styles.dSheetName}>{player.name}</p>
+        <p className={styles.dSheetName}>
+          {player.name}
+          {captain ? <span className={styles.sqCap} title="Captain, scores double">C</span> : null}
+        </p>
         <p className={styles.dSheetMeta}>
           {player.club || "-"}
           {" · "}

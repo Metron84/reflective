@@ -316,6 +316,7 @@ export default function UltimaTableClient({ office }) {
                 <ClubSheet
                   row={open}
                   xv={office.xvVisible ? office.xvByManager?.[open.id] : null}
+                  captains={office.xvVisible ? office.captainsByManager?.[open.id] : null}
                   xvVisible={office.xvVisible}
                   onClose={() => setOpenId(null)}
                   desktop
@@ -331,6 +332,7 @@ export default function UltimaTableClient({ office }) {
           <ClubSheet
             row={open}
             xv={office.xvVisible ? office.xvByManager?.[open.id] : null}
+            captains={office.xvVisible ? office.captainsByManager?.[open.id] : null}
             xvVisible={office.xvVisible}
             onClose={() => setOpenId(null)}
           />
@@ -340,7 +342,7 @@ export default function UltimaTableClient({ office }) {
   );
 }
 
-function ClubSheet({ row, xv, xvVisible, onClose, desktop = false }) {
+function ClubSheet({ row, xv, captains = null, xvVisible, onClose, desktop = false }) {
   const body = (
     <>
       <p className={styles.dSheetName}>{row.team_name}</p>
@@ -364,6 +366,12 @@ function ClubSheet({ row, xv, xvVisible, onClose, desktop = false }) {
               (xv[league] ?? []).map((name) => (
                 <p key={name} className={styles.dSheetMeta}>
                   {name}
+                  {captains?.[league] === name ? (
+                    <>
+                      {" "}
+                      <span className={styles.sqCap} title="Captain, scores double">C</span>
+                    </>
+                  ) : null}
                 </p>
               ))
             ) : (
