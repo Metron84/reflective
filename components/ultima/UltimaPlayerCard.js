@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ultima.module.css";
+import { useUltimaAction } from "./useUltimaAction";
 
 const CardContext = createContext({ openPlayer: () => {} });
 
@@ -12,6 +13,22 @@ export function useUltimaPlayerCard() {
 }
 
 const NOTE_MAX = 80;
+
+/** The verb in progress on a card button while its write runs. */
+const WORKING = {
+  sign: "Signing…",
+  drop_sign: "Releasing…",
+  captain_on: "Naming captain…",
+  captain_off: "Updating…",
+  xv_in: "Moving…",
+  xv_out: "Moving…",
+  shortlist_on: "Saving…",
+  shortlist_off: "Saving…",
+  untouchable_on: "Saving…",
+  untouchable_off: "Saving…",
+  list: "Listing…",
+  unlist: "Updating…",
+};
 
 function dubaiTime(value) {
   if (!value) return null;
@@ -41,7 +58,10 @@ export default function UltimaPlayerCardProvider({ children }) {
   const [playerId, setPlayerId] = useState(null);
   const [card, setCard] = useState(null);
   const [error, setError] = useState(null);
-  const [busy, setBusy] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [pending, setPending] = useState(null);
+  const write = useUltimaAction();
+  const busy = loading || write.busy;
   const [swap, setSwap] = useState(null); // { actionId, list }
   const [noting, setNoting] = useState(false);
   const [note, setNote] = useState("");
@@ -88,38 +108,28 @@ export default function UltimaPlayerCardProvider({ children }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [playerId, close]);
 
+  const { run } = write;
   const post = useCallback(
     async (payload) => {
-      setBusy(true);
+      setPending(payload.action);
       setError(null);
-      try {
-        const res = await fetch("/api/ultima/player/action", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const body = await readJson(res);
-        if (!res.ok) {
-          setError(body.message ?? "That did not go through.");
-          return false;
-        }
-        window.dispatchEvent(new Event("ultima:changed"));
-        router.refresh();
-        return true;
-      } catch {
-        setError("That did not go through.");
+      const result = await run("/api/ultima/player/action", payload);
+      setPending(null);
+      if (!result.ok) {
+        setError(result.message ?? "That did not go through.");
         return false;
-      } finally {
-        setBusy(false);
       }
+      window.dispatchEvent(new Event("ultima:changed"));
+      router.refresh();
+      return true;
     },
-    [router],
+    [router, run],
   );
 
   const openSwap = useCallback(
     async (actionId) => {
       const mode = actionId === "sign" ? "add" : "drop";
-      setBusy(true);
+      setLoading(true);
       setError(null);
       try {
         const res = await fetch(`/api/ultima/player/${playerId}/swap?mode=${mode}`, { cache: "no-store" });
@@ -132,7 +142,7 @@ export default function UltimaPlayerCardProvider({ children }) {
       } catch {
         setError("Could not load the list.");
       } finally {
-        setBusy(false);
+        setLoading(false);
       }
     },
     [playerId],
@@ -209,6 +219,7 @@ export default function UltimaPlayerCardProvider({ children }) {
               <CardBody
                 card={card}
                 busy={busy}
+                pending={pending}
                 noting={noting}
                 note={note}
                 setNote={setNote}
@@ -218,7 +229,7 @@ export default function UltimaPlayerCardProvider({ children }) {
                 close={close}
               />
             ) : null}
-            {card && swap ? <SwapPicker swap={swap} card={card} busy={busy} onPick={pickSwap} onBack={() => setSwap(null)} /> : null}
+            {card && swap ? <SwapPicker swap={swap} card={card} busy={busy} working={busy && pending ? (WORKING[pending] ?? "Working…") : null} onPick={pickSwap} onBack={() => setSwap(null)} /> : null}
             {error ? (
               <p className={styles.pcError} role="alert">
                 {error}
@@ -231,7 +242,7 @@ export default function UltimaPlayerCardProvider({ children }) {
   );
 }
 
-function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, cancelNote, close }) {
+function CardBody({ card, busy, pending, noting, note, setNote, onAction, confirmList, cancelNote, close }) {
   const { player, owner, stats } = card;
   const lock = dubaiTime(card.lockAt);
   const owned = owner ? (owner.you ? "Your squad" : owner.team) : "Free agent";
@@ -296,7 +307,14 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
           />
           <div className={styles.dSheetActions}>
             <button type="button" className={styles.primaryBtn} disabled={busy} onClick={confirmList}>
-              Transfer list
+              {busy && pending === "list" ? (
+                <>
+                  <span className={styles.actionSpinner} aria-hidden />
+                  Listing…
+                </>
+              ) : (
+                "Transfer list"
+              )}
             </button>
             <button type="button" className={styles.secondaryBtn} onClick={cancelNote}>
               Cancel
@@ -313,7 +331,14 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
                 disabled={action.disabled || busy}
                 onClick={() => onAction(action)}
               >
-                {action.label}
+                {busy && pending === action.id ? (
+                  <>
+                    <span className={styles.actionSpinner} aria-hidden />
+                    {WORKING[action.id] ?? "Working…"}
+                  </>
+                ) : (
+                  action.label
+                )}
               </button>
               {action.disabled && action.reason ? <span className={styles.pcReason}>{action.reason}</span> : null}
             </li>
@@ -327,7 +352,7 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
   );
 }
 
-function SwapPicker({ swap, card, busy, onPick, onBack }) {
+function SwapPicker({ swap, card, busy, working, onPick, onBack }) {
   const adding = swap.actionId === "sign";
   const rows = swap.list.rows;
   return (
@@ -336,6 +361,12 @@ function SwapPicker({ swap, card, busy, onPick, onBack }) {
       <p className={styles.dSheetMeta}>
         {adding ? `${card.player.name} joins your squad.` : `${card.player.name} leaves your squad.`}
       </p>
+      {working ? (
+        <p className={styles.dSheetMeta} role="status">
+          <span className={styles.actionSpinner} aria-hidden />
+          {working}
+        </p>
+      ) : null}
       <ul className={styles.pcSwap}>
         {rows.map((row, index) => {
           const firstOther = !row.sameCountry && (index === 0 || rows[index - 1].sameCountry);
