@@ -61,6 +61,7 @@ export default function UltimaAdminClient({
   const [poolRun, setPoolRun] = useState({ mode: "", league: "" });
   const [clubSync, setClubSync] = useState(null);
   const [clubBusy, setClubBusy] = useState("");
+  const [showAdvancedSync, setShowAdvancedSync] = useState(false);
   const [busy, setBusy] = useState("");
   const [confirm, setConfirm] = useState(null);
 
@@ -197,18 +198,10 @@ export default function UltimaAdminClient({
           <button
             type="button"
             className={styles.primaryBtn}
-            disabled={busy === "sync_gameweek"}
-            onClick={() => act("sync_gameweek")}
-          >
-            {busy === "sync_gameweek" ? "Syncing…" : "Run sync"}
-          </button>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
             disabled={Boolean(clubBusy) || poolBusy}
             onClick={() => syncClubs(false)}
           >
-            {clubBusy === "preview" ? "Checking clubs…" : "Sync clubs"}
+            {clubBusy === "preview" ? "Checking clubs…" : "Preview club changes"}
           </button>
           <button
             type="button"
@@ -216,32 +209,54 @@ export default function UltimaAdminClient({
             disabled={!clubSync || Boolean(clubBusy) || poolBusy}
             onClick={() => syncClubs(true)}
           >
-            {clubBusy === "apply" ? "Applying…" : "Apply"}
-          </button>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            disabled={poolBusy || Boolean(clubBusy)}
-            onClick={() => syncPool(false)}
-          >
-            {poolRun.mode === "apply"
-              ? `Syncing ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
-              : "Sync players"}
-          </button>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            disabled={poolBusy || Boolean(clubBusy)}
-            onClick={() => syncPool(true)}
-          >
-            {poolRun.mode === "preview"
-              ? `Checking ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
-              : "Preview changes"}
+            {clubBusy === "apply" ? "Applying…" : "Apply club changes"}
           </button>
         </div>
+        <button
+          type="button"
+          className={styles.utNote}
+          style={{ background: "none", border: 0, padding: 0, cursor: "pointer", textAlign: "left" }}
+          onClick={() => setShowAdvancedSync((v) => !v)}
+        >
+          {showAdvancedSync ? "Hide advanced" : "Advanced"}
+        </button>
+        {showAdvancedSync ? (
+          <div className={styles.utActions}>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              disabled={busy === "sync_gameweek"}
+              onClick={() => act("sync_gameweek")}
+            >
+              {busy === "sync_gameweek" ? "Syncing…" : "Run sync"}
+            </button>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              disabled={poolBusy || Boolean(clubBusy)}
+              onClick={() => syncPool(false)}
+            >
+              {poolRun.mode === "apply"
+                ? `Syncing ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
+                : "Sync players"}
+            </button>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              disabled={poolBusy || Boolean(clubBusy)}
+              onClick={() => syncPool(true)}
+            >
+              {poolRun.mode === "preview"
+                ? `Checking ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
+                : "Preview changes"}
+            </button>
+          </div>
+        ) : null}
         {clubSync ? <ClubSyncReport report={clubSync} /> : null}
-        {syncReport ? <SyncReport report={syncReport} /> : null}
-        {Object.keys(poolReports).length ? <PoolReport reports={poolReports} /> : null}
+        {showAdvancedSync && syncReport ? <SyncReport report={syncReport} /> : null}
+        {showAdvancedSync && Object.keys(poolReports).length ? (
+          <PoolReport reports={poolReports} />
+        ) : null}
       </UltimaPanel>
 
       <UltimaPanel title="Draft controls">
@@ -559,45 +574,85 @@ function ConfirmSheet({
 function ClubSyncReport({ report }) {
   const c = report.counts ?? {};
   const dry = Boolean(report.dryRun);
-  const lines = (rows, map) => (rows ?? []).slice(0, 12).map(map);
+  const ownedPrefix = (m) => (m.owned ? `Owned (${m.owner ?? "squad"}): ` : "");
+
+  function Section({ title, count, children }) {
+    return (
+      <>
+        <UltimaRow primary={title} number={count ?? 0} />
+        {children}
+      </>
+    );
+  }
 
   return (
     <>
       <UltimaRow
         primary={dry ? "Club preview" : "Clubs applied"}
-        meta={`${c.moved ?? 0} moved · ${c.loans ?? 0} loans · ${c.departures ?? 0} left · ${c.added ?? 0} new`}
+        meta={`${c.clubMoves ?? 0} club moves · ${c.leaguePending ?? 0} league · ${c.loans ?? 0} loans · ${c.departures ?? 0} left · ${c.added ?? 0} new`}
         number={report.fresh ?? 0}
       />
       {report.applyLeagueNow ? (
-        <p className={styles.utNote}>Friday unlock: league changes apply now.</p>
+        <p className={styles.utNote}>
+          League changes apply now
+          {report.gameweekLive ? " (Friday unlock during a live gameweek)." : " (no live gameweek)."}
+        </p>
       ) : (
-        <p className={styles.utNote}>League changes wait for Friday 00:00 Dubai. Club and loan update now.</p>
+        <p className={styles.utNote}>
+          A gameweek is live. League changes wait for Friday 00:00 Dubai. Club and loan update now.
+        </p>
       )}
-      {lines(report.moved, (m) => (
-        <p key={`${m.name}-${m.toClub}`} className={styles.utNote}>
-          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
-          {m.name}: {m.fromClub} → {m.toClub}
-          {m.deferredLeague ? " · league pending Friday" : ""}
-          {m.fromLeague !== m.toLeague ? ` · ${m.fromLeague} → ${m.toLeague}` : ""}
-        </p>
-      ))}
-      {lines(report.loans, (m) => (
-        <p key={`loan-${m.name}`} className={styles.utNote}>
-          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
-          {m.name}: {m.on_loan ? `on loan at ${m.club} from ${m.parent_club || "?"}` : `loan ended at ${m.club}`}
-        </p>
-      ))}
-      {lines(report.departures, (m) => (
-        <p key={`gone-${m.name}`} className={styles.utNote}>
-          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
-          {m.name} left ({m.club})
-        </p>
-      ))}
-      {lines(report.added, (m) => (
-        <p key={`new-${m.name}-${m.club}`} className={styles.utNote}>
-          New FA: {m.name} ({m.club})
-        </p>
-      ))}
+
+      <Section title="Club moves" count={c.clubMoves}>
+        {(report.clubMoves ?? []).map((m) => (
+          <p key={`club-${m.name}-${m.fromClub}-${m.toClub}`} className={styles.utNote}>
+            {ownedPrefix(m)}
+            {m.name}: {m.fromClub} → {m.toClub}
+            {m.rescuedFromGap ? " · squad gap filled" : ""}
+          </p>
+        ))}
+      </Section>
+
+      <Section title="League changes pending Friday" count={c.leaguePending}>
+        {(report.leaguePending ?? []).map((m) => (
+          <p key={`lg-${m.name}-${m.fromLeague}-${m.toLeague}`} className={styles.utNote}>
+            {ownedPrefix(m)}
+            {m.name}: {m.fromLeague} → {m.toLeague}
+            {m.appliedNow ? " · applying now" : ""}
+            {m.fromClub !== m.toClub ? ` · ${m.fromClub} → ${m.toClub}` : ""}
+          </p>
+        ))}
+      </Section>
+
+      <Section title="Loans" count={c.loans}>
+        {(report.loans ?? []).map((m) => (
+          <p key={`loan-${m.name}-${m.club}`} className={styles.utNote}>
+            {ownedPrefix(m)}
+            {m.name}:{" "}
+            {m.on_loan
+              ? `on loan at ${m.club} from ${m.parent_club}`
+              : `loan ended at ${m.club}`}
+          </p>
+        ))}
+      </Section>
+
+      <Section title="Departures" count={c.departures}>
+        {(report.departures ?? []).map((m) => (
+          <p key={`gone-${m.name}-${m.club}`} className={styles.utNote}>
+            {ownedPrefix(m)}
+            {m.name} left {m.club}
+            {m.destinationClub ? ` → ${m.destinationClub}` : ""}
+          </p>
+        ))}
+      </Section>
+
+      <Section title="New free agents" count={c.added}>
+        {(report.added ?? []).map((m) => (
+          <p key={`new-${m.name}-${m.club}-${m.league}`} className={styles.utNote}>
+            {m.name} ({m.club} · {m.league})
+          </p>
+        ))}
+      </Section>
     </>
   );
 }
