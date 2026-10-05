@@ -43,10 +43,21 @@ function applyAuthCookies(response, cookiesToSet, host) {
   return response;
 }
 
-function nextWithPath(request) {
+// Built after the session refresh, so request.cookies already holds the new
+// tokens. Every response that reaches a page must forward these headers, or
+// the page reads the old, expired token.
+function forwardedHeaders(request) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", request.nextUrl.pathname);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return requestHeaders;
+}
+
+function nextWithPath(request) {
+  return NextResponse.next({ request: { headers: forwardedHeaders(request) } });
+}
+
+function rewriteWithPath(request, url) {
+  return NextResponse.rewrite(url, { request: { headers: forwardedHeaders(request) } });
 }
 
 function ultimaHostResponse(request) {
@@ -55,7 +66,7 @@ function ultimaHostResponse(request) {
 
   if (pathname === "/manifest.webmanifest" || pathname === "/manifest.json") {
     url.pathname = "/ultima/manifest.webmanifest";
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   if (isUltimaPassthrough(pathname)) {
@@ -64,12 +75,12 @@ function ultimaHostResponse(request) {
 
   if (pathname === "/" || pathname === "") {
     url.pathname = "/ultima";
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   if (isUltimaAppLeaf(pathname)) {
     url.pathname = `/ultima${pathname}`;
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   url.pathname = "/";
