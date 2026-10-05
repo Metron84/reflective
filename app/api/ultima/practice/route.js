@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireUserApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getManagerForUser } from "@/lib/ultima/server/db";
+import { lookupSeat } from "@/lib/ultima/server/db";
 import {
   createPracticeRoom,
   deleteAllMyPracticeRooms,
@@ -22,7 +22,11 @@ export const runtime = "nodejs";
 export const maxDuration = 30;
 
 async function requireSeasonManager(user) {
-  const manager = await getManagerForUser(user.id);
+  const seat = await lookupSeat(user.id);
+  if (seat.status === "unavailable") {
+    return { error: ultimaErrorResponse("SEAT_UNAVAILABLE", { status: 503 }) };
+  }
+  const manager = seat.manager;
   if (!manager?.profile_complete) {
     return { error: ultimaErrorResponse("PROFILE_INCOMPLETE") };
   }
@@ -30,11 +34,9 @@ async function requireSeasonManager(user) {
 }
 
 export async function GET(request) {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
+  const gate = await requireUserApi({ mutating: false });
+  if (!gate.ok) return gate.response;
+  const { user } = gate;
 
   const gated = await requireSeasonManager(user);
   if (gated.error) return NextResponse.json(gated.error.body, { status: gated.error.status });
@@ -58,11 +60,9 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
+  const gate = await requireUserApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { user } = gate;
 
   const gated = await requireSeasonManager(user);
   if (gated.error) return NextResponse.json(gated.error.body, { status: gated.error.status });

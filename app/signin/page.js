@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import SignInForm from "@/components/auth/SignInForm";
 import { isFatfNext } from "@/lib/fatf";
+import { safeNextPath } from "@/lib/auth/safe-next";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 
 export async function generateMetadata() {
@@ -14,10 +15,7 @@ export async function generateMetadata() {
 export default async function SignInPage({ searchParams }) {
   const params = await searchParams;
   const ultimaApp = isUltimaAppHost((await headers()).get("host"));
-  const nextPath =
-    typeof params?.next === "string" && params.next.startsWith("/")
-      ? params.next
-      : "/";
+  const nextPath = safeNextPath(params?.next);
   const fatfFlow = isFatfNext(nextPath) || params?.intent === "fatf";
 
   return (

@@ -1,7 +1,7 @@
 import UltimaTradesClient from "@/components/ultima/UltimaTradesClient";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import { getTradeOffice } from "@/lib/ultima/server/trades";
 
 export const metadata = {
@@ -12,8 +12,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaTradesPage() {
-  const { manager } = await requireUltimaManager("/ultima/trades");
-  const competition = await getActiveCompetition();
+  const seat = await requireSeat("/ultima/trades");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { manager, competition } = seat;
   let office = null;
   if (competition && manager) {
     try {

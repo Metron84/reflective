@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import {
   getActiveCompetition,
-  getManagerForUser,
   getUltimaDb,
   isUltimaCommissioner,
 } from "@/lib/ultima/server/db";
@@ -13,13 +12,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
-
-  const manager = await getManagerForUser(user.id);
+  const gate = await requireSeatApi({ mutating: false });
+  if (!gate.ok) return gate.response;
+  const { user, manager } = gate;
   if (!manager) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
     return NextResponse.json(body, { status });

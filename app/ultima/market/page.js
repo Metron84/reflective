@@ -1,7 +1,7 @@
 import UltimaMarketClient from "@/components/ultima/UltimaMarketClient";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import { getMarketOffice } from "@/lib/ultima/server/market";
 
 export const metadata = {
@@ -12,8 +12,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaMarketPage() {
-  const { manager } = await requireUltimaManager("/ultima/market");
-  const competition = await getActiveCompetition();
+  const seat = await requireSeat("/ultima/market");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { manager, competition } = seat;
   let office = null;
   if (competition && manager) {
     try {

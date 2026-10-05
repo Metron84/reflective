@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import UltimaPracticeRoom from "@/components/ultima/UltimaPracticeRoom";
-import { requireUltimaManager } from "@/lib/ultima/gates";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import {
   getPracticeManager,
   getPracticeRoom,
@@ -16,7 +17,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaPracticeRoomPage({ params }) {
-  const { auth, manager } = await requireUltimaManager("/ultima/practice");
+  const seat = await requireSeat("/ultima/practice");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { auth, manager } = seat;
   const { code: raw } = await params;
   const code = normalizeRoomCode(raw);
 
