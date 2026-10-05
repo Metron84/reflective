@@ -20,6 +20,7 @@ export default function FilmsBand() {
           ))}
         </div>
         <Link
+          prefetch={false}
           href="/films"
           className="mt-8 inline-block text-sm font-medium text-navy/70 transition-colors hover:text-navy"
         >

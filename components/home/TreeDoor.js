@@ -121,6 +121,7 @@ const TreeDoor = forwardRef(function TreeDoor(
         </span>
         <div className={styles.filmsBody}>
           <Link
+            prefetch={false}
             ref={ref}
             href={href}
             className={styles.filmsLabelLink}
@@ -156,6 +157,7 @@ const TreeDoor = forwardRef(function TreeDoor(
 
   return (
     <Link
+      prefetch={false}
       ref={ref}
       href={href}
       id={`tree-door-${doorId}`}

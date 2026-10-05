@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import {
   ULTIMA_COLOUR_PALETTE,
   normalizeNotifyPrefs,
 } from "@/lib/ultima/constants";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
+import { getUltimaDb } from "@/lib/ultima/server/db";
 import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
 
 export const runtime = "nodejs";
@@ -28,13 +28,9 @@ function cleanManagerName(value) {
 }
 
 export async function POST(request) {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", {
-      status: 401,
-    });
-    return NextResponse.json(body, { status });
-  }
+  const gate = await requireSeatApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { user, manager } = gate;
 
   let payload;
   try {
@@ -68,12 +64,6 @@ export async function POST(request) {
   const db = getUltimaDb();
   if (!db) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
-    return NextResponse.json(body, { status });
-  }
-
-  const manager = await getManagerForUser(user.id);
-  if (!manager) {
-    const { status, body } = ultimaErrorResponse("INVITE_INVALID");
     return NextResponse.json(body, { status });
   }
 

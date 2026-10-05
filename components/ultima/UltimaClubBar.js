@@ -13,7 +13,7 @@ export default function UltimaClubBar({ teamName, seasonLine, continueAction, sa
         </p>
         <p className={styles.clubName}>{teamName || "Ultima"}</p>
       </div>
-      <Link href={action.href} className={styles.continueBtn}>
+      <Link prefetch={false} href={action.href} className={styles.continueBtn}>
         {action.label}
       </Link>
     </header>

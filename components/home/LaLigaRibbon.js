@@ -3,7 +3,7 @@ import styles from "./LaLigaRibbon.module.css";
 
 export default function LaLigaRibbon() {
   return (
-    <Link href="/laliga" className={styles.ribbon}>
+    <Link prefetch={false} href="/laliga" className={styles.ribbon}>
       <span className={styles.copy}>
         <span className={styles.mainRow}>
           <span className={styles.main} lang="es">

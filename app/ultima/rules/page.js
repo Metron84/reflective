@@ -1,9 +1,8 @@
 import UltimaRulesBody from "@/components/ultima/UltimaRulesBody";
 import UltimaRulesOffice from "@/components/ultima/UltimaRulesOffice";
 import styles from "@/components/ultima/ultima.module.css";
-import { getAuthContext } from "@/lib/auth/session";
 import { ULTIMA_ENABLED } from "@/lib/config";
-import { getManagerForUser } from "@/lib/ultima/server/db";
+import { peekSeat } from "@/lib/ultima/server/requireSeat";
 
 export const metadata = {
   title: "Ultima · Rules",
@@ -15,9 +14,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaRulesPage() {
-  const auth = await getAuthContext();
-  const manager =
-    auth.isSignedIn && auth.user ? await getManagerForUser(auth.user.id) : null;
+  const { manager } = await peekSeat();
 
   if (manager) {
     return (

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireUserApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import {
@@ -12,6 +12,7 @@ import {
   commissionerScoreOverride,
   commissionerIssueInvite,
   commissionerBootstrap,
+  commissionerSyncPool,
   commissionerSetTimer,
   commissionerScheduleDraft,
   commissionerSyncGameweek,
@@ -23,13 +24,12 @@ import {
 } from "@/lib/ultima/server/admin";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function POST(request) {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
+  const gate = await requireUserApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { user } = gate;
 
   if (!(await requireCommissioner(user.id))) {
     const { status, body } = ultimaErrorResponse("NOT_COMMISSIONER", { status: 403 });
@@ -100,6 +100,12 @@ export async function POST(request) {
       result = await commissionerIssueInvite(competition.id, user.id, code);
       break;
     }
+    case "sync_pool":
+      result = await commissionerSyncPool(competition.id, user.id, {
+        league: body.league,
+        dryRun: Boolean(body.dry_run),
+      });
+      break;
     case "bootstrap":
       result = await commissionerBootstrap(competition.id, user.id);
       break;

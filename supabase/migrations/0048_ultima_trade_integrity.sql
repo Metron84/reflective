@@ -1,30 +1,107 @@
--- Ultima trade deadline and pending-trade voids. Run after 0044_ultima_trade_integrity.sql.
+-- Applied to production 4 Oct 2026. Do not re-run.
+-- Ultima trade integrity (Stage A). Run after 0047_ultima_trade_block.sql.
 --
--- 1. trade_deadline_gw: null means no deadline. The old default of 4 is cleared.
--- 2. ultima_execute_trade: no "4 or lower means none" rule. The window and
---    deadline are judged on the gameweek the review ended in, and locks on the
---    gameweek running now.
--- 3. ultima_void_trades_for_players: voids a manager's pending trades that
---    include a player who is leaving the squad (drop, add with drop, undone pick).
+-- 1. New trade states and columns.
+-- 2. ultima_clear_lineup_slots: empty a player's XV slots in unscored gameweeks.
+-- 3. ultima_execute_trade: one transaction that settles a trade.
 --
--- Server only. Granted to service_role and nobody else.
+-- Server only. Both functions are granted to service_role and nobody else.
 
 -- ---------------------------------------------------------------------------
--- 1. Deadline column
+-- 1. States and columns
 -- ---------------------------------------------------------------------------
 
-alter table public.ultima_competition
-  alter column trade_deadline_gw drop not null,
-  alter column trade_deadline_gw drop default;
+alter table public.ultima_trades
+  drop constraint if exists ultima_trades_state_check;
 
--- The default of 4 was never a chosen deadline. Clear it so no season starts
--- with trades closing after gameweek 4.
-update public.ultima_competition
-set trade_deadline_gw = null
-where trade_deadline_gw = 4;
+alter table public.ultima_trades
+  add constraint ultima_trades_state_check
+  check (
+    state in (
+      'proposed',
+      'accepted',
+      'declined',
+      'countered',
+      'cancelled',
+      'review',
+      'awaiting_unlock',
+      'vetoed',
+      'executed',
+      'expired',
+      'void'
+    )
+  );
+
+alter table public.ultima_trades
+  add column if not exists void_reason text,
+  add column if not exists unlock_at timestamptz,
+  add column if not exists countered_by uuid references public.ultima_trades (id);
+
+create index if not exists ultima_trades_due_idx
+  on public.ultima_trades (state, review_expires_at, unlock_at)
+  where state in ('review', 'awaiting_unlock');
+
+create index if not exists ultima_trade_players_player_idx
+  on public.ultima_trade_players (player_id);
 
 -- ---------------------------------------------------------------------------
--- 2. Execute a trade (replaces the 0044 definition)
+-- 2. Empty a player's XV slots
+--    Only gameweeks that are not scored yet (upcoming or live), and only where
+--    the player's league has not opened its matchday. A slot in a locked
+--    league keeps the player, so that gameweek's points stay with the old
+--    owner. The slot row stays, with no player: an Empty slot.
+-- ---------------------------------------------------------------------------
+
+create or replace function public.ultima_clear_lineup_slots(
+  p_manager_id uuid,
+  p_player_ids uuid[]
+)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  cleared integer;
+begin
+  update public.ultima_lineups l
+  set player_id = null,
+      auto_started = false,
+      locked_at = null
+  from public.ultima_players p,
+       public.ultima_gameweeks g
+  where l.manager_id = p_manager_id
+    and l.player_id = any (p_player_ids)
+    and p.id = l.player_id
+    and g.id = l.gameweek_id
+    and g.state in ('upcoming', 'live')
+    and (
+      g.league_open_at ->> p.league is null
+      or (g.league_open_at ->> p.league)::timestamptz > now()
+    );
+
+  get diagnostics cleared = row_count;
+  return cleared;
+end;
+$$;
+
+revoke all on function public.ultima_clear_lineup_slots(uuid, uuid[]) from public, anon, authenticated;
+grant execute on function public.ultima_clear_lineup_slots(uuid, uuid[]) to service_role;
+
+-- ---------------------------------------------------------------------------
+-- 3. Execute a trade
+--
+-- Returns jsonb:
+--   { ok: true,  state: 'executed' | 'awaiting_unlock' | 'vetoed' | 'void', ... }
+--   { ok: false, code: 'NOT_FOUND' | 'NOT_PENDING' | 'NOT_READY' }
+--
+-- Every check runs before any write, so a trade that fails a check changes
+-- only its own state row. The write phase raises on any surprise, which rolls
+-- the whole function back: all or nothing.
+--
+-- Trade deadline: competition.trade_deadline_gw is the last gameweek number a
+-- trade may settle in. The column defaults to 4, the opening gameweek, so a
+-- value that is not above p_opens_gw means "no deadline set".
 -- ---------------------------------------------------------------------------
 
 create or replace function public.ultima_execute_trade(
@@ -42,8 +119,6 @@ declare
   t public.ultima_trades%rowtype;
   comp public.ultima_competition%rowtype;
   gw public.ultima_gameweeks%rowtype;
-  gw_now public.ultima_gameweeks%rowtype;
-  ref_time timestamptz;
   leagues text[] := array['pl', 'laliga', 'seriea', 'bundesliga', 'ligue1'];
   lg text;
   mid uuid;
@@ -136,35 +211,20 @@ begin
     v_reason := 'bot_manager';
   end if;
 
-  -- Window and deadline are judged on the gameweek the review ended in, so a
-  -- trade that cleared review before the deadline is not voided because the
-  -- settling job ran late. A held trade is judged now.
-  ref_time := case
-    when t.state = 'review' and t.review_expires_at is not null
-      then least(t.review_expires_at, now())
-    else now()
-  end;
-
+  -- Window and deadline, judged on the gameweek that has started most recently.
   select * into gw
   from public.ultima_gameweeks g
-  where g.competition_id = t.competition_id and g.window_start <= ref_time
+  where g.competition_id = t.competition_id and g.window_start <= now()
   order by g.number desc
   limit 1;
 
   if v_reason is null then
     if not found or gw.number < p_opens_gw then
       v_reason := 'not_open';
-    elsif comp.trade_deadline_gw is not null and gw.number > comp.trade_deadline_gw then
+    elsif comp.trade_deadline_gw > p_opens_gw and gw.number > comp.trade_deadline_gw then
       v_reason := 'deadline_passed';
     end if;
   end if;
-
-  -- Locks are judged on the gameweek that is running now.
-  select * into gw_now
-  from public.ultima_gameweeks g
-  where g.competition_id = t.competition_id and g.window_start <= now()
-  order by g.number desc
-  limit 1;
 
   -- Squad size and league floors after the swap, for both managers.
   if v_reason is null then
@@ -223,15 +283,15 @@ begin
   from public.ultima_trade_players tp
   join public.ultima_players p on p.id = tp.player_id
   where tp.trade_id = t.id
-    and gw_now.league_open_at ->> p.league is not null
-    and (gw_now.league_open_at ->> p.league)::timestamptz <= now()
-    and now() < gw_now.window_end;
+    and gw.league_open_at ->> p.league is not null
+    and (gw.league_open_at ->> p.league)::timestamptz <= now()
+    and now() < gw.window_end;
 
   if coalesce(array_length(locked, 1), 0) > 0 then
     unlock := case
-      when (gw_now.window_end at time zone 'Asia/Dubai')::time = time '00:00'
-        then gw_now.window_end
-      else (((gw_now.window_end at time zone 'Asia/Dubai')::date + 1)::timestamp at time zone 'Asia/Dubai')
+      when (gw.window_end at time zone 'Asia/Dubai')::time = time '00:00'
+        then gw.window_end
+      else (((gw.window_end at time zone 'Asia/Dubai')::date + 1)::timestamp at time zone 'Asia/Dubai')
     end;
 
     update public.ultima_trades
@@ -305,55 +365,3 @@ $$;
 
 revoke all on function public.ultima_execute_trade(uuid, integer, integer, integer) from public, anon, authenticated;
 grant execute on function public.ultima_execute_trade(uuid, integer, integer, integer) to service_role;
-
--- ---------------------------------------------------------------------------
--- 3. Void pending trades that include players who are leaving a squad
---
--- Only the giving side counts: a manager cannot drop a player who belongs to
--- someone else. Returns { voided: [ { trade_id, other_manager_id } ] }.
--- ---------------------------------------------------------------------------
-
-create or replace function public.ultima_void_trades_for_players(
-  p_manager_id uuid,
-  p_player_ids uuid[],
-  p_reason text default 'player_dropped'
-)
-returns jsonb
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  rec record;
-  voided jsonb := '[]'::jsonb;
-begin
-  for rec in
-    update public.ultima_trades t
-    set state = 'void', void_reason = p_reason, resolved_at = now()
-    where t.state in ('proposed', 'review', 'awaiting_unlock')
-      and exists (
-        select 1
-        from public.ultima_trade_players tp
-        where tp.trade_id = t.id
-          and tp.from_manager_id = p_manager_id
-          and tp.player_id = any (p_player_ids)
-      )
-    returning t.id, t.competition_id, t.proposer_id, t.receiver_id
-  loop
-    insert into public.ultima_events (event, manager_id, competition_id, payload)
-    values ('trade_void', p_manager_id, rec.competition_id,
-            jsonb_build_object('trade_id', rec.id, 'reason', p_reason));
-
-    voided := voided || jsonb_build_array(jsonb_build_object(
-      'trade_id', rec.id,
-      'other_manager_id',
-      case when rec.proposer_id = p_manager_id then rec.receiver_id else rec.proposer_id end
-    ));
-  end loop;
-
-  return jsonb_build_object('voided', voided);
-end;
-$$;
-
-revoke all on function public.ultima_void_trades_for_players(uuid, uuid[], text) from public, anon, authenticated;
-grant execute on function public.ultima_void_trades_for_players(uuid, uuid[], text) to service_role;

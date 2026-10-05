@@ -48,11 +48,12 @@ export default function SignInForm({
   nextPath = "/",
   fatfFlow = false,
   ultimaApp = false,
+  initialError = null,
 }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(initialError);
   const [ageAttested, setAgeAttested] = useState(false);
   const [hideEmailLink, setHideEmailLink] = useState(false);
   const googleEnabled = isGoogleAuthEnabled();

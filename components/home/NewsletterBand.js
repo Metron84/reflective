@@ -111,7 +111,7 @@ export default function NewsletterBand() {
               />
               <span className="text-xs leading-relaxed text-navy/55">
                 I agree to receive updates from The Reflective Football.{" "}
-                <Link href="/privacy" className="text-navy/70 underline-offset-2 hover:text-navy hover:underline">
+                <Link prefetch={false} href="/privacy" className="text-navy/70 underline-offset-2 hover:text-navy hover:underline">
                   Privacy
                 </Link>
                 .

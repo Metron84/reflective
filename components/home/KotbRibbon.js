@@ -4,7 +4,7 @@ import styles from "./KotbRibbon.module.css";
 
 export default function KotbRibbon() {
   return (
-    <Link href={`${KOTB_PATH}#apply`} className={styles.ribbon}>
+    <Link prefetch={false} href={`${KOTB_PATH}#apply`} className={styles.ribbon}>
       <span className={styles.copy}>
         <span className={styles.mainRow}>
           <span className={styles.main}>

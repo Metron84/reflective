@@ -39,7 +39,7 @@ export default function ReportSection() {
           >
             Read the report
           </a>
-          <Link href="/films" className={styles.secondary}>
+          <Link prefetch={false} href="/films" className={styles.secondary}>
             See the footage behind it
           </Link>
         </div>

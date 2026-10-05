@@ -1,12 +1,12 @@
 import { requireAdminPage } from "@/lib/auth/admin";
-import { createClient } from "@/lib/supabase/server";
+import { getRenderClient } from "@/lib/supabase/server";
 import TaggingAdmin from "./TaggingAdmin";
 
 export const dynamic = "force-dynamic";
 
 export default async function TaggingAdminPage() {
   await requireAdminPage();
-  const supabase = await createClient();
+  const supabase = await getRenderClient();
 
   let venues = [];
   let fanGroups = [];

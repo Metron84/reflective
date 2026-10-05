@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { shouldRefreshSession } from "@/lib/auth/refresh-policy";
+import {
+  appendExpiredCookies,
+  authCookieNamesIn,
+  duplicateAuthCookieNames,
+} from "@/lib/auth/stale-cookies";
 import {
   isUltimaAppHost,
   isUltimaAppLeaf,
@@ -43,10 +49,21 @@ function applyAuthCookies(response, cookiesToSet, host) {
   return response;
 }
 
-function nextWithPath(request) {
+// Built after the session refresh, so request.cookies already holds the new
+// tokens. Every response that reaches a page must forward these headers, or
+// the page reads the old, expired token.
+function forwardedHeaders(request) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", request.nextUrl.pathname);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return requestHeaders;
+}
+
+function nextWithPath(request) {
+  return NextResponse.next({ request: { headers: forwardedHeaders(request) } });
+}
+
+function rewriteWithPath(request, url) {
+  return NextResponse.rewrite(url, { request: { headers: forwardedHeaders(request) } });
 }
 
 function ultimaHostResponse(request) {
@@ -55,7 +72,7 @@ function ultimaHostResponse(request) {
 
   if (pathname === "/manifest.webmanifest" || pathname === "/manifest.json") {
     url.pathname = "/ultima/manifest.webmanifest";
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   if (isUltimaPassthrough(pathname)) {
@@ -64,12 +81,12 @@ function ultimaHostResponse(request) {
 
   if (pathname === "/" || pathname === "") {
     url.pathname = "/ultima";
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   if (isUltimaAppLeaf(pathname)) {
     url.pathname = `/ultima${pathname}`;
-    return NextResponse.rewrite(url);
+    return rewriteWithPath(request, url);
   }
 
   url.pathname = "/";
@@ -88,8 +105,37 @@ export async function middleware(request) {
     return nextWithPath(request);
   }
 
+  // Prefetches, the service worker, manifests and static files never touch
+  // the Auth server. See lib/auth/refresh-policy.js.
+  if (!shouldRefreshSession(request.nextUrl.pathname, request.headers)) {
+    if (isUltimaAppHost(host)) {
+      return ultimaHostResponse(request) ?? nextWithPath(request);
+    }
+    return nextWithPath(request);
+  }
+
   const cookieBag = [];
+  const originalCookies = request.cookies.getAll();
+  // auth-js deletes the session when a refresh fails for any reason that is
+  // not a network error, including a 429. Watch the /token call so a rate
+  // limit or outage leaves the cookies alone instead of signing the user out.
+  let refreshFailed = false;
+  let refreshRejected = false;
+  const rawCookie = request.headers.get("cookie") ?? "";
+  const watchedFetch = async (input, init) => {
+    const isRefresh = String(input?.url ?? input).includes("/auth/v1/token");
+    try {
+      const res = await fetch(input, init);
+      if (isRefresh && (res.status === 429 || res.status >= 500)) refreshFailed = true;
+      if (isRefresh && res.status === 400) refreshRejected = true;
+      return res;
+    } catch (error) {
+      if (isRefresh) refreshFailed = true;
+      throw error;
+    }
+  };
   const supabase = createServerClient(url, key, {
+    global: { fetch: watchedFetch },
     cookieOptions: withAuthCookieDomain({}, host),
     cookies: {
       getAll() {
@@ -104,9 +150,29 @@ export async function middleware(request) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Verifies the JWT locally and refreshes the session only when the access
+  // token is stale. This is the only place a request refreshes.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  if (refreshFailed) {
+    // Put the request cookies back exactly as they arrived. The render sees
+    // the stale token and reports `unavailable`; the browser keeps its session.
+    for (const { name } of request.cookies.getAll()) request.cookies.delete(name);
+    for (const { name, value } of originalCookies) request.cookies.set(name, value);
+    cookieBag.length = 0;
+  }
+  // A stale host-only copy next to the shared-domain cookie shadows it. Two
+  // copies of one name: expire the host-only ones. A rejected refresh token
+  // (400): the session is dead, expire every copy in both scopes so none is
+  // left to shadow the next sign-in.
+  const staleHostOnly = refreshRejected ? [] : duplicateAuthCookieNames(rawCookie);
+  const deadSession = refreshRejected ? authCookieNamesIn(rawCookie) : [];
+  const finish = (res) => {
+    applyAuthCookies(res, cookieBag, host);
+    appendExpiredCookies(res, staleHostOnly, host, { scope: "host" });
+    appendExpiredCookies(res, deadSession, host, { scope: "both" });
+    return res;
+  };
+  const user = claimsData?.claims?.sub ? { id: claimsData.claims.sub } : null;
   const pathname = request.nextUrl.pathname;
 
   let response = nextWithPath(request);
@@ -128,7 +194,7 @@ export async function middleware(request) {
       welcomeUrl.pathname = "/welcome";
       welcomeUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
       response = NextResponse.redirect(welcomeUrl);
-      return applyAuthCookies(response, cookieBag, host);
+      return finish(response);
     }
   }
 
@@ -136,7 +202,7 @@ export async function middleware(request) {
     response = ultimaHostResponse(request) ?? response;
   }
 
-  return applyAuthCookies(response, cookieBag, host);
+  return finish(response);
 }
 
 export const config = {

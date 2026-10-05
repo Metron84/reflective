@@ -1,5 +1,5 @@
 import { requireAdminPage } from "@/lib/auth/admin";
-import { createClient } from "@/lib/supabase/server";
+import { getRenderClient } from "@/lib/supabase/server";
 import MessagesInbox from "@/components/admin/messages/MessagesInbox";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ export const metadata = {
 
 export default async function AdminMessagesPage({ searchParams }) {
   await requireAdminPage();
-  const supabase = await createClient();
+  const supabase = await getRenderClient();
 
   const params = await searchParams;
   const raw = typeof params?.status === "string" ? params.status : "all";

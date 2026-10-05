@@ -1,7 +1,8 @@
 import UltimaPracticeLobby from "@/components/ultima/UltimaPracticeLobby";
 import UltimaStaffMessage from "@/components/ultima/UltimaStaffMessage";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import { listMyPracticeRooms } from "@/lib/ultima/server/practice";
 
 export const metadata = {
@@ -12,7 +13,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaPracticePage() {
-  const { auth, manager } = await requireUltimaManager("/ultima/practice");
+  const seat = await requireSeat("/ultima/practice");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { auth, manager } = seat;
 
   if (!manager?.profile_complete) {
     return (

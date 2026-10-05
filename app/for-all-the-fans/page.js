@@ -3,7 +3,7 @@ import FatfView from "@/components/fatf/FatfView";
 import { getAuthContext } from "@/lib/auth/session";
 import { FATF_ENABLED, FATF_INDEXABLE } from "@/lib/config";
 import { FATF_META_DESCRIPTION, FATF_PATH } from "@/lib/fatf";
-import { createClient } from "@/lib/supabase/server";
+import { getRenderClient } from "@/lib/supabase/server";
 
 const TITLE = "For All The Fans | The Reflective Football";
 
@@ -39,7 +39,7 @@ export const metadata = {
 
 async function getFatfState(userId) {
   if (!userId) return { interested: false, role: null };
-  const supabase = await createClient();
+  const supabase = await getRenderClient();
   if (!supabase) return { interested: false, role: null };
   const { data, error } = await supabase
     .from("profiles")

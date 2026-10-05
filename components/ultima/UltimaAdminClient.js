@@ -6,9 +6,11 @@ import {
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_MIN_POOL_PER_LEAGUE,
   ULTIMA_MIN_POOL_TOTAL,
+  ULTIMA_TIERED_TIMER_TEXT,
   ULTIMA_TIMER_OPTIONS,
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
+import { formatGstDateTime, formatGstTime, fromGstInput, toGstInputValue } from "@/lib/ultima/gst";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaPanel from "./UltimaPanel";
 import UltimaRow from "./UltimaRow";
@@ -50,10 +52,13 @@ export default function UltimaAdminClient({
   const [gwNumber, setGwNumber] = useState("");
   const [gwStart, setGwStart] = useState("");
   const [gwEnd, setGwEnd] = useState("");
-  const [scheduleAt, setScheduleAt] = useState("");
+  const [savedAt, setSavedAt] = useState(desk.scheduledAt ?? null);
+  const [scheduleAt, setScheduleAt] = useState(toGstInputValue(desk.scheduledAt));
   const [cancelReason, setCancelReason] = useState("");
   const [cancelConfirm, setCancelConfirm] = useState("");
   const [syncReport, setSyncReport] = useState(null);
+  const [poolReports, setPoolReports] = useState({});
+  const [poolRun, setPoolRun] = useState({ mode: "", league: "" });
   const [busy, setBusy] = useState("");
   const [confirm, setConfirm] = useState(null);
 
@@ -78,6 +83,11 @@ export default function UltimaAdminClient({
           setMessage(data.code ? `Invite: ${data.code}` : "Done.");
         }
         if (data.code) setInviteCode(data.code);
+        if (action === "schedule_draft" && data.scheduledAt) {
+          setSavedAt(data.scheduledAt);
+          setScheduleAt(toGstInputValue(data.scheduledAt));
+          setMessage(`Draft set for ${formatGstDateTime(data.scheduledAt)} GST.`);
+        }
         setConfirm(null);
       }
     } catch {
@@ -86,6 +96,38 @@ export default function UltimaAdminClient({
       setBusy("");
     }
   }
+
+  // One league per request keeps each call short. Stops at the first failure.
+  async function syncPool(dryRun) {
+    setMessage("");
+    setError("");
+    setPoolReports({});
+    try {
+      for (const league of ULTIMA_LEAGUES) {
+        setPoolRun({ mode: dryRun ? "preview" : "apply", league });
+        const res = await fetch("/api/ultima/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "sync_pool", league, dry_run: dryRun }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.sync?.ok) {
+          setError(
+            `${ULTIMA_LEAGUE_SHORT[league]}: ${data.message ?? data.sync?.error ?? "did not sync"}. Run it again.`,
+          );
+          return;
+        }
+        setPoolReports((current) => ({ ...current, [league]: data.sync }));
+      }
+      setMessage(dryRun ? "Preview done. Nothing was saved." : "Players synced.");
+    } catch {
+      setError("Connection lost.");
+    } finally {
+      setPoolRun({ mode: "", league: "" });
+    }
+  }
+
+  const poolBusy = Boolean(poolRun.mode);
 
   return (
     <div className={styles.utPage}>
@@ -129,18 +171,36 @@ export default function UltimaAdminClient({
           <button
             type="button"
             className={styles.secondaryBtn}
-            disabled={busy === "bootstrap"}
-            onClick={() => act("bootstrap")}
+            disabled={poolBusy}
+            onClick={() => syncPool(false)}
           >
-            {busy === "bootstrap" ? "Syncing players…" : "Sync players"}
+            {poolRun.mode === "apply"
+              ? `Syncing ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
+              : "Sync players"}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={poolBusy}
+            onClick={() => syncPool(true)}
+          >
+            {poolRun.mode === "preview"
+              ? `Checking ${ULTIMA_LEAGUE_SHORT[poolRun.league]}…`
+              : "Preview changes"}
           </button>
         </div>
         {syncReport ? <SyncReport report={syncReport} /> : null}
+        {Object.keys(poolReports).length ? <PoolReport reports={poolReports} /> : null}
       </UltimaPanel>
 
       <UltimaPanel title="Draft controls">
         <div className={styles.utActions}>
-          <button type="button" className={styles.primaryBtn} onClick={() => act("start_draft")}>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            disabled={busy === "start_draft"}
+            onClick={() => setConfirm("start")}
+          >
             Start draft
           </button>
           <button type="button" className={styles.secondaryBtn} onClick={() => act("pause_draft")}>
@@ -150,19 +210,30 @@ export default function UltimaAdminClient({
             Resume
           </button>
         </div>
-        <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
-        <div className={styles.utActions}>
-          {ULTIMA_TIMER_OPTIONS.map((seconds) => (
-            <button
-              key={seconds}
-              type="button"
-              className={clock === seconds ? styles.deskTabOn : styles.deskTab}
-              onClick={() => act("set_timer", { timer_seconds: seconds })}
-            >
-              {formatUltimaTimer(seconds)}
-            </button>
-          ))}
-        </div>
+        <UltimaRow
+          primary="Draft time"
+          meta={savedAt ? `Scheduled ${formatGstTime(savedAt)} GST` : "Not scheduled"}
+          number={savedAt ? `${formatGstDateTime(savedAt)} GST` : "-"}
+        />
+        {desk.timerTiered ? (
+          <UltimaRow primary="Clock" meta={ULTIMA_TIERED_TIMER_TEXT} />
+        ) : (
+          <>
+            <UltimaRow primary="Clock" number={formatUltimaTimer(clock)} />
+            <div className={styles.utActions}>
+              {ULTIMA_TIMER_OPTIONS.map((seconds) => (
+                <button
+                  key={seconds}
+                  type="button"
+                  className={clock === seconds ? styles.deskTabOn : styles.deskTab}
+                  onClick={() => act("set_timer", { timer_seconds: seconds })}
+                >
+                  {formatUltimaTimer(seconds)}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <div className={styles.utActions}>
           <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("schedule")}>
             Schedule draft
@@ -301,16 +372,29 @@ export default function UltimaAdminClient({
         <UltimaStaffMessage subject="The commission desk could not do that" body={error} />
       ) : null}
 
+      {confirm === "start" ? (
+        <ConfirmSheet
+          title="Start the draft now?"
+          body="The order is locked. Pick 1 begins."
+          confirmLabel="Start draft"
+          cancelLabel="Cancel"
+          cancelFirst
+          onClose={() => setConfirm(null)}
+          onConfirm={() => act("start_draft")}
+          busy={busy === "start_draft"}
+        />
+      ) : null}
+
       {confirm === "schedule" ? (
         <ConfirmSheet
           title="Schedule draft"
-          body="Set the live draft time."
+          body="Set the live draft time. Times are GST (UTC+4)."
           onClose={() => setConfirm(null)}
-          onConfirm={() => act("schedule_draft", { scheduled_at: scheduleAt })}
+          onConfirm={() => act("schedule_draft", { scheduled_at: fromGstInput(scheduleAt) })}
           busy={busy === "schedule_draft"}
         >
           <label className={styles.field}>
-            Start time
+            Start time (GST)
             <input
               type="datetime-local"
               value={scheduleAt}
@@ -385,7 +469,27 @@ export default function UltimaAdminClient({
   );
 }
 
-function ConfirmSheet({ title, body, onClose, onConfirm, busy, children }) {
+function ConfirmSheet({
+  title,
+  body,
+  onClose,
+  onConfirm,
+  busy,
+  children,
+  confirmLabel = "Confirm",
+  cancelLabel = "Back",
+  cancelFirst = false,
+}) {
+  const confirmBtn = (
+    <button key="confirm" type="button" className={styles.primaryBtn} disabled={busy} onClick={onConfirm}>
+      {busy ? "Working…" : confirmLabel}
+    </button>
+  );
+  const cancelBtn = (
+    <button key="cancel" type="button" className={styles.secondaryBtn} disabled={busy} onClick={onClose}>
+      {cancelLabel}
+    </button>
+  );
   return (
     <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label={title}>
       <button type="button" className={styles.dSheetBackdrop} aria-label="Close" onClick={onClose} />
@@ -394,15 +498,44 @@ function ConfirmSheet({ title, body, onClose, onConfirm, busy, children }) {
         <p className={styles.dSheetMeta}>{body}</p>
         {children}
         <div className={styles.dSheetActions}>
-          <button type="button" className={styles.primaryBtn} disabled={busy} onClick={onConfirm}>
-            {busy ? "Working…" : "Confirm"}
-          </button>
-          <button type="button" className={styles.secondaryBtn} onClick={onClose}>
-            Back
-          </button>
+          {cancelFirst ? [cancelBtn, confirmBtn] : [confirmBtn, cancelBtn]}
         </div>
       </div>
     </div>
+  );
+}
+
+function PoolReport({ reports }) {
+  const done = ULTIMA_LEAGUES.filter((l) => reports[l]);
+  const total = (key) => done.reduce((n, l) => n + (reports[l].diff?.[key] ?? 0), 0);
+  const count = done.reduce((n, l) => n + (reports[l].count ?? 0), 0);
+  const dry = done.some((l) => reports[l].dryRun);
+
+  return (
+    <>
+      <UltimaRow
+        primary={dry ? "Preview, nothing saved" : "Synced"}
+        meta={`${total("added")} new · ${total("changedClub")} changed club · ${total("wentInactive")} inactive`}
+        number={count}
+      />
+      {done.map((league) => {
+        const r = reports[league];
+        const d = r.diff ?? {};
+        return (
+          <UltimaRow
+            key={league}
+            primary={ULTIMA_LEAGUE_SHORT[league]}
+            meta={`${d.added ?? 0} new · ${d.changedClub ?? 0} changed club · ${d.wentInactive ?? 0} inactive`}
+            number={r.count}
+          >
+            {d.deactivateSkipped ? <p className={styles.utNote}>{d.deactivateSkipped}</p> : null}
+            {(d.samples?.changedClub ?? []).map((line) => (
+              <p key={line} className={styles.utNote}>{line}</p>
+            ))}
+          </UltimaRow>
+        );
+      })}
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
+import { getActiveCompetition } from "@/lib/ultima/server/db";
 import {
   askAboutPlayer,
   resolveInterest,
@@ -26,10 +26,9 @@ function fail(result) {
  * "ask" (interest in a player or a manager), "resolve" (seen, offered, dismissed).
  */
 export async function POST(request) {
-  const user = await getSessionUser();
-  if (!user) return fail({ code: "SIGN_IN_REQUIRED" });
-
-  const manager = await getManagerForUser(user.id);
+  const gate = await requireSeatApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { manager } = gate;
   if (!manager || manager.is_bot) return fail({ code: "UNAVAILABLE" });
 
   let body;

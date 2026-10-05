@@ -42,6 +42,7 @@ function MenuOverlay({ onClose, auth }) {
           const active = isActiveSection(pathname, item.href);
           return (
             <Link
+              prefetch={false}
               key={item.href}
               href={item.href}
               onClick={onClose}
@@ -60,6 +61,7 @@ function MenuOverlay({ onClose, auth }) {
         })}
         {TRAINING_ENABLED ? (
           <Link
+            prefetch={false}
             href="/training"
             onClick={onClose}
             aria-current={
@@ -78,6 +80,7 @@ function MenuOverlay({ onClose, auth }) {
         ) : null}
         {FATF_ENABLED ? (
           <Link
+            prefetch={false}
             href={FATF_PATH}
             onClick={onClose}
             aria-current={
@@ -100,6 +103,7 @@ function MenuOverlay({ onClose, auth }) {
         {signedIn ? (
           <>
             <Link
+              prefetch={false}
               href="/account"
               onClick={onClose}
               className="block rounded-full border border-paper/30 py-3 text-center text-sm font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
@@ -117,6 +121,7 @@ function MenuOverlay({ onClose, auth }) {
           </>
         ) : (
           <Link
+            prefetch={false}
             href="/signin"
             onClick={onClose}
             className="block rounded-full bg-signal py-3 text-center text-sm font-medium text-paper transition-opacity hover:opacity-90"

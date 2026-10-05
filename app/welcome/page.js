@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import WelcomeForm from "@/components/auth/WelcomeForm";
 import { getClubOptions } from "@/lib/auth/clubs";
 import { getAuthContext } from "@/lib/auth/session";
+import { safeNextPath } from "@/lib/auth/safe-next";
 import { isFatfNext } from "@/lib/fatf";
 
 export const metadata = {
@@ -11,10 +12,7 @@ export const metadata = {
 
 export default async function WelcomePage({ searchParams }) {
   const params = await searchParams;
-  const nextPath =
-    typeof params?.next === "string" && params.next.startsWith("/")
-      ? params.next
-      : "/";
+  const nextPath = safeNextPath(params?.next);
 
   const { user, profile, isSignedIn } = await getAuthContext();
   if (!isSignedIn) redirect(`/signin?next=${encodeURIComponent("/welcome")}`);

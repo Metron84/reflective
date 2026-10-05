@@ -1,5 +1,6 @@
+-- Applied to production 4 Oct 2026. Do not re-run.
 -- Ultima trade block: list a player, declare open to trading, ask about a player.
--- Server writes only. Run after 0042_crest_results.sql.
+-- Server writes only. Run after 0046_ultima_current_pick_301.sql.
 
 create table if not exists public.ultima_trade_block (
   manager_id uuid not null references public.ultima_managers (id) on delete cascade,
@@ -50,12 +51,14 @@ alter table public.ultima_trade_prefs enable row level security;
 alter table public.ultima_trade_interest enable row level security;
 
 -- The block is public inside the league: participants read, server writes.
+drop policy if exists "ultima_trade_block: participants read" on public.ultima_trade_block;
 create policy "ultima_trade_block: participants read"
   on public.ultima_trade_block
   for select
   to authenticated
   using (public.ultima_is_participant());
 
+drop policy if exists "ultima_trade_prefs: participants read" on public.ultima_trade_prefs;
 create policy "ultima_trade_prefs: participants read"
   on public.ultima_trade_prefs
   for select
@@ -63,6 +66,7 @@ create policy "ultima_trade_prefs: participants read"
   using (public.ultima_is_participant());
 
 -- Interest is private to the two managers involved.
+drop policy if exists "ultima_trade_interest: parties read" on public.ultima_trade_interest;
 create policy "ultima_trade_interest: parties read"
   on public.ultima_trade_interest
   for select
