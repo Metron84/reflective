@@ -84,7 +84,7 @@ test("log lines: every trade event reads as one sentence with names and players"
     assert.ok(!line.includes("—") && !line.includes("–"), "no dashes");
   }
   assert.equal(tradeLogLine("trade_cancelled", ctx), "Ajax FC withdrew an offer to Bolt United. Saka for Pedri and Gavi.");
-  assert.match(tradeLogLine("trade_void", ctx), /voided\. A player was dropped\./);
+  assert.match(tradeLogLine("trade_void", ctx), /voided\. A player was released\./);
   assert.equal(tradeLogLine("pick_made", ctx), null);
 });
 

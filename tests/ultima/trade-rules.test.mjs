@@ -21,23 +21,20 @@ const squad = () => [
   ...["e1", "e2", "e3", "e4"].map((id) => p(id, "ligue1")),
 ];
 
-test("GW gate: no gameweek means closed, never the GW4 fallback", () => {
-  assert.deepEqual(tradeGate({ gw: null }), { ok: false, code: "TRADE_TOO_EARLY" });
-  assert.deepEqual(tradeGate({ gw: undefined, deadlineGw: 20 }), { ok: false, code: "TRADE_TOO_EARLY" });
-});
-
-test("GW gate: opens at GW4", () => {
-  assert.equal(tradeGate({ gw: { number: 3 } }).ok, false);
-  assert.equal(tradeGate({ gw: { number: 4 } }).ok, true);
+test("trade gate: trades are open now, before gameweek 1 included", () => {
+  assert.deepEqual(tradeGate({ gw: null }), { ok: true });
+  assert.deepEqual(tradeGate({ gw: undefined, deadlineGw: 20 }), { ok: true });
+  assert.equal(tradeGate({ gw: { number: 1 } }).ok, true);
+  assert.equal(tradeGate({ gw: { number: 3 } }).ok, true);
   assert.equal(tradeGate({ gw: { number: 30 } }).ok, true);
 });
 
-test("GW gate: deadline closes the window after its gameweek", () => {
+test("trade gate: deadline closes the window after its gameweek", () => {
   assert.equal(tradeGate({ gw: { number: 8 }, deadlineGw: 8 }).ok, true);
   assert.deepEqual(tradeGate({ gw: { number: 9 }, deadlineGw: 8 }), { ok: false, code: "TRADE_DEADLINE" });
 });
 
-test("GW gate: a null deadline means none, and a deadline of 4 is a real deadline", () => {
+test("trade gate: a null deadline means none, and a deadline of 4 is a real deadline", () => {
   assert.equal(tradeGate({ gw: { number: 12 }, deadlineGw: null }).ok, true);
   assert.equal(tradeGate({ gw: { number: 12 }, deadlineGw: undefined }).ok, true);
   assert.equal(tradeGate({ gw: { number: 4 }, deadlineGw: 4 }).ok, true);
@@ -155,7 +152,7 @@ test("rate limit: 20 proposals a day", () => {
   assert.equal(rateLimited(null), false);
 });
 
-test("busy players: another pending trade blocks, the one being countered or accepted does not", () => {
+test("frozen players: another accepted deal blocks, the one being countered or accepted does not", () => {
   const rows = [{ trade_id: "t1", player_id: "p1" }];
   assert.equal(findBusy(rows)?.trade_id, "t1");
   assert.equal(findBusy(rows, "t1"), null);
@@ -187,15 +184,15 @@ test("accept: no deadline, or an unsynced deadline gameweek, never blocks", () =
 test("drop confirm line names the other team", () => {
   assert.equal(
     pendingTradeLine(["Doumani Athletic"]),
-    "This voids your pending trade with Doumani Athletic.",
+    "This voids your live offer with Doumani Athletic.",
   );
   assert.equal(
     pendingTradeLine(["Team A", "Team B"]),
-    "This voids your pending trades with Team A and Team B.",
+    "This voids your live offers with Team A and Team B.",
   );
   assert.equal(
     pendingTradeLine(["A", "B", "C"]),
-    "This voids your pending trades with A, B and C.",
+    "This voids your live offers with A, B and C.",
   );
   assert.equal(pendingTradeLine([]), "");
   assert.equal(pendingTradeLine(undefined), "");
