@@ -6,6 +6,11 @@
 --    Idempotency-Key header per tap. The server claims the key before it writes,
 --    stores the result after, and returns the stored result on a repeat. No
 --    second write happens. result is null while the first call is running.
+--    Each row carries the competition of the manager who tapped, and a claim is
+--    refused unless the manager belongs to that competition.
+--    ultima_claim_action_key does the claim in one call: it prunes keys older
+--    than 7 days, and takes over a claim that has sat pending for 60 seconds
+--    (the first call died before it stored a result).
 -- 2. ultima_sign_player: same as 0053, plus a row lock on the free agent and
 --    taken_at on PICK_TAKEN so the refusal can say who signed him and when.
 --
@@ -18,6 +23,7 @@
 create table if not exists public.ultima_action_keys (
   key text not null,
   manager_id uuid not null references public.ultima_managers (id) on delete cascade,
+  competition_id uuid not null references public.ultima_competition (id) on delete cascade,
   route text not null,
   status integer,
   result jsonb,
@@ -26,11 +32,68 @@ create table if not exists public.ultima_action_keys (
 );
 
 create index if not exists ultima_action_keys_created_idx
-  on public.ultima_action_keys (created_at);
+  on public.ultima_action_keys (competition_id, created_at);
 
 alter table public.ultima_action_keys enable row level security;
 
 revoke all on public.ultima_action_keys from anon, authenticated;
+
+create or replace function public.ultima_claim_action_key(
+  p_key text,
+  p_manager_id uuid,
+  p_competition_id uuid,
+  p_route text,
+  p_stale_seconds integer default 60
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  prior public.ultima_action_keys%rowtype;
+  n integer;
+begin
+  -- Housekeeping: a key older than 7 days can never be repeated by a live tap.
+  delete from public.ultima_action_keys where created_at < now() - interval '7 days';
+
+  -- The manager must sit in the competition the key is claimed for.
+  perform 1 from public.ultima_managers where id = p_manager_id and competition_id = p_competition_id;
+  if not found then
+    return jsonb_build_object('state', 'invalid');
+  end if;
+
+  insert into public.ultima_action_keys (key, manager_id, competition_id, route)
+  values (p_key, p_manager_id, p_competition_id, p_route)
+  on conflict (manager_id, key) do nothing;
+  get diagnostics n = row_count;
+  if n = 1 then
+    return jsonb_build_object('state', 'claimed');
+  end if;
+
+  select * into prior from public.ultima_action_keys
+  where manager_id = p_manager_id and key = p_key and competition_id = p_competition_id
+  for update;
+  if not found then
+    return jsonb_build_object('state', 'invalid');
+  end if;
+  if prior.route <> p_route then
+    return jsonb_build_object('state', 'route_mismatch');
+  end if;
+  if prior.result is not null then
+    return jsonb_build_object('state', 'done', 'status', prior.status, 'result', prior.result);
+  end if;
+  if prior.created_at < now() - make_interval(secs => p_stale_seconds) then
+    update public.ultima_action_keys set created_at = now()
+    where manager_id = p_manager_id and key = p_key;
+    return jsonb_build_object('state', 'claimed', 'reclaimed', true);
+  end if;
+  return jsonb_build_object('state', 'pending');
+end;
+$$;
+
+revoke all on function public.ultima_claim_action_key(text, uuid, uuid, text, integer) from public, anon, authenticated;
+grant execute on function public.ultima_claim_action_key(text, uuid, uuid, text, integer) to service_role;
 
 -- ---------------------------------------------------------------------------
 -- 2. Atomic signing

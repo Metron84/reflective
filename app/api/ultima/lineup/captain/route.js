@@ -38,6 +38,7 @@ export async function POST(request) {
     request,
     route: "lineup/captain",
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       const gameweek = competition ? await getCurrentGameweek(competition.id) : null;
       if (!gameweek) {

@@ -17,6 +17,9 @@ begin
   insert into public.ultima_players (provider_id, name, league, club) values ('AKFA', 'AK-Free-Agent', 'pl', 'C');
 end $$;
 
+create function ak.comp() returns uuid language sql as $$
+  select id from public.ultima_competition where season_label = 'ak' $$;
+
 create function ak.mgr(t text) returns uuid language sql as $$
   select id from public.ultima_managers where team_name = t and competition_id = (
     select id from public.ultima_competition where season_label = 'ak') $$;
@@ -30,13 +33,13 @@ select ak.setup();
 do $$
 begin
   perform ak.assert((select relrowsecurity from pg_class where oid = 'public.ultima_action_keys'::regclass), 'RLS is on');
-  insert into public.ultima_action_keys (key, manager_id, route) values ('tap-0001-abcdef', ak.mgr('Alpha'), 'player/action');
+  insert into public.ultima_action_keys (key, manager_id, competition_id, route) values ('tap-0001-abcdef', ak.mgr('Alpha'), ak.comp(), 'player/action');
   begin
-    insert into public.ultima_action_keys (key, manager_id, route) values ('tap-0001-abcdef', ak.mgr('Alpha'), 'player/action');
+    insert into public.ultima_action_keys (key, manager_id, competition_id, route) values ('tap-0001-abcdef', ak.mgr('Alpha'), ak.comp(), 'player/action');
     raise exception 'FAIL: a repeated key was accepted';
   exception when unique_violation then null; end;
   -- The same key from another manager is a different tap.
-  insert into public.ultima_action_keys (key, manager_id, route) values ('tap-0001-abcdef', ak.mgr('Beta'), 'player/action');
+  insert into public.ultima_action_keys (key, manager_id, competition_id, route) values ('tap-0001-abcdef', ak.mgr('Beta'), ak.comp(), 'player/action');
   perform ak.assert((select result is null from public.ultima_action_keys where manager_id = ak.mgr('Alpha')), 'result is null while running');
   update public.ultima_action_keys set status = 200, result = '{"ok":true}'::jsonb where manager_id = ak.mgr('Alpha');
   perform ak.assert((select result ->> 'ok' from public.ultima_action_keys where manager_id = ak.mgr('Alpha')) = 'true', 'result stored');
@@ -56,6 +59,34 @@ begin
   perform ak.assert((r ->> 'taken_at')::timestamptz > now() - interval '1 minute', 'says when');
   perform ak.assert((select count(*) from public.ultima_rosters where manager_id = ak.mgr('Beta')) = 0, 'loser squad untouched');
   perform ak.assert((select count(*) from public.ultima_events where event = 'market_add') = 1, 'one market_add event, none for the refusal');
+end $$;
+rollback;
+
+-- 3. The claim: scoped to the competition, pending vs done, stale takeover, route mismatch, pruning.
+begin;
+select ak.setup();
+do $$ declare r jsonb; other uuid;
+begin
+  r := public.ultima_claim_action_key('claim-key-0001', ak.mgr('Alpha'), ak.comp(), 'lineup/save');
+  perform ak.assert(r ->> 'state' = 'claimed', 'first claim: ' || r::text);
+  perform ak.assert((select competition_id from public.ultima_action_keys where key = 'claim-key-0001') = ak.comp(), 'competition_id stored');
+  r := public.ultima_claim_action_key('claim-key-0001', ak.mgr('Alpha'), ak.comp(), 'lineup/save');
+  perform ak.assert(r ->> 'state' = 'pending', 'repeat while running is pending');
+  r := public.ultima_claim_action_key('claim-key-0001', ak.mgr('Alpha'), ak.comp(), 'lineup/captain');
+  perform ak.assert(r ->> 'state' = 'route_mismatch', 'other route refused');
+  update public.ultima_action_keys set created_at = now() - interval '2 minutes' where key = 'claim-key-0001';
+  r := public.ultima_claim_action_key('claim-key-0001', ak.mgr('Alpha'), ak.comp(), 'lineup/save');
+  perform ak.assert(r ->> 'state' = 'claimed' and (r ->> 'reclaimed')::boolean, 'stale claim is taken over: ' || r::text);
+  update public.ultima_action_keys set status = 200, result = '{"ok":true}'::jsonb where key = 'claim-key-0001';
+  r := public.ultima_claim_action_key('claim-key-0001', ak.mgr('Alpha'), ak.comp(), 'lineup/save');
+  perform ak.assert(r ->> 'state' = 'done' and r -> 'result' ->> 'ok' = 'true', 'finished key replays');
+  insert into public.ultima_competition (season_label, is_active) values ('ak2', false) returning id into other;
+  r := public.ultima_claim_action_key('claim-key-0002', ak.mgr('Alpha'), other, 'lineup/save');
+  perform ak.assert(r ->> 'state' = 'invalid', 'manager outside the competition is refused');
+  perform ak.assert(not exists (select 1 from public.ultima_action_keys where key = 'claim-key-0002'), 'no row for a refused claim');
+  update public.ultima_action_keys set created_at = now() - interval '8 days' where key = 'claim-key-0001';
+  perform public.ultima_claim_action_key('claim-key-0003', ak.mgr('Alpha'), ak.comp(), 'lineup/save');
+  perform ak.assert(not exists (select 1 from public.ultima_action_keys where key = 'claim-key-0001'), 'keys older than 7 days are pruned');
 end $$;
 rollback;
 

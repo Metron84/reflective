@@ -54,6 +54,7 @@ export async function POST(request) {
     request,
     route: "trades/propose",
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       const result = await proposeTrade({
         competitionId: competition.id,

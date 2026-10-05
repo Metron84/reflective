@@ -34,6 +34,7 @@ export async function POST(request) {
     request,
     route: `trades/${kind}`,
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       let result;
       if (kind === "cancel") result = await cancelTrade({ tradeId, managerId: manager.id });

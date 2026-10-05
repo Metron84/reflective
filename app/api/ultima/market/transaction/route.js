@@ -46,6 +46,7 @@ export async function POST(request) {
     request,
     route: "market/transaction",
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       const competition = await getActiveCompetition();
       const gameweek = competition ? await getCurrentGameweek(competition.id) : null;

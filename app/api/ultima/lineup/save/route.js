@@ -30,6 +30,7 @@ export async function POST(request) {
     request,
     route: "lineup/save",
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       const competition = await getActiveCompetition();
       if (!competition) {

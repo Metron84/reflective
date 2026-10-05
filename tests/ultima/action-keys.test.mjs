@@ -7,8 +7,34 @@ import { agoLabel, cardActionReceipt, offerSentReceipt, signReceipt, takenLine, 
 const table = new Map();
 const rowKey = (m, k) => `${m}:${k}`;
 
+let staleAfterMs = 60_000;
+
+// Mirrors public.ultima_claim_action_key.
+function claimKey({ p_key, p_manager_id, p_competition_id, p_route }) {
+  if (p_competition_id !== COMP) return { state: "invalid" };
+  const id = rowKey(p_manager_id, p_key);
+  const prior = table.get(id);
+  if (!prior) {
+    table.set(id, { key: p_key, manager_id: p_manager_id, competition_id: p_competition_id, route: p_route, status: null, result: null, created_at: Date.now() });
+    return { state: "claimed" };
+  }
+  if (prior.route !== p_route) return { state: "route_mismatch" };
+  if (prior.result != null) return { state: "done", status: prior.status, result: prior.result };
+  if (Date.now() - prior.created_at > staleAfterMs) {
+    prior.created_at = Date.now();
+    return { state: "claimed", reclaimed: true };
+  }
+  return { state: "pending" };
+}
+
+const COMP = "c1";
+
 function fakeDb() {
   return {
+    rpc(name, args) {
+      assert.equal(name, "ultima_claim_action_key");
+      return Promise.resolve({ data: claimKey(args), error: null });
+    },
     from(name) {
       assert.equal(name, "ultima_action_keys");
       const q = { op: "select", payload: null, eq: {} };
@@ -73,6 +99,7 @@ mock.module("@/lib/supabase", { namedExports: { getServiceClient: () => fakeDb()
 const { runIdempotent, readActionKeyState } = await import("../../lib/ultima/server/action-keys.js");
 
 const KEY = "tap-0001-abcdef";
+const base = { competitionId: COMP };
 const req = (key) => ({ headers: new Headers(key ? { "idempotency-key": key } : {}) });
 
 function capture() {
@@ -88,7 +115,7 @@ test("no key: the write runs and nothing is stored", async () => {
   const res = await runIdempotent({
     request: req(null),
     route: "lineup/save",
-    managerId: "m1",
+    managerId: "m1", ...base,
     handler: async () => (runs += 1, { status: 200, body: { ok: true } }),
   });
   assert.equal(res.status, 200);
@@ -100,8 +127,8 @@ test("a repeated key returns the stored result and writes nothing more", async (
   table.clear();
   let runs = 0;
   const handler = async () => (runs += 1, { status: 200, body: { ok: true, receipt: "Signed A, released B" } });
-  const first = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", handler });
-  const again = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", handler });
+  const first = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", ...base, handler });
+  const again = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", ...base, handler });
   assert.equal(runs, 1);
   assert.deepEqual(again.body, first.body);
   assert.equal(again.headers["Idempotent-Replay"], "true");
@@ -111,8 +138,8 @@ test("a stored refusal is replayed too", async () => {
   table.clear();
   let runs = 0;
   const handler = async () => (runs += 1, { status: 409, body: { code: "PICK_TAKEN", message: "Ajax FC signed him 3 min ago." } });
-  await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", handler });
-  const again = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", handler });
+  await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", ...base, handler });
+  const again = await runIdempotent({ request: req(KEY), route: "player/action", managerId: "m1", ...base, handler });
   assert.equal(runs, 1);
   assert.equal(again.status, 409);
   assert.equal(again.body.code, "PICK_TAKEN");
@@ -122,8 +149,8 @@ test("the same key from another manager is a different tap", async () => {
   table.clear();
   let runs = 0;
   const handler = async () => (runs += 1, { status: 200, body: { ok: true } });
-  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m1", handler });
-  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m2", handler });
+  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m1", ...base, handler });
+  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m2", ...base, handler });
   assert.equal(runs, 2);
 });
 
@@ -135,7 +162,7 @@ test("a second call while the first runs gets 202 PENDING and does not write", a
   const slow = runIdempotent({
     request: req(KEY),
     route: "trades/propose",
-    managerId: "m1",
+    managerId: "m1", ...base,
     handler: async () => {
       runs += 1;
       await gate;
@@ -146,16 +173,16 @@ test("a second call while the first runs gets 202 PENDING and does not write", a
   const second = await runIdempotent({
     request: req(KEY),
     route: "trades/propose",
-    managerId: "m1",
+    managerId: "m1", ...base,
     handler: async () => (runs += 1, { status: 200, body: { ok: true } }),
   });
   assert.equal(second.status, 202);
   assert.equal(second.body.code, "PENDING");
-  assert.deepEqual(await readActionKeyState({ managerId: "m1", key: KEY }), { state: "pending" });
+  assert.deepEqual(await readActionKeyState({ managerId: "m1", ...base, key: KEY }), { state: "pending" });
   release();
   await slow;
   assert.equal(runs, 1);
-  const done = await readActionKeyState({ managerId: "m1", key: KEY });
+  const done = await readActionKeyState({ managerId: "m1", ...base, key: KEY });
   assert.equal(done.state, "done");
   assert.equal(done.status, 200);
 });
@@ -167,10 +194,10 @@ test("a server failure frees the key so the same tap can retry", async () => {
     runs += 1;
     return runs === 1 ? { status: 503, body: { code: "UNAVAILABLE" } } : { status: 200, body: { ok: true } };
   };
-  const first = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", handler });
+  const first = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", ...base, handler });
   assert.equal(first.status, 503);
-  assert.deepEqual(await readActionKeyState({ managerId: "m1", key: KEY }), { state: "unknown" });
-  const retry = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", handler });
+  assert.deepEqual(await readActionKeyState({ managerId: "m1", ...base, key: KEY }), { state: "unknown" });
+  const retry = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", ...base, handler });
   assert.equal(retry.status, 200);
   assert.equal(runs, 2);
 });
@@ -181,7 +208,7 @@ test("a thrown handler frees the key", async () => {
     runIdempotent({
       request: req(KEY),
       route: "lineup/save",
-      managerId: "m1",
+      managerId: "m1", ...base,
       handler: async () => {
         throw new Error("boom");
       },
@@ -194,8 +221,8 @@ test("a thrown handler frees the key", async () => {
 test("a key reused for another route is refused", async () => {
   table.clear();
   const handler = async () => ({ status: 200, body: { ok: true } });
-  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m1", handler });
-  const other = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", handler });
+  await runIdempotent({ request: req(KEY), route: "lineup/save", managerId: "m1", ...base, handler });
+  const other = await runIdempotent({ request: req(KEY), route: "lineup/captain", managerId: "m1", ...base, handler });
   assert.equal(other.status, 409);
 });
 
@@ -205,7 +232,7 @@ test("a malformed key is a 400 and never reaches the handler", async () => {
   const res = await runIdempotent({
     request: req("no"),
     route: "lineup/save",
-    managerId: "m1",
+    managerId: "m1", ...base,
     handler: async () => (runs += 1, { status: 200, body: {} }),
   });
   assert.equal(res.status, 400);
@@ -216,7 +243,7 @@ test("every write logs route name and ms", async () => {
   table.clear();
   const log = capture();
   try {
-    await runIdempotent({ request: req(KEY), route: "market/transaction", managerId: "m1", handler: async () => ({ status: 200, body: {} }) });
+    await runIdempotent({ request: req(KEY), route: "market/transaction", managerId: "m1", ...base, handler: async () => ({ status: 200, body: {} }) });
   } finally {
     log.restore();
   }
@@ -230,7 +257,31 @@ test("every write logs route name and ms", async () => {
 
 test("status check: a key that never landed is unknown", async () => {
   table.clear();
-  assert.deepEqual(await readActionKeyState({ managerId: "m1", key: "never-sent-key" }), { state: "unknown" });
+  assert.deepEqual(await readActionKeyState({ managerId: "m1", ...base, key: "never-sent-key" }), { state: "unknown" });
+});
+
+test("a claim left pending past the stale window is taken over", async () => {
+  table.clear();
+  table.set(rowKey("m1", KEY), { key: KEY, manager_id: "m1", competition_id: COMP, route: "lineup/save", status: null, result: null, created_at: Date.now() - 120_000 });
+  let runs = 0;
+  const res = await runIdempotent({
+    request: req(KEY), route: "lineup/save", managerId: "m1", ...base,
+    handler: async () => (runs += 1, { status: 200, body: { ok: true } }),
+  });
+  assert.equal(runs, 1);
+  assert.equal(res.status, 200);
+  assert.equal(table.get(rowKey("m1", KEY)).result.ok, true);
+});
+
+test("a key from another competition is refused and never writes", async () => {
+  table.clear();
+  let runs = 0;
+  const res = await runIdempotent({
+    request: req(KEY), route: "lineup/save", managerId: "m1", competitionId: "other",
+    handler: async () => (runs += 1, { status: 200, body: {} }),
+  });
+  assert.equal(res.status, 409);
+  assert.equal(runs, 0);
 });
 
 // ---------------------------------------------------------------------------
@@ -305,6 +356,8 @@ test("captain moves are written to ultima_events and shown in the log", () => {
 test("migration 0056: keys table with RLS, locked claim, taken_at", () => {
   const sql = read("supabase/migrations/0056_ultima_action_keys.sql");
   assert.match(sql, /create table if not exists public\.ultima_action_keys/);
+  assert.match(sql, /competition_id uuid not null references public\.ultima_competition/);
+  assert.match(sql, /interval '7 days'/);
   assert.match(sql, /primary key \(manager_id, key\)/);
   assert.match(sql, /alter table public\.ultima_action_keys enable row level security/);
   assert.match(sql, /from public\.ultima_players where id = p_add_player_id for update/);

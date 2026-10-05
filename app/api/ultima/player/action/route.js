@@ -53,6 +53,7 @@ export async function POST(request) {
     request,
     route: "player/action",
     managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
     handler: async () => {
       const result = await runCardAction({
         competition,
