@@ -392,3 +392,31 @@ test("card routes gate on requireSeatApi, writes with the write check", async ()
   assert.match(read("[id]/route.js"), /requireSeatApi\(\)/);
   assert.match(read("[id]/swap/route.js"), /requireSeatApi\(\)/);
 });
+
+test("counter: one database call replaces the original, checks run first, the news event follows", async () => {
+  reset();
+  const original = { id: "t0", state: "proposed", proposer_id: "m2", receiver_id: "m1" };
+  const answer = (rpcResult) => (q) => {
+    if (q.op === "rpc") return rpcResult;
+    if (q.table === "ultima_trades" && q.op === "select" && !q.options?.head) return { data: [original] };
+    return handler(q);
+  };
+  fake = makeFakeDb(answer({ data: { ok: true, trade_id: "t1" }, error: null }));
+  const res = await send({ proposerId: "m1", receiverId: "m2", counterOf: "t0" });
+  assert.equal(res.ok, true);
+  assert.equal(res.tradeId, "t1");
+  const rpc = fake.log.find((q) => q.table === "rpc:ultima_counter_trade");
+  assert.equal(rpc.payload.p_original_id, "t0");
+  assert.deepEqual(rpc.payload.p_give, ["a1"]);
+  assert.ok(!fake.log.some((q) => q.table === "ultima_trades" && q.op === "update"), "no separate flip");
+  assert.ok(!fake.log.some((q) => q.table === "ultima_trades" && q.op === "insert"), "no separate insert");
+
+  fake = makeFakeDb(answer({ data: { ok: false, code: "NOT_OPEN" }, error: null }));
+  assert.equal((await send({ counterOf: "t0" })).ok, false);
+
+  // A failed check never reaches the database call.
+  world.liveCount = 3;
+  fake = makeFakeDb(answer({ data: { ok: true, trade_id: "t1" }, error: null }));
+  assert.equal((await send({ counterOf: "t0" })).code, "TRADE_CAP");
+  assert.ok(!fake.log.some((q) => q.table === "rpc:ultima_counter_trade"));
+});
