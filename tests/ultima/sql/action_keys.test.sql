@@ -90,4 +90,23 @@ begin
 end $$;
 rollback;
 
+-- 4. A player on a practice roster can still be signed in the season competition.
+begin;
+select ak.setup();
+do $$ declare practice uuid; pm uuid; r jsonb;
+begin
+  insert into public.ultima_competition (season_label, kind, is_active) values ('ak-practice', 'practice', false) returning id into practice;
+  insert into public.ultima_managers (competition_id, team_name, manager_name, colour)
+  values (practice, 'Practice', 'Mgr3', 'slate') returning id into pm;
+  insert into public.ultima_rosters (manager_id, player_id, competition_id) values (pm, ak.fa(), practice);
+  r := public.ultima_sign_player(ak.mgr('Alpha'), ak.fa(), null, null, 30, 3);
+  perform ak.assert((r ->> 'ok')::boolean, 'signing is not blocked by a practice roster: ' || r::text);
+  perform ak.assert((select competition_id from public.ultima_rosters where manager_id = ak.mgr('Alpha') and player_id = ak.fa()) = ak.comp(), 'roster row carries the season competition');
+  perform ak.assert((select count(*) from public.ultima_rosters where player_id = ak.fa()) = 2, 'both rosters hold him');
+  -- A second season manager is still refused, and the practice owner is not named.
+  r := public.ultima_sign_player(ak.mgr('Beta'), ak.fa(), null, null, 30, 3);
+  perform ak.assert(r ->> 'code' = 'PICK_TAKEN' and r ->> 'taken_by' = 'Alpha', 'season race still names the season owner: ' || r::text);
+end $$;
+rollback;
+
 select 'action keys tests passed' as result;

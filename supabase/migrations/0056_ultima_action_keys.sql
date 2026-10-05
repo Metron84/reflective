@@ -142,7 +142,7 @@ begin
   select m.team_name, r.acquired_at into owner_team, owner_at
   from public.ultima_rosters r
   join public.ultima_managers m on m.id = r.manager_id
-  where r.player_id = p_add_player_id
+  where r.player_id = p_add_player_id and r.competition_id = mgr.competition_id
   limit 1;
   if found then
     return jsonb_build_object('ok', false, 'code', 'PICK_TAKEN', 'taken_by', owner_team, 'taken_at', owner_at);
@@ -204,13 +204,13 @@ begin
 
   -- The unique index on (competition_id, player_id) decides a race.
   begin
-    insert into public.ultima_rosters (manager_id, player_id)
-    values (p_manager_id, p_add_player_id);
+    insert into public.ultima_rosters (manager_id, player_id, competition_id)
+    values (p_manager_id, p_add_player_id, mgr.competition_id);
   exception when unique_violation then
     select m.team_name, r.acquired_at into owner_team, owner_at
     from public.ultima_rosters r
     join public.ultima_managers m on m.id = r.manager_id
-    where r.player_id = p_add_player_id
+    where r.player_id = p_add_player_id and r.competition_id = mgr.competition_id
     limit 1;
     return jsonb_build_object('ok', false, 'code', 'PICK_TAKEN', 'taken_by', owner_team, 'taken_at', owner_at);
   end;
