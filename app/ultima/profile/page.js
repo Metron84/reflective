@@ -1,6 +1,7 @@
 import UltimaProfileForm from "@/components/ultima/UltimaProfileForm";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 
 export const metadata = {
   title: "Ultima · Profile",
@@ -10,7 +11,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaProfilePage() {
-  const { auth, manager } = await requireUltimaManager("/ultima/profile");
+  const seat = await requireSeat("/ultima/profile");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { auth, manager } = seat;
 
   return (
     <div className={styles.ultimaPage}>

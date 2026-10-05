@@ -3,10 +3,11 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
-import { getAuthContext } from "@/lib/auth/session";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
 import { ULTIMA_ENABLED } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
-import { getActiveCompetition, getManagerForUser } from "@/lib/ultima/server/db";
+import { getActiveCompetition } from "@/lib/ultima/server/db";
+import { peekSeat } from "@/lib/ultima/server/requireSeat";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { emptyHubOffice, getHubOffice } from "@/lib/ultima/server/hub";
 import { safeResolve } from "@/lib/ultima/server/safe";
@@ -22,24 +23,19 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaPage() {
-  const auth = await safeResolve(getAuthContext(), {
-    user: null,
-    profile: null,
-    isSignedIn: false,
-  });
-  const competition = await getActiveCompetition();
-  const manager =
-    auth.isSignedIn && auth.user
-      ? await getManagerForUser(auth.user.id)
-      : null;
+  const seat = await peekSeat();
+  const auth = seat.auth ?? { isSignedIn: false };
+  const manager = seat.manager ?? null;
   const appHost = isUltimaAppHost((await headers()).get("host"));
 
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
   if (appHost && !auth.isSignedIn) {
     redirect("/signin?next=/");
   }
   if (appHost && !manager) {
     redirect("/ultima/join");
   }
+  const competition = seat.competition ?? (await getActiveCompetition());
 
   let gameweekNumber = null;
   if (competition && !manager) {

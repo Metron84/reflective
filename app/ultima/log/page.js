@@ -1,7 +1,7 @@
 import UltimaLogClient from "@/components/ultima/UltimaLogClient";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import { getOfficeLog } from "@/lib/ultima/server/admin";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
@@ -13,8 +13,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaLogPage() {
-  await requireUltimaManager("/ultima/log");
-  const competition = await getActiveCompetition();
+  const seat = await requireSeat("/ultima/log");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { competition } = seat;
   const entries = competition
     ? await safeResolve(getOfficeLog(competition.id, 120), [])
     : [];

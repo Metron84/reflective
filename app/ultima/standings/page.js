@@ -1,7 +1,7 @@
 import UltimaTableClient from "@/components/ultima/UltimaTableClient";
 import styles from "@/components/ultima/ultima.module.css";
-import { requireUltimaManager } from "@/lib/ultima/gates";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import { safeResolve } from "@/lib/ultima/server/safe";
 import { getTableOffice } from "@/lib/ultima/server/table";
 
@@ -13,8 +13,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaStandingsPage() {
-  const { manager } = await requireUltimaManager("/ultima/standings");
-  const competition = await getActiveCompetition();
+  const seat = await requireSeat("/ultima/standings");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { manager, competition } = seat;
   const office =
     competition && manager
       ? await safeResolve(

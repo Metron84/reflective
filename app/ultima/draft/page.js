@@ -1,6 +1,7 @@
 import Link from "next/link";
 import UltimaDraftRoom from "@/components/ultima/UltimaDraftRoom";
-import { requireUltimaManager } from "@/lib/ultima/gates";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 import styles from "@/components/ultima/ultima.module.css";
 
 export const metadata = {
@@ -11,7 +12,9 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function UltimaDraftPage() {
-  const { manager } = await requireUltimaManager("/ultima/draft");
+  const seat = await requireSeat("/ultima/draft");
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  const { manager } = seat;
 
   if (!manager?.profile_complete) {
     return (

@@ -2,9 +2,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import UltimaJoinForm from "@/components/ultima/UltimaJoinForm";
 import styles from "@/components/ultima/ultima.module.css";
-import { getAuthContext } from "@/lib/auth/session";
+import UltimaSeasonFull from "@/components/ultima/UltimaSeasonFull";
+import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
 import { isUltimaAppHost } from "@/lib/ultima/host";
-import { getManagerForUser } from "@/lib/ultima/server/db";
+import { requireSeat } from "@/lib/ultima/server/requireSeat";
 
 export const metadata = {
   title: "Ultima · Join",
@@ -24,15 +25,12 @@ export default async function UltimaJoinCodePage({ params }) {
   const appHost = isUltimaAppHost((await headers()).get("host"));
   const joinPath = appHost ? `/join/${normalized}` : `/ultima/join/${normalized}`;
 
-  const auth = await getAuthContext();
-  if (!auth.isSignedIn) {
-    redirect(`/signin?next=${encodeURIComponent(joinPath)}`);
+  const seat = await requireSeat(joinPath, { join: true });
+  if (seat.status === "unavailable") return <UltimaSeatRetry />;
+  if (seat.status === "seated") {
+    redirect(seat.manager.profile_complete ? "/ultima" : "/ultima/profile");
   }
-
-  const manager = await getManagerForUser(auth.user.id);
-  if (manager) {
-    redirect(manager.profile_complete ? "/ultima" : "/ultima/profile");
-  }
+  if (seat.status === "full") return <UltimaSeasonFull />;
 
   const signInHref = `/signin?next=${encodeURIComponent(joinPath)}`;
 

@@ -5,7 +5,7 @@ import UltimaShell from "@/components/ultima/UltimaShell";
 import { ultimaColourHex } from "@/lib/ultima/constants";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { getClubBarContext } from "@/lib/ultima/server/continue";
-import { getManagerForUser, isCommissionerUser } from "@/lib/ultima/server/db";
+import { isCommissionerUser, lookupSeat } from "@/lib/ultima/server/db";
 import { safeResolve } from "@/lib/ultima/server/safe";
 
 export async function generateMetadata() {
@@ -40,10 +40,9 @@ export default async function UltimaLayout({ children }) {
     profile: null,
     isSignedIn: false,
   });
-  const manager =
-    auth.isSignedIn && auth.user
-      ? await getManagerForUser(auth.user.id)
-      : null;
+  const seat =
+    auth.isSignedIn && auth.user ? await lookupSeat(auth.user.id) : null;
+  const manager = seat?.status === "seated" ? seat.manager : null;
   const club =
     auth.isSignedIn && auth.user
       ? await safeResolve(getClubBarContext(auth.user.id), null)
