@@ -1,6 +1,6 @@
 -- Ultima player card, open trades and atomic signing. Run after 0052_ultima_club_sync.sql.
 -- Idempotent. Server only: every function is granted to service_role and nobody else.
--- Not yet applied to production. Melo runs this in the Supabase SQL editor.
+-- Applied to production 5 Oct 2026. Do not re-run.
 --
 -- 1. ultima_execute_trade: the gameweek 4 gate is gone. Trades settle before
 --    gameweek 1 and in any gameweek. Only the trade deadline can still stop one.
@@ -546,7 +546,7 @@ begin
   end if;
 
   select * into addp from public.ultima_players where id = p_add_player_id;
-  if not found or not addp.active then
+  if not found or not addp.active or coalesce(addp.inactive_flag, false) then
     return jsonb_build_object('ok', false, 'code', 'UNAVAILABLE');
   end if;
 
@@ -643,9 +643,10 @@ begin
   end if;
 
   -- Eligibility is fixed at signing: an undrafted free agent is Bolt eligible.
+  -- A drafted player who is re-signed keeps his draft_round and his status.
   update public.ultima_players
-  set draft_round = null, bolt_eligible = true
-  where id = p_add_player_id;
+  set bolt_eligible = true
+  where id = p_add_player_id and draft_round is null;
 
   insert into public.ultima_events (event, manager_id, competition_id, payload)
   values ('market_add', p_manager_id, mgr.competition_id,

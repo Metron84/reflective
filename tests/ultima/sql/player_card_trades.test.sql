@@ -269,7 +269,10 @@ begin
   perform pc.assert((select bolt_eligible from public.ultima_players where id = pc.pl('FA-pl-1')), 'undrafted FA is Bolt eligible');
   perform pc.assert((select count(*) from public.ultima_transactions where manager_id = pc.mgr(1)) = 2, 'transactions');
   -- A different manager can sign the released player straight away.
+  update public.ultima_players set draft_round = 3, bolt_eligible = false where id = pc.pl('M1-pl-1');
   r := pc.sign(2, 'M1-pl-1', 'M2-pl-1');
+  perform pc.assert((select draft_round from public.ultima_players where id = pc.pl('M1-pl-1')) = 3
+    and not (select bolt_eligible from public.ultima_players where id = pc.pl('M1-pl-1')), 're-signed drafted player keeps draft_round, not Bolt eligible');
   perform pc.assert((r ->> 'ok')::boolean and pc.owner('M1-pl-1') = pc.mgr(2), 'first come first served');
 end $$;
 rollback;
