@@ -2,7 +2,23 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import UltimaActionButton from "./UltimaActionButton";
 import styles from "./ultima.module.css";
+
+const ACTION_URL = "/api/ultima/player/action";
+
+// Verb in progress and past tense for each card action that writes.
+const ACTION_VERBS = {
+  shortlist_on: ["Adding…", "Added"],
+  shortlist_off: ["Removing…", "Removed"],
+  untouchable_on: ["Protecting…", "Protected"],
+  untouchable_off: ["Releasing…", "Released"],
+  unlist: ["Unlisting…", "Unlisted"],
+  captain_on: ["Making captain…", "Captain set"],
+  captain_off: ["Removing…", "Removed"],
+  xv_in: ["Starting…", "Started"],
+  xv_out: ["Benching…", "Benched"],
+};
 
 const CardContext = createContext({ openPlayer: () => {} });
 
@@ -43,6 +59,7 @@ export default function UltimaPlayerCardProvider({ children }) {
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [swap, setSwap] = useState(null); // { actionId, list }
+  const [picked, setPicked] = useState(null); // the swap row waiting for its confirm
   const [noting, setNoting] = useState(false);
   const [note, setNote] = useState("");
   const loadSeq = useRef(0);
@@ -69,6 +86,7 @@ export default function UltimaPlayerCardProvider({ children }) {
     setCard(null);
     setError(null);
     setSwap(null);
+    setPicked(null);
     setNoting(false);
     setNote("");
     setPlayerId(id);
@@ -79,6 +97,7 @@ export default function UltimaPlayerCardProvider({ children }) {
     setPlayerId(null);
     setCard(null);
     setSwap(null);
+    setPicked(null);
   }, []);
 
   useEffect(() => {
@@ -88,33 +107,11 @@ export default function UltimaPlayerCardProvider({ children }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [playerId, close]);
 
-  const post = useCallback(
-    async (payload) => {
-      setBusy(true);
-      setError(null);
-      try {
-        const res = await fetch("/api/ultima/player/action", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const body = await readJson(res);
-        if (!res.ok) {
-          setError(body.message ?? "That did not go through.");
-          return false;
-        }
-        window.dispatchEvent(new Event("ultima:changed"));
-        router.refresh();
-        return true;
-      } catch {
-        setError("That did not go through.");
-        return false;
-      } finally {
-        setBusy(false);
-      }
-    },
-    [router],
-  );
+  // After the server confirmed a write: tell the screens and read the card fresh.
+  const afterWrite = useCallback(() => {
+    window.dispatchEvent(new Event("ultima:changed"));
+    router.refresh();
+  }, [router]);
 
   const openSwap = useCallback(
     async (actionId) => {
@@ -129,6 +126,7 @@ export default function UltimaPlayerCardProvider({ children }) {
           return;
         }
         setSwap({ actionId, list: body });
+        setPicked(null);
       } catch {
         setError("Could not load the list.");
       } finally {
@@ -160,36 +158,33 @@ export default function UltimaPlayerCardProvider({ children }) {
         setNoting(true);
         return;
       }
-      if (await post({ player_id: card.player.id, action: id })) await load(card.player.id);
     },
-    [card, busy, close, router, openSwap, post, load],
+    [card, busy, close, router, openSwap],
   );
 
-  const confirmList = useCallback(async () => {
-    if (await post({ player_id: card.player.id, action: "list", note: note.slice(0, NOTE_MAX) })) {
-      setNoting(false);
-      setNote("");
-      await load(card.player.id);
-    }
-  }, [card, note, post, load]);
+  const wrote = useCallback(async () => {
+    afterWrite();
+    if (card?.player?.id) await load(card.player.id);
+  }, [afterWrite, card, load]);
 
-  const pickSwap = useCallback(
-    async (row) => {
-      if (!row.can || !swap) return;
-      const ok = await post({
-        player_id: card.player.id,
-        action: swap.actionId,
-        other_player_id: row.id,
-      });
-      if (ok) {
-        setSwap(null);
-        await load(card.player.id);
-      } else if (swap.actionId === "sign" || swap.actionId === "drop_sign") {
-        // A lost race changes who is available; show the fresh list.
-        await openSwap(swap.actionId);
-      }
+  const confirmListDone = useCallback(async () => {
+    setNoting(false);
+    setNote("");
+    await wrote();
+  }, [wrote]);
+
+  const signDone = useCallback(async () => {
+    setSwap(null);
+    setPicked(null);
+    await wrote();
+  }, [wrote]);
+
+  // A lost race changes who is available: show the fresh list under the reason.
+  const signFailed = useCallback(
+    (result) => {
+      if (result?.code === "PICK_TAKEN" && swap) openSwap(swap.actionId);
     },
-    [card, swap, post, load, openSwap],
+    [swap, openSwap],
   );
 
   const value = useMemo(() => ({ openPlayer }), [openPlayer]);
@@ -213,12 +208,27 @@ export default function UltimaPlayerCardProvider({ children }) {
                 note={note}
                 setNote={setNote}
                 onAction={onAction}
-                confirmList={confirmList}
+                onListDone={confirmListDone}
+                onWrote={wrote}
                 cancelNote={() => setNoting(false)}
                 close={close}
               />
             ) : null}
-            {card && swap ? <SwapPicker swap={swap} card={card} busy={busy} onPick={pickSwap} onBack={() => setSwap(null)} /> : null}
+            {card && swap ? (
+              <SwapPicker
+                swap={swap}
+                card={card}
+                busy={busy}
+                picked={picked}
+                onPick={(row) => row.can && setPicked(row)}
+                onDone={signDone}
+                onError={signFailed}
+                onBack={() => {
+                  setSwap(null);
+                  setPicked(null);
+                }}
+              />
+            ) : null}
             {error ? (
               <p className={styles.pcError} role="alert">
                 {error}
@@ -231,7 +241,7 @@ export default function UltimaPlayerCardProvider({ children }) {
   );
 }
 
-function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, cancelNote, close }) {
+function CardBody({ card, busy, noting, note, setNote, onAction, onListDone, onWrote, cancelNote, close }) {
   const { player, owner, stats } = card;
   const lock = dubaiTime(card.lockAt);
   const owned = owner ? (owner.you ? "Your squad" : owner.team) : "Free agent";
@@ -295,9 +305,17 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
             placeholder="Why he is available"
           />
           <div className={styles.dSheetActions}>
-            <button type="button" className={styles.primaryBtn} disabled={busy} onClick={confirmList}>
-              Transfer list
-            </button>
+            <UltimaActionButton
+              variant="primary"
+              request={{
+                url: ACTION_URL,
+                body: { player_id: card.player.id, action: "list", note: note.slice(0, NOTE_MAX) },
+              }}
+              label="Transfer list"
+              workingLabel="Listing…"
+              doneLabel="Listed"
+              onDone={onListDone}
+            />
             <button type="button" className={styles.secondaryBtn} onClick={cancelNote}>
               Cancel
             </button>
@@ -307,14 +325,26 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
         <ul className={styles.pcActions}>
           {card.actions.map((action) => (
             <li key={action.id}>
-              <button
-                type="button"
-                className={action.primary ? styles.primaryBtn : styles.secondaryBtn}
-                disabled={action.disabled || busy}
-                onClick={() => onAction(action)}
-              >
-                {action.label}
-              </button>
+              {ACTION_VERBS[action.id] ? (
+                <UltimaActionButton
+                  variant={action.primary ? "primary" : "secondary"}
+                  request={{ url: ACTION_URL, body: { player_id: card.player.id, action: action.id } }}
+                  label={action.label}
+                  workingLabel={ACTION_VERBS[action.id][0]}
+                  doneLabel={ACTION_VERBS[action.id][1]}
+                  disabled={action.disabled || busy}
+                  onDone={onWrote}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className={action.primary ? styles.primaryBtn : styles.secondaryBtn}
+                  disabled={action.disabled || busy}
+                  onClick={() => onAction(action)}
+                >
+                  {action.label}
+                </button>
+              )}
               {action.disabled && action.reason ? <span className={styles.pcReason}>{action.reason}</span> : null}
             </li>
           ))}
@@ -327,7 +357,7 @@ function CardBody({ card, busy, noting, note, setNote, onAction, confirmList, ca
   );
 }
 
-function SwapPicker({ swap, card, busy, onPick, onBack }) {
+function SwapPicker({ swap, card, busy, picked, onPick, onDone, onError, onBack }) {
   const adding = swap.actionId === "sign";
   const rows = swap.list.rows;
   return (
@@ -346,6 +376,7 @@ function SwapPicker({ swap, card, busy, onPick, onBack }) {
               <button
                 type="button"
                 className={styles.pcSwapRow}
+                aria-pressed={picked?.id === row.id}
                 disabled={!row.can || busy}
                 onClick={() => onPick(row)}
               >
@@ -366,6 +397,27 @@ function SwapPicker({ swap, card, busy, onPick, onBack }) {
           );
         })}
       </ul>
+      {picked ? (
+        <div className={styles.dSheetActions}>
+          <UltimaActionButton
+            key={picked.id}
+            variant="primary"
+            request={{
+              url: ACTION_URL,
+              body: {
+                player_id: card.player.id,
+                action: swap.actionId,
+                other_player_id: picked.id,
+              },
+            }}
+            label={adding ? `Sign ${card.player.name}, release ${picked.name}` : `Release ${card.player.name}, sign ${picked.name}`}
+            workingLabel="Signing…"
+            doneLabel="Signed"
+            onDone={onDone}
+            onError={onError}
+          />
+        </div>
+      ) : null}
       <button type="button" className={styles.quietLink} onClick={onBack}>
         Back
       </button>

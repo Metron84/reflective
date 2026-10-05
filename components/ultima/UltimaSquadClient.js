@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_SQUAD_SIZE,
@@ -20,6 +20,8 @@ import UltimaPanel from "./UltimaPanel";
 import UltimaPlayerClub from "./UltimaPlayerClub";
 import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import UltimaStaffMessage from "./UltimaStaffMessage";
+import { showReceipt } from "./UltimaReceipt";
+import { useUltimaAction } from "./useUltimaAction";
 import UltimaStatsStrip from "./UltimaStatsStrip";
 import UltimaStatusBar from "./UltimaStatusBar";
 import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
@@ -83,7 +85,9 @@ export default function UltimaSquadClient({
     if (lineupProp?.length) return lineupProp;
     return emptyLineupTemplate();
   });
-  const [saving, setSaving] = useState(false);
+  const action = useUltimaAction();
+  const saving = action.busy;
+  const moveSeq = useRef(0);
   const [error, setError] = useState("");
   const { openPlayer: openCard } = useUltimaPlayerCard();
   const [confirmXv, setConfirmXv] = useState(null);
@@ -128,28 +132,28 @@ export default function UltimaSquadClient({
     return next;
   }
 
-  async function persist(next) {
-    if (preview) return true;
-    setSaving(true);
+  /**
+   * XV moves are optimistic: the lineup is already on screen. If the server
+   * refuses, put `before` back and say why. An unconfirmed save keeps the
+   * screen as it is, because the server may have it.
+   */
+  async function settle(request, before) {
+    const seq = (moveSeq.current += 1);
     setError("");
-    try {
-      const res = await fetch("/api/ultima/lineup/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slots: next }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message ?? "Could not save.");
-        return false;
-      }
+    const result = await action.run(request);
+    if (result.ok) {
+      if (result.body?.receipt) showReceipt({ text: result.body.receipt });
       return true;
-    } catch {
-      setError("Connection lost. Try again.");
-      return false;
-    } finally {
-      setSaving(false);
     }
+    if (!result.uncertain && before && seq === moveSeq.current) applyLineup(before);
+    setError(result.message);
+    showReceipt({ text: result.message, tone: "error" });
+    return false;
+  }
+
+  async function persist(next, before = null) {
+    if (preview) return true;
+    return settle({ url: "/api/ultima/lineup/save", body: { slots: next } }, before);
   }
 
   async function startPlayer(player) {
@@ -162,8 +166,9 @@ export default function UltimaSquadClient({
         row.slot === target.slot.slot ? { ...row, player_id: player.id } : row,
       ),
     );
+    const before = lineup;
     applyLineup(next);
-    await persist(next);
+    await persist(next, before);
   }
 
   async function benchPlayer(player) {
@@ -174,8 +179,9 @@ export default function UltimaSquadClient({
         row.player_id === player.id ? { ...row, player_id: null } : row,
       ),
     );
+    const before = lineup;
     applyLineup(next);
-    await persist(next);
+    await persist(next, before);
   }
 
   // One tap. The new captain replaces the old one in his country, no confirm.
@@ -193,25 +199,10 @@ export default function UltimaSquadClient({
     const before = lineup;
     applyLineup(plan.lineup);
     if (preview) return;
-    setSaving(true);
-    setError("");
-    try {
-      const res = await fetch("/api/ultima/lineup/captain", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_id: player.id }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        applyLineup(before);
-        setError(data.message ?? "Could not set the captain.");
-      }
-    } catch {
-      applyLineup(before);
-      setError("Connection lost. Try again.");
-    } finally {
-      setSaving(false);
-    }
+    await settle(
+      { url: "/api/ultima/lineup/captain", body: { player_id: player.id } },
+      before,
+    );
   }
 
   function proposeAutoFill() {
@@ -222,9 +213,10 @@ export default function UltimaSquadClient({
 
   async function confirmAutoFill() {
     if (!confirmXv) return;
+    const before = lineup;
     applyLineup(confirmXv.next);
     setConfirmXv(null);
-    await persist(confirmXv.next);
+    await persist(confirmXv.next, before);
   }
 
   const hideActions = allLocked || squadSize === 0 || noGameweek;
