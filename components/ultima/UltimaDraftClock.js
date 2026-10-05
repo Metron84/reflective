@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
 import { wouldBreakFloor } from "@/lib/ultima/draft/floor";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaRow from "./UltimaRow";
@@ -71,7 +72,11 @@ export default function UltimaDraftClock({
             <div key={row.player.id} className={styles.dClockOption}>
               <UltimaRow
                 primary={row.player.name}
-                meta={row.queued ? `${row.player.club || "-"} · Queued` : row.player.club || "-"}
+                meta={
+                  row.queued
+                    ? `${formatClubLine(row.player)} · Queued`
+                    : formatClubLine(row.player)
+                }
                 number={
                   <span className={styles.dClockVals}>
                     <UltimaCountryTag league={row.player.league} />

@@ -3,6 +3,7 @@ import {
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
@@ -40,7 +41,7 @@ export default function UltimaDraftPicks({ picks = [], youId, floor = null }) {
                   key={pick.pick_number}
                   yours
                   primary={pick.player?.name ?? "-"}
-                  meta={`${pick.player?.club || "-"} · Pick ${pick.pick_number}`}
+                  meta={`${formatClubLine(pick.player)} · Pick ${pick.pick_number}`}
                   number={<UltimaCountryTag league={league} />}
                 />
               ))

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
 import { wouldBreakFloor } from "@/lib/ultima/draft/floor";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
@@ -69,7 +70,7 @@ export default function UltimaDraftQueue({
               ? "Not available. Skipped at pick time."
               : ineligible
                 ? "Not eligible on this pick"
-                : player.club || "-",
+                : formatClubLine(player),
           impact,
         ]
           .filter(Boolean)

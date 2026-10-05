@@ -15,6 +15,7 @@ import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaLookingFor from "./UltimaLookingFor";
 import UltimaUntouchableChip from "./UltimaUntouchableChip";
 import UltimaPanel from "./UltimaPanel";
+import UltimaPlayerClub from "./UltimaPlayerClub";
 import UltimaPlayerSheet from "./UltimaPlayerSheet";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
@@ -195,6 +196,9 @@ export default function UltimaSquadClient({
         )}
       />
       <LockLine nextLockAt={nextLockAt} allLocked={allLocked} />
+      {(office?.floorNotices ?? []).map((line) => (
+        <UltimaStaffMessage key={line} subject="Squad floor" body={line} />
+      ))}
       {office?.lookingFor ? (
         <UltimaLookingFor
           leagues={office.lookingFor.leagues}
@@ -439,7 +443,7 @@ function PlayerRow({ player, locked, points, emptyLabel, actionLabel, onAction, 
             {player.untouchable ? <UltimaUntouchableChip /> : null}
           </span>
           <span className={styles.sqMeta}>
-            {player.club || "-"}
+            <UltimaPlayerClub player={player} />
             {" · "}
             {player.position || "-"}
           </span>

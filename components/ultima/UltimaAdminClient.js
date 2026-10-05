@@ -59,6 +59,8 @@ export default function UltimaAdminClient({
   const [syncReport, setSyncReport] = useState(null);
   const [poolReports, setPoolReports] = useState({});
   const [poolRun, setPoolRun] = useState({ mode: "", league: "" });
+  const [clubSync, setClubSync] = useState(null);
+  const [clubBusy, setClubBusy] = useState("");
   const [busy, setBusy] = useState("");
   const [confirm, setConfirm] = useState(null);
 
@@ -94,6 +96,38 @@ export default function UltimaAdminClient({
       setError("Connection lost.");
     } finally {
       setBusy("");
+    }
+  }
+
+  async function syncClubs(apply) {
+    setMessage("");
+    setError("");
+    setClubBusy(apply ? "apply" : "preview");
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "sync_clubs",
+          dry_run: !apply,
+          apply: Boolean(apply),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.sync?.ok) {
+        setError(data.message ?? data.sync?.error ?? "Club sync failed.");
+        return;
+      }
+      setClubSync(data.sync);
+      setMessage(
+        apply
+          ? "Clubs applied."
+          : "Club preview ready. Review, then Apply.",
+      );
+    } catch {
+      setError("Connection lost.");
+    } finally {
+      setClubBusy("");
     }
   }
 
@@ -171,7 +205,23 @@ export default function UltimaAdminClient({
           <button
             type="button"
             className={styles.secondaryBtn}
-            disabled={poolBusy}
+            disabled={Boolean(clubBusy) || poolBusy}
+            onClick={() => syncClubs(false)}
+          >
+            {clubBusy === "preview" ? "Checking clubs…" : "Sync clubs"}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={!clubSync || Boolean(clubBusy) || poolBusy}
+            onClick={() => syncClubs(true)}
+          >
+            {clubBusy === "apply" ? "Applying…" : "Apply"}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={poolBusy || Boolean(clubBusy)}
             onClick={() => syncPool(false)}
           >
             {poolRun.mode === "apply"
@@ -181,7 +231,7 @@ export default function UltimaAdminClient({
           <button
             type="button"
             className={styles.secondaryBtn}
-            disabled={poolBusy}
+            disabled={poolBusy || Boolean(clubBusy)}
             onClick={() => syncPool(true)}
           >
             {poolRun.mode === "preview"
@@ -189,6 +239,7 @@ export default function UltimaAdminClient({
               : "Preview changes"}
           </button>
         </div>
+        {clubSync ? <ClubSyncReport report={clubSync} /> : null}
         {syncReport ? <SyncReport report={syncReport} /> : null}
         {Object.keys(poolReports).length ? <PoolReport reports={poolReports} /> : null}
       </UltimaPanel>
@@ -502,6 +553,52 @@ function ConfirmSheet({
         </div>
       </div>
     </div>
+  );
+}
+
+function ClubSyncReport({ report }) {
+  const c = report.counts ?? {};
+  const dry = Boolean(report.dryRun);
+  const lines = (rows, map) => (rows ?? []).slice(0, 12).map(map);
+
+  return (
+    <>
+      <UltimaRow
+        primary={dry ? "Club preview" : "Clubs applied"}
+        meta={`${c.moved ?? 0} moved · ${c.loans ?? 0} loans · ${c.departures ?? 0} left · ${c.added ?? 0} new`}
+        number={report.fresh ?? 0}
+      />
+      {report.applyLeagueNow ? (
+        <p className={styles.utNote}>Friday unlock: league changes apply now.</p>
+      ) : (
+        <p className={styles.utNote}>League changes wait for Friday 00:00 Dubai. Club and loan update now.</p>
+      )}
+      {lines(report.moved, (m) => (
+        <p key={`${m.name}-${m.toClub}`} className={styles.utNote}>
+          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
+          {m.name}: {m.fromClub} → {m.toClub}
+          {m.deferredLeague ? " · league pending Friday" : ""}
+          {m.fromLeague !== m.toLeague ? ` · ${m.fromLeague} → ${m.toLeague}` : ""}
+        </p>
+      ))}
+      {lines(report.loans, (m) => (
+        <p key={`loan-${m.name}`} className={styles.utNote}>
+          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
+          {m.name}: {m.on_loan ? `on loan at ${m.club} from ${m.parent_club || "?"}` : `loan ended at ${m.club}`}
+        </p>
+      ))}
+      {lines(report.departures, (m) => (
+        <p key={`gone-${m.name}`} className={styles.utNote}>
+          {m.owned ? `Owned (${m.owner ?? "squad"}): ` : ""}
+          {m.name} left ({m.club})
+        </p>
+      ))}
+      {lines(report.added, (m) => (
+        <p key={`new-${m.name}-${m.club}`} className={styles.utNote}>
+          New FA: {m.name} ({m.club})
+        </p>
+      ))}
+    </>
   );
 }
 

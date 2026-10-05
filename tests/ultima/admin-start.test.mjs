@@ -61,6 +61,11 @@ mock.module("@/lib/ultima/server/draft", {
     executePick: async () => ({ ok: true }),
   },
 });
+mock.module("@/lib/ultima/server/club-sync", {
+  namedExports: {
+    syncClubs: async () => ({ ok: true, counts: {} }),
+  },
+});
 for (const spec of [
   "@/lib/ultima/server/scoring-run",
   "@/lib/ultima/server/players",
@@ -72,6 +77,7 @@ for (const spec of [
       recomputeGameweekScores: async () => ({}),
       getStandings: async () => [],
       syncPlayerPool: async () => ({ ok: true }),
+      seasonDraftInProgress: async () => false,
       syncAllPlayersFromProvider: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),
       getCurrentGameweek: async () => null,

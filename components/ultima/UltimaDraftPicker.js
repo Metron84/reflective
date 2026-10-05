@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ULTIMA_LEAGUES, ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaPlayerSheet from "./UltimaPlayerSheet";
@@ -373,7 +374,7 @@ export default function UltimaDraftPicker({
                           <span className={styles.dPickMeta}>
                             {player.signedBy
                               ? `Signed by ${player.signedBy}`
-                              : player.club || "-"}
+                              : formatClubLine(player)}
                             {player.signedBy ? null : (
                               <>
                                 {" · "}

@@ -2,6 +2,7 @@
 
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaPlayerClub from "./UltimaPlayerClub";
 import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
 import styles from "./ultima.module.css";
 
@@ -35,7 +36,7 @@ export default function UltimaPlayerSheet({
     <>
         <p className={styles.dSheetName}>{player.name}</p>
         <p className={styles.dSheetMeta}>
-          {player.club || "-"}
+          <UltimaPlayerClub player={player} />
           {" · "}
           {player.position || "-"}
           {" "}

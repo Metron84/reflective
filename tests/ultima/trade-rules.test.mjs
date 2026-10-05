@@ -70,6 +70,13 @@ test("floor: a swap that keeps 3 per league passes", () => {
   assert.equal(floorShortfall(squad(), ["a1"], [p("x1", "laliga")]), null);
 });
 
+test("floor: an existing shortfall is allowed; deepening it is not", () => {
+  const short = squad().filter((row) => row.id !== "a3" && row.id !== "a4");
+  assert.equal(short.filter((r) => r.league === "pl").length, 2);
+  assert.equal(floorShortfall(short, ["a1"], [p("x1", "pl")]), null);
+  assert.deepEqual(floorShortfall(short, ["a1"], []), { league: "pl", count: 1, floor: 3 });
+});
+
 test("veto majority of other human managers", () => {
   assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8].map(vetoMajority), [1, 2, 2, 3, 3, 4, 4, 5]);
 });
