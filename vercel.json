@@ -17,6 +17,10 @@
       "schedule": "0 7 * * *"
     },
     {
+      "path": "/api/cron/ultima/fixture-sync?scope=season&apply=1",
+      "schedule": "0 1 * * *"
+    },
+    {
       "path": "/api/cron/ultima/open-at-refresh",
       "schedule": "0 2 * * *"
     }

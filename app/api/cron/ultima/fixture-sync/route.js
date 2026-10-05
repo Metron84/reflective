@@ -21,6 +21,8 @@ const LAUNCH_EXPECTED = {
 /**
  * Fixture sync by gameweek window. Dry run by default: it fetches and counts, writes nothing.
  *   ?gameweeks=1,2,3   gameweek numbers (default: upcoming gameweeks starting within 14 days)
+ *   ?scope=season      every gameweek not yet ended, to GW32; also sets league_open_at
+ *                      from the first real kickoff per league (the daily cron in vercel.json)
  *   ?apply=1           write the fixtures (tagged by window); only with this flag
  *   ?guard=launch      with apply=1, write only if counts equal the approved launch counts;
  *                      on any mismatch nothing is written and the mismatches are returned
@@ -34,6 +36,7 @@ export async function GET(request) {
     .split(",")
     .map((n) => Number(n))
     .filter((n) => Number.isInteger(n) && n > 0);
+  const scope = searchParams.get("scope") === "season" ? "season" : null;
   const apply = searchParams.get("apply") === "1";
   const expected = searchParams.get("guard") === "launch" ? LAUNCH_EXPECTED : null;
 
@@ -43,7 +46,7 @@ export async function GET(request) {
   if (!db) return NextResponse.json({ ok: false, error: "Database not configured" }, { status: 500 });
 
   try {
-    const report = await runFixtureSync({ db, competitionId: competition.id, numbers, apply, expected });
+    const report = await runFixtureSync({ db, competitionId: competition.id, numbers, scope, apply, expected });
     const ok = report.errors.length === 0 && !report.mismatches?.length;
     return NextResponse.json({ ok, ...report }, { status: ok ? 200 : 409 });
   } catch (e) {
