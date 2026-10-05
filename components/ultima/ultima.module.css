@@ -7470,3 +7470,114 @@ button.capCellLocked {
     align-items: start;
   }
 }
+
+/* Player card: one sheet for every screen. Bottom sheet on phone, side panel on desktop. */
+.pcStripe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+}
+
+.pcChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+}
+
+.pcChip {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  border-radius: 2px;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  margin-left: 0.35rem;
+}
+
+.pcChips .pcChip {
+  margin-left: 0;
+}
+
+.pcActions {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+.pcActions button {
+  width: 100%;
+}
+
+.pcReason {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.pcError {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  color: var(--office-text, #f2ede4);
+}
+
+.pcNote {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+}
+
+.pcNote input {
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.pcSwap {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+.pcSwapHead {
+  margin: 0.75rem 0 0.25rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.pcSwapRow {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0;
+  border: none;
+  border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.pcSwapRow:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
