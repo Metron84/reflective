@@ -3,10 +3,10 @@ import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import {
   getActiveCompetition,
-  getUltimaDb,
   isUltimaCommissioner,
 } from "@/lib/ultima/server/db";
 import { buildDraftRoomPayload, loadDraftContext } from "@/lib/ultima/server/draft";
+import { getLoggedDb } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +26,7 @@ export async function GET() {
     return NextResponse.json(body, { status });
   }
 
-  const db = getUltimaDb();
+  const db = getLoggedDb("route:ultima/draft/state");
   const { data: queue, error: queueError } = await db
     .from("ultima_draft_queues")
     .select("player_id, position")

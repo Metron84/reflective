@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import { runFixtureSync } from "@/lib/ultima/server/fixture-sync";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -27,7 +28,7 @@ const LAUNCH_EXPECTED = {
  *   ?guard=launch      with apply=1, write only if counts equal the approved launch counts;
  *                      on any mismatch nothing is written and the mismatches are returned
  */
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -52,4 +53,8 @@ export async function GET(request) {
   } catch (e) {
     return NextResponse.json({ ok: false, error: e.message }, { status: 500 });
   }
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/fixture-sync", () => handle(request));
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import { runOpenAtRefresh } from "@/lib/ultima/server/open-at-refresh";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -12,7 +13,7 @@ function isAuthorized(request) {
 }
 
 /** Daily 06:00 Dubai: pull fresh kickoffs into league_open_at for gameweeks starting within 14 days. */
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -36,4 +37,8 @@ export async function GET(request) {
   } catch (e) {
     return NextResponse.json({ ok: false, error: e.message }, { status: 500 });
   }
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/open-at-refresh", () => handle(request));
 }

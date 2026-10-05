@@ -6,8 +6,7 @@ import {
   countHumanManagers,
   getActiveCompetition,
   lookupSeat,
-  getUltimaDb,
-} from "@/lib/ultima/server/db";
+  } from "@/lib/ultima/server/db";
 import {
   isValidInviteCode,
   joinWithPassword,
@@ -15,6 +14,7 @@ import {
   normalizeInviteCode,
 } from "@/lib/ultima/server/join";
 import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
+import { getLoggedDb } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 
@@ -42,7 +42,7 @@ async function joinWithInviteCode(userId, code) {
   if (seat.status === "unavailable") return { ok: false, code: "SEAT_UNAVAILABLE" };
   if (seat.status === "seated") return { ok: true, manager_id: seat.manager.id };
 
-  const db = getUltimaDb();
+  const db = getLoggedDb("route:ultima/invite/redeem");
   if (!db) return { ok: false, code: "UNAVAILABLE" };
 
   const competition = await getActiveCompetition();

@@ -5,8 +5,8 @@ import {
   normalizeNotifyPrefs,
 } from "@/lib/ultima/constants";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getUltimaDb } from "@/lib/ultima/server/db";
 import { recordUltimaEvent } from "@/lib/ultima/server/record-event";
+import { getLoggedDb } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 
@@ -61,7 +61,7 @@ export async function POST(request) {
     );
   }
 
-  const db = getUltimaDb();
+  const db = getLoggedDb("route:ultima/profile");
   if (!db) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
     return NextResponse.json(body, { status });
