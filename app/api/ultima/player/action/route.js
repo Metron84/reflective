@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { runCardAction } from "@/lib/ultima/server/player-card";
 import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
+import { runWrite } from "@/lib/ultima/server/write-route";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,7 @@ const STATUS = {
   SQUAD_FULL: 409,
   UNTOUCHABLE_LIMIT: 409,
   NOT_OWNED: 403,
+  ALREADY_YOURS: 409,
   UNAVAILABLE: 503,
 };
 
@@ -32,32 +34,45 @@ export async function POST(request) {
   if (!gate.ok) return gate.response;
   const { manager, competition } = gate;
 
-  if (rateLimited(manager.id)) {
-    return NextResponse.json({ code: "RATE_LIMIT", message: "Too many moves. Wait a moment." }, { status: 429 });
-  }
-
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
-  }
-
-  const result = await runCardAction({
-    competition,
+  return runWrite({
+    route: "player/action",
+    request,
     manager,
-    playerId: typeof body?.player_id === "string" ? body.player_id : "",
-    action: typeof body?.action === "string" ? body.action : "",
-    note: body?.note,
-    otherPlayerId: typeof body?.other_player_id === "string" ? body.other_player_id : null,
-  });
+    handler: async () => {
+      if (rateLimited(manager.id)) {
+        return {
+          status: 429,
+          body: { code: "RATE_LIMIT", message: "Too many moves. Wait a moment." },
+        };
+      }
 
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      status: STATUS[result.code] ?? 400,
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-  return NextResponse.json({ ok: true });
+      let body;
+      try {
+        body = await request.json();
+      } catch {
+        return { status: 400, body: { code: "INVALID", message: "Invalid request." } };
+      }
+
+      const result = await runCardAction({
+        competition,
+        manager,
+        playerId: typeof body?.player_id === "string" ? body.player_id : "",
+        action: typeof body?.action === "string" ? body.action : "",
+        note: body?.note,
+        otherPlayerId: typeof body?.other_player_id === "string" ? body.other_player_id : null,
+      });
+
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          status: STATUS[result.code] ?? 400,
+          message: result.message,
+        });
+        return {
+          status,
+          body: { ...err, taken_by: result.taken_by ?? undefined, taken_at: result.taken_at ?? undefined },
+        };
+      }
+      return { status: 200, body: { ok: true, receipt: result.receipt ?? undefined } };
+    },
+  });
 }
