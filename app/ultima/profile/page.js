@@ -1,6 +1,7 @@
 import UltimaProfileForm from "@/components/ultima/UltimaProfileForm";
 import styles from "@/components/ultima/ultima.module.css";
 import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
+import { vapidPublicKey } from "@/lib/ultima/server/push";
 import { requireSeat } from "@/lib/ultima/server/requireSeat";
 
 export const metadata = {
@@ -23,6 +24,7 @@ export default async function UltimaProfilePage() {
           defaultTeamName={manager.team_name ?? ""}
           defaultColour={manager.colour ?? "navy"}
           defaultNotifyPrefs={manager.notify_prefs ?? null}
+          vapidPublicKey={vapidPublicKey()}
         />
       </div>
     </div>

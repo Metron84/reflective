@@ -2,7 +2,11 @@ import { redirect } from "next/navigation";
 import UltimaAdminClient from "@/components/ultima/UltimaAdminClient";
 import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
-import { getActiveCompetition, isCommissionerUser } from "@/lib/ultima/server/db";
+import {
+  countHumanManagers,
+  getActiveCompetition,
+  isCommissionerUser,
+} from "@/lib/ultima/server/db";
 import { getAdminOffice } from "@/lib/ultima/server/admin";
 import { safeResolve } from "@/lib/ultima/server/safe";
 import styles from "@/components/ultima/ultima.module.css";
@@ -28,6 +32,10 @@ export default async function UltimaAdminPage() {
     ? await safeResolve(getAdminOffice(competition.id), null)
     : null;
 
+  const managerCount = competition
+    ? await safeResolve(countHumanManagers(competition.id), 0)
+    : 0;
+
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
@@ -37,6 +45,7 @@ export default async function UltimaAdminPage() {
           timerSeconds={office?.timerSeconds ?? competition?.timer_seconds ?? 60}
           managers={office?.managers ?? []}
           gameweeks={office?.gameweeks ?? []}
+          managerCount={managerCount ?? 0}
         />
       </div>
     </div>

@@ -80,6 +80,10 @@
   margin-top: 0.25rem;
 }
 
+.hubPinned {
+  margin-bottom: 1.1rem;
+}
+
 .deskLabel {
   font-family: var(--font-archivo), sans-serif;
   font-size: 2rem;
@@ -7587,4 +7591,101 @@ button.capCellLocked {
   position: fixed;
   inset: 0;
   z-index: 80;
+}
+
+.clubBarActions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--office-ink, #e6e1d8);
+  background: var(--office-panel-hi, #1e2430);
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  text-decoration: none;
+}
+
+.bellCount {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #12151c;
+  background: var(--office-ink, #e6e1d8);
+}
+
+.inboxHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.inboxHeadNote {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 13px;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.inboxTag {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0.1rem 0.4rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d8232a;
+  border: 1px solid #d8232a;
+}
+
+.pushBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pushLine {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 15px;
+  color: var(--office-ink, #e6e1d8);
+}
+
+.pushActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.counter {
+  margin: 0;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
+.previewCard {
+  border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
+  background: var(--office-panel, #181c25);
 }

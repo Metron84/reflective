@@ -8,7 +8,9 @@ import {
   normalizeNotifyPrefs,
   ultimaColourHex,
 } from "@/lib/ultima/constants";
+import { PUSH_CATEGORIES, pushPrefKey } from "@/lib/ultima/notifications/rules";
 import UltimaPanel from "./UltimaPanel";
+import UltimaPushSettings from "./UltimaPushSettings";
 import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
@@ -18,6 +20,7 @@ export default function UltimaProfileForm({
   defaultTeamName = "",
   defaultColour = "navy",
   defaultNotifyPrefs = null,
+  vapidPublicKey = null,
 }) {
   const router = useRouter();
   const [teamName, setTeamName] = useState(defaultTeamName);
@@ -115,7 +118,23 @@ export default function UltimaProfileForm({
         </div>
       </UltimaPanel>
 
-      <UltimaPanel title="Notifications">
+      <UltimaPushSettings publicKey={vapidPublicKey} />
+
+      <UltimaPanel title="Push alerts">
+        {PUSH_CATEGORIES.map((item) => {
+          const key = pushPrefKey(item.id);
+          return (
+            <UltimaRow
+              key={key}
+              primary={item.label}
+              meta={prefs[key] ? "On" : "Off"}
+              onClick={() => setPrefs((current) => ({ ...current, [key]: !current[key] }))}
+            />
+          );
+        })}
+      </UltimaPanel>
+
+      <UltimaPanel title="Email">
         {ULTIMA_NOTIFY_PREFS.map((item) => (
           <UltimaRow
             key={item.id}

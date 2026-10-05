@@ -221,6 +221,13 @@ export default function UltimaHub({ isSignedIn, manager, office = null }) {
 
   return (
     <div className={styles.hub}>
+      {office.pinned ? (
+        <div className={styles.hubPinned}>
+          <UltimaPanel title="Commissioner">
+            <UltimaStaffMessage subject={office.pinned.title} body={office.pinned.body} />
+          </UltimaPanel>
+        </div>
+      ) : null}
       <div className={hasTrades ? styles.hubOffice : styles.hubOfficeNoTrade}>
         <div className={styles.hubStats}>
           <UltimaPanel title="This week">

@@ -72,6 +72,7 @@ export default function UltimaInboxItem({
   time,
   href,
   onClick,
+  tag = null,
 }) {
   const Icon = ICONS[type] ?? StaffIcon;
   const read = !unread;
@@ -86,6 +87,7 @@ export default function UltimaInboxItem({
         <p className={styles.opInboxSubject}>
           {unread ? <span className={styles.opInboxDot} aria-hidden /> : null}
           {subject}
+          {tag ? <span className={styles.inboxTag}>{tag}</span> : null}
         </p>
         {meta ? <p className={styles.opInboxMeta}>{meta}</p> : null}
       </span>

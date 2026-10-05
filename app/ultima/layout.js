@@ -60,6 +60,7 @@ export default async function UltimaLayout({ children }) {
               seasonLine: "Ultima",
               continue: { label: "Go to hub", href: "/ultima" },
               draftLive: false,
+              unread: 0,
             }
           : null)
       }

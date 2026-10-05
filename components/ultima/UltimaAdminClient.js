@@ -12,6 +12,7 @@ import {
   formatUltimaTimer,
 } from "@/lib/ultima/constants";
 import { formatGstDateTime, formatGstTime, fromGstInput, toGstInputValue } from "@/lib/ultima/gst";
+import UltimaBroadcastPanel from "./UltimaBroadcastPanel";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaPanel from "./UltimaPanel";
 import UltimaRow from "./UltimaRow";
@@ -24,6 +25,7 @@ export default function UltimaAdminClient({
   timerSeconds = 60,
   managers = [],
   gameweeks = [],
+  managerCount = 0,
 }) {
   const desk = office ?? {
     seasonLabel,
@@ -346,6 +348,8 @@ export default function UltimaAdminClient({
           </button>
         </div>
       </UltimaPanel>
+
+      <UltimaBroadcastPanel managerCount={managerCount} />
 
       <UltimaPanel title="Invites">
         <div className={styles.utActions}>

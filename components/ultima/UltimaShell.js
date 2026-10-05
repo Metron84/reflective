@@ -37,6 +37,7 @@ const CRUMB_LABELS = {
   "/ultima/join": "Join",
   "/ultima/profile": "Profile",
   "/ultima/log": "Log",
+  "/ultima/inbox": "Inbox",
   "/ultima/sample": "SAMPLE",
 };
 
@@ -221,6 +222,7 @@ export default function UltimaShell({
                 seasonLine={barClub.seasonLine}
                 continueAction={barClub.continue}
                 sample={sample}
+                unread={seated && !sample ? (barClub.unread ?? 0) : null}
               />
             </div>
           ) : null}
