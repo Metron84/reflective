@@ -6064,6 +6064,11 @@ button.opRowYours {
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
 }
 
+.clubLoan {
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+  font-weight: 400;
+}
+
 .sqVals {
   display: flex;
   flex-direction: column;

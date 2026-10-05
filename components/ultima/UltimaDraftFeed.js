@@ -1,4 +1,5 @@
 import { ULTIMA_LEAGUE_SHORT } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import styles from "./ultima.module.css";
 
 export default function UltimaDraftFeed({ picks = [] }) {
@@ -22,7 +23,7 @@ export default function UltimaDraftFeed({ picks = [] }) {
           </span>
           <span>
             {p.player?.name}
-            {p.player?.club ? ` · ${p.player.club}` : ""}
+            {p.player ? ` · ${formatClubLine(p.player)}` : ""}
             {p.player?.league
               ? ` · ${ULTIMA_LEAGUE_SHORT[p.player.league] ?? p.player.league}`
               : ""}

@@ -6,6 +6,7 @@ import {
   ULTIMA_LEAGUE_SHORT,
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import { pendingTradeLine } from "@/lib/ultima/trades/rules";
 import UltimaCountryTag from "./UltimaCountryTag";
@@ -99,7 +100,7 @@ function ReleaseSheet({ incoming, options, incomingPts, points, error, loading, 
             <UltimaRow
               key={player.id}
               primary={player.name}
-              meta={`${player.club || "-"} · ${player.position || "-"}`}
+              meta={`${formatClubLine(player)} · ${player.position || "-"}`}
               number={
                 <UltimaValueNumber
                   value={Number.isFinite(pts) ? pts : null}

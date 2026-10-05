@@ -13,6 +13,7 @@ import {
   commissionerIssueInvite,
   commissionerBootstrap,
   commissionerSyncPool,
+  commissionerSyncClubs,
   commissionerSetTimer,
   commissionerScheduleDraft,
   commissionerSyncGameweek,
@@ -24,7 +25,7 @@ import {
 } from "@/lib/ultima/server/admin";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export async function POST(request) {
   const gate = await requireUserApi({ mutating: true });
@@ -104,6 +105,11 @@ export async function POST(request) {
       result = await commissionerSyncPool(competition.id, user.id, {
         league: body.league,
         dryRun: Boolean(body.dry_run),
+      });
+      break;
+    case "sync_clubs":
+      result = await commissionerSyncClubs(competition.id, user.id, {
+        dryRun: body.dry_run !== false && body.apply !== true,
       });
       break;
     case "bootstrap":

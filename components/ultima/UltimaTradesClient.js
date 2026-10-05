@@ -7,6 +7,7 @@ import {
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
 import { ultimaColourHex } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaLocalTime from "./UltimaLocalTime";
@@ -103,7 +104,7 @@ function TradePlayerRow({ player, index, selected, onToggle, onOpen, points, unt
             {untouchable ? <UltimaUntouchableChip /> : null}
           </span>
           <span className={styles.dPickMeta}>
-            {player.club || "-"}
+            {formatClubLine(player)}
             {" · "}
             {player.position || "-"}{" "}
             <UltimaCountryTag league={player.league} />

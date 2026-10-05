@@ -7,6 +7,7 @@ import {
   ULTIMA_LEAGUE_SHORT,
   ultimaColourHex,
 } from "@/lib/ultima/constants";
+import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import { BLOCK_CHIPS, filterSellers, sortSellers } from "@/lib/ultima/trades/block-view";
 import { LOOKING_FOR_MAX, UNTOUCHABLE_MAX } from "@/lib/ultima/trades/rules";
@@ -41,7 +42,7 @@ function PlayerLine({ player, note, chip, untouchable = false, children }) {
             {untouchable ? <UltimaUntouchableChip /> : null}
           </span>
           <span className={styles.dPickMeta}>
-            {player.club || "-"}
+            {formatClubLine(player)}
             {" · "}
             {player.position || "-"} <UltimaCountryTag league={player.league} />
           </span>
