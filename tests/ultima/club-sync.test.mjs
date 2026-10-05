@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   bareSportmonksId,
+  clubSyncNewsLine,
   diffClubSync,
   floorMoveNotice,
   pendingLeaguePatches,
   reconcileOwnedDepartures,
+  shouldApplyLeagueNow,
   splitMovePreview,
 } from "../../lib/ultima/club-sync.js";
 import { isGstFriday } from "../../lib/ultima/gst.js";
@@ -298,4 +300,50 @@ test("floor: existing shortfall is not a penalty; worsening is blocked", () => {
 test("isGstFriday: Friday Dubai is unlock day", () => {
   assert.equal(isGstFriday(new Date("2026-10-08T20:00:00Z")), true);
   assert.equal(isGstFriday(new Date("2026-10-07T20:00:00Z")), false);
+});
+
+test("league applies immediately when no gameweek is live", () => {
+  const midweek = new Date("2026-10-07T12:00:00Z"); // Wednesday GST
+  assert.equal(shouldApplyLeagueNow({ gameweekLive: false, now: midweek }), true);
+  assert.equal(shouldApplyLeagueNow({ gameweekLive: true, now: midweek }), false);
+  assert.equal(
+    shouldApplyLeagueNow({ gameweekLive: true, now: new Date("2026-10-08T20:00:00Z") }),
+    true,
+  );
+});
+
+test("hub news line groups owned club and league moves by manager", () => {
+  const line = clubSyncNewsLine([
+    {
+      owned: true,
+      name: "Enzo Fernández",
+      fromClub: "Chelsea",
+      toClub: "Manchester City",
+      fromLeague: "pl",
+      toLeague: "pl",
+      owner: { teamName: "Doumani Athletic" },
+    },
+    {
+      owned: true,
+      name: "Barcola",
+      fromClub: "PSG",
+      toClub: "Barcelona",
+      fromLeague: "ligue1",
+      toLeague: "laliga",
+      deferredLeague: false,
+      owner: { teamName: "Doumani Athletic" },
+    },
+    {
+      owned: false,
+      name: "Free Agent",
+      fromClub: "A",
+      toClub: "B",
+      fromLeague: "pl",
+      toLeague: "pl",
+    },
+  ]);
+  assert.match(line, /Doumani Athletic: Enzo Fernández \(Chelsea → Manchester City\)/);
+  assert.match(line, /Barcola \(PSG → Barcelona, Ligue 1 → LaLiga\)/);
+  assert.match(line, /Check your XV/);
+  assert.equal(clubSyncNewsLine([]), null);
 });

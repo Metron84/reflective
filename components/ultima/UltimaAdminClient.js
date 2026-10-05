@@ -593,10 +593,13 @@ function ClubSyncReport({ report }) {
         number={report.fresh ?? 0}
       />
       {report.applyLeagueNow ? (
-        <p className={styles.utNote}>Friday unlock: league changes apply now.</p>
+        <p className={styles.utNote}>
+          League changes apply now
+          {report.gameweekLive ? " (Friday unlock during a live gameweek)." : " (no live gameweek)."}
+        </p>
       ) : (
         <p className={styles.utNote}>
-          League changes wait for Friday 00:00 Dubai. Club and loan update now.
+          A gameweek is live. League changes wait for Friday 00:00 Dubai. Club and loan update now.
         </p>
       )}
 
