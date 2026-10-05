@@ -146,33 +146,83 @@ const GROUPS = [
   { id: "closed", label: "Closed" },
 ];
 
-function OfferRow({ offer, selected, onSelect }) {
+const names = (players) => (players ?? []).map((p) => p.name).join(", ") || "-";
+
+function OfferRow({ offer, selected, onSelect, windowOpen, onDone }) {
+  const mine = offer.party;
+  const left = mine ? "You give" : `${offer.proposer?.team_name ?? "A club"} gives`;
+  const right = mine ? "You get" : `${offer.receiver?.team_name ?? "A club"} gives`;
+  const live = offer.state === "proposed";
   return (
-    <button
-      type="button"
-      className={selected ? `${styles.trOffer} ${styles.trOfferOn}` : styles.trOffer}
-      style={{ "--team": ultimaColourHex(offer.other.colour) }}
-      onClick={() => onSelect(offer.id)}
-    >
-      <span className={styles.trOfferCopy}>
-        <span className={styles.trOfferName}>
-          {offer.unread ? <span className={styles.opInboxDot} aria-hidden /> : null}
-          {offer.other.team_name}
-        </span>
-        <span className={styles.trOfferMgr}>{offer.other.manager_name || "-"}</span>
-        <span className={styles.trOfferSum}>
-          {offer.party ? offer.summary : `${offer.proposer?.team_name ?? "A club"} to ${offer.receiver?.team_name ?? "a club"} · ${offer.summary}`}
-        </span>
-        {offer.expiresIn ? <span className={styles.trOfferMgr}>Expires in {offer.expiresIn}</span> : null}
-        {offer.voidLine ? <span className={styles.trOfferMgr}>{offer.voidLine}</span> : null}
-      </span>
-      <span
-        className={offer.chip === "In veto" ? styles.trChipVeto : styles.trChip}
+    <div className={styles.trOfferCard}>
+      <button
+        type="button"
+        className={selected ? `${styles.trOffer} ${styles.trOfferOn}` : styles.trOffer}
+        style={{ "--team": ultimaColourHex(offer.other.colour) }}
+        onClick={() => onSelect(offer.id)}
       >
-        {offer.chip}
-        {offer.chip === "In veto" && offer.vetoCountdown ? ` ${offer.vetoCountdown}` : ""}
-      </span>
-    </button>
+        <span className={styles.trOfferCopy}>
+          <span className={styles.trOfferName}>
+            {offer.unread ? <span className={styles.opInboxDot} aria-hidden /> : null}
+            {offer.other.team_name}
+          </span>
+          <span className={styles.trOfferMgr}>{offer.other.manager_name || "-"}</span>
+          <span className={styles.trOfferSum}>
+            {mine ? offer.summary : `${offer.proposer?.team_name ?? "A club"} to ${offer.receiver?.team_name ?? "a club"} · ${offer.summary}`}
+          </span>
+          <span className={styles.trOfferMgr}>
+            {left}: {names(offer.youGive)}
+          </span>
+          <span className={styles.trOfferMgr}>
+            {right}: {names(offer.youGet)}
+          </span>
+          {offer.expiresIn ? <span className={styles.trOfferMgr}>Expires in {offer.expiresIn}</span> : null}
+          {offer.voidLine ? <span className={styles.trOfferMgr}>{offer.voidLine}</span> : null}
+        </span>
+        <span
+          className={offer.chip === "In veto" ? styles.trChipVeto : styles.trChip}
+        >
+          {offer.chip}
+          {offer.chip === "In veto" && offer.vetoCountdown ? ` ${offer.vetoCountdown}` : ""}
+        </span>
+      </button>
+      {live && ((offer.canAccept && windowOpen) || offer.canCancel) ? (
+        <div className={styles.trActions}>
+          {offer.canAccept && windowOpen ? (
+            <>
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: offer.id, accept: true }}
+                label="Accept"
+                workingLabel="Accepting…"
+                doneLabel="Accepted"
+                onDone={onDone}
+              />
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: offer.id, accept: false }}
+                label="Decline"
+                workingLabel="Declining…"
+                doneLabel="Declined"
+                className={styles.secondaryBtn}
+                onDone={onDone}
+              />
+            </>
+          ) : null}
+          {offer.canCancel ? (
+            <UltimaActionButton
+              url="/api/ultima/trades/respond"
+              body={{ trade_id: offer.id, cancel: true }}
+              label="Cancel"
+              workingLabel="Cancelling…"
+              doneLabel="Cancelled"
+              className={styles.secondaryBtn}
+              onDone={onDone}
+            />
+          ) : null}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -321,7 +371,9 @@ function Negotiation({
 
 export default function UltimaTradesClient({ office, selectedId = null, preview = false, initialTab = "received", initialBlockView = "board", prefill = null }) {
   const prefillClub = prefill?.offer && (office?.clubs ?? []).some((c) => c.id === prefill.offer && !c.yours && !c.is_bot) ? prefill.offer : "";
-  const [tab, setTab] = useState(prefillClub || prefill?.give ? "compose" : initialTab);
+  const defaultTab =
+    initialTab === "received" && !office?.received?.length && office?.sent?.length ? "sent" : initialTab;
+  const [tab, setTab] = useState(prefillClub || prefill?.give ? "compose" : defaultTab);
   const [openId, setOpenId] = useState(selectedId);
   const [step, setStep] = useState(prefillClub ? 2 : 1);
   const [receiverId, setReceiverId] = useState(prefillClub);
@@ -552,6 +604,8 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                         offer={offer}
                         selected={offer.id === openId}
                         onSelect={setOpenId}
+                        windowOpen={office.windowOpen}
+                        onDone={afterWrite}
                       />
                     ))}
                   </div>

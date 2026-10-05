@@ -69,6 +69,7 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
             primary={`${card.proposer_name} to ${card.receiver_name}`}
             meta={[
               card.state === "proposed" ? "Proposal" : "League review",
+              card.state === "proposed" && card.expires_in ? `Expires in ${card.expires_in}` : null,
               card.state === "review" && card.review_expires_at
                 ? hoursLeft(card.review_expires_at)
                 : null,
@@ -99,6 +100,19 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
                 doneLabel="Declined"
                 className={styles.secondaryBtn}
                 onDone={(data) => settle(card.id, { accept: false }, data)}
+              />
+            </div>
+          ) : null}
+          {card.can_cancel ? (
+            <div className={styles.hubTradeActions}>
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: card.id, cancel: true }}
+                label="Cancel"
+                workingLabel="Cancelling…"
+                doneLabel="Cancelled"
+                className={styles.secondaryBtn}
+                onDone={(data) => settle(card.id, { cancel: true }, data)}
               />
             </div>
           ) : null}

@@ -7801,3 +7801,10 @@ button.capCellLocked {
     bottom: 1.5rem;
   }
 }
+
+.trOfferCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+}
