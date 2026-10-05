@@ -186,13 +186,13 @@ export default function UltimaHub({ isSignedIn, manager, office = null }) {
         {!isSignedIn ? (
           <p className={styles.hubNote}>
             Invite only.{" "}
-            <Link href="/signin?next=/ultima/join" className={styles.quietLink}>
+            <Link href="/signin?next=/ultima/join" prefetch={false} className={styles.quietLink}>
               Sign in to join
             </Link>
           </p>
         ) : (
           <p className={styles.hubNote}>
-            <Link href="/ultima/join" className={styles.quietLink}>
+            <Link href="/ultima/join" prefetch={false} className={styles.quietLink}>
               Enter your invite password
             </Link>
             {" · "}

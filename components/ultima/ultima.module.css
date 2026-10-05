@@ -7581,3 +7581,10 @@ button.capCellLocked {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* Offer review summary: above the card and every other sheet, on phone and desktop. */
+.trReview {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}

@@ -420,3 +420,47 @@ test("counter: one database call replaces the original, checks run first, the ne
   assert.equal((await send({ counterOf: "t0" })).code, "TRADE_CAP");
   assert.ok(!fake.log.some((q) => q.table === "rpc:ultima_counter_trade"));
 });
+
+// ---------------------------------------------------------------------------
+// Offer builder: Review is never silently dead
+// ---------------------------------------------------------------------------
+
+const { reviewBlock } = await import("../../lib/ultima/trades/rules.js");
+const R = (ids, league) => ids.map((id) => ({ id, name: id, league }));
+const mine = [...R(["a1", "a2", "a3", "a4"], "pl"), ...R(["b1", "b2", "b3", "b4"], "laliga"), ...R(["c1", "c2", "c3"], "seriea"), ...R(["d1", "d2", "d3"], "bundesliga"), ...R(["e1", "e2", "e3"], "ligue1")];
+const theirs = [...R(["x1", "x2", "x3", "x4"], "pl"), ...R(["y1", "y2", "y3"], "laliga"), ...R(["z1", "z2", "z3"], "seriea"), ...R(["w1", "w2", "w3"], "bundesliga"), ...R(["v1", "v2", "v3", "v4"], "ligue1")];
+const ctx = (over = {}) => ({ myRoster: mine, theirRoster: theirs, giveIds: ["a1"], getIds: ["x1"], receiverName: "Ajax FC", ...over });
+
+test("review: a valid 1-for-1 has no block, so Review opens the summary", () => {
+  assert.equal(reviewBlock(ctx()), null);
+  assert.equal(reviewBlock(ctx({ giveIds: ["a1", "a2"], getIds: ["x1", "x2"] })), null);
+});
+
+test("review: every blocking reason is shown in words", () => {
+  assert.equal(reviewBlock(ctx({ giveIds: [], getIds: [] })), "Pick the same number of players each way.");
+  assert.equal(reviewBlock(ctx({ getIds: [] })), "Pick the same number of players each way.");
+  assert.equal(reviewBlock(ctx({ giveIds: ["a1", "a2"] })), "Pick the same number of players each way.");
+  assert.equal(reviewBlock(ctx({ untouchable: { x1: true } })), "That player is untouchable.");
+  assert.equal(reviewBlock(ctx({ frozen: { a1: true } })), FROZEN_LINE);
+  assert.equal(reviewBlock(ctx({ giveIds: ["c1"], getIds: ["x1"] })), "This leaves you with 2 ITA. You need 3.");
+  assert.equal(
+    reviewBlock(ctx({ giveIds: ["a1"], getIds: ["v1"], theirRoster: theirs.filter((p) => !["v2"].includes(p.id)) })),
+    "This leaves Ajax FC with 2 FRA. They need 3.",
+  );
+  assert.equal(reviewBlock(ctx({ liveOutgoing: 3 })), LIVE_CAP_LINE);
+});
+
+test("review: an existing floor gap does not block a move that does not deepen it", () => {
+  const short = mine.filter((p) => p.id !== "c3");
+  assert.equal(reviewBlock(ctx({ myRoster: short })), null);
+});
+
+test("review: the summary sheet is outside the side column that hides on phones, and the button is never disabled", async () => {
+  const { readFileSync } = await import("node:fs");
+  const source = readFileSync(new URL("../../components/ultima/UltimaTradesClient.js", import.meta.url), "utf8");
+  const side = source.slice(source.indexOf("styles.trSide"), source.indexOf("{open && isOffers ?"));
+  assert.ok(!side.includes("Review offer"), "review sheet is not inside trSide");
+  assert.ok(source.includes('aria-label="Review offer"'));
+  const review = source.slice(source.indexOf(">\n                      Review\n"), source.indexOf(">\n                      Review\n") - 400 < 0 ? 0 : source.indexOf(">\n                      Review\n"));
+  assert.ok(!/disabled=/.test(review.split("<button").pop()), "Review button has no disabled prop");
+});

@@ -7,7 +7,7 @@ import {
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
 import { ultimaColourHex } from "@/lib/ultima/constants";
-import { LIVE_CAP_LINE } from "@/lib/ultima/trades/rules";
+import { reviewBlock } from "@/lib/ultima/trades/rules";
 import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
@@ -340,9 +340,17 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   const composePoints = [...givePlayers, ...getPlayers].map(pts);
   const youBreak = floorBreaks(myRoster, giveIds, getPlayers);
   const themBreak = floorBreaks(theirRoster, getIds, givePlayers);
-  const even = giveIds.length === getIds.length && giveIds.length > 0;
-  const floorOk = !youBreak.length && !themBreak.length;
-  const capReached = (office?.liveOutgoing ?? 0) >= (office?.liveCap ?? 3);
+  const block = reviewBlock({
+    myRoster,
+    theirRoster,
+    giveIds,
+    getIds,
+    receiverName: receiver?.team_name ?? "They",
+    untouchable: office?.untouchable,
+    frozen: office?.frozen,
+    liveOutgoing: office?.liveOutgoing ?? 0,
+    liveCap: office?.liveCap ?? 3,
+  });
 
   if (!office) {
     return (
@@ -374,7 +382,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   }
 
   async function send() {
-    if (!even || !floorOk || !receiverId) return;
+    if (block || !receiverId) return;
     setLoading(true);
     setError("");
     setLastAct("send");
@@ -535,13 +543,20 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                     </button>
                     <button
                       type="button"
-                      className={styles.secondaryBtn}
-                      disabled={!even}
-                      onClick={() => setStep(3)}
+                      className={styles.primaryBtn}
+                      aria-describedby={block ? "trReviewReason" : undefined}
+                      onClick={() => {
+                        if (!block) setStep(3);
+                      }}
                     >
                       Review
                     </button>
                   </div>
+                  {block ? (
+                    <p id="trReviewReason" className={styles.trFloorBad} role="status">
+                      {block}
+                    </p>
+                  ) : null}
                 </>
               )}
             </UltimaPanel>
@@ -575,81 +590,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
         </div>
 
         <div className={styles.trSide}>
-          {tab === "compose" && step === 3 && office.windowOpen ? (
-            <UltimaPanel raised title="Review">
-              <p className={styles.trCounter}>
-                {giveIds.length} for {getIds.length}
-                {receiver ? ` · ${receiver.team_name}` : ""}
-              </p>
-              <div className={styles.trDeal}>
-                <div>
-                  <p className={styles.trColHead}>You give</p>
-                  {givePlayers.map((player, index) => (
-                    <TradePlayerRow
-                      key={player.id}
-                      player={player}
-                      index={index}
-                      onOpen={setSheet}
-                      points={composePoints}
-                      untouchable={Boolean(office.untouchable?.[player.id])}
-                    />
-                  ))}
-                  <p className={styles.trTotal}>
-                    <UltimaValueNumber value={sumPts(givePlayers)} digits={1} />
-                  </p>
-                </div>
-                <div>
-                  <p className={styles.trColHead}>You get</p>
-                  {getPlayers.map((player, index) => (
-                    <TradePlayerRow
-                      key={player.id}
-                      player={player}
-                      index={index}
-                      onOpen={setSheet}
-                      points={composePoints}
-                      untouchable={Boolean(office.untouchable?.[player.id])}
-                    />
-                  ))}
-                  <p className={styles.trTotal}>
-                    <UltimaValueNumber value={sumPts(getPlayers)} digits={1} />
-                  </p>
-                </div>
-              </div>
-              <UltimaStatusBar
-                label={composeFair.label}
-                value={composeFair.label}
-                ratio={composeFair.ratio}
-                tone={composeFair.tone === "teal" ? undefined : "muted"}
-              />
-              <p className={!youBreak.length ? styles.trFloorOk : styles.trFloorBad}>
-                {floorLine(youBreak, "").text}
-              </p>
-              <p className={!themBreak.length ? styles.trFloorOk : styles.trFloorBad}>
-                {floorLine(themBreak, "").text}
-              </p>
-              {capReached ? <p className={styles.trFloorBad}>{LIVE_CAP_LINE}</p> : null}
-              <div className={styles.trActions}>
-                <button type="button" className={styles.secondaryBtn} onClick={() => setStep(2)}>
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className={styles.secondaryBtn}
-                  disabled={loading || !even || !floorOk || capReached}
-                  onClick={send}
-                >
-                  Send
-                </button>
-              </div>
-              {error ? (
-                <UltimaStaffMessage
-                  subject={error}
-                  actionLabel="Retry"
-                  onAction={send}
-                />
-              ) : null}
-            </UltimaPanel>
-          ) : open ? (
+          {open ? (
             <div className={styles.trSheetDesk}>
               <Negotiation
                 offer={open}
@@ -691,6 +632,59 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
           <button type="button" className={styles.opPanelAction} onClick={() => setOpenId(null)}>
             Back
           </button>
+        </div>
+      ) : null}
+
+      {tab === "compose" && step === 3 && office.windowOpen ? (
+        <div className={styles.trReview} role="dialog" aria-modal="true" aria-label="Review offer">
+          <button type="button" className={styles.dSheetBackdrop} aria-label="Back" onClick={() => setStep(2)} />
+          <div className={styles.dSheetPanel}>
+            <p className={styles.dSheetName}>Review offer</p>
+            <p className={styles.trCounter}>
+              {giveIds.length} for {getIds.length}
+              {receiver ? ` · ${receiver.team_name}` : ""}
+            </p>
+            <div className={styles.trDeal}>
+              <div>
+                <p className={styles.trColHead}>You give</p>
+                {givePlayers.map((player) => (
+                  <p key={player.id} className={styles.dSheetMeta}>
+                    {player.name} <UltimaCountryTag league={player.league} />
+                  </p>
+                ))}
+              </div>
+              <div>
+                <p className={styles.trColHead}>You get</p>
+                {getPlayers.map((player) => (
+                  <p key={player.id} className={styles.dSheetMeta}>
+                    {player.name} <UltimaCountryTag league={player.league} />
+                  </p>
+                ))}
+              </div>
+            </div>
+            <UltimaStatusBar
+              label={composeFair.label}
+              value={composeFair.label}
+              ratio={composeFair.ratio}
+              tone={composeFair.tone === "teal" ? undefined : "muted"}
+            />
+            <p className={!youBreak.length ? styles.trFloorOk : styles.trFloorBad}>
+              {floorLine(youBreak, "").text}
+            </p>
+            <p className={!themBreak.length ? styles.trFloorOk : styles.trFloorBad}>
+              {floorLine(themBreak, "").text}
+            </p>
+            {block ? <p className={styles.trFloorBad}>{block}</p> : null}
+            <div className={styles.dSheetActions}>
+              <button type="button" className={styles.primaryBtn} disabled={loading || Boolean(block)} onClick={send}>
+                {loading ? "Sending…" : "Send offer"}
+              </button>
+              <button type="button" className={styles.secondaryBtn} onClick={() => setStep(2)}>
+                Back
+              </button>
+            </div>
+            {error ? <UltimaStaffMessage subject={error} actionLabel="Retry" onAction={send} /> : null}
+          </div>
         </div>
       ) : null}
 
