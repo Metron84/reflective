@@ -31,9 +31,17 @@ begin
       end loop;
     end loop;
   end loop;
-  insert into public.ultima_gameweeks (competition_id, number, window_start, window_end, state)
-  values (comp, 5, now() - interval '1 day', now() + interval '5 days', 'live');
+  -- Open times are set ahead of now so no league is locked unless a test says so.
+  insert into public.ultima_gameweeks (competition_id, number, window_start, window_end, state, league_open_at)
+  values (comp, 5, now() - interval '1 day', now() + interval '5 days', 'live',
+          jsonb_build_object('pl', now() + interval '2 days', 'laliga', now() + interval '2 days',
+                             'seriea', now() + interval '2 days', 'bundesliga', now() + interval '2 days',
+                             'ligue1', now() + interval '2 days'));
 end $$;
+
+create function tt.opens(lg text, at timestamptz) returns jsonb language sql as $$
+  select jsonb_object_agg(l, case when l = lg then at else now() + interval '2 days' end)
+  from unnest(array['pl','laliga','seriea','bundesliga','ligue1']) l $$;
 
 create function tt.mgr(n int) returns uuid language sql as $$
   select id from public.ultima_managers
@@ -129,7 +137,7 @@ select tt.setup();
 do $$ declare tid uuid; r jsonb; gw uuid; pl_trade uuid;
 begin
   update public.ultima_gameweeks
-  set league_open_at = jsonb_build_object('bundesliga', now() - interval '1 hour'),
+  set league_open_at = tt.opens('bundesliga', now() - interval '1 hour'),
       window_end = timestamptz '2999-01-07 23:59:00+04';
   select id into gw from public.ultima_gameweeks;
   insert into public.ultima_lineups (manager_id, gameweek_id, slot, slot_group, player_id)
@@ -171,7 +179,7 @@ select tt.setup();
 do $$ declare r jsonb;
 begin
   update public.ultima_gameweeks
-  set league_open_at = jsonb_build_object('pl', now() - interval '1 hour'),
+  set league_open_at = tt.opens('pl', now() - interval '1 hour'),
       window_end = timestamptz '2999-01-08 00:00:00+04';
   r := public.ultima_execute_trade(tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1']));
   perform tt.assert((r ->> 'unlock_at')::timestamptz = timestamptz '2999-01-08 00:00:00+04', 'midnight end');
@@ -337,7 +345,7 @@ begin
   insert into public.ultima_gameweeks (competition_id, number, window_start, window_end, state)
   values ((select id from tt_comp), 4, now() - interval '9 days', now() - interval '2 days', 'provisional')
   returning id into done_gw;
-  update public.ultima_gameweeks set league_open_at = jsonb_build_object('laliga', now() - interval '1 hour')
+  update public.ultima_gameweeks set league_open_at = tt.opens('laliga', now() - interval '1 hour')
   where id = live_gw;
 
   insert into public.ultima_lineups (manager_id, gameweek_id, slot, slot_group, player_id) values
@@ -366,8 +374,9 @@ begin
   -- GW8 ran from 3 days ago to 1 day ago. GW9 started 1 day ago.
   update public.ultima_gameweeks
   set number = 8, window_start = now() - interval '3 days', window_end = now() - interval '1 day';
-  insert into public.ultima_gameweeks (competition_id, number, window_start, window_end, state)
-  values ((select id from tt_comp), 9, now() - interval '1 day', now() + interval '6 days', 'live');
+  insert into public.ultima_gameweeks (competition_id, number, window_start, window_end, state, league_open_at)
+  values ((select id from tt_comp), 9, now() - interval '1 day', now() + interval '6 days', 'live',
+          tt.opens('none', now()));
   -- Review ended 2 days ago, inside GW8. Nothing settled it until now, inside GW9.
   tid := tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1'], now() - interval '2 days');
   r := public.ultima_execute_trade(tid);
@@ -506,7 +515,7 @@ begin
   update public.ultima_gameweeks
   set state = 'final', number = 3,
       window_start = now() - interval '12 days', window_end = now() - interval '6 days',
-      league_open_at = jsonb_build_object('pl', now() - interval '10 days')
+      league_open_at = tt.opens('pl', now() - interval '10 days')
   returning id into done_gw;
 
   -- Drafted before kickoff, never moved: fine.
@@ -567,6 +576,90 @@ begin
   perform tt.assert((select hours_left from r3 where trade_id = a) between 4.9 and 5.1, 'hours left');
   perform tt.assert((select hours_left from r3 where trade_id = b) < 0, 'overdue shows negative');
   perform tt.assert((select proposer_gives from r3 where trade_id = a) = 'M1-pl-1', 'players listed');
+end $$;
+rollback;
+
+-- 12. Auto-clear: a trade removes block rows and untouchable flags for the moved players.
+begin;
+select tt.setup();
+do $$ declare tid uuid; r jsonb;
+begin
+  insert into public.ultima_trade_block (manager_id, player_id, stance)
+  values (tt.mgr(1), tt.pl('M1-pl-1'), 'listed'), (tt.mgr(1), tt.pl('M1-pl-2'), 'open');
+  insert into public.ultima_untouchables (manager_id, player_id)
+  values (tt.mgr(1), tt.pl('M1-pl-1')), (tt.mgr(1), tt.pl('M1-pl-3'));
+  tid := tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1']);
+  r := public.ultima_execute_trade(tid);
+  perform tt.assert(r ->> 'state' = 'executed', 'executed: ' || r::text);
+  perform tt.assert(not exists (select 1 from public.ultima_trade_block where player_id = tt.pl('M1-pl-1')),
+                    'block row cleared for moved player');
+  perform tt.assert(exists (select 1 from public.ultima_trade_block where player_id = tt.pl('M1-pl-2')),
+                    'other block row kept');
+  perform tt.assert(not exists (select 1 from public.ultima_untouchables where player_id = tt.pl('M1-pl-1')),
+                    'untouchable cleared for moved player');
+  perform tt.assert(exists (select 1 from public.ultima_untouchables where player_id = tt.pl('M1-pl-3')),
+                    'other untouchable kept');
+end $$;
+rollback;
+
+-- 13. Auto-clear on drop, and pending trades with the player void.
+begin;
+select tt.setup();
+do $$ declare tid uuid; r jsonb;
+begin
+  insert into public.ultima_trade_block (manager_id, player_id, stance) values (tt.mgr(1), tt.pl('M1-pl-1'), 'listed');
+  insert into public.ultima_untouchables (manager_id, player_id) values (tt.mgr(1), tt.pl('M1-pl-1'));
+  tid := tt.trade(1, 2, 'proposed', array['M1-pl-1'], array['M2-pl-1'], null);
+  r := public.ultima_void_trades_for_players(tt.mgr(1), array[tt.pl('M1-pl-1')]);
+  perform tt.assert(tt.state(tid) = 'void', 'pending trade voided on drop');
+  delete from public.ultima_rosters where player_id = tt.pl('M1-pl-1');
+  perform tt.assert(not exists (select 1 from public.ultima_trade_block where player_id = tt.pl('M1-pl-1')),
+                    'block row cleared on drop');
+  perform tt.assert(not exists (select 1 from public.ultima_untouchables where player_id = tt.pl('M1-pl-1')),
+                    'untouchable cleared on drop');
+end $$;
+rollback;
+
+-- 14. At most 3 untouchables per manager.
+begin;
+select tt.setup();
+do $$ declare caught boolean := false;
+begin
+  insert into public.ultima_untouchables (manager_id, player_id)
+  values (tt.mgr(1), tt.pl('M1-pl-1')), (tt.mgr(1), tt.pl('M1-pl-2')), (tt.mgr(1), tt.pl('M1-pl-3'));
+  begin
+    insert into public.ultima_untouchables (manager_id, player_id) values (tt.mgr(1), tt.pl('M1-pl-4'));
+  exception when others then caught := true;
+  end;
+  perform tt.assert(caught, 'fourth untouchable rejected');
+end $$;
+rollback;
+
+-- 15. Clear-slot fix: no open time clears in an upcoming gameweek, never in a live one.
+begin;
+select tt.setup();
+do $$ declare gw uuid; n int;
+begin
+  select id into gw from public.ultima_gameweeks;
+  update public.ultima_gameweeks set league_open_at = '{}'::jsonb, state = 'live' where id = gw;
+  insert into public.ultima_lineups (manager_id, gameweek_id, slot, slot_group, player_id)
+  values (tt.mgr(1), gw, 1, 'pl', tt.pl('M1-pl-1'));
+  n := public.ultima_clear_lineup_slots(tt.mgr(1), array[tt.pl('M1-pl-1')]);
+  perform tt.assert(n = 0, 'live gameweek with no open time keeps the slot');
+  update public.ultima_gameweeks set state = 'upcoming' where id = gw;
+  n := public.ultima_clear_lineup_slots(tt.mgr(1), array[tt.pl('M1-pl-1')]);
+  perform tt.assert(n = 1, 'upcoming gameweek with no open time clears the slot');
+end $$;
+rollback;
+
+-- 16. A live gameweek with no open time holds the trade like a lock.
+begin;
+select tt.setup();
+do $$ declare r jsonb;
+begin
+  update public.ultima_gameweeks set league_open_at = '{}'::jsonb;
+  r := public.ultima_execute_trade(tt.trade(1, 2, 'review', array['M1-pl-1'], array['M2-pl-1']));
+  perform tt.assert(r ->> 'state' = 'awaiting_unlock', 'live with no open time holds: ' || r::text);
 end $$;
 rollback;
 
