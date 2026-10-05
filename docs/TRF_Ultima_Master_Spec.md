@@ -55,7 +55,7 @@
 - Live snake draft, 30 rounds, 300 picks.
 - Squad of **30**, positionless, drafted across five leagues.
 - Weekly **starting XV of 15** scores; the 15 bench players do not.
-- Free agency add and drop all season; trades from gameweek 4.
+- Free agency add and drop all season; trades open from day one, before gameweek 1 included.
 - Empty seats filled by **bot personas**, no AI inference, no API cost.
 
 ### 1.3 Non-goals (v1)
@@ -175,7 +175,7 @@ Eyebrows: Archivo, letter-spaced caps (`GAMES · ULTIMA`, `GAMEWEEK 12`).
 | `/ultima/draft` | Live draft room | Manager, profile complete | No |
 | `/ultima/squad` | XI and Squad tabs | Manager | No |
 | `/ultima/market` | Free agency | Manager | No |
-| `/ultima/trades` | Trade list and builder | Manager, gameweek 4 onward | No |
+| `/ultima/trades` | Trade list and builder | Manager | No |
 | `/ultima/trades/[id]` | Single trade, verdict, review | Manager | No |
 | `/ultima/standings` | League table, Bolt board, bot risk numbers | Manager, public TBD | TBD |
 | `/ultima/log` | Public commissioner audit log | Manager | No |
@@ -204,7 +204,7 @@ Status lines are live, not decorative.
 | Draft room | "Opens 14 August, 20:00" · "Live. You are on the clock." · "Complete" |
 | My squad | "Set your XV. LaLiga locks Friday 21:00." |
 | Market | "37 free agents." |
-| Trades | "One proposal waiting." · "Trades open at gameweek 4." |
+| Trades | "One proposal waiting." · "You have 3 live offers. Withdraw one first." |
 | Standings | "You are 4th. 212 points." |
 | Rules | "Scoring, floors and locks." |
 
@@ -519,7 +519,9 @@ Config lives at `data/ultima/personas.json`.
 
 ## 12. Trade machine
 
-Trades open at **gameweek 4**, because the fairness engine needs three gameweeks of played data.
+Trades are open from day one, before gameweek 1 included. Only the trade deadline closes them. The fairness verdict reads "Not enough data yet." until three gameweeks are played.
+
+Live offers: at most 3 outgoing per manager, one live offer between the same two managers (a counter replaces the original), unanswered offers expire after 48 hours. A live offer freezes nobody. Acceptance freezes the deal's players and voids every other live offer that holds any of them ("That player is already in an accepted deal."). Bots do not trade. Every live offer is public.
 
 ### 12.1 Rules
 
@@ -732,7 +734,7 @@ Confirm sheets carry exactly two controls: the destructive action and Cancel. Ca
 | Market empty for a filter | "No free agents in LaLiga right now." Clear filter control |
 | No fixtures this window | "No gameweek this week. The leagues are on a break." |
 | Connection lost mid-draft | Navy banner, "Reconnecting", clock keeps running server-side |
-| Trades before GW4 | "Not enough data yet. Trades open at gameweek 4." |
+| Fairness before GW4 | "Not enough data yet." |
 
 ### 15.8 Keyboard and assistive
 
@@ -816,7 +818,7 @@ Single stream per competition at `/api/ultima/stream`, filtered server-side by r
 ```
 
 - `message` is the user-facing line from section 15.6, written in TRF voice, never a raw exception.
-- Codes: `PICK_TAKEN`, `NOT_YOUR_TURN`, `FLOOR_IMPOSSIBLE`, `LEAGUE_LOCKED`, `SQUAD_FULL`, `FLOOR_VIOLATION`, `INVITE_INVALID`, `INVITE_EXPIRED`, `LEAGUE_FULL`, `TRADE_UNEVEN`, `TRADE_TOO_EARLY`, `NOT_COMMISSIONER`.
+- Codes: `PICK_TAKEN`, `NOT_YOUR_TURN`, `FLOOR_IMPOSSIBLE`, `LEAGUE_LOCKED`, `SQUAD_FULL`, `FLOOR_VIOLATION`, `INVITE_INVALID`, `INVITE_EXPIRED`, `LEAGUE_FULL`, `TRADE_UNEVEN`, `TRADE_CAP`, `TRADE_FROZEN`, `TRADE_EXPIRED`, `NOT_COMMISSIONER`.
 
 ### 16.7 Analytics
 
@@ -941,12 +943,12 @@ Nothing above the adapter knows which provider is live.
 | **F** | **Sportmonks introduced behind the adapter** | Re-scored gameweek matches the mock |
 | **G** | Live matchday, SSE, provisional to final, notifications | Within SLA; emails deliver |
 | **H** | Bot personas: seating, draft, XI, published risk numbers, rationale feed | A 2-human league completes a full draft and gameweek |
-| **I** | Trade machine, validator, mobile builder | Ships before gameweek 4 |
+| **I** | Trade machine, validator, mobile builder | Open from day one |
 | **J** | Admin corrections, public log, analytics events | One correction recomputes with a public audit row |
 
 **Stop for Melo review** at the end of each phase.
 
-Phases A to G are the launch build. H and I can land after kickoff: bots only matter if humans do not fill the seats, and trades cannot function before gameweek 4.
+Phases A to G are the launch build. H and I can land after kickoff: bots only matter if humans do not fill the seats.
 
 ---
 
@@ -970,7 +972,7 @@ Phases A to G are the launch build. H and I can land after kickoff: bots only ma
 16. Bolt fires on a round-21 player with 6 base points and not on a re-signed round-1 player.
 17. Add and drop keeps the squad at 30 and refuses a locked player.
 18. Inactive flag relaxes the floor and is logged.
-19. Trade rejected when uneven, when it breaks a floor, or before gameweek 4.
+19. Trade rejected when uneven, when it breaks a floor, with a bot, or when it would be a 4th live offer.
 20. Majority veto cancels an accepted trade inside 24 hours; the hourly job executes an unvetoed one.
 21. Commissioner correction writes a public log row with a typed reason; the log rejects update and delete.
 22. Two bots with different risk numbers produce measurably different squads from the same pool.
