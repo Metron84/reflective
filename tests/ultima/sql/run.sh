@@ -22,4 +22,5 @@ for f in $(ls "$D"/00*_ultima*.sql | sort); do run "$P -f $f" >/dev/null; done
 run "cd $D && $P -f execute_trade.test.sql"
 run "cd $D && $P -f captains.test.sql"
 run "cd $D && $P -f player_card_trades.test.sql"
+run "cd $D && $P -f notifications.test.sql"
 run "bash $D/race.sh $BIN $D"
