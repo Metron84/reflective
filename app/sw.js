@@ -301,3 +301,59 @@ self.addEventListener("activate", (event) => {
     })(),
   );
 });
+
+// Ultima push. Showing and opening notifications never touches the caches.
+self.addEventListener("push", (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = { body: event.data ? event.data.text() : "" };
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || "Ultima", {
+      body: data.body || "",
+      icon: "/ultima/icon-192.png",
+      badge: "/ultima/icon-192.png",
+      tag: data.id || data.kind || undefined,
+      data: { link: data.link || "/ultima", id: data.id || null },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const { link, id } = event.notification.data || {};
+  event.waitUntil(
+    (async () => {
+      let target;
+      try {
+        target = new URL(link || "/ultima", self.location.origin);
+        if (target.origin !== self.location.origin) target = new URL("/ultima", self.location.origin);
+      } catch {
+        target = new URL("/ultima", self.location.origin);
+      }
+      if (id) {
+        // Opening it from the lock screen counts as reading it.
+        fetch("/api/ultima/inbox/read", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+          keepalive: true,
+        }).catch(() => {});
+      }
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of windows) {
+        if (new URL(client.url).origin !== self.location.origin) continue;
+        try {
+          await client.navigate(target.href);
+        } catch {
+          // Some browsers refuse navigate(); fall through to focus.
+        }
+        return client.focus();
+      }
+      return self.clients.openWindow(target.href);
+    })(),
+  );
+});
