@@ -32,6 +32,7 @@ export default function GuesserBand({ openingClue }) {
             </div>
           </div>
           <Link
+            prefetch={false}
             href="/guesser"
             className="mt-8 inline-block rounded-full border border-paper/30 px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
           >

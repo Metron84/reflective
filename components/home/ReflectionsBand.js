@@ -49,6 +49,7 @@ export default function ReflectionsBand({ votedCount, votingState }) {
         )}
         {open ? (
           <Link
+            prefetch={false}
             href="/reflections"
             className="mt-8 inline-block rounded-full bg-signal px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-opacity hover:opacity-90"
           >
@@ -56,6 +57,7 @@ export default function ReflectionsBand({ votedCount, votingState }) {
           </Link>
         ) : (
           <Link
+            prefetch={false}
             href="/reflections"
             className="mt-8 inline-block rounded-full border border-paper/30 px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
           >

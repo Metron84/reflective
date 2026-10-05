@@ -15,7 +15,7 @@ export default function TrainingRibbon() {
             for the founding cohort. Rolling intake.
           </p>
         </div>
-        <Link href="/training" className={styles.cta}>
+        <Link prefetch={false} href="/training" className={styles.cta}>
           See the course
         </Link>
       </div>

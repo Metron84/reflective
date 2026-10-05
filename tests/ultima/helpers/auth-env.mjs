@@ -25,24 +25,33 @@ export async function signJwt({ sub = "u1", expiresInSeconds }) {
 
 const user = { id: "u1", aud: "authenticated", role: "authenticated", email: "u@example.com", app_metadata: {}, user_metadata: {}, created_at: "2026-01-01T00:00:00Z" };
 
-export async function sessionCookie({ stale }) {
+export async function sessionCookie({ stale, refreshToken = "r1" }) {
   const access_token = await signJwt({ expiresInSeconds: stale ? -600 : 3600 });
   const expires_at = Math.floor(Date.now() / 1000) + (stale ? -600 : 3600);
-  const session = { access_token, refresh_token: "r1", token_type: "bearer", expires_in: 3600, expires_at, user };
+  const session = { access_token, refresh_token: refreshToken, token_type: "bearer", expires_in: 3600, expires_at, user };
   return { name: COOKIE_NAME, value: `base64-${stringToBase64URL(JSON.stringify(session))}` };
 }
 
 export const calls = [];
+export const grants = [];
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
-export function installFakeFetch({ refreshStatus = 200 } = {}) {
+export function installFakeFetch({ refreshStatus = 200, deadRefreshTokens = [], exchangeStatus = 200 } = {}) {
   globalThis.fetch = async (input, init) => {
     const url = new URL(typeof input === "string" ? input : input.url);
     calls.push(`${init?.method ?? "GET"} ${url.pathname}`);
     if (url.pathname === "/auth/v1/.well-known/jwks.json") return json({ keys: [publicJwk] });
     if (url.pathname === "/auth/v1/token") {
+      const grant = url.searchParams.get("grant_type");
+      grants.push(grant);
+      let sent = {};
+      try { sent = JSON.parse(init?.body ?? "{}"); } catch {}
+      if (grant === "pkce" && exchangeStatus !== 200) return json({ code: "flow_state_not_found", message: "Request failed" }, exchangeStatus);
+      if (grant === "refresh_token" && deadRefreshTokens.includes(sent.refresh_token)) {
+        return json({ code: "refresh_token_not_found", message: "Invalid Refresh Token: Refresh Token Not Found" }, 400);
+      }
       if (refreshStatus !== 200) return json({ code: refreshStatus === 429 ? "over_request_rate_limit" : "refresh_token_not_found", message: "Request failed" }, refreshStatus);
       const access_token = await signJwt({ expiresInSeconds: 3600 });
       return json({ access_token, refresh_token: "r2", token_type: "bearer", expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, user });
@@ -54,4 +63,4 @@ export function installFakeFetch({ refreshStatus = 200 } = {}) {
 }
 
 export const authNetworkCalls = () => calls.filter((c) => /\/auth\/v1\/(token|user)/.test(c));
-export const resetCalls = () => { calls.length = 0; };
+export const resetCalls = () => { calls.length = 0; grants.length = 0; };

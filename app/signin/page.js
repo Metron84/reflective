@@ -20,7 +20,12 @@ export default async function SignInPage({ searchParams }) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-4 py-16 sm:px-6">
-      <SignInForm nextPath={nextPath} fatfFlow={fatfFlow} ultimaApp={ultimaApp} />
+      <SignInForm
+        nextPath={nextPath}
+        fatfFlow={fatfFlow}
+        ultimaApp={ultimaApp}
+        initialError={params?.error === "callback" ? "Sign-in didn't complete. Try again." : null}
+      />
     </div>
   );
 }

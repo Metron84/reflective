@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { shouldRefreshSession } from "@/lib/auth/refresh-policy";
 import {
+  appendExpiredCookies,
+  authCookieNamesIn,
+  duplicateAuthCookieNames,
+} from "@/lib/auth/stale-cookies";
+import {
   isUltimaAppHost,
   isUltimaAppLeaf,
   isUltimaPassthrough,
@@ -115,11 +120,14 @@ export async function middleware(request) {
   // not a network error, including a 429. Watch the /token call so a rate
   // limit or outage leaves the cookies alone instead of signing the user out.
   let refreshFailed = false;
+  let refreshRejected = false;
+  const rawCookie = request.headers.get("cookie") ?? "";
   const watchedFetch = async (input, init) => {
     const isRefresh = String(input?.url ?? input).includes("/auth/v1/token");
     try {
       const res = await fetch(input, init);
       if (isRefresh && (res.status === 429 || res.status >= 500)) refreshFailed = true;
+      if (isRefresh && res.status === 400) refreshRejected = true;
       return res;
     } catch (error) {
       if (isRefresh) refreshFailed = true;
@@ -152,6 +160,18 @@ export async function middleware(request) {
     for (const { name, value } of originalCookies) request.cookies.set(name, value);
     cookieBag.length = 0;
   }
+  // A stale host-only copy next to the shared-domain cookie shadows it. Two
+  // copies of one name: expire the host-only ones. A rejected refresh token
+  // (400): the session is dead, expire every copy in both scopes so none is
+  // left to shadow the next sign-in.
+  const staleHostOnly = refreshRejected ? [] : duplicateAuthCookieNames(rawCookie);
+  const deadSession = refreshRejected ? authCookieNamesIn(rawCookie) : [];
+  const finish = (res) => {
+    applyAuthCookies(res, cookieBag, host);
+    appendExpiredCookies(res, staleHostOnly, host, { scope: "host" });
+    appendExpiredCookies(res, deadSession, host, { scope: "both" });
+    return res;
+  };
   const user = claimsData?.claims?.sub ? { id: claimsData.claims.sub } : null;
   const pathname = request.nextUrl.pathname;
 
@@ -174,7 +194,7 @@ export async function middleware(request) {
       welcomeUrl.pathname = "/welcome";
       welcomeUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
       response = NextResponse.redirect(welcomeUrl);
-      return applyAuthCookies(response, cookieBag, host);
+      return finish(response);
     }
   }
 
@@ -182,7 +202,7 @@ export async function middleware(request) {
     response = ultimaHostResponse(request) ?? response;
   }
 
-  return applyAuthCookies(response, cookieBag, host);
+  return finish(response);
 }
 
 export const config = {

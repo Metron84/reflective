@@ -7,6 +7,7 @@ export default function FilmCard({ film }) {
 
   return (
     <Link
+      prefetch={false}
       href={href}
       className="film-card group relative block overflow-hidden bg-navy-deep shadow-[0_12px_40px_rgba(10,17,31,0.18)] transition-[transform,opacity] duration-100 active:scale-[0.985] active:opacity-90 motion-reduce:transition-none motion-reduce:active:scale-100"
     >
