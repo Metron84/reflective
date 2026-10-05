@@ -88,13 +88,19 @@ mock.module("@/lib/ultima/personas", {
   namedExports: { getBotPersonas: () => [{ id: "persona", risk: 0.5, wobble: 0, weights: {} }] },
 });
 mock.module("@/lib/ultima/server/notify", {
-  namedExports: { notifyAutoPickAsync: () => {}, notifyOnClockAsync: () => {} },
+  namedExports: {
+    notifyAutoPickAsync: () => {},
+    notifyOnClockAsync: () => {},
+    notifyManagerOnceAsync: () => {},
+    notifyTradeProposedAsync: () => {},
+  },
 });
 mock.module("@/lib/ultima/bots/seat", { namedExports: { seatBots: async () => ({ ok: true }) } });
 for (const spec of ["@/lib/ultima/server/scoring-run", "@/lib/ultima/server/bootstrap"]) {
   mock.module(spec, {
     namedExports: {
       recomputeGameweekScores: async () => ({}),
+      getStandings: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),
       getCurrentGameweek: async () => null,
     },

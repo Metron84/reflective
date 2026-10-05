@@ -70,6 +70,7 @@ for (const spec of [
   mock.module(spec, {
     namedExports: {
       recomputeGameweekScores: async () => ({}),
+      getStandings: async () => [],
       syncPlayerPool: async () => ({ ok: true }),
       syncAllPlayersFromProvider: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),

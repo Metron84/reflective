@@ -55,6 +55,8 @@ mock.module("@/lib/ultima/personas", { namedExports: { getBotPersonas: () => [] 
 mock.module("@/lib/ultima/server/notify", {
   namedExports: {
     notifyAutoPickAsync: () => {},
+    notifyManagerOnceAsync: () => {},
+    notifyTradeProposedAsync: () => {},
     notifyOnClockAsync: () => {},
   },
 });
@@ -63,6 +65,7 @@ for (const spec of ["@/lib/ultima/server/scoring-run", "@/lib/ultima/server/boot
   mock.module(spec, {
     namedExports: {
       recomputeGameweekScores: async () => ({}),
+      getStandings: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),
       getCurrentGameweek: async () => null,
     },
