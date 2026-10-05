@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { shouldRefreshSession } from "@/lib/auth/refresh-policy";
 import {
   isUltimaAppHost,
   isUltimaAppLeaf,
@@ -99,8 +100,34 @@ export async function middleware(request) {
     return nextWithPath(request);
   }
 
+  // Prefetches, the service worker, manifests and static files never touch
+  // the Auth server. See lib/auth/refresh-policy.js.
+  if (!shouldRefreshSession(request.nextUrl.pathname, request.headers)) {
+    if (isUltimaAppHost(host)) {
+      return ultimaHostResponse(request) ?? nextWithPath(request);
+    }
+    return nextWithPath(request);
+  }
+
   const cookieBag = [];
+  const originalCookies = request.cookies.getAll();
+  // auth-js deletes the session when a refresh fails for any reason that is
+  // not a network error, including a 429. Watch the /token call so a rate
+  // limit or outage leaves the cookies alone instead of signing the user out.
+  let refreshFailed = false;
+  const watchedFetch = async (input, init) => {
+    const isRefresh = String(input?.url ?? input).includes("/auth/v1/token");
+    try {
+      const res = await fetch(input, init);
+      if (isRefresh && (res.status === 429 || res.status >= 500)) refreshFailed = true;
+      return res;
+    } catch (error) {
+      if (isRefresh) refreshFailed = true;
+      throw error;
+    }
+  };
   const supabase = createServerClient(url, key, {
+    global: { fetch: watchedFetch },
     cookieOptions: withAuthCookieDomain({}, host),
     cookies: {
       getAll() {
@@ -115,9 +142,16 @@ export async function middleware(request) {
     },
   });
 
-  // Local JWT verification: no Auth server call per request (429 risk).
-  // getClaims refreshes the session only when the access token has expired.
+  // Verifies the JWT locally and refreshes the session only when the access
+  // token is stale. This is the only place a request refreshes.
   const { data: claimsData } = await supabase.auth.getClaims();
+  if (refreshFailed) {
+    // Put the request cookies back exactly as they arrived. The render sees
+    // the stale token and reports `unavailable`; the browser keeps its session.
+    for (const { name } of request.cookies.getAll()) request.cookies.delete(name);
+    for (const { name, value } of originalCookies) request.cookies.set(name, value);
+    cookieBag.length = 0;
+  }
   const user = claimsData?.claims?.sub ? { id: claimsData.claims.sub } : null;
   const pathname = request.nextUrl.pathname;
 

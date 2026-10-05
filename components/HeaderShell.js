@@ -47,6 +47,7 @@ function UserMenu({ profile }) {
           className="absolute right-0 top-full z-50 mt-2 min-w-[11rem] border border-navy/10 bg-paper py-1 shadow-lg"
         >
           <Link
+            prefetch={false}
             href="/account"
             role="menuitem"
             className="block px-4 py-2.5 text-sm text-navy/80 transition-colors hover:bg-navy/5 hover:text-navy"
@@ -78,6 +79,7 @@ export default function HeaderShell({ auth }) {
     <header className="sticky top-0 z-40 border-b border-navy/10 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
+          prefetch={false}
           href="/"
           className="max-w-[55vw] truncate font-display text-base tracking-wide text-navy sm:max-w-none sm:text-lg"
         >
@@ -89,6 +91,7 @@ export default function HeaderShell({ auth }) {
               const active = isActiveSection(pathname, item.href);
               return (
                 <Link
+                  prefetch={false}
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
@@ -108,6 +111,7 @@ export default function HeaderShell({ auth }) {
             })}
             {TRAINING_ENABLED ? (
               <Link
+                prefetch={false}
                 href="/training"
                 aria-current={
                   isActiveSection(pathname, "/training") ? "page" : undefined
@@ -127,6 +131,7 @@ export default function HeaderShell({ auth }) {
             ) : null}
             {FATF_ENABLED ? (
               <Link
+                prefetch={false}
                 href={FATF_PATH}
                 aria-current={
                   isActiveSection(pathname, FATF_PATH) ? "page" : undefined
@@ -159,6 +164,7 @@ export default function HeaderShell({ auth }) {
             <UserMenu profile={auth.profile} />
           ) : (
             <Link
+              prefetch={false}
               href="/signin"
               className="hidden rounded-full bg-signal px-4 py-1.5 text-sm font-medium text-paper transition-[opacity,transform] duration-100 hover:opacity-90 active:scale-[0.98] active:opacity-80 lg:block motion-reduce:active:scale-100"
             >

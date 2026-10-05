@@ -176,6 +176,7 @@ export default function UltimaShell({
                 const active = isActive(pathname, item.href);
                 return (
                   <Link
+                    prefetch={false}
                     key={item.href}
                     href={item.href}
                     className={active ? styles.railLinkActive : styles.railLink}
@@ -194,6 +195,7 @@ export default function UltimaShell({
                 const active = isActive(pathname, item.href);
                 return (
                   <Link
+                    prefetch={false}
                     key={item.href}
                     href={item.href}
                     className={active ? styles.railLinkActive : styles.railLink}
