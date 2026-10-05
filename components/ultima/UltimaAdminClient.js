@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_SHORT,
@@ -60,7 +61,11 @@ export default function UltimaAdminClient({
   const [poolReports, setPoolReports] = useState({});
   const [poolRun, setPoolRun] = useState({ mode: "", league: "" });
   const [clubSync, setClubSync] = useState(null);
+  const router = useRouter();
   const [clubBusy, setClubBusy] = useState("");
+  const [clubProgress, setClubProgress] = useState(null); // { startedAt, seconds, saved }
+  const pollRef = useRef(null);
+  useEffect(() => () => clearInterval(pollRef.current), []);
   const [showAdvancedSync, setShowAdvancedSync] = useState(false);
   const [busy, setBusy] = useState("");
   const [confirm, setConfirm] = useState(null);
@@ -104,6 +109,25 @@ export default function UltimaAdminClient({
     setMessage("");
     setError("");
     setClubBusy(apply ? "apply" : "preview");
+    const startedAt = new Date();
+    if (apply) {
+      // The run takes minutes. Show the clock and how many players are saved so far.
+      setClubProgress({ startedAt: startedAt.toISOString(), seconds: 0, saved: 0 });
+      clearInterval(pollRef.current);
+      pollRef.current = setInterval(async () => {
+        const seconds = Math.round((Date.now() - startedAt.getTime()) / 1000);
+        let saved = null;
+        try {
+          const res = await fetch(`/api/ultima/admin?since=${encodeURIComponent(startedAt.toISOString())}`, {
+            cache: "no-store",
+          });
+          if (res.ok) saved = (await res.json()).saved;
+        } catch {}
+        setClubProgress((p) => (p ? { ...p, seconds, saved: saved ?? p.saved } : p));
+      }, 5000);
+    }
+    const controller = new AbortController();
+    const timeout = apply ? setTimeout(() => controller.abort(), 330_000) : null;
     try {
       const res = await fetch("/api/ultima/admin", {
         method: "POST",
@@ -113,6 +137,7 @@ export default function UltimaAdminClient({
           dry_run: !apply,
           apply: Boolean(apply),
         }),
+        signal: controller.signal,
       });
       const data = await res.json();
       if (!res.ok || !data.sync?.ok) {
@@ -125,10 +150,19 @@ export default function UltimaAdminClient({
           ? "Clubs applied."
           : "Club preview ready. Review, then Apply.",
       );
+      if (apply) router.refresh();
     } catch {
-      setError("Connection lost.");
+      setError(
+        apply
+          ? "The answer did not come back. Check the saved count, then Preview to confirm."
+          : "Connection lost.",
+      );
+      if (apply) router.refresh();
     } finally {
+      if (timeout) clearTimeout(timeout);
+      clearInterval(pollRef.current);
       setClubBusy("");
+      setClubProgress(null);
     }
   }
 
@@ -212,6 +246,12 @@ export default function UltimaAdminClient({
             {clubBusy === "apply" ? "Applying…" : "Apply club changes"}
           </button>
         </div>
+        {clubProgress ? (
+          <p className={styles.utNote} role="status">
+            Applying club changes. {Math.floor(clubProgress.seconds / 60)}m {clubProgress.seconds % 60}s so far.
+            {clubProgress.saved ? ` ${clubProgress.saved} players saved.` : " Fetching squads, this takes a few minutes."}
+          </p>
+        ) : null}
         <button
           type="button"
           className={styles.utNote}

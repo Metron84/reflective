@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUserApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
 import {
   commissionerStartDraft,
   commissionerPauseDraft,
@@ -26,6 +26,26 @@ import {
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+/** Club sync progress: how many players the run has saved since `since`. */
+export async function GET(request) {
+  const gate = await requireUserApi();
+  if (!gate.ok) return gate.response;
+  if (!(await requireCommissioner(gate.user.id))) {
+    const { status, body } = ultimaErrorResponse("NOT_COMMISSIONER", { status: 403 });
+    return NextResponse.json(body, { status });
+  }
+  const since = new Date(new URL(request.url).searchParams.get("since") ?? "");
+  const db = getUltimaDb();
+  if (!db || Number.isNaN(since.getTime())) {
+    return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
+  }
+  const { count } = await db
+    .from("ultima_players")
+    .select("id", { count: "exact", head: true })
+    .gte("club_synced_at", since.toISOString());
+  return NextResponse.json({ saved: count ?? 0 }, { headers: { "Cache-Control": "no-store" } });
+}
 
 export async function POST(request) {
   const gate = await requireUserApi({ mutating: true });
