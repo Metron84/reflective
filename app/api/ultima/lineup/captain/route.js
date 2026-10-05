@@ -4,6 +4,9 @@ import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { setCaptain } from "@/lib/ultima/server/lineup";
 import { recomputeGameweekScores } from "@/lib/ultima/server/scoring-run";
+import { runIdempotent } from "@/lib/ultima/server/action-keys";
+import { playerNameFor } from "@/lib/ultima/server/receipt-data";
+import { captainReceipt } from "@/lib/ultima/receipts";
 
 export const runtime = "nodejs";
 
@@ -31,26 +34,38 @@ export async function POST(request) {
     return NextResponse.json({ code: "INVALID", message: "Pick a player." }, { status: 400 });
   }
 
-  const gameweek = competition ? await getCurrentGameweek(competition.id) : null;
-  if (!gameweek) {
-    const { status, body: err } = ultimaErrorResponse("NO_GAMEWEEK", { status: STATUS.NO_GAMEWEEK });
-    return NextResponse.json(err, { status });
-  }
-
-  const result = await setCaptain({
+  return runIdempotent({
+    request,
+    route: "lineup/captain",
     managerId: manager.id,
-    gameweekId: gameweek.id,
-    gameweek,
-    playerId,
+    competitionId: gate.competition?.id ?? manager.competition_id,
+    handler: async () => {
+      const gameweek = competition ? await getCurrentGameweek(competition.id) : null;
+      if (!gameweek) {
+        const { status, body: err } = ultimaErrorResponse("NO_GAMEWEEK", { status: STATUS.NO_GAMEWEEK });
+        return { status, body: err };
+      }
+
+      const result = await setCaptain({
+        managerId: manager.id,
+        gameweekId: gameweek.id,
+        gameweek,
+        playerId,
+      });
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          status: STATUS[result.code] ?? 400,
+        });
+        return { status, body: err };
+      }
+
+      await recomputeGameweekScores(competition.id, gameweek.id);
+
+      const name = await playerNameFor(playerId);
+      return {
+        status: 200,
+        body: { ok: true, captains: result.captains, receipt: captainReceipt({ name }) },
+      };
+    },
   });
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      status: STATUS[result.code] ?? 400,
-    });
-    return NextResponse.json(err, { status });
-  }
-
-  await recomputeGameweekScores(competition.id, gameweek.id);
-
-  return NextResponse.json({ ok: true, captains: result.captains });
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUserApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
+import { getActiveCompetition } from "@/lib/ultima/server/db";
 import {
   commissionerStartDraft,
   commissionerPauseDraft,
@@ -23,6 +23,7 @@ import {
   generateInviteCode,
   requireCommissioner,
 } from "@/lib/ultima/server/admin";
+import { getLoggedDb } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -36,7 +37,7 @@ export async function GET(request) {
     return NextResponse.json(body, { status });
   }
   const since = new Date(new URL(request.url).searchParams.get("since") ?? "");
-  const db = getUltimaDb();
+  const db = getLoggedDb("route:ultima/admin");
   if (!db || Number.isNaN(since.getTime())) {
     return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
   }

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getUltimaDb } from "@/lib/ultima/server/db";
 import { readQueue, saveQueue } from "@/lib/ultima/server/queue";
+import { getLoggedDb } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 
@@ -48,7 +48,7 @@ export async function GET() {
   const gate = await requireSeatApi({ mutating: false });
   if (!gate.ok) return gate.response;
   const { manager } = gate;
-  const db = getUltimaDb();
+  const db = getLoggedDb("route:ultima/draft/queue");
   if (!db) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
     return NextResponse.json(body, { status });

@@ -11,12 +11,19 @@ export async function GET(request, { params }) {
   if (!gate.ok) return gate.response;
   const { id } = await params;
   const mode = new URL(request.url).searchParams.get("mode") === "drop" ? "drop" : "add";
-  const list = await getSwapList({
-    competition: gate.competition,
-    manager: gate.manager,
-    playerId: id,
-    mode,
-  });
+  let list;
+  try {
+    list = await getSwapList({
+      competition: gate.competition,
+      manager: gate.manager,
+      playerId: id,
+      mode,
+    });
+  } catch (error) {
+    console.error("[ultima/read] swap list", error?.message);
+    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503, message: "The list did not load. Try again." });
+    return NextResponse.json(body, { status });
+  }
   if (!list) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 404, message: "Player not found." });
     return NextResponse.json(body, { status });

@@ -7689,3 +7689,122 @@ button.capCellLocked {
   border: 1px solid var(--office-chrome, rgba(230, 225, 216, 0.16));
   background: var(--office-panel, #181c25);
 }
+
+/* Action feedback: button states and the receipt toast. Archivo, charcoal, red only for errors. */
+.actionSpinner {
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.5rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: actionSpin 0.7s linear infinite;
+}
+
+.actionTick {
+  margin-right: 0.45rem;
+  font-weight: 700;
+}
+
+.actionSlow {
+  margin-left: 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.actionError {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.actionErrorText {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: #d8232a;
+}
+
+.office .actionErrorText {
+  color: #ff6b70;
+}
+
+@keyframes actionSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actionSpinner {
+    animation-duration: 2s;
+  }
+}
+
+.receipt {
+  position: fixed;
+  left: 50%;
+  bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  padding: 0.7rem 0.9rem;
+  transform: translateX(-50%);
+  background: #181c25;
+  color: #e6e1d8;
+  border: 1px solid rgba(230, 225, 216, 0.16);
+  border-radius: 2px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.42);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.receiptError {
+  border-color: #d8232a;
+}
+
+.receiptMark {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #5cba9a;
+}
+
+.receiptError .receiptMark {
+  color: #d8232a;
+}
+
+.receiptText {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.receiptClose {
+  flex-shrink: 0;
+  min-width: 28px;
+  min-height: 28px;
+  background: transparent;
+  border: none;
+  color: rgba(230, 225, 216, 0.58);
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+@media (min-width: 900px) {
+  .receipt {
+    bottom: 1.5rem;
+  }
+}
+
+.trOfferCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { runNotifyCron } from "@/lib/ultima/server/notify-cron";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,10 +13,14 @@ function isAuthorized(request) {
 }
 
 /** Every 15 minutes: expire offers, lock reminders, send held pushes. */
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const result = await runNotifyCron();
   return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/notify", () => handle(request));
 }

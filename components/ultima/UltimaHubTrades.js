@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import UltimaActionButton from "./UltimaActionButton";
 import UltimaPanel from "./UltimaPanel";
 import UltimaRow from "./UltimaRow";
-import UltimaStaffMessage from "./UltimaStaffMessage";
 import styles from "./ultima.module.css";
 
 function hoursLeft(iso) {
@@ -16,8 +16,6 @@ function hoursLeft(iso) {
 
 export default function UltimaHubTrades({ initialCards = [], managerId }) {
   const [cards, setCards] = useState(initialCards);
-  const [busyId, setBusyId] = useState("");
-  const [error, setError] = useState("");
 
   useEffect(() => {
     setCards(initialCards);
@@ -27,55 +25,29 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
 
   const vetoLive = cards.some((card) => card.state === "review");
 
-  async function act(tradeId, body) {
-    setBusyId(tradeId);
-    setError("");
-    try {
-      const res = await fetch("/api/ultima/trades/respond", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ trade_id: tradeId, ...body }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message ?? "That did not land.");
-        return;
-      }
-      if (body.veto && !data.vetoed) {
-        setCards((current) =>
-          current.map((card) =>
-            card.id === tradeId
-              ? {
-                  ...card,
-                  already_vetoed: true,
-                  veto_count: card.veto_count + 1,
-                }
-              : card,
-          ),
-        );
-        return;
-      }
-      if (body.accept) {
-        setCards((current) =>
-          current.map((card) =>
-            card.id === tradeId
-              ? {
-                  ...card,
-                  state: "review",
-                  can_accept: false,
-                  can_veto: false,
-                }
-              : card,
-          ),
-        );
-        return;
-      }
-      setCards((current) => current.filter((card) => card.id !== tradeId));
-    } catch {
-      setError("Connection lost. Try again.");
-    } finally {
-      setBusyId("");
+  // The server confirmed. Only now does the card change.
+  function settle(tradeId, body, data) {
+    if (body.veto && !data.vetoed) {
+      setCards((current) =>
+        current.map((card) =>
+          card.id === tradeId
+            ? { ...card, already_vetoed: true, veto_count: card.veto_count + 1 }
+            : card,
+        ),
+      );
+      return;
     }
+    if (body.accept) {
+      setCards((current) =>
+        current.map((card) =>
+          card.id === tradeId
+            ? { ...card, state: "review", can_accept: false, can_veto: false }
+            : card,
+        ),
+      );
+      return;
+    }
+    setCards((current) => current.filter((card) => card.id !== tradeId));
   }
 
   return (
@@ -97,6 +69,7 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
             primary={`${card.proposer_name} to ${card.receiver_name}`}
             meta={[
               card.state === "proposed" ? "Proposal" : "League review",
+              card.state === "proposed" && card.expires_in ? `Expires in ${card.expires_in}` : null,
               card.state === "review" && card.review_expires_at
                 ? hoursLeft(card.review_expires_at)
                 : null,
@@ -111,22 +84,36 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
           />
           {card.can_accept ? (
             <div className={styles.hubTradeActions}>
-              <button
-                type="button"
-                className={styles.primaryBtn}
-                disabled={busyId === card.id}
-                onClick={() => act(card.id, { accept: true })}
-              >
-                {busyId === card.id ? "…" : "Accept"}
-              </button>
-              <button
-                type="button"
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: card.id, accept: true }}
+                label="Accept"
+                workingLabel="Accepting…"
+                doneLabel="Accepted"
+                onDone={(data) => settle(card.id, { accept: true }, data)}
+              />
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: card.id, accept: false }}
+                label="Decline"
+                workingLabel="Declining…"
+                doneLabel="Declined"
                 className={styles.secondaryBtn}
-                disabled={busyId === card.id}
-                onClick={() => act(card.id, { accept: false })}
-              >
-                Decline
-              </button>
+                onDone={(data) => settle(card.id, { accept: false }, data)}
+              />
+            </div>
+          ) : null}
+          {card.can_cancel ? (
+            <div className={styles.hubTradeActions}>
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: card.id, cancel: true }}
+                label="Cancel"
+                workingLabel="Cancelling…"
+                doneLabel="Cancelled"
+                className={styles.secondaryBtn}
+                onDone={(data) => settle(card.id, { cancel: true }, data)}
+              />
             </div>
           ) : null}
           {card.can_veto ? (
@@ -134,14 +121,15 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
               {card.already_vetoed ? (
                 <p className={styles.opRowMeta}>You vetoed this.</p>
               ) : (
-                <button
-                  type="button"
+                <UltimaActionButton
+                  url="/api/ultima/trades/respond"
+                  body={{ trade_id: card.id, veto: true }}
+                  label="Veto"
+                  workingLabel="Casting veto…"
+                  doneLabel="Veto cast"
                   className={styles.vetoBtn}
-                  disabled={busyId === card.id}
-                  onClick={() => act(card.id, { veto: true })}
-                >
-                  {busyId === card.id ? "…" : "Veto"}
-                </button>
+                  onDone={(data) => settle(card.id, { veto: true }, data)}
+                />
               )}
             </div>
           ) : null}
@@ -153,9 +141,6 @@ export default function UltimaHubTrades({ initialCards = [], managerId }) {
           ) : null}
         </div>
       ))}
-      {error ? (
-        <UltimaStaffMessage subject="The trade desk could not update" body={error} />
-      ) : null}
     </UltimaPanel>
   );
 }

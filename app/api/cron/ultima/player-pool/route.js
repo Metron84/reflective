@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getProviderName } from "@/lib/ultima/provider";
 import { syncClubs } from "@/lib/ultima/server/club-sync";
 import { getActiveCompetition, getUltimaDb } from "@/lib/ultima/server/db";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ function isAuthorized(request) {
  * Daily club sync from current Sportmonks squads. Skips mock provider and a
  * live/paused season draft. On Friday GST, pending league changes apply.
  */
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -48,4 +49,8 @@ export async function GET(request) {
 
   const sync = await syncClubs({ dryRun: false });
   return NextResponse.json({ ok: Boolean(sync?.ok), provider, sync });
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/player-pool", () => handle(request));
 }

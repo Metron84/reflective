@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { runDraftReminders } from "@/lib/ultima/server/reminders";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ function isAuthorized(request) {
   return request.headers.get("authorization") === `Bearer ${secret}`;
 }
 
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -20,4 +21,8 @@ export async function GET(request) {
 
   const draft = await runDraftReminders(competition.id);
   return NextResponse.json({ ok: true, draft });
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/reminders", () => handle(request));
 }

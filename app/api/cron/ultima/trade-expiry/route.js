@@ -3,6 +3,7 @@ import { expireTradeReviews } from "@/lib/ultima/server/trades";
 import { autoPickOnExpiry } from "@/lib/ultima/server/draft";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { getUltimaDb } from "@/lib/ultima/server/db";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,7 @@ function isAuthorized(request) {
   return request.headers.get("authorization") === `Bearer ${secret}`;
 }
 
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -39,4 +40,8 @@ export async function GET(request) {
   }
 
   return NextResponse.json({ ok: true, trades, draft });
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/trade-expiry", () => handle(request));
 }

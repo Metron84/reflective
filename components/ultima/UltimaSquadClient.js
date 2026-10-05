@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_SQUAD_SIZE,
@@ -24,6 +24,8 @@ import UltimaStatsStrip from "./UltimaStatsStrip";
 import UltimaStatusBar from "./UltimaStatusBar";
 import UltimaValueNumber, { percentileInList } from "./UltimaValueNumber";
 import styles from "./ultima.module.css";
+import { showUltimaReceipt } from "./UltimaReceipt";
+import { useUltimaAction } from "./useUltimaAction";
 
 function normalizePlayer(player) {
   if (!player) return null;
@@ -83,8 +85,11 @@ export default function UltimaSquadClient({
     if (lineupProp?.length) return lineupProp;
     return emptyLineupTemplate();
   });
-  const [saving, setSaving] = useState(false);
+  const write = useUltimaAction();
+  const saving = write.busy;
   const [error, setError] = useState("");
+  // The last lineup the server confirmed. A rejected move rolls back to it.
+  const confirmedRef = useRef(lineup);
   const { openPlayer: openCard } = useUltimaPlayerCard();
   const [confirmXv, setConfirmXv] = useState(null);
   // Bench starts open when no XV is set, so the whole squad is visible.
@@ -128,28 +133,26 @@ export default function UltimaSquadClient({
     return next;
   }
 
+  /** The server rejected an optimistic move: undo it and say why. */
+  function rollBack(result) {
+    if (result.ambiguous) {
+      setError(result.message);
+      showUltimaReceipt({ text: result.message, tone: "error" });
+      return false;
+    }
+    applyLineup(confirmedRef.current);
+    setError(result.message ?? "Could not save.");
+    showUltimaReceipt({ text: `Move undone. ${result.message ?? "Could not save."}`, tone: "error" });
+    return false;
+  }
+
   async function persist(next) {
     if (preview) return true;
-    setSaving(true);
     setError("");
-    try {
-      const res = await fetch("/api/ultima/lineup/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slots: next }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.message ?? "Could not save.");
-        return false;
-      }
-      return true;
-    } catch {
-      setError("Connection lost. Try again.");
-      return false;
-    } finally {
-      setSaving(false);
-    }
+    const result = await write.run("/api/ultima/lineup/save", { slots: next });
+    if (!result.ok) return rollBack(result);
+    confirmedRef.current = next;
+    return true;
   }
 
   async function startPlayer(player) {
@@ -190,28 +193,12 @@ export default function UltimaSquadClient({
       return;
     }
     if (plan.noop) return;
-    const before = lineup;
     applyLineup(plan.lineup);
     if (preview) return;
-    setSaving(true);
     setError("");
-    try {
-      const res = await fetch("/api/ultima/lineup/captain", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_id: player.id }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        applyLineup(before);
-        setError(data.message ?? "Could not set the captain.");
-      }
-    } catch {
-      applyLineup(before);
-      setError("Connection lost. Try again.");
-    } finally {
-      setSaving(false);
-    }
+    const result = await write.run("/api/ultima/lineup/captain", { player_id: player.id });
+    if (!result.ok) rollBack(result);
+    else confirmedRef.current = plan.lineup;
   }
 
   function proposeAutoFill() {

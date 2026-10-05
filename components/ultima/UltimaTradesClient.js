@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ULTIMA_LEAGUES,
   ULTIMA_LEAGUE_SHORT,
@@ -10,6 +11,7 @@ import { ultimaColourHex } from "@/lib/ultima/constants";
 import { reviewBlock } from "@/lib/ultima/trades/rules";
 import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
+import UltimaActionButton from "./UltimaActionButton";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaPanel from "./UltimaPanel";
@@ -144,33 +146,83 @@ const GROUPS = [
   { id: "closed", label: "Closed" },
 ];
 
-function OfferRow({ offer, selected, onSelect }) {
+const names = (players) => (players ?? []).map((p) => p.name).join(", ") || "-";
+
+function OfferRow({ offer, selected, onSelect, windowOpen, onDone }) {
+  const mine = offer.party;
+  const left = mine ? "You give" : `${offer.proposer?.team_name ?? "A club"} gives`;
+  const right = mine ? "You get" : `${offer.receiver?.team_name ?? "A club"} gives`;
+  const live = offer.state === "proposed";
   return (
-    <button
-      type="button"
-      className={selected ? `${styles.trOffer} ${styles.trOfferOn}` : styles.trOffer}
-      style={{ "--team": ultimaColourHex(offer.other.colour) }}
-      onClick={() => onSelect(offer.id)}
-    >
-      <span className={styles.trOfferCopy}>
-        <span className={styles.trOfferName}>
-          {offer.unread ? <span className={styles.opInboxDot} aria-hidden /> : null}
-          {offer.other.team_name}
-        </span>
-        <span className={styles.trOfferMgr}>{offer.other.manager_name || "-"}</span>
-        <span className={styles.trOfferSum}>
-          {offer.party ? offer.summary : `${offer.proposer?.team_name ?? "A club"} to ${offer.receiver?.team_name ?? "a club"} · ${offer.summary}`}
-        </span>
-        {offer.expiresIn ? <span className={styles.trOfferMgr}>Expires in {offer.expiresIn}</span> : null}
-        {offer.voidLine ? <span className={styles.trOfferMgr}>{offer.voidLine}</span> : null}
-      </span>
-      <span
-        className={offer.chip === "In veto" ? styles.trChipVeto : styles.trChip}
+    <div className={styles.trOfferCard}>
+      <button
+        type="button"
+        className={selected ? `${styles.trOffer} ${styles.trOfferOn}` : styles.trOffer}
+        style={{ "--team": ultimaColourHex(offer.other.colour) }}
+        onClick={() => onSelect(offer.id)}
       >
-        {offer.chip}
-        {offer.chip === "In veto" && offer.vetoCountdown ? ` ${offer.vetoCountdown}` : ""}
-      </span>
-    </button>
+        <span className={styles.trOfferCopy}>
+          <span className={styles.trOfferName}>
+            {offer.unread ? <span className={styles.opInboxDot} aria-hidden /> : null}
+            {offer.other.team_name}
+          </span>
+          <span className={styles.trOfferMgr}>{offer.other.manager_name || "-"}</span>
+          <span className={styles.trOfferSum}>
+            {mine ? offer.summary : `${offer.proposer?.team_name ?? "A club"} to ${offer.receiver?.team_name ?? "a club"} · ${offer.summary}`}
+          </span>
+          <span className={styles.trOfferMgr}>
+            {left}: {names(offer.youGive)}
+          </span>
+          <span className={styles.trOfferMgr}>
+            {right}: {names(offer.youGet)}
+          </span>
+          {offer.expiresIn ? <span className={styles.trOfferMgr}>Expires in {offer.expiresIn}</span> : null}
+          {offer.voidLine ? <span className={styles.trOfferMgr}>{offer.voidLine}</span> : null}
+        </span>
+        <span
+          className={offer.chip === "In veto" ? styles.trChipVeto : styles.trChip}
+        >
+          {offer.chip}
+          {offer.chip === "In veto" && offer.vetoCountdown ? ` ${offer.vetoCountdown}` : ""}
+        </span>
+      </button>
+      {live && ((offer.canAccept && windowOpen) || offer.canCancel) ? (
+        <div className={styles.trActions}>
+          {offer.canAccept && windowOpen ? (
+            <>
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: offer.id, accept: true }}
+                label="Accept"
+                workingLabel="Accepting…"
+                doneLabel="Accepted"
+                onDone={onDone}
+              />
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: offer.id, accept: false }}
+                label="Decline"
+                workingLabel="Declining…"
+                doneLabel="Declined"
+                className={styles.secondaryBtn}
+                onDone={onDone}
+              />
+            </>
+          ) : null}
+          {offer.canCancel ? (
+            <UltimaActionButton
+              url="/api/ultima/trades/respond"
+              body={{ trade_id: offer.id, cancel: true }}
+              label="Cancel"
+              workingLabel="Cancelling…"
+              doneLabel="Cancelled"
+              className={styles.secondaryBtn}
+              onDone={onDone}
+            />
+          ) : null}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -178,15 +230,10 @@ function Negotiation({
   offer,
   office,
   windowOpen,
-  busy,
-  error,
-  onAccept,
-  onDecline,
+  onDone,
   onCounter,
-  onVeto,
   onWithdraw,
   onOpenPlayer,
-  onRetry,
 }) {
   const fair = fairness(offer.youGive, offer.youGet);
   const givePts = sumPts(offer.youGive);
@@ -269,13 +316,25 @@ function Negotiation({
 
       {offer.canAccept && windowOpen ? (
         <div className={styles.trActions}>
-          <button type="button" className={styles.secondaryBtn} disabled={busy} onClick={onAccept}>
-            Accept
-          </button>
-          <button type="button" className={styles.secondaryBtn} disabled={busy} onClick={onDecline}>
-            Decline
-          </button>
-          <button type="button" className={styles.secondaryBtn} disabled={busy} onClick={onCounter}>
+          <UltimaActionButton
+            url="/api/ultima/trades/respond"
+            body={{ trade_id: offer.id, accept: true }}
+            label="Accept"
+            workingLabel="Accepting…"
+            doneLabel="Accepted"
+            className={styles.secondaryBtn}
+            onDone={onDone}
+          />
+          <UltimaActionButton
+            url="/api/ultima/trades/respond"
+            body={{ trade_id: offer.id, accept: false }}
+            label="Decline"
+            workingLabel="Declining…"
+            doneLabel="Declined"
+            className={styles.secondaryBtn}
+            onDone={onDone}
+          />
+          <button type="button" className={styles.secondaryBtn} onClick={onCounter}>
             Counter
           </button>
         </div>
@@ -283,7 +342,7 @@ function Negotiation({
 
       {offer.canCancel ? (
         <div className={styles.trActions}>
-          <button type="button" className={styles.trWithdraw} disabled={busy} onClick={onWithdraw}>
+          <button type="button" className={styles.trWithdraw} onClick={onWithdraw}>
             Withdraw
           </button>
         </div>
@@ -294,15 +353,17 @@ function Negotiation({
           <p className={styles.trFloorBad}>You vetoed this.</p>
         ) : (
           <div className={styles.trActions}>
-            <button type="button" className={styles.vetoBtn} disabled={busy} onClick={onVeto}>
-              Veto
-            </button>
+            <UltimaActionButton
+              url="/api/ultima/trades/respond"
+              body={{ trade_id: offer.id, veto: true }}
+              label="Veto"
+              workingLabel="Casting veto…"
+              doneLabel="Veto cast"
+              className={styles.vetoBtn}
+              onDone={onDone}
+            />
           </div>
         )
-      ) : null}
-
-      {error ? (
-        <UltimaStaffMessage subject={error} actionLabel="Retry" onAction={onRetry} />
       ) : null}
     </UltimaPanel>
   );
@@ -310,7 +371,9 @@ function Negotiation({
 
 export default function UltimaTradesClient({ office, selectedId = null, preview = false, initialTab = "received", initialBlockView = "board", prefill = null }) {
   const prefillClub = prefill?.offer && (office?.clubs ?? []).some((c) => c.id === prefill.offer && !c.yours && !c.is_bot) ? prefill.offer : "";
-  const [tab, setTab] = useState(prefillClub || prefill?.give ? "compose" : initialTab);
+  const defaultTab =
+    initialTab === "received" && !office?.received?.length && office?.sent?.length ? "sent" : initialTab;
+  const [tab, setTab] = useState(prefillClub || prefill?.give ? "compose" : defaultTab);
   const [openId, setOpenId] = useState(selectedId);
   const [step, setStep] = useState(prefillClub ? 2 : 1);
   const [receiverId, setReceiverId] = useState(prefillClub);
@@ -320,9 +383,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   const [pendingGive, setPendingGive] = useState(!prefillClub ? prefill?.give ?? null : null);
   const { openPlayer: openCard } = useUltimaPlayerCard();
   const setSheet = (player) => player?.id && openCard(player.id);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [lastAct, setLastAct] = useState(null);
+  const router = useRouter();
   const [counterOf, setCounterOf] = useState(null);
   const [confirmWithdraw, setConfirmWithdraw] = useState(null);
 
@@ -361,50 +422,21 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
     );
   }
 
-  async function act(body) {
-    setLoading(true);
-    setError("");
-    setLastAct(body);
-    try {
-      const res = await fetch("/api/ultima/trades/respond", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) setError(data.message ?? "The trade desk could not update.");
-      else window.location.reload();
-    } catch {
-      setError("Connection lost.");
-    } finally {
-      setLoading(false);
-    }
+  // A confirmed write: refresh the server data, keep the receipt toast on screen.
+  function afterWrite() {
+    setConfirmWithdraw(null);
+    setOpenId(null);
+    router.refresh();
   }
 
-  async function send() {
-    if (block || !receiverId) return;
-    setLoading(true);
-    setError("");
-    setLastAct("send");
-    try {
-      const res = await fetch("/api/ultima/trades/propose", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          receiver_id: receiverId,
-          give_player_ids: giveIds,
-          get_player_ids: getIds,
-          counter_of: counterOf,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) setError(data.message ?? "That trade did not land.");
-      else window.location.reload();
-    } catch {
-      setError("Connection lost.");
-    } finally {
-      setLoading(false);
-    }
+  function afterSend() {
+    setStep(1);
+    setReceiverId("");
+    setGiveIds([]);
+    setGetIds([]);
+    setCounterOf(null);
+    setTab("sent");
+    router.refresh();
   }
 
   function toggle(listIds, setList, id) {
@@ -419,7 +451,6 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
     setGetIds(offer.youGet.map((p) => p.id));
     setCounterOf(offer.id);
     setOpenId(null);
-    setError("");
   }
 
   function startFromBlock({ receiverId: toId, getId = null, giveId = null }) {
@@ -430,7 +461,6 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
     setGetIds(getId ? [getId] : []);
     setCounterOf(null);
     setOpenId(null);
-    setError("");
   }
 
   const newInterest = (office?.board?.inbox ?? []).filter((i) => i.state === "new").length;
@@ -574,6 +604,8 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                         offer={offer}
                         selected={offer.id === openId}
                         onSelect={setOpenId}
+                        windowOpen={office.windowOpen}
+                        onDone={afterWrite}
                       />
                     ))}
                   </div>
@@ -596,15 +628,10 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                 offer={open}
                 office={office}
                 windowOpen={office.windowOpen}
-                busy={loading}
-                error={error}
-                onAccept={() => act({ trade_id: open.id, accept: true })}
-                onDecline={() => act({ trade_id: open.id, accept: false })}
+                onDone={afterWrite}
                 onCounter={() => startCounter(open)}
-                onVeto={() => act({ trade_id: open.id, veto: true })}
                 onWithdraw={() => setConfirmWithdraw(open.id)}
                 onOpenPlayer={setSheet}
-                onRetry={() => lastAct && lastAct !== "send" && act(lastAct)}
               />
             </div>
           ) : isOffers ? (
@@ -619,15 +646,10 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
             offer={open}
             office={office}
             windowOpen={office.windowOpen}
-            busy={loading}
-            error={error}
-            onAccept={() => act({ trade_id: open.id, accept: true })}
-            onDecline={() => act({ trade_id: open.id, accept: false })}
+            onDone={afterWrite}
             onCounter={() => startCounter(open)}
-            onVeto={() => act({ trade_id: open.id, veto: true })}
-                onWithdraw={() => setConfirmWithdraw(open.id)}
+            onWithdraw={() => setConfirmWithdraw(open.id)}
             onOpenPlayer={setSheet}
-            onRetry={() => lastAct && lastAct !== "send" && act(lastAct)}
           />
           <button type="button" className={styles.opPanelAction} onClick={() => setOpenId(null)}>
             Back
@@ -676,14 +698,24 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
             </p>
             {block ? <p className={styles.trFloorBad}>{block}</p> : null}
             <div className={styles.dSheetActions}>
-              <button type="button" className={styles.primaryBtn} disabled={loading || Boolean(block)} onClick={send}>
-                {loading ? "Sending…" : "Send offer"}
-              </button>
+              <UltimaActionButton
+                url="/api/ultima/trades/propose"
+                body={() => ({
+                  receiver_id: receiverId,
+                  give_player_ids: giveIds,
+                  get_player_ids: getIds,
+                  counter_of: counterOf,
+                })}
+                label="Send offer"
+                workingLabel="Sending offer…"
+                doneLabel="Offer sent"
+                disabled={Boolean(block) || !receiverId}
+                onDone={afterSend}
+              />
               <button type="button" className={styles.secondaryBtn} onClick={() => setStep(2)}>
                 Back
               </button>
             </div>
-            {error ? <UltimaStaffMessage subject={error} actionLabel="Retry" onAction={send} /> : null}
           </div>
         </div>
       ) : null}
@@ -699,19 +731,18 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
           <div className={styles.dSheetPanel}>
             <p className={styles.dSheetName}>Withdraw this offer?</p>
             <div className={styles.dSheetActions}>
-              <button
-                type="button"
-                className={styles.primaryBtn}
-                disabled={loading}
-                onClick={() => act({ trade_id: confirmWithdraw, cancel: true })}
-              >
-                {loading ? "Withdrawing…" : "Withdraw"}
-              </button>
+              <UltimaActionButton
+                url="/api/ultima/trades/respond"
+                body={{ trade_id: confirmWithdraw, cancel: true }}
+                label="Withdraw"
+                workingLabel="Withdrawing…"
+                doneLabel="Withdrawn"
+                onDone={afterWrite}
+              />
               <button type="button" className={styles.secondaryBtn} onClick={() => setConfirmWithdraw(null)}>
                 Keep
               </button>
             </div>
-            {error ? <p className={styles.trFloorBad}>{error}</p> : null}
           </div>
         </div>
       ) : null}

@@ -331,3 +331,18 @@ test("ten people opening Matchday at once cause one upstream refresh", async () 
   assert.equal(live.providerCalls, 1);
   assert.equal(live.statCalls, 1);
 });
+
+test("a captain's Bolt is not doubled on the matchday either: 6 base captained = 14", () => {
+  const bolted = new Map(players);
+  bolted.set("pl1", { ...players.get("pl1"), draft_round: 20 });
+  const view = build({
+    playersById: bolted,
+    stats: [{ player_id: "pl1", goals: 2, assists: 0, rating: null }],
+  });
+  const row = view.you.xv.countries
+    .find((c) => c.league === "pl")
+    .rows.find((r) => r.playerId === "pl1");
+  assert.equal(row.captain, true);
+  assert.equal(row.raw, 8);
+  assert.equal(row.points, 14);
+});

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import UltimaCountryTag from "./UltimaCountryTag";
+import UltimaHubFailed from "./UltimaHubFailed";
 import UltimaHubForm from "./UltimaHubForm";
 import UltimaHubInbox from "./UltimaHubInbox";
 import UltimaHubRadio from "./UltimaHubRadio";
@@ -216,11 +217,21 @@ export default function UltimaHub({ isSignedIn, manager, office = null }) {
     );
   }
 
+  const failed = office.failed ?? [];
+  if (failed.includes("Hub")) {
+    return (
+      <div className={styles.hub}>
+        <UltimaHubFailed sections={["The hub"]} />
+      </div>
+    );
+  }
+
   const hasTrades = Boolean(office.trades?.length);
   const inboxEmpty = !office.inbox?.preview?.length && !office.inbox?.rest?.length;
 
   return (
     <div className={styles.hub}>
+      {failed.length ? <UltimaHubFailed sections={failed} /> : null}
       {office.pinned ? (
         <div className={styles.hubPinned}>
           <UltimaPanel title="Commissioner">

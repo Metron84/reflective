@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { runCardAction } from "@/lib/ultima/server/player-card";
 import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
+import { runIdempotent } from "@/lib/ultima/server/action-keys";
+import { playerNameFor } from "@/lib/ultima/server/receipt-data";
+import { cardActionReceipt } from "@/lib/ultima/receipts";
 
 export const runtime = "nodejs";
 
@@ -43,21 +46,33 @@ export async function POST(request) {
     return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
   }
 
-  const result = await runCardAction({
-    competition,
-    manager,
-    playerId: typeof body?.player_id === "string" ? body.player_id : "",
-    action: typeof body?.action === "string" ? body.action : "",
-    note: body?.note,
-    otherPlayerId: typeof body?.other_player_id === "string" ? body.other_player_id : null,
-  });
+  const playerId = typeof body?.player_id === "string" ? body.player_id : "";
+  const action = typeof body?.action === "string" ? body.action : "";
 
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      status: STATUS[result.code] ?? 400,
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-  return NextResponse.json({ ok: true });
+  return runIdempotent({
+    request,
+    route: "player/action",
+    managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
+    handler: async () => {
+      const result = await runCardAction({
+        competition,
+        manager,
+        playerId,
+        action,
+        note: body?.note,
+        otherPlayerId: typeof body?.other_player_id === "string" ? body.other_player_id : null,
+      });
+
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          status: STATUS[result.code] ?? 400,
+          message: result.message,
+        });
+        return { status, body: err };
+      }
+      const name = await playerNameFor(playerId);
+      return { status: 200, body: { ok: true, receipt: cardActionReceipt({ action, name, result }) } };
+    },
+  });
 }

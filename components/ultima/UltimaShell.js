@@ -7,6 +7,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { ultimaCanonicalPath } from "@/lib/ultima/host";
 import UltimaClubBar from "./UltimaClubBar";
 import UltimaPlayerCardProvider from "./UltimaPlayerCard";
+import UltimaReceiptHost from "./UltimaReceipt";
 import styles from "./ultima.module.css";
 
 const OFFICE_NAV = [
@@ -230,6 +231,7 @@ export default function UltimaShell({
         </div>
       </div>
 
+      {seated && !sample && !room ? <UltimaReceiptHost /> : null}
     </div>
   );
 }

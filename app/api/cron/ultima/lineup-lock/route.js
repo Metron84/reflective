@@ -5,6 +5,7 @@ import { publishUltimaEvent } from "@/lib/ultima/server/events";
 import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
 import { runGameweekSync, getActiveGameweek, getGameweeksToSync } from "@/lib/ultima/server/sync";
 import { runLineupReminders } from "@/lib/ultima/server/reminders";
+import { withReadContext } from "@/lib/ultima/server/strict-db";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ function isAuthorized(request) {
   return request.headers.get("authorization") === `Bearer ${secret}`;
 }
 
-export async function GET(request) {
+async function handle(request) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -59,4 +60,8 @@ export async function GET(request) {
     sync: syncs,
     reminders,
   });
+}
+
+export async function GET(request) {
+  return withReadContext("cron/ultima/lineup-lock", () => handle(request));
 }

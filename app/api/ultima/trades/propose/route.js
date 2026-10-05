@@ -3,6 +3,10 @@ import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { proposeTrade, previewTradeVerdict } from "@/lib/ultima/server/trades";
+import { runIdempotent } from "@/lib/ultima/server/action-keys";
+import { teamNameFor } from "@/lib/ultima/server/receipt-data";
+import { offerSentReceipt } from "@/lib/ultima/receipts";
+import { LIVE_OFFER_HOURS } from "@/lib/ultima/trades/rules";
 
 export const runtime = "nodejs";
 
@@ -46,21 +50,38 @@ export async function POST(request) {
     return NextResponse.json({ ok: true, verdict: preview.verdict });
   }
 
-  const result = await proposeTrade({
-    competitionId: competition.id,
-    proposerId: manager.id,
-    receiverId: body?.receiver_id,
-    givePlayerIds: body?.give_player_ids ?? [],
-    getPlayerIds: body?.get_player_ids ?? [],
-    counterOf: body?.counter_of ?? null,
+  return runIdempotent({
+    request,
+    route: "trades/propose",
+    managerId: manager.id,
+    competitionId: gate.competition?.id ?? manager.competition_id,
+    handler: async () => {
+      const result = await proposeTrade({
+        competitionId: competition.id,
+        proposerId: manager.id,
+        receiverId: body?.receiver_id,
+        givePlayerIds: body?.give_player_ids ?? [],
+        getPlayerIds: body?.get_player_ids ?? [],
+        counterOf: body?.counter_of ?? null,
+      });
+
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          message: result.message,
+        });
+        return { status, body: err };
+      }
+
+      const team = await teamNameFor(body?.receiver_id);
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          trade_id: result.tradeId,
+          verdict: result.verdict,
+          receipt: offerSentReceipt({ team, hours: LIVE_OFFER_HOURS }),
+        },
+      };
+    },
   });
-
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-
-  return NextResponse.json({ ok: true, trade_id: result.tradeId, verdict: result.verdict });
 }
