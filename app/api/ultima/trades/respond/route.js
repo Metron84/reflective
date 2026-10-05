@@ -2,13 +2,15 @@ import { NextResponse } from "next/server";
 import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import { cancelTrade, respondToTrade, vetoTrade } from "@/lib/ultima/server/trades";
+import { runIdempotent } from "@/lib/ultima/server/action-keys";
+import { tradeResponseReceipt } from "@/lib/ultima/receipts";
 
 export const runtime = "nodejs";
 
 export async function POST(request) {
   const gate = await requireSeatApi({ mutating: true });
   if (!gate.ok) return gate.response;
-  const { user, manager } = gate;
+  const { manager } = gate;
   if (!manager) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
     return NextResponse.json(body, { status });
@@ -26,40 +28,37 @@ export async function POST(request) {
     return NextResponse.json({ code: "INVALID", message: "Trade required." }, { status: 400 });
   }
 
-  if (body?.cancel) {
-    const result = await cancelTrade({ tradeId, managerId: manager.id });
-    if (!result.ok) {
-      const { status, body: err } = ultimaErrorResponse(result.code, {
-        message: result.message,
-      });
-      return NextResponse.json(err, { status });
-    }
-    return NextResponse.json({ ok: true, ...result });
-  }
+  const kind = body?.cancel ? "cancel" : body?.veto ? "veto" : body?.accept ? "accept" : "decline";
 
-  if (body?.veto) {
-    const result = await vetoTrade({ tradeId, managerId: manager.id });
-    if (!result.ok) {
-      const { status, body: err } = ultimaErrorResponse(result.code, {
-        message: result.message,
-      });
-      return NextResponse.json(err, { status });
-    }
-    return NextResponse.json({ ok: true, ...result });
-  }
-
-  const result = await respondToTrade({
-    tradeId,
+  return runIdempotent({
+    request,
+    route: `trades/${kind}`,
     managerId: manager.id,
-    accept: Boolean(body?.accept),
+    handler: async () => {
+      let result;
+      if (kind === "cancel") result = await cancelTrade({ tradeId, managerId: manager.id });
+      else if (kind === "veto") result = await vetoTrade({ tradeId, managerId: manager.id });
+      else result = await respondToTrade({ tradeId, managerId: manager.id, accept: kind === "accept" });
+
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          message: result.message,
+        });
+        return { status, body: err };
+      }
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          ...result,
+          receipt: tradeResponseReceipt({
+            kind,
+            state: result.state,
+            vetoed: result.vetoed,
+            votes: result.votes,
+          }),
+        },
+      };
+    },
   });
-
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-
-  return NextResponse.json({ ok: true, ...result });
 }

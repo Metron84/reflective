@@ -376,13 +376,21 @@ test("signing: the database result maps to plain lines, a lost race names the te
     return addDropTransaction({ managerId: "m1", addPlayerId: "f1", dropPlayerId: "a1", gameweekId: "g1" });
   };
   const taken = await run({ ok: false, code: "PICK_TAKEN", taken_by: "Ajax FC" });
-  assert.deepEqual(taken, { ok: false, code: "PICK_TAKEN", message: "Just signed by Ajax FC." });
+  assert.deepEqual(taken, { ok: false, code: "PICK_TAKEN", message: "Ajax FC signed him first." });
+  const takenAt = await run({
+    ok: false,
+    code: "PICK_TAKEN",
+    taken_by: "Ajax FC",
+    taken_at: new Date(Date.now() - 3 * 60_000).toISOString(),
+  });
+  assert.equal(takenAt.message, "Ajax FC signed him 3 min ago.");
   const floor = await run({ ok: false, code: "FLOOR_VIOLATION", league: "laliga", count: 2 });
   assert.equal(floor.message, "This leaves you with 2 ESP. You need 3.");
   assert.equal((await run({ ok: false, code: "XV_LOCKED" })).code, "XV_LOCKED");
   assert.equal((await run({ ok: false, code: "IN_ACCEPTED_TRADE" })).code, "IN_ACCEPTED_TRADE");
   const ok = await run({ ok: true, voided: [{ trade_id: "t3" }] });
-  assert.deepEqual(ok, { ok: true, voided: 1 });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.voided, 1);
 });
 
 test("card routes gate on requireSeatApi, writes with the write check", async () => {

@@ -5,13 +5,15 @@ import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { saveLineup } from "@/lib/ultima/server/lineup";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { recomputeGameweekScores } from "@/lib/ultima/server/scoring-run";
+import { runIdempotent } from "@/lib/ultima/server/action-keys";
+import { lineupReceipt } from "@/lib/ultima/receipts";
 
 export const runtime = "nodejs";
 
 export async function POST(request) {
   const gate = await requireSeatApi({ mutating: true });
   if (!gate.ok) return gate.response;
-  const { user, manager } = gate;
+  const { manager } = gate;
   if (!manager) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
     return NextResponse.json(body, { status });
@@ -24,35 +26,42 @@ export async function POST(request) {
     return NextResponse.json({ code: "INVALID", message: "Invalid request." }, { status: 400 });
   }
 
-  const competition = await getActiveCompetition();
-  if (!competition) {
-    const { status, body: err } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
-    return NextResponse.json(err, { status });
-  }
-
-  const gameweek = await getCurrentGameweek(competition.id);
-  if (!gameweek) {
-    return NextResponse.json(
-      { code: "UNAVAILABLE", message: "No gameweek this week. The leagues are on a break." },
-      { status: 400 },
-    );
-  }
-
-  const result = await saveLineup({
+  return runIdempotent({
+    request,
+    route: "lineup/save",
     managerId: manager.id,
-    gameweekId: gameweek.id,
-    slots: body?.slots ?? [],
-    gameweek,
+    handler: async () => {
+      const competition = await getActiveCompetition();
+      if (!competition) {
+        const { status, body: err } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
+        return { status, body: err };
+      }
+
+      const gameweek = await getCurrentGameweek(competition.id);
+      if (!gameweek) {
+        return {
+          status: 400,
+          body: { code: "UNAVAILABLE", message: "No gameweek this week. The leagues are on a break." },
+        };
+      }
+
+      const result = await saveLineup({
+        managerId: manager.id,
+        gameweekId: gameweek.id,
+        slots: body?.slots ?? [],
+        gameweek,
+      });
+
+      if (!result.ok) {
+        const { status, body: err } = ultimaErrorResponse(result.code, {
+          message: result.message,
+        });
+        return { status, body: err };
+      }
+
+      await recomputeGameweekScores(competition.id, gameweek.id);
+
+      return { status: 200, body: { ok: true, receipt: lineupReceipt() } };
+    },
   });
-
-  if (!result.ok) {
-    const { status, body: err } = ultimaErrorResponse(result.code, {
-      message: result.message,
-    });
-    return NextResponse.json(err, { status });
-  }
-
-  await recomputeGameweekScores(competition.id, gameweek.id);
-
-  return NextResponse.json({ ok: true });
 }
