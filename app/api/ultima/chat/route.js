@@ -1,27 +1,18 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getManagerForUser } from "@/lib/ultima/server/db";
+import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { chatRateLimited, listChatMessages, postChatMessage } from "@/lib/ultima/server/chat";
 
 export const runtime = "nodejs";
 
-async function requireSeasonManager() {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return { error: NextResponse.json(body, { status }) };
-  }
-  const manager = await getManagerForUser(user.id);
-  if (!manager) {
-    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
-    return { error: NextResponse.json(body, { status }) };
-  }
-  return { manager };
+async function requireSeasonManager(mutating) {
+  const gate = await requireSeatApi({ mutating });
+  if (!gate.ok) return { error: gate.response };
+  return { manager: gate.manager };
 }
 
 export async function GET() {
-  const gated = await requireSeasonManager();
+  const gated = await requireSeasonManager(false);
   if (gated.error) return gated.error;
 
   const messages = await listChatMessages(gated.manager.competition_id);
@@ -29,7 +20,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const gated = await requireSeasonManager();
+  const gated = await requireSeasonManager(true);
   if (gated.error) return gated.error;
 
   if (chatRateLimited(gated.manager.id)) {

@@ -37,7 +37,13 @@ mock.module("next/server", {
   },
 });
 mock.module("@/lib/auth/session", {
-  namedExports: { getSessionUser: async () => world.user, getProfile: async () => null },
+  namedExports: {
+    getSessionUser: async () => world.user,
+    getSessionResult: async () => ({ user: world.user, error: null }),
+    getVerifiedUser: async () => ({ user: world.user, error: null }),
+    getAuthContext: async () => ({ user: world.user, isSignedIn: Boolean(world.user) }),
+    getProfile: async () => null,
+  },
 });
 mock.module("@/lib/supabase", {
   namedExports: { getServiceClient: () => world.db },

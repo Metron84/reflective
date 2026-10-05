@@ -17,9 +17,14 @@ fresh();
 mock.module("next/server", {
   namedExports: { NextResponse: { json: (body, init = {}) => ({ body, status: init.status ?? 200 }) } },
 });
-mock.module("@/lib/auth/session", { namedExports: { getSessionUser: async () => user } });
+mock.module("@/lib/ultima/server/requireSeat", {
+  namedExports: {
+    requireSeatApi: async () => ({ ok: true, user, manager: seasonManager }),
+    requireUserApi: async () => ({ ok: true, user }),
+  },
+});
 mock.module("@/lib/ultima/server/db", {
-  namedExports: { getManagerForUser: async () => seasonManager, getUltimaDb: () => h.db },
+  namedExports: { getUltimaDb: () => h.db },
 });
 mock.module("@/lib/ultima/server/practice", {
   namedExports: {

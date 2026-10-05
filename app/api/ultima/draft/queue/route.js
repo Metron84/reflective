@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireSeatApi } from "@/lib/ultima/server/requireSeat";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
-import { getManagerForUser, getUltimaDb } from "@/lib/ultima/server/db";
+import { getUltimaDb } from "@/lib/ultima/server/db";
 import { readQueue, saveQueue } from "@/lib/ultima/server/queue";
 
 export const runtime = "nodejs";
@@ -17,17 +17,9 @@ function rateLimited(managerId) {
 }
 
 export async function POST(request) {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
-
-  const manager = await getManagerForUser(user.id);
-  if (!manager) {
-    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 403 });
-    return NextResponse.json(body, { status });
-  }
+  const gate = await requireSeatApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { manager } = gate;
 
   if (rateLimited(manager.id)) {
     return NextResponse.json(
@@ -53,15 +45,12 @@ export async function POST(request) {
 // ultima_current_manager_id() only resolves one manager and is not scoped to the season.
 // Until then own-queue reads are enforced here and in the state routes.
 export async function GET() {
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body } = ultimaErrorResponse("SIGN_IN_REQUIRED", { status: 401 });
-    return NextResponse.json(body, { status });
-  }
-  const manager = await getManagerForUser(user.id);
+  const gate = await requireSeatApi({ mutating: false });
+  if (!gate.ok) return gate.response;
+  const { manager } = gate;
   const db = getUltimaDb();
-  if (!manager || !db) {
-    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: manager ? 503 : 403 });
+  if (!db) {
+    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503 });
     return NextResponse.json(body, { status });
   }
   const queue = await readQueue(db, manager.id);

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireUserApi } from "@/lib/ultima/server/requireSeat";
 import { ULTIMA_MAX_SEATS } from "@/lib/ultima/constants";
 import { ultimaErrorResponse } from "@/lib/ultima/errors";
 import {
   countHumanManagers,
   getActiveCompetition,
-  getManagerForUser,
+  lookupSeat,
   getUltimaDb,
 } from "@/lib/ultima/server/db";
 import {
@@ -38,8 +38,9 @@ function rateLimited(ip) {
 }
 
 async function joinWithInviteCode(userId, code) {
-  const existing = await getManagerForUser(userId);
-  if (existing) return { ok: true, manager_id: existing.id };
+  const seat = await lookupSeat(userId);
+  if (seat.status === "unavailable") return { ok: false, code: "SEAT_UNAVAILABLE" };
+  if (seat.status === "seated") return { ok: true, manager_id: seat.manager.id };
 
   const db = getUltimaDb();
   if (!db) return { ok: false, code: "UNAVAILABLE" };
@@ -134,13 +135,9 @@ export async function POST(request) {
     );
   }
 
-  const user = await getSessionUser();
-  if (!user) {
-    const { status, body: err } = ultimaErrorResponse("SIGN_IN_REQUIRED", {
-      status: 401,
-    });
-    return NextResponse.json(err, { status });
-  }
+  const gate = await requireUserApi({ mutating: true });
+  if (!gate.ok) return gate.response;
+  const { user } = gate;
 
   const password =
     typeof body?.password === "string" ? body.password.trim() : "";
@@ -162,7 +159,8 @@ export async function POST(request) {
 
   if (!result.ok) {
     const { status, body: err } = ultimaErrorResponse(result.code ?? "UNAVAILABLE", {
-      status: result.code === "LEAGUE_FULL" ? 403 : 400,
+      status:
+        result.code === "LEAGUE_FULL" ? 403 : result.code === "SEAT_UNAVAILABLE" ? 503 : 400,
     });
     return NextResponse.json(err, { status });
   }
