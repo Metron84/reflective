@@ -18,7 +18,7 @@ import UltimaLookingFor from "./UltimaLookingFor";
 import UltimaUntouchableChip from "./UltimaUntouchableChip";
 import UltimaPanel from "./UltimaPanel";
 import UltimaPlayerClub from "./UltimaPlayerClub";
-import UltimaPlayerSheet from "./UltimaPlayerSheet";
+import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
 import UltimaStatusBar from "./UltimaStatusBar";
@@ -85,10 +85,7 @@ export default function UltimaSquadClient({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [openId, setOpenId] = useState(() => {
-    if (!openSheetOnMount) return null;
-    return players[0]?.id ?? null;
-  });
+  const { openPlayer: openCard } = useUltimaPlayerCard();
   const [confirmXv, setConfirmXv] = useState(null);
   // Bench starts open when no XV is set, so the whole squad is visible.
   const [collapsed, setCollapsed] = useState(() => {
@@ -108,16 +105,11 @@ export default function UltimaSquadClient({
     [inXv, players],
   );
   const points = useMemo(() => players.map((p) => playerExpected(p)), [players]);
-  const openPlayer = openId ? rosterById.get(openId) : null;
-  const openInXv = openPlayer ? inXv.has(openPlayer.id) : false;
-  const openLocked = openPlayer ? lockedLeagues.includes(openPlayer.league) : false;
   const captainByLeague = useMemo(() => resolveCaptains(lineup).byLeague, [lineup]);
   const captainIds = useMemo(
     () => new Set(Object.values(captainByLeague).filter(Boolean)),
     [captainByLeague],
   );
-  const openIsCaptain = openPlayer ? captainIds.has(openPlayer.id) : false;
-  const openCaptainLocked = openPlayer ? captainLockedLeagues.includes(openPlayer.league) : false;
 
   function replaceTarget(player) {
     const slots = (lineup ?? []).filter((row) => row.slot_group === player.league);
@@ -171,7 +163,6 @@ export default function UltimaSquadClient({
       ),
     );
     applyLineup(next);
-    setOpenId(null);
     await persist(next);
   }
 
@@ -184,7 +175,6 @@ export default function UltimaSquadClient({
       ),
     );
     applyLineup(next);
-    setOpenId(null);
     await persist(next);
   }
 
@@ -197,10 +187,8 @@ export default function UltimaSquadClient({
     });
     if (!plan.ok) {
       setError(CAPTAIN_LINES[plan.code] ?? "Could not set the captain.");
-      setOpenId(null);
       return;
     }
-    setOpenId(null);
     if (plan.noop) return;
     const before = lineup;
     applyLineup(plan.lineup);
@@ -311,7 +299,7 @@ export default function UltimaSquadClient({
               captains={captainByLeague}
               playersById={rosterById}
               lockedLeagues={captainLockedLeagues}
-              onOpen={(id) => setOpenId(id)}
+              onOpen={(id) => openCard(id)}
             />
             {ULTIMA_LEAGUES.map((league) => {
               const rows = (lineup ?? []).filter((row) => row.slot_group === league);
@@ -336,7 +324,7 @@ export default function UltimaSquadClient({
                         locked={hideActions}
                         points={points}
                         emptyLabel="Empty slot"
-                        onOpen={() => player && setOpenId(player.id)}
+                        onOpen={() => player && openCard(player.id)}
                       />
                     );
                   })}
@@ -381,7 +369,7 @@ export default function UltimaSquadClient({
                             hideActions || lockedLeagues.includes(league) ? null : "Start"
                           }
                           onAction={() => startPlayer(player)}
-                          onOpen={() => setOpenId(player.id)}
+                          onOpen={() => openCard(player.id)}
                         />
                       ))}
                 </div>
@@ -390,59 +378,6 @@ export default function UltimaSquadClient({
           </UltimaPanel>
         </div>
       </div>
-
-      {openPlayer ? (
-        <UltimaPlayerSheet
-          player={openPlayer}
-          points={points}
-          onClose={() => setOpenId(null)}
-          captain={openIsCaptain}
-          note={
-            openIsCaptain
-              ? openCaptainLocked
-                ? "Captain. Scores double. Locked for this gameweek."
-                : "Captain. Scores double."
-              : openInXv && openCaptainLocked
-                ? "Captains are locked for this country."
-                : !hideActions && !openInXv && !openLocked
-              ? replaceTarget(openPlayer).player
-                ? `This starts him in place of ${replaceTarget(openPlayer).player.name}.`
-                : "This fills an empty slot from the same country."
-              : null
-          }
-          actions={[
-            ...(!noGameweek && openInXv && !openIsCaptain && !openCaptainLocked
-              ? [
-                  {
-                    label: "Make captain",
-                    primary: true,
-                    disabled: saving,
-                    onClick: () => makeCaptain(openPlayer),
-                  },
-                ]
-              : []),
-            ...(hideActions || openLocked
-              ? []
-              : openInXv
-                ? [
-                    {
-                      label: "Move to bench",
-                      primary: !(openInXv && !openIsCaptain && !openCaptainLocked),
-                      disabled: saving,
-                      onClick: () => benchPlayer(openPlayer),
-                    },
-                  ]
-                : [
-                    {
-                      label: "Start",
-                      primary: true,
-                      disabled: saving,
-                      onClick: () => startPlayer(openPlayer),
-                    },
-                  ]),
-          ]}
-        />
-      ) : null}
 
       {confirmXv ? (
         <div className={styles.dSheet} role="dialog" aria-modal="true" aria-label="Confirm auto-fill">

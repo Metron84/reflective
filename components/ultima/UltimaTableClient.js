@@ -5,6 +5,7 @@ import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
 import { ultimaColourHex } from "@/lib/ultima/constants";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaPanel from "./UltimaPanel";
+import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
@@ -317,6 +318,7 @@ export default function UltimaTableClient({ office }) {
                   row={open}
                   xv={office.xvVisible ? office.xvByManager?.[open.id] : null}
                   captains={office.xvVisible ? office.captainsByManager?.[open.id] : null}
+                  ids={office.xvVisible ? office.xvIdsByManager?.[open.id] : null}
                   xvVisible={office.xvVisible}
                   onClose={() => setOpenId(null)}
                   desktop
@@ -333,6 +335,7 @@ export default function UltimaTableClient({ office }) {
             row={open}
             xv={office.xvVisible ? office.xvByManager?.[open.id] : null}
             captains={office.xvVisible ? office.captainsByManager?.[open.id] : null}
+            ids={office.xvVisible ? office.xvIdsByManager?.[open.id] : null}
             xvVisible={office.xvVisible}
             onClose={() => setOpenId(null)}
           />
@@ -342,7 +345,8 @@ export default function UltimaTableClient({ office }) {
   );
 }
 
-function ClubSheet({ row, xv, captains = null, xvVisible, onClose, desktop = false }) {
+function ClubSheet({ row, xv, captains = null, ids = null, xvVisible, onClose, desktop = false }) {
+  const { openPlayer } = useUltimaPlayerCard();
   const body = (
     <>
       <p className={styles.dSheetName}>{row.team_name}</p>
@@ -365,7 +369,13 @@ function ClubSheet({ row, xv, captains = null, xvVisible, onClose, desktop = fal
             {(xv[league] ?? []).length ? (
               (xv[league] ?? []).map((name) => (
                 <p key={name} className={styles.dSheetMeta}>
-                  {name}
+                  {ids?.[name] ? (
+                    <button type="button" className={styles.quietLink} onClick={() => openPlayer(ids[name])}>
+                      {name}
+                    </button>
+                  ) : (
+                    name
+                  )}
                   {captains?.[league] === name ? (
                     <>
                       {" "}

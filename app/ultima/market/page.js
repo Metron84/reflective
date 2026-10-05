@@ -30,7 +30,7 @@ export default async function UltimaMarketPage() {
   return (
     <div className={styles.ultimaPage}>
       <div className={`${styles.inner} ${styles.innerWide}`}>
-        <UltimaMarketClient office={office} />
+        <UltimaMarketClient key={office ? `${office.freeAgentCount}|${(office.watchedIds ?? []).join(",")}|${office.squadSize}` : "none"} office={office} />
       </div>
     </div>
   );

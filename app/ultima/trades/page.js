@@ -15,6 +15,8 @@ export default async function UltimaTradesPage({ searchParams }) {
   const query = (await searchParams) ?? {};
   const initialTab = query.tab === "block" ? "block" : undefined;
   const initialBlockView = ["board", "mine", "interest"].includes(query.view) ? query.view : undefined;
+  const text = (v) => (typeof v === "string" && /^[0-9a-f-]{36}$/i.test(v) ? v : null);
+  const prefill = { offer: text(query.offer), get: text(query.get), give: text(query.give) };
   const seat = await requireSeat("/ultima/trades");
   if (seat.status === "unavailable") return <UltimaSeatRetry />;
   const { manager, competition } = seat;
@@ -37,6 +39,7 @@ export default async function UltimaTradesPage({ searchParams }) {
           office={office}
           initialTab={initialTab}
           initialBlockView={initialBlockView}
+          prefill={prefill}
         />
       </div>
     </div>

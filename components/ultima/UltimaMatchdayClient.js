@@ -6,6 +6,7 @@ import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaPanel from "./UltimaPanel";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
+import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import styles from "./ultima.module.css";
 
 const POLL_MS = 60_000;
@@ -176,6 +177,7 @@ function FixtureRow({ fixture }) {
 }
 
 function XvList({ xv, compact = false }) {
+  const { openPlayer } = useUltimaPlayerCard();
   if (!xv || xv.filledCount === 0) {
     return <p className={styles.mdEmpty}>No XV set.</p>;
   }
@@ -214,7 +216,9 @@ function XvList({ xv, compact = false }) {
             c.rows.map((r) => (
               <div key={r.playerId} className={styles.mdPlayer}>
                 <span className={styles.mdPlayerName}>
-                  {r.name}
+                  <button type="button" className={styles.quietLink} onClick={() => openPlayer(r.playerId)}>
+                    {r.name}
+                  </button>
                   {r.captain ? <span className={styles.sqCap} title="Captain, scores double">C</span> : null}
                 </span>
                 <span className={styles.mdPts}>

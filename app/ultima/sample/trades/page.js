@@ -17,7 +17,7 @@ const VIEWS = [
   { id: "mine", label: "My block", tab: "block", block: "mine", stage: "open" },
   { id: "sent", label: "Sent offer", tab: "sent", block: "board", stage: "open" },
   { id: "interest", label: "Interest", tab: "block", block: "interest", stage: "open" },
-  { id: "early", label: "Before GW4", tab: "block", block: "board", stage: "early" },
+  { id: "early", label: "Closed", tab: "block", block: "board", stage: "early" },
   { id: "nosquad", label: "Before draft", tab: "block", block: "board", stage: "nosquad" },
 ];
 

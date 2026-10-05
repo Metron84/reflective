@@ -384,7 +384,7 @@ function Interest({ office, inbox, onResolve, onOffer, busyKey }) {
         </div>
       ))}
       {!office.windowOpen ? (
-        <p className={styles.dPicksNote}>Offers open at gameweek 4. Your block stays live.</p>
+        <p className={styles.dPicksNote}>Trades are closed right now. Your block stays live.</p>
       ) : null}
     </UltimaPanel>
   );

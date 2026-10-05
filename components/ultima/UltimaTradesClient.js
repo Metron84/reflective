@@ -7,12 +7,13 @@ import {
   ULTIMA_SQUAD_FLOOR_PER_LEAGUE,
 } from "@/lib/ultima/constants";
 import { ultimaColourHex } from "@/lib/ultima/constants";
+import { LIVE_CAP_LINE } from "@/lib/ultima/trades/rules";
 import { formatClubLine } from "@/lib/ultima/player-club";
 import { expectedUltimaPoints } from "@/lib/ultima/projected-points";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaLocalTime from "./UltimaLocalTime";
 import UltimaPanel from "./UltimaPanel";
-import UltimaPlayerSheet from "./UltimaPlayerSheet";
+import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import UltimaRow from "./UltimaRow";
 import UltimaStaffMessage from "./UltimaStaffMessage";
 import UltimaStatsStrip from "./UltimaStatsStrip";
@@ -54,7 +55,6 @@ function floorBreaks(roster, giveIds, incoming) {
 }
 
 const CLOSED_COPY = {
-  TRADE_TOO_EARLY: "Trades open at gameweek 4.",
   TRADE_DEADLINE: "The trade deadline has passed.",
 };
 
@@ -137,6 +137,13 @@ function TradePlayerRow({ player, index, selected, onToggle, onOpen, points, unt
   );
 }
 
+const GROUPS = [
+  { id: "live", label: "Live" },
+  { id: "accepted", label: "Accepted" },
+  { id: "done", label: "Done" },
+  { id: "closed", label: "Closed" },
+];
+
 function OfferRow({ offer, selected, onSelect }) {
   return (
     <button
@@ -151,7 +158,11 @@ function OfferRow({ offer, selected, onSelect }) {
           {offer.other.team_name}
         </span>
         <span className={styles.trOfferMgr}>{offer.other.manager_name || "-"}</span>
-        <span className={styles.trOfferSum}>{offer.summary}</span>
+        <span className={styles.trOfferSum}>
+          {offer.party ? offer.summary : `${offer.proposer?.team_name ?? "A club"} to ${offer.receiver?.team_name ?? "a club"} · ${offer.summary}`}
+        </span>
+        {offer.expiresIn ? <span className={styles.trOfferMgr}>Expires in {offer.expiresIn}</span> : null}
+        {offer.voidLine ? <span className={styles.trOfferMgr}>{offer.voidLine}</span> : null}
       </span>
       <span
         className={offer.chip === "In veto" ? styles.trChipVeto : styles.trChip}
@@ -297,14 +308,18 @@ function Negotiation({
   );
 }
 
-export default function UltimaTradesClient({ office, selectedId = null, preview = false, initialTab = "received", initialBlockView = "board" }) {
-  const [tab, setTab] = useState(initialTab);
+export default function UltimaTradesClient({ office, selectedId = null, preview = false, initialTab = "received", initialBlockView = "board", prefill = null }) {
+  const prefillClub = prefill?.offer && (office?.clubs ?? []).some((c) => c.id === prefill.offer && !c.yours && !c.is_bot) ? prefill.offer : "";
+  const [tab, setTab] = useState(prefillClub || prefill?.give ? "compose" : initialTab);
   const [openId, setOpenId] = useState(selectedId);
-  const [step, setStep] = useState(1);
-  const [receiverId, setReceiverId] = useState("");
-  const [giveIds, setGiveIds] = useState([]);
-  const [getIds, setGetIds] = useState([]);
-  const [sheet, setSheet] = useState(null);
+  const [step, setStep] = useState(prefillClub ? 2 : 1);
+  const [receiverId, setReceiverId] = useState(prefillClub);
+  const [giveIds, setGiveIds] = useState(prefill?.give ? [prefill.give] : []);
+  const [getIds, setGetIds] = useState(prefillClub && prefill?.get ? [prefill.get] : []);
+  // A card "Offer in a trade" tap carries my player and waits for a club.
+  const [pendingGive, setPendingGive] = useState(!prefillClub ? prefill?.give ?? null : null);
+  const { openPlayer: openCard } = useUltimaPlayerCard();
+  const setSheet = (player) => player?.id && openCard(player.id);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [lastAct, setLastAct] = useState(null);
@@ -327,10 +342,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
   const themBreak = floorBreaks(theirRoster, getIds, givePlayers);
   const even = giveIds.length === getIds.length && giveIds.length > 0;
   const floorOk = !youBreak.length && !themBreak.length;
-  const sheetPoints = useMemo(
-    () => (sheet ? [pts(sheet)] : []),
-    [sheet],
-  );
+  const capReached = (office?.liveOutgoing ?? 0) >= (office?.liveCap ?? 3);
 
   if (!office) {
     return (
@@ -425,7 +437,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
         {[
           ["received", "Received"],
           ["sent", "Sent"],
-          ["league", "League"],
+          ["league", "All"],
           ["block", newInterest ? `Block · ${newInterest}` : "Block"],
           ["compose", "New offer"],
         ].map(([id, label]) => (
@@ -477,8 +489,9 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                       onClick={() => {
                         setReceiverId(club.id);
                         setCounterOf(null);
-                        setGiveIds([]);
+                        setGiveIds(pendingGive ? [pendingGive] : []);
                         setGetIds([]);
+                        setPendingGive(null);
                         setStep(2);
                       }}
                     />
@@ -533,15 +546,24 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
               )}
             </UltimaPanel>
           ) : list.length ? (
-            <UltimaPanel raised title={tab === "league" ? "League" : tab === "sent" ? "Sent" : "Received"}>
-              {list.map((offer) => (
-                <OfferRow
-                  key={offer.id}
-                  offer={offer}
-                  selected={offer.id === openId}
-                  onSelect={setOpenId}
-                />
-              ))}
+            <UltimaPanel raised title={tab === "league" ? "All offers" : tab === "sent" ? "Sent" : "Received"}>
+              {(tab === "league" ? GROUPS : [null]).map((group) => {
+                const rows = group ? list.filter((o) => o.group === group.id) : list;
+                if (!rows.length) return null;
+                return (
+                  <div key={group?.id ?? "rows"}>
+                    {group ? <p className={styles.trColHead}>{group.label}</p> : null}
+                    {rows.map((offer) => (
+                      <OfferRow
+                        key={offer.id}
+                        offer={offer}
+                        selected={offer.id === openId}
+                        onSelect={setOpenId}
+                      />
+                    ))}
+                  </div>
+                );
+              })}
             </UltimaPanel>
           ) : (
             <UltimaStaffMessage
@@ -605,6 +627,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
               <p className={!themBreak.length ? styles.trFloorOk : styles.trFloorBad}>
                 {floorLine(themBreak, "").text}
               </p>
+              {capReached ? <p className={styles.trFloorBad}>{LIVE_CAP_LINE}</p> : null}
               <div className={styles.trActions}>
                 <button type="button" className={styles.secondaryBtn} onClick={() => setStep(2)}>
                   Edit
@@ -612,7 +635,7 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
                 <button
                   type="button"
                   className={styles.secondaryBtn}
-                  disabled={loading || !even || !floorOk}
+                  disabled={loading || !even || !floorOk || capReached}
                   onClick={send}
                 >
                   Send
@@ -699,13 +722,6 @@ export default function UltimaTradesClient({ office, selectedId = null, preview 
         </div>
       ) : null}
 
-      {sheet ? (
-        <UltimaPlayerSheet
-          player={sheet}
-          points={sheetPoints}
-          onClose={() => setSheet(null)}
-        />
-      ) : null}
     </div>
   );
 }
