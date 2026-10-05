@@ -1,3 +1,4 @@
+-- Applied to production 5 Oct 2026. Do not re-run.
 -- Ultima captains. Run after 0050_ultima_trades_open.sql. Idempotent.
 --
 -- One captain per country (pl, laliga, seriea, bundesliga, ligue1) per manager
