@@ -48,6 +48,12 @@ export async function POST(request) {
     return NextResponse.json({ ...err, message: result.message ?? err.message }, { status });
   }
 
-  const messages = await listChatMessages(gated.manager.competition_id);
+  // The message is saved. If the re-read fails, say so instead of an empty list.
+  let messages = null;
+  try {
+    messages = await listChatMessages(gated.manager.competition_id);
+  } catch {
+    messages = null;
+  }
   return NextResponse.json({ ok: true, messages });
 }

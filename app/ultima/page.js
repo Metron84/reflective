@@ -3,14 +3,15 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import UltimaHub from "@/components/ultima/UltimaHub";
 import styles from "@/components/ultima/ultima.module.css";
+import UltimaDidNotLoad from "@/components/ultima/UltimaDidNotLoad";
 import UltimaSeatRetry from "@/components/ultima/UltimaSeatRetry";
 import { ULTIMA_ENABLED } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
-import { getActiveCompetition } from "@/lib/ultima/server/db";
+import { getActiveCompetitionStrict } from "@/lib/ultima/server/db";
 import { peekSeat } from "@/lib/ultima/server/requireSeat";
 import { getCurrentGameweek } from "@/lib/ultima/server/bootstrap";
 import { emptyHubOffice, getHubOffice } from "@/lib/ultima/server/hub";
-import { safeResolve } from "@/lib/ultima/server/safe";
+import { loadStrict } from "@/lib/ultima/server/safe";
 
 export const metadata = {
   title: "Ultima",
@@ -35,14 +36,18 @@ export default async function UltimaPage() {
   if (appHost && !manager) {
     redirect("/ultima/join");
   }
-  const competition = seat.competition ?? (await getActiveCompetition());
-
+  let competition;
   let gameweekNumber = null;
-  if (competition && !manager) {
-    const gameweek = await safeResolve(getCurrentGameweek(competition.id), null);
-    if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
-      gameweekNumber = gameweek.number;
+  try {
+    competition = seat.competition ?? (await loadStrict(getActiveCompetitionStrict()));
+    if (competition && !manager) {
+      const gameweek = await loadStrict(getCurrentGameweek(competition.id));
+      if (Number.isInteger(gameweek?.number) && gameweek.number > 0) {
+        gameweekNumber = gameweek.number;
+      }
     }
+  } catch {
+    return <UltimaDidNotLoad subject="Ultima" />;
   }
 
   let office = null;
@@ -53,9 +58,9 @@ export default async function UltimaPage() {
         managerId: manager.id,
       });
     } catch {
-      office = emptyHubOffice(manager.id);
+      office = { ...emptyHubOffice(manager.id), failed: ["Hub"] };
     }
-    if (!office) office = emptyHubOffice(manager.id);
+    if (!office) office = { ...emptyHubOffice(manager.id), failed: ["Hub"] };
   }
 
   return (

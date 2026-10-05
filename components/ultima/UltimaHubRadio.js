@@ -39,7 +39,8 @@ export default function UltimaHubRadio({ initialMessages = [], managerId }) {
       if (!res.ok) {
         setError(data.message ?? "Message did not send.");
       } else {
-        setMessages(data.messages ?? []);
+        if (Array.isArray(data.messages)) setMessages(data.messages);
+        else setError("Sent. The chat did not reload. Refresh to see it.");
         setBody("");
       }
     } catch {

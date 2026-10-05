@@ -10,11 +10,18 @@ export async function GET(_request, { params }) {
   const gate = await requireSeatApi();
   if (!gate.ok) return gate.response;
   const { id } = await params;
-  const card = await getPlayerCard({
-    competition: gate.competition,
-    manager: gate.manager,
-    playerId: id,
-  });
+  let card;
+  try {
+    card = await getPlayerCard({
+      competition: gate.competition,
+      manager: gate.manager,
+      playerId: id,
+    });
+  } catch (error) {
+    console.error("[ultima/read] player card", error?.message);
+    const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 503, message: "This player did not load. Try again." });
+    return NextResponse.json(body, { status });
+  }
   if (!card) {
     const { status, body } = ultimaErrorResponse("UNAVAILABLE", { status: 404, message: "Player not found." });
     return NextResponse.json(body, { status });

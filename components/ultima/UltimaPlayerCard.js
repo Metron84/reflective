@@ -74,13 +74,13 @@ export default function UltimaPlayerCardProvider({ children }) {
       const body = await readJson(res);
       if (seq !== loadSeq.current) return;
       if (!res.ok) {
-        setError(body.message ?? "Could not load this player.");
+        setError(body.message ?? "This player did not load.");
         return;
       }
       setCard(body);
       setError(null);
     } catch {
-      if (seq === loadSeq.current) setError("Could not load this player.");
+      if (seq === loadSeq.current) setError("This player did not load.");
     }
   }, []);
 
@@ -135,12 +135,12 @@ export default function UltimaPlayerCardProvider({ children }) {
         const res = await fetch(`/api/ultima/player/${playerId}/swap?mode=${mode}`, { cache: "no-store" });
         const body = await readJson(res);
         if (!res.ok) {
-          setError(body.message ?? "Could not load the list.");
+          setError(body.message ?? "The list did not load.");
           return;
         }
         setSwap({ actionId, list: body });
       } catch {
-        setError("Could not load the list.");
+        setError("The list did not load.");
       } finally {
         setLoading(false);
       }

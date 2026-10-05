@@ -4,11 +4,12 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import {
   countHumanManagers,
-  getActiveCompetition,
+  getActiveCompetitionStrict,
   isCommissionerUser,
 } from "@/lib/ultima/server/db";
 import { getAdminOffice } from "@/lib/ultima/server/admin";
-import { safeResolve } from "@/lib/ultima/server/safe";
+import { loadStrict } from "@/lib/ultima/server/safe";
+import UltimaDidNotLoad from "@/components/ultima/UltimaDidNotLoad";
 import styles from "@/components/ultima/ultima.module.css";
 
 export const metadata = {
@@ -27,14 +28,18 @@ export default async function UltimaAdminPage() {
     redirect("/ultima");
   }
 
-  const competition = await getActiveCompetition();
-  const office = competition
-    ? await safeResolve(getAdminOffice(competition.id), null)
-    : null;
-
-  const managerCount = competition
-    ? await safeResolve(countHumanManagers(competition.id), 0)
-    : 0;
+  let competition = null;
+  let office = null;
+  let managerCount = 0;
+  try {
+    competition = await loadStrict(getActiveCompetitionStrict());
+    if (competition) {
+      office = await loadStrict(getAdminOffice(competition.id), 12000);
+      managerCount = await loadStrict(countHumanManagers(competition.id, { strict: true }));
+    }
+  } catch {
+    return <UltimaDidNotLoad subject="The admin desk" />;
+  }
 
   return (
     <div className={styles.ultimaPage}>
