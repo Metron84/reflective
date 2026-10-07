@@ -1,7 +1,9 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import PlayGame from "@/components/play/PlayGame";
 import { getRenderClient } from "@/lib/supabase/server";
+import { isPlayHost, mainSiteOrigin } from "@/lib/play/host.js";
 import { dubaiWeekStart, lastDubaiWeekStart, weekLabel } from "@/lib/play/week.js";
 import styles from "./page.module.css";
 
@@ -52,6 +54,10 @@ function Board({ title, weekStart, rows, emptyHint }) {
 
 export default async function PlayPage({ searchParams }) {
   const sp = await searchParams;
+  const host = (await headers()).get("host");
+  // On the play host other site pages are not served, so links go to the main site.
+  const playApp = isPlayHost(host);
+  const base = playApp ? mainSiteOrigin(host) : "";
   const supabase = await getRenderClient();
   const now = new Date();
   const thisWeek = dubaiWeekStart(now);
@@ -67,17 +73,23 @@ export default async function PlayPage({ searchParams }) {
       <Board title="Last week" weekStart={lastWeek} rows={previous} emptyHint="No scores from last week." />
       <p className={styles.note}>Weeks run Monday to Sunday, Dubai time. Your first saved score each day counts.</p>
       <div className={styles.actions}>
-        <Link href="/films" className={styles.secondary}>Watch the films</Link>
-        <Link href="/guesser" className={styles.secondary}>Play The Guesser</Link>
-        <Link href="/ultima" className={styles.secondary}>Play Ultima</Link>
+        <Link href={`${base}/films`} className={styles.secondary}>Watch the films</Link>
+        <Link href={`${base}/guesser`} className={styles.secondary}>Play The Guesser</Link>
+        <Link href={`${base}/ultima`} className={styles.secondary}>Play Ultima</Link>
       </div>
     </div>
   );
 
   return (
     <div className={styles.page}>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Play" }]} />
-      <PlayGame autoSave={sp?.save === "1"} board={board} />
+      {playApp ? (
+        <header className={styles.hostBar}>
+          <a href={base} className={styles.hostLink}>The Reflective Football</a>
+        </header>
+      ) : (
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Play" }]} />
+      )}
+      <PlayGame autoSave={sp?.save === "1"} board={board} base={base} />
     </div>
   );
 }

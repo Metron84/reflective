@@ -127,3 +127,15 @@
     padding-right: 1.5rem;
   }
 }
+
+.hostBar {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.15);
+}
+
+.hostLink {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-navy);
+  text-decoration: none;
+}

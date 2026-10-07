@@ -22,7 +22,7 @@ async function post(path, body) {
 }
 
 /** `autoSave` is true when the player returns from sign-up: the server saves the finished game held by their cookie. */
-export default function PlayGame({ autoSave = false, board = null }) {
+export default function PlayGame({ autoSave = false, board = null, base = "" }) {
   const [stage, setStage] = useState(autoSave ? "saving" : "landing");
   const [beat, setBeat] = useState("idle");
   const [segments, setSegments] = useState([]);
@@ -72,7 +72,7 @@ export default function PlayGame({ autoSave = false, board = null }) {
     setBusy(true);
     const r = await post("/api/play/claim");
     setBusy(false);
-    if (typeof window !== "undefined") window.history.replaceState(null, "", "/play");
+    if (typeof window !== "undefined") window.history.replaceState(null, "", window.location.pathname);
     if (r.ok) {
       setFinish(r.data);
       setStage("end");
@@ -203,7 +203,7 @@ export default function PlayGame({ autoSave = false, board = null }) {
               {error}
             </p>
           )}
-          <Link href="/films" className="mt-4 text-center text-base font-bold underline underline-offset-4">
+          <Link href={`${base}/films`} className="mt-4 text-center text-base font-bold underline underline-offset-4">
             Watch films on TRF
           </Link>
           <p className="mt-10 text-sm font-semibold text-navy/60">Football is nothing without the fans.</p>
@@ -214,7 +214,7 @@ export default function PlayGame({ autoSave = false, board = null }) {
   }
 
   if (stage === "end" && finish) {
-    return <EndScreen finish={finish} onAgain={start} onRetry={retrySave} retrying={busy} />;
+    return <EndScreen base={base} finish={finish} onAgain={start} onRetry={retrySave} retrying={busy} />;
   }
 
   const spinning = beat === "spinning";
@@ -260,7 +260,7 @@ export default function PlayGame({ autoSave = false, board = null }) {
             <button onClick={start} className="mt-4 w-full rounded-lg bg-signal px-4 py-3 text-base font-bold text-paper">
               Start a new game
             </button>
-            <Link href="/films" className="mt-3 block text-center text-base font-bold underline underline-offset-4">
+            <Link href={`${base}/films`} className="mt-3 block text-center text-base font-bold underline underline-offset-4">
               Watch films on TRF
             </Link>
           </div>

@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-const FILMS_HREF = "/films";
-
 function SaveBlock({ finish, onRetry, retrying }) {
   if (finish.saved) {
     return (
@@ -42,7 +40,7 @@ function SaveBlock({ finish, onRetry, retrying }) {
   );
 }
 
-export default function EndScreen({ finish, onAgain, onRetry, retrying }) {
+export default function EndScreen({ base = "", finish, onAgain, onRetry, retrying }) {
   const s = finish.summary;
   const stats = [
     ["Questions answered", s.answered],
@@ -74,7 +72,7 @@ export default function EndScreen({ finish, onAgain, onRetry, retrying }) {
         <a href="/play" className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
           See the leaderboard
         </a>
-        <Link href={FILMS_HREF} className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
+        <Link href={`${base}/films`} className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
           Watch films on TRF
         </Link>
       </div>

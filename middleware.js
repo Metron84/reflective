@@ -12,6 +12,7 @@ import {
   isUltimaPassthrough,
   withAuthCookieDomain,
 } from "@/lib/ultima/host";
+import { isPlayHost, playHostAction } from "@/lib/play/host";
 
 const PUBLIC_PATHS = [
   "/signin",
@@ -94,24 +95,35 @@ function ultimaHostResponse(request) {
   return NextResponse.redirect(url);
 }
 
+function playHostResponse(request) {
+  const action = playHostAction(request.nextUrl.pathname);
+  if (action.type === "pass") return null;
+  const url = request.nextUrl.clone();
+  url.pathname = action.to;
+  if (action.type === "rewrite") return rewriteWithPath(request, url);
+  if (!action.keepSearch) url.search = "";
+  return NextResponse.redirect(url);
+}
+
+/** Subdomain routing: Ultima and the play game each own a host. */
+function appHostResponse(request, host) {
+  if (isUltimaAppHost(host)) return ultimaHostResponse(request);
+  if (isPlayHost(host)) return playHostResponse(request);
+  return null;
+}
+
 export async function middleware(request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const host = request.headers.get("host") ?? "";
   if (!url || !key) {
-    if (isUltimaAppHost(host)) {
-      return ultimaHostResponse(request) ?? nextWithPath(request);
-    }
-    return nextWithPath(request);
+    return appHostResponse(request, host) ?? nextWithPath(request);
   }
 
   // Prefetches, the service worker, manifests and static files never touch
   // the Auth server. See lib/auth/refresh-policy.js.
   if (!shouldRefreshSession(request.nextUrl.pathname, request.headers)) {
-    if (isUltimaAppHost(host)) {
-      return ultimaHostResponse(request) ?? nextWithPath(request);
-    }
-    return nextWithPath(request);
+    return appHostResponse(request, host) ?? nextWithPath(request);
   }
 
   const cookieBag = [];
@@ -198,9 +210,7 @@ export async function middleware(request) {
     }
   }
 
-  if (isUltimaAppHost(host)) {
-    response = ultimaHostResponse(request) ?? response;
-  }
+  response = appHostResponse(request, host) ?? response;
 
   return finish(response);
 }
