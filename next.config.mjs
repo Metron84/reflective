@@ -116,6 +116,14 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/play/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/api/play/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         source: "/sw.js",
         headers: [
           {
