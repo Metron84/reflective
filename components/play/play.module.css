@@ -1,0 +1,20 @@
+@keyframes chip-flip {
+  from {
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(400px) rotateX(0);
+    opacity: 1;
+  }
+}
+
+.chipFlip {
+  animation: chip-flip 0.5s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chipFlip {
+    animation: none;
+  }
+}
