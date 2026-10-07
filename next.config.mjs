@@ -116,6 +116,20 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/play/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        // Every response on the play host, including "/" which middleware rewrites to /play.
+        source: "/:path*",
+        has: [{ type: "host", value: "(?<host>play\\.thereflectivefootball\\.com|play\\.localhost)" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/api/play/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
         source: "/sw.js",
         headers: [
           {

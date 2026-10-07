@@ -6,6 +6,7 @@ import NavigationProgress from "@/components/NavigationProgress";
 import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
+import { isPlayHost } from "@/lib/play/host";
 import { archivo } from "./fonts/archivo";
 import { bodoni } from "./fonts/bodoni";
 import "./globals.css";
@@ -110,7 +111,9 @@ export default async function RootLayout({ children }) {
   const ultimaApp = isUltimaAppHost(hdrs.get("host"));
   const pathname = hdrs.get("x-pathname") || "";
   const crestApp = pathname === "/crest" || pathname.startsWith("/crest/");
-  const hideChrome = ultimaApp || crestApp;
+  // The play host only ever shows the game, so site navigation would lead nowhere.
+  const playApp = isPlayHost(hdrs.get("host"));
+  const hideChrome = ultimaApp || crestApp || playApp;
 
   return (
     <html
@@ -137,7 +140,7 @@ export default async function RootLayout({ children }) {
         {hideChrome ? null : <Header />}
         <main className="flex flex-1 flex-col">{children}</main>
         {hideChrome ? null : <Footer />}
-        {ultimaApp ? <UltimaSwRegister /> : crestApp ? null : <InstallHint />}
+        {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp ? null : <InstallHint />}
       </body>
     </html>
   );

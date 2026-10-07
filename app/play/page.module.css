@@ -1,0 +1,141 @@
+.page {
+  flex: 1;
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 40rem;
+  padding: 2rem 1rem 3.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0 2.25rem;
+}
+
+.primary,
+.secondary {
+  display: block;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.primary {
+  background: var(--color-navy);
+  color: var(--color-paper);
+}
+
+.secondary {
+  border: 2px solid var(--color-navy);
+  color: var(--color-navy);
+}
+
+.board {
+  margin-bottom: 2rem;
+}
+
+.boardTitle {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+}
+
+.boardDates {
+  margin-left: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(10, 17, 31, 0.18);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.18);
+  font-family: var(--font-body);
+  color: var(--color-navy);
+}
+
+.rank {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.meta {
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.64);
+}
+
+.score {
+  min-width: 3rem;
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty,
+.note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.72);
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .primary,
+  .secondary {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.hostBar {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(10, 17, 31, 0.15);
+}
+
+.hostLink {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-navy);
+  text-decoration: none;
+}
