@@ -1,0 +1,1081 @@
+[
+  {
+    "id": "chelsea-100-c1",
+    "category": "Chelsea",
+    "value": 100,
+    "clue": "Chelsea have played their home games at this stadium since 1905.",
+    "answer": "Stamford Bridge",
+    "matchMode": "fuzzy",
+    "tags": [
+      "stamford-bridge"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "stamford bridge",
+      "the bridge"
+    ]
+  },
+  {
+    "id": "chelsea-100-c2",
+    "category": "Chelsea",
+    "value": 100,
+    "clue": "Chelsea's traditional home kit colour is this.",
+    "answer": "Blue",
+    "matchMode": "fuzzy",
+    "tags": [
+      "kit"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "blue",
+      "royal blue",
+      "chelsea blue"
+    ]
+  },
+  {
+    "id": "chelsea-100-c3",
+    "category": "Chelsea",
+    "value": 100,
+    "clue": "This midfielder is Chelsea's all-time leading goalscorer with 211 goals.",
+    "answer": "Frank Lampard",
+    "matchMode": "fuzzy",
+    "tags": [
+      "lampard"
+    ],
+    "check": "searched",
+    "source": "eurosport.co.uk, tntsports.co.uk (Lampard career stats)",
+    "acceptedAnswers": [
+      "frank lampard",
+      "lampard"
+    ]
+  },
+  {
+    "id": "chelsea-200-c1",
+    "category": "Chelsea",
+    "value": 200,
+    "clue": "Chelsea won the 2019 Europa League final 4-1 against this opponent in Baku.",
+    "answer": "Arsenal",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-el-final"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "arsenal"
+    ]
+  },
+  {
+    "id": "chelsea-200-c2",
+    "category": "Chelsea",
+    "value": 200,
+    "clue": "Chelsea won their first Champions League title on penalties against Bayern Munich in this year.",
+    "answer": "2012",
+    "matchMode": "strict",
+    "tags": [
+      "2012-cl-final"
+    ],
+    "check": "searched",
+    "source": "fourfourtwo.com (Chelsea past European finals)",
+    "acceptedAnswers": [
+      "2012",
+      "2011-12",
+      "2011/12"
+    ]
+  },
+  {
+    "id": "chelsea-200-c3",
+    "category": "Chelsea",
+    "value": 200,
+    "clue": "This manager won the Premier League and League Cup in his first season at Chelsea.",
+    "answer": "Jose Mourinho",
+    "matchMode": "fuzzy",
+    "tags": [
+      "mourinho-2005"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "jose mourinho",
+      "mourinho",
+      "the special one"
+    ]
+  },
+  {
+    "id": "chelsea-300-c1",
+    "category": "Chelsea",
+    "value": 300,
+    "clue": "Chelsea won the 2021 Champions League final against this club.",
+    "answer": "Manchester City",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2021-cl-final"
+    ],
+    "check": "record",
+    "source": "fourfourtwo.com confirms the final opponent",
+    "acceptedAnswers": [
+      "manchester city",
+      "man city",
+      "city",
+      "mcfc"
+    ]
+  },
+  {
+    "id": "chelsea-300-c2",
+    "category": "Chelsea",
+    "value": 300,
+    "clue": "This striker scored a late equaliser and then the winning penalty in Chelsea's first Champions League triumph.",
+    "answer": "Didier Drogba",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2012-cl-final"
+    ],
+    "check": "record",
+    "source": "fourfourtwo.com (penalty win 4-3)",
+    "acceptedAnswers": [
+      "didier drogba",
+      "drogba"
+    ]
+  },
+  {
+    "id": "chelsea-300-c3",
+    "category": "Chelsea",
+    "value": 300,
+    "clue": "Chelsea won this domestic cup in 2005 and 2007, with both finals played at the Millennium Stadium.",
+    "answer": "League Cup",
+    "matchMode": "fuzzy",
+    "tags": [
+      "league-cup"
+    ],
+    "check": "searched",
+    "source": "thechels.info (2007 and 2008 League Cup finals)",
+    "acceptedAnswers": [
+      "league cup",
+      "the league cup",
+      "carling cup",
+      "football league cup",
+      "efl cup",
+      "carabao cup"
+    ]
+  },
+  {
+    "id": "chelsea-400-c1",
+    "category": "Chelsea",
+    "value": 400,
+    "clue": "Chelsea's record 6-0 win over Arsenal came in Arsene Wenger's 1,000th game in charge, in this season.",
+    "answer": "2013-14",
+    "matchMode": "strict",
+    "tags": [
+      "6-0-arsenal",
+      "wenger"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org Arsenal-Chelsea rivalry (22 March 2014), fourfourtwo.com",
+    "acceptedAnswers": [
+      "2013-14",
+      "2013/14",
+      "2014",
+      "13-14"
+    ]
+  },
+  {
+    "id": "chelsea-400-c2",
+    "category": "Chelsea",
+    "value": 400,
+    "clue": "This Dutchman became the first foreign manager to win a major trophy with an English club when Chelsea beat Middlesbrough in the 1997 FA Cup final.",
+    "answer": "Ruud Gullit",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gullit"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 1996-97 Chelsea season, thechels.info",
+    "acceptedAnswers": [
+      "ruud gullit",
+      "gullit"
+    ]
+  },
+  {
+    "id": "chelsea-400-c3",
+    "category": "Chelsea",
+    "value": 400,
+    "clue": "This left-back joined Chelsea from Arsenal in 2006 in a controversial swap deal.",
+    "answer": "Ashley Cole",
+    "matchMode": "fuzzy",
+    "tags": [
+      "cole"
+    ],
+    "check": "searched",
+    "source": "thechels.info (William Gallas page: part-exchange for Ashley Cole)",
+    "acceptedAnswers": [
+      "ashley cole",
+      "cole"
+    ]
+  },
+  {
+    "id": "chelsea-500-c1",
+    "category": "Chelsea",
+    "value": 500,
+    "clue": "Chelsea scored a then-record 103 Premier League goals in this season.",
+    "answer": "2009-10",
+    "matchMode": "strict",
+    "tags": [
+      "2009-10"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 2009-10 Premier League, premierleague.com season review",
+    "acceptedAnswers": [
+      "2009-10",
+      "2009/10",
+      "2010",
+      "09-10"
+    ]
+  },
+  {
+    "id": "chelsea-500-c2",
+    "category": "Chelsea",
+    "value": 500,
+    "clue": "This Italian forward came off the bench and scored the only goal of the 1998 Cup Winners' Cup final about 20 seconds later.",
+    "answer": "Gianfranco Zola",
+    "matchMode": "fuzzy",
+    "tags": [
+      "cwc"
+    ],
+    "check": "searched",
+    "source": "chelseafc.com (Cup Winners' Cup nights)",
+    "acceptedAnswers": [
+      "gianfranco zola",
+      "zola"
+    ]
+  },
+  {
+    "id": "chelsea-500-c3",
+    "category": "Chelsea",
+    "value": 500,
+    "clue": "Chelsea are the only English club to have won this European competition twice.",
+    "answer": "Cup Winners' Cup",
+    "matchMode": "fuzzy",
+    "tags": [
+      "cwc"
+    ],
+    "check": "searched",
+    "source": "thechels.info (UEFA Cup Winners' Cup)",
+    "acceptedAnswers": [
+      "cup winners cup",
+      "european cup winners cup",
+      "uefa cup winners cup",
+      "cwc"
+    ]
+  },
+  {
+    "id": "spurs-100-c1",
+    "category": "Spurs",
+    "value": 100,
+    "clue": "Tottenham's home stadium since 2019 is officially called this.",
+    "answer": "Tottenham Hotspur Stadium",
+    "matchMode": "fuzzy",
+    "tags": [
+      "stadium"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "tottenham hotspur stadium",
+      "tottenham stadium"
+    ]
+  },
+  {
+    "id": "spurs-100-c2",
+    "category": "Spurs",
+    "value": 100,
+    "clue": "Tottenham's traditional nickname, taken from their white shirts, is this.",
+    "answer": "The Lilywhites",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nickname"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "the lilywhites",
+      "lilywhites",
+      "lily whites",
+      "the lily whites"
+    ]
+  },
+  {
+    "id": "spurs-100-c3",
+    "category": "Spurs",
+    "value": 100,
+    "clue": "Tottenham won the 2025 Europa League under this Australian manager.",
+    "answer": "Ange Postecoglou",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2025-el"
+    ],
+    "check": "searched",
+    "source": "AP via nbcnews.com (21 May 2025)",
+    "acceptedAnswers": [
+      "ange postecoglou",
+      "postecoglou",
+      "ange"
+    ]
+  },
+  {
+    "id": "spurs-200-c1",
+    "category": "Spurs",
+    "value": 200,
+    "clue": "This England striker scored 35 goals in all competitions for Tottenham in 1991-92.",
+    "answer": "Gary Lineker",
+    "matchMode": "fuzzy",
+    "tags": [
+      "lineker"
+    ],
+    "check": "searched",
+    "source": "thefa.com, tottenhamhotspur.com (30-goal strikers)",
+    "acceptedAnswers": [
+      "gary lineker",
+      "lineker"
+    ]
+  },
+  {
+    "id": "spurs-200-c2",
+    "category": "Spurs",
+    "value": 200,
+    "clue": "Tottenham's most recent domestic trophy is the League Cup, won in this year.",
+    "answer": "2008",
+    "matchMode": "strict",
+    "tags": [
+      "2008-lc"
+    ],
+    "check": "searched",
+    "source": "dawn.com / AP (2025 final report), goal.com",
+    "acceptedAnswers": [
+      "2008"
+    ]
+  },
+  {
+    "id": "spurs-200-c3",
+    "category": "Spurs",
+    "value": 200,
+    "clue": "Tottenham reached their first Champions League final in this year, losing 2-0 to Liverpool in Madrid.",
+    "answer": "2019",
+    "matchMode": "strict",
+    "tags": [
+      "2019-cl"
+    ],
+    "check": "searched",
+    "source": "goal.com (last Tottenham trophy)",
+    "acceptedAnswers": [
+      "2019",
+      "2018-19",
+      "2018/19"
+    ]
+  },
+  {
+    "id": "spurs-300-c1",
+    "category": "Spurs",
+    "value": 300,
+    "clue": "This Argentine took Tottenham to a Champions League final and later managed Chelsea.",
+    "answer": "Mauricio Pochettino",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-cl"
+    ],
+    "check": "searched",
+    "source": "goal.com, dazn.com (Pochettino at Chelsea)",
+    "acceptedAnswers": [
+      "mauricio pochettino",
+      "pochettino"
+    ]
+  },
+  {
+    "id": "spurs-300-c2",
+    "category": "Spurs",
+    "value": 300,
+    "clue": "Tottenham beat Arsenal 5-0 at White Hart Lane on Easter Monday in this year, with Chris Hughton scoring twice.",
+    "answer": "1983",
+    "matchMode": "strict",
+    "tags": [
+      "nld-1983"
+    ],
+    "check": "searched",
+    "source": "tottenhamhotspur.com history, seanelvidge.com league record, pressreader (Hughton)",
+    "acceptedAnswers": [
+      "1983",
+      "1982-83",
+      "1982/83"
+    ]
+  },
+  {
+    "id": "spurs-300-c3",
+    "category": "Spurs",
+    "value": 300,
+    "clue": "This midfielder scored a famous free kick as Tottenham beat Arsenal 3-1 in the 1991 FA Cup semi-final.",
+    "answer": "Paul Gascoigne",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gazza"
+    ],
+    "check": "searched",
+    "source": "Reuters via ahram.org.eg",
+    "acceptedAnswers": [
+      "paul gascoigne",
+      "gascoigne",
+      "gazza"
+    ]
+  },
+  {
+    "id": "spurs-400-c1",
+    "category": "Spurs",
+    "value": 400,
+    "clue": "This defender scored the extra-time winner for Tottenham in a League Cup final against Chelsea.",
+    "answer": "Jonathan Woodgate",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2008-lc"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 2008 League Cup final, aljazeera.com",
+    "acceptedAnswers": [
+      "jonathan woodgate",
+      "woodgate"
+    ]
+  },
+  {
+    "id": "spurs-400-c2",
+    "category": "Spurs",
+    "value": 400,
+    "clue": "This striker left Tottenham for Bayern Munich in 2023 as the club's record goalscorer with 280 goals.",
+    "answer": "Harry Kane",
+    "matchMode": "fuzzy",
+    "tags": [
+      "kane"
+    ],
+    "check": "searched",
+    "source": "tottenhamhotspur.com (Harry Kane legends page)",
+    "acceptedAnswers": [
+      "harry kane",
+      "kane"
+    ]
+  },
+  {
+    "id": "spurs-400-c3",
+    "category": "Spurs",
+    "value": 400,
+    "clue": "This striker scored a club-record 49 goals for Tottenham in 1986-87.",
+    "answer": "Clive Allen",
+    "matchMode": "fuzzy",
+    "tags": [
+      "allen"
+    ],
+    "check": "searched",
+    "source": "tottenhamhotspur.com (30-goal strikers)",
+    "acceptedAnswers": [
+      "clive allen",
+      "allen"
+    ]
+  },
+  {
+    "id": "spurs-500-c1",
+    "category": "Spurs",
+    "value": 500,
+    "clue": "Tottenham became the first British club to win a European trophy by beating this club 5-1 in the 1963 Cup Winners' Cup final.",
+    "answer": "Atletico Madrid",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1963-cwc"
+    ],
+    "check": "searched",
+    "source": "tottenhamhotspur.com (Spurs in Europe), wikipedia.org",
+    "acceptedAnswers": [
+      "atletico madrid",
+      "atletico",
+      "atletico de madrid"
+    ]
+  },
+  {
+    "id": "spurs-500-c2",
+    "category": "Spurs",
+    "value": 500,
+    "clue": "This manager led Tottenham to the first League and FA Cup Double of the 20th century.",
+    "answer": "Bill Nicholson",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nicholson"
+    ],
+    "check": "searched",
+    "source": "tottenhamhotspur.com (Terry Dyson obituary), wikipedia.org",
+    "acceptedAnswers": [
+      "bill nicholson",
+      "nicholson",
+      "william nicholson"
+    ]
+  },
+  {
+    "id": "spurs-500-c3",
+    "category": "Spurs",
+    "value": 500,
+    "clue": "Tottenham reached their first Champions League final after coming back from 3-0 down on aggregate against this club, with a stoppage-time winner in the second leg.",
+    "answer": "Ajax",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-cl"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "ajax",
+      "ajax amsterdam",
+      "afc ajax"
+    ]
+  },
+  {
+    "id": "westham-100-c1",
+    "category": "West Ham",
+    "value": 100,
+    "clue": "West Ham played at this ground for 112 years before moving in 2016.",
+    "answer": "Upton Park",
+    "matchMode": "fuzzy",
+    "tags": [
+      "upton-park"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "upton park",
+      "the boleyn ground",
+      "boleyn ground",
+      "boleyn"
+    ]
+  },
+  {
+    "id": "westham-100-c2",
+    "category": "West Ham",
+    "value": 100,
+    "clue": "West Ham's traditional nickname is this.",
+    "answer": "The Hammers",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nickname"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "the hammers",
+      "hammers",
+      "the irons",
+      "irons"
+    ]
+  },
+  {
+    "id": "westham-100-c3",
+    "category": "West Ham",
+    "value": 100,
+    "clue": "West Ham's home since 2016 was built for the 2012 Olympics and is called this.",
+    "answer": "London Stadium",
+    "matchMode": "fuzzy",
+    "tags": [
+      "london-stadium"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "london stadium",
+      "the london stadium",
+      "olympic stadium",
+      "the olympic stadium"
+    ]
+  },
+  {
+    "id": "westham-200-c1",
+    "category": "West Ham",
+    "value": 200,
+    "clue": "West Ham won the 1965 Cup Winners' Cup by beating this German club 2-0 at Wembley.",
+    "answer": "1860 Munich",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1965-cwc"
+    ],
+    "check": "searched",
+    "source": "whufc.com (Greatest Matches, 1965)",
+    "acceptedAnswers": [
+      "1860 munich",
+      "tsv 1860 munich",
+      "munich 1860",
+      "1860 munchen",
+      "tsv munich 1860",
+      "tsv 1860"
+    ]
+  },
+  {
+    "id": "westham-200-c2",
+    "category": "West Ham",
+    "value": 200,
+    "clue": "This England World Cup winner scored in West Ham's 3-2 win over Preston in the 1964 FA Cup final.",
+    "answer": "Geoff Hurst",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1964-fa-cup"
+    ],
+    "check": "searched",
+    "source": "whufc.com (Greatest Matches, 1964)",
+    "acceptedAnswers": [
+      "geoff hurst",
+      "hurst",
+      "sir geoff hurst"
+    ]
+  },
+  {
+    "id": "westham-200-c3",
+    "category": "West Ham",
+    "value": 200,
+    "clue": "West Ham won the 2023 Europa Conference League by beating this club in the final.",
+    "answer": "Fiorentina",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2023-ecl"
+    ],
+    "check": "searched",
+    "source": "uefa.com, skysports.com",
+    "acceptedAnswers": [
+      "fiorentina",
+      "acf fiorentina"
+    ]
+  },
+  {
+    "id": "westham-300-c1",
+    "category": "West Ham",
+    "value": 300,
+    "clue": "This Scottish manager led West Ham to the Europa Conference League title.",
+    "answer": "David Moyes",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2023-ecl"
+    ],
+    "check": "searched",
+    "source": "uefa.com, euronews.com",
+    "acceptedAnswers": [
+      "david moyes",
+      "moyes"
+    ]
+  },
+  {
+    "id": "westham-300-c2",
+    "category": "West Ham",
+    "value": 300,
+    "clue": "West Ham's biggest league wins over Chelsea, both 4-0, came in this decade.",
+    "answer": "1980s",
+    "matchMode": "strict",
+    "tags": [
+      "chelsea-4-0"
+    ],
+    "check": "searched",
+    "source": "chelseafc.com head-to-head (1980/81 and 1985/86), whufc.com",
+    "acceptedAnswers": [
+      "1980s",
+      "the 1980s",
+      "80s",
+      "the 80s",
+      "eighties",
+      "the eighties"
+    ]
+  },
+  {
+    "id": "westham-300-c3",
+    "category": "West Ham",
+    "value": 300,
+    "clue": "This West Ham captain lifted the FA Cup, the Cup Winners' Cup and the World Cup in three consecutive years.",
+    "answer": "Bobby Moore",
+    "matchMode": "fuzzy",
+    "tags": [
+      "moore"
+    ],
+    "check": "searched",
+    "source": "footballbookreviews.com, whufc.com",
+    "acceptedAnswers": [
+      "bobby moore",
+      "moore",
+      "robert moore"
+    ]
+  },
+  {
+    "id": "westham-400-c1",
+    "category": "West Ham",
+    "value": 400,
+    "clue": "West Ham reached the 2006 FA Cup final but lost on penalties after a 3-3 draw with this club.",
+    "answer": "Liverpool",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2006-fa-cup"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 2006 FA Cup final, whufc.com",
+    "acceptedAnswers": [
+      "liverpool",
+      "liverpool fc"
+    ]
+  },
+  {
+    "id": "westham-400-c2",
+    "category": "West Ham",
+    "value": 400,
+    "clue": "This midfielder captained West Ham to the 2023 Europa Conference League title before joining Arsenal.",
+    "answer": "Declan Rice",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2023-ecl"
+    ],
+    "check": "searched",
+    "source": "skysports.com, yahoo.com, reuters",
+    "acceptedAnswers": [
+      "declan rice",
+      "rice"
+    ]
+  },
+  {
+    "id": "westham-400-c3",
+    "category": "West Ham",
+    "value": 400,
+    "clue": "West Ham won the 1980 FA Cup with a 1-0 victory over this club, Trevor Brooking scoring the only goal.",
+    "answer": "Arsenal",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1980-fa-cup"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "arsenal"
+    ]
+  },
+  {
+    "id": "westham-500-c1",
+    "category": "West Ham",
+    "value": 500,
+    "clue": "West Ham's academy supplied three starters for England's 1966 World Cup final win. Name any two.",
+    "answer": "Any two of Bobby Moore, Geoff Hurst, Martin Peters",
+    "matchMode": "fuzzy",
+    "tags": [
+      "moore"
+    ],
+    "check": "record",
+    "source": "club record",
+    "answerGroups": [
+      [
+        "bobby moore",
+        "moore"
+      ],
+      [
+        "geoff hurst",
+        "hurst"
+      ],
+      [
+        "martin peters",
+        "peters"
+      ]
+    ],
+    "requiredCount": 2
+  },
+  {
+    "id": "westham-500-c2",
+    "category": "West Ham",
+    "value": 500,
+    "clue": "This manager guided West Ham to the 1964 FA Cup and the 1965 Cup Winners' Cup.",
+    "answer": "Ron Greenwood",
+    "matchMode": "fuzzy",
+    "tags": [
+      "greenwood",
+      "1964-fa-cup",
+      "1965-cwc"
+    ],
+    "check": "searched",
+    "source": "whufc.com (Golden Anniversary, 1965 final)",
+    "acceptedAnswers": [
+      "ron greenwood",
+      "greenwood"
+    ]
+  },
+  {
+    "id": "westham-500-c3",
+    "category": "West Ham",
+    "value": 500,
+    "clue": "In the 2006 FA Cup final against West Ham, this England midfielder scored twice, including a stoppage-time equaliser.",
+    "answer": "Steven Gerrard",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2006-fa-cup"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 2006 FA Cup final, thisisanfield.com",
+    "acceptedAnswers": [
+      "steven gerrard",
+      "gerrard",
+      "steve gerrard"
+    ]
+  },
+  {
+    "id": "arsenal-100-c1",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "Arsenal have played their home games at this stadium since 2006.",
+    "answer": "Emirates Stadium",
+    "matchMode": "fuzzy",
+    "tags": [
+      "emirates"
+    ],
+    "check": "searched",
+    "source": "inquirer.net (2014 FA Cup report: Emirates since 2006)",
+    "acceptedAnswers": [
+      "emirates stadium",
+      "the emirates",
+      "emirates"
+    ]
+  },
+  {
+    "id": "arsenal-100-c2",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "Arsenal's traditional nickname is this.",
+    "answer": "The Gunners",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nickname"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "the gunners",
+      "gunners"
+    ]
+  },
+  {
+    "id": "arsenal-100-c3",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "This Frenchman managed Arsenal for 22 years, from 1996 to 2018.",
+    "answer": "Arsene Wenger",
+    "matchMode": "fuzzy",
+    "tags": [
+      "wenger"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "arsene wenger",
+      "wenger"
+    ]
+  },
+  {
+    "id": "arsenal-200-c1",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "Arsenal won the 2002 FA Cup final 2-0 against this opponent.",
+    "answer": "Chelsea",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2002-fa-cup"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "chelsea"
+    ]
+  },
+  {
+    "id": "arsenal-200-c2",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "Arsenal clinched the 2003-04 Premier League title with a 2-2 draw at this ground.",
+    "answer": "White Hart Lane",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2004-title"
+    ],
+    "check": "searched",
+    "source": "Reuters via ahram.org.eg (April 2004, Tottenham 2-2 Arsenal)",
+    "acceptedAnswers": [
+      "white hart lane"
+    ]
+  },
+  {
+    "id": "arsenal-200-c3",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "This Welsh midfielder scored the extra-time winner in Arsenal's 3-2 win over Hull City in the 2014 FA Cup final.",
+    "answer": "Aaron Ramsey",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2014-fa-cup"
+    ],
+    "check": "searched",
+    "source": "thefa.com, skysports.com (109th minute)",
+    "acceptedAnswers": [
+      "aaron ramsey",
+      "ramsey"
+    ]
+  },
+  {
+    "id": "arsenal-300-c1",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This Chilean scored the opening goal in Arsenal's 2-1 win in the 2017 FA Cup final.",
+    "answer": "Alexis Sanchez",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2017-fa-cup"
+    ],
+    "check": "searched",
+    "source": "thefa.com match report (Sanchez 4, Ramsey 79)",
+    "acceptedAnswers": [
+      "alexis sanchez",
+      "sanchez",
+      "alexis"
+    ]
+  },
+  {
+    "id": "arsenal-300-c2",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This captain scored both goals in Arsenal's 2-1 win in the 2020 FA Cup final.",
+    "answer": "Pierre-Emerick Aubameyang",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2020-fa-cup"
+    ],
+    "check": "searched",
+    "source": "cbssports.com, AP, sportsmole.co.uk",
+    "acceptedAnswers": [
+      "pierre-emerick aubameyang",
+      "pierre emerick aubameyang",
+      "aubameyang",
+      "auba"
+    ]
+  },
+  {
+    "id": "arsenal-300-c3",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This French defender was the first player to feature for Chelsea, Arsenal and Tottenham.",
+    "answer": "William Gallas",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gallas"
+    ],
+    "check": "searched",
+    "source": "goal.com, footballgroundmap.com",
+    "acceptedAnswers": [
+      "william gallas",
+      "gallas"
+    ]
+  },
+  {
+    "id": "arsenal-400-c1",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "Arsenal lost the 2006 Champions League final to this club.",
+    "answer": "Barcelona",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2006-cl-final"
+    ],
+    "check": "searched",
+    "source": "uefa.com (Campbell to leave Gunners)",
+    "acceptedAnswers": [
+      "barcelona",
+      "fc barcelona",
+      "barca"
+    ]
+  },
+  {
+    "id": "arsenal-400-c2",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "This defender scored an extra-time header to win the 1993 FA Cup final replay for Arsenal.",
+    "answer": "Andy Linighan",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1993-cups"
+    ],
+    "check": "searched",
+    "source": "woolwicharsenal blog, aisa.org, classicfootballshirts.com",
+    "acceptedAnswers": [
+      "andy linighan",
+      "andrew linighan",
+      "linighan"
+    ]
+  },
+  {
+    "id": "arsenal-400-c3",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "This defender left Tottenham for Arsenal on a free transfer in 2001.",
+    "answer": "Sol Campbell",
+    "matchMode": "fuzzy",
+    "tags": [
+      "campbell"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org, uefa.com, yahoo.com",
+    "acceptedAnswers": [
+      "sol campbell",
+      "campbell"
+    ]
+  },
+  {
+    "id": "arsenal-500-c1",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "Arsenal's record league win over Tottenham, 6-0, came in this season.",
+    "answer": "1934-35",
+    "matchMode": "strict",
+    "tags": [
+      "1935"
+    ],
+    "check": "searched",
+    "source": "seanelvidge.com league head-to-head (6 March 1935)",
+    "acceptedAnswers": [
+      "1934-35",
+      "1934/35",
+      "1935",
+      "34-35"
+    ]
+  },
+  {
+    "id": "arsenal-500-c2",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "This forward scored a famous solo goal in Arsenal's 4-2 win over Liverpool at Highbury on Good Friday 2004.",
+    "answer": "Thierry Henry",
+    "matchMode": "fuzzy",
+    "tags": [
+      "henry"
+    ],
+    "check": "searched",
+    "source": "premierleague.com, onlinegooner.com, lastwordonsports.com",
+    "acceptedAnswers": [
+      "thierry henry",
+      "henry"
+    ]
+  },
+  {
+    "id": "arsenal-500-c3",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "In 1993 Arsenal became the first English club to win both the FA Cup and the League Cup in one season, beating this club in both finals.",
+    "answer": "Sheffield Wednesday",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1993-cups"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 1993 FA Cup final, woolwicharsenal blog",
+    "acceptedAnswers": [
+      "sheffield wednesday",
+      "sheffield wed",
+      "wednesday"
+    ]
+  }
+]
