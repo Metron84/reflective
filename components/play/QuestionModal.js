@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import styles from "./play.module.css";
 
 function speechCtor() {
   if (typeof window === "undefined") return null;
@@ -73,23 +74,22 @@ export default function QuestionModal({
   const urgent = left <= 10 && !result;
 
   return (
-    <div className="fixed inset-0 z-30 flex items-end justify-center bg-navy/70 sm:items-center" role="dialog" aria-modal="true" aria-label="Question">
-      <div className="max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-paper p-5 shadow-xl sm:rounded-2xl">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-bold uppercase tracking-widest text-navy/70">
+    <div className={styles.sheetBackdrop} role="dialog" aria-modal="true" aria-label="Question">
+      <div className={styles.sheet}>
+        <div className={styles.sheetTop}>
+          <p className={styles.sheetMeta}>
             {question.category} · {question.value}
           </p>
           {!result && (
-            <p className={`text-2xl font-black tabular-nums ${urgent ? "text-signal" : ""}`} aria-label={`${left} seconds left`}>
+            <p className={`${styles.timer} ${urgent ? styles.timerUrgent : ""}`} aria-label={`${left} seconds left`}>
               {left}
             </p>
           )}
         </div>
-        <p className="mt-4 text-xl font-bold leading-snug">{question.clue}</p>
+        <p className={`${styles.clue} ${styles.clueIn}`}>{question.clue}</p>
 
         {!result ? (
           <form
-            className="mt-5"
             onSubmit={(e) => {
               e.preventDefault();
               send();
@@ -108,7 +108,7 @@ export default function QuestionModal({
               spellCheck={false}
               maxLength={200}
               placeholder="Type your answer"
-              className="w-full rounded-lg border-2 border-navy bg-white px-4 py-3 text-lg outline-none focus:border-signal"
+              className={styles.field}
             />
             <input
               name="website"
@@ -119,55 +119,47 @@ export default function QuestionModal({
               aria-hidden
               className="absolute -left-[9999px] h-0 w-0 opacity-0"
             />
-            <div className="mt-3 flex gap-3">
-              <button
-                type="submit"
-                disabled={busy || !text.trim()}
-                className="flex-1 rounded-lg bg-navy px-4 py-3 text-base font-bold text-paper disabled:opacity-40"
-              >
+            <div className={styles.row}>
+              <button type="submit" disabled={busy || !text.trim()} className={`${styles.primary} ${styles.grow}`}>
                 Answer
               </button>
               {canSpeak && (
-                <button
-                  type="button"
-                  onClick={speak}
-                  className="rounded-lg border-2 border-navy px-4 py-3 text-base font-bold"
-                >
+                <button type="button" onClick={speak} className={styles.secondary}>
                   {listening ? "Listening" : "Tap to speak"}
                 </button>
               )}
             </div>
-            {error && <p className="mt-3 text-sm font-semibold text-navy">{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
           </form>
         ) : (
-          <div className="mt-5" aria-live="polite">
-            <p className={`text-2xl font-black ${result.correct ? "" : "text-navy"}`}>
+          <div aria-live="polite">
+            <p className={styles.verdict}>
               {result.timedOut ? "Time is up" : result.correct ? "Correct" : "Not this time"}{" "}
-              <span className={result.correct ? "text-signal" : ""}>
+              <span className={styles.gold}>
                 {result.pointsChange > 0 ? `+${result.pointsChange}` : result.pointsChange}
               </span>
             </p>
-            <p className="mt-2 text-base">
-              The answer: <span className="font-bold">{result.answer}</span>
+            <p className={styles.answerLine}>
+              The answer: <span className={styles.gold}>{result.answer}</span>
             </p>
             {result.next === "continuePrompt" ? (
-              <div className="mt-5">
-                <p className="text-lg font-bold">Do you want to continue?</p>
-                <div className="mt-3 flex gap-3">
-                  <button onClick={() => onContinue(true)} disabled={busy} className="flex-1 rounded-lg bg-signal px-4 py-3 text-base font-bold text-paper disabled:opacity-40">
+              <div>
+                <p className={styles.prompt}>Do you want to continue?</p>
+                <div className={styles.row}>
+                  <button onClick={() => onContinue(true)} disabled={busy} className={`${styles.primary} ${styles.grow}`}>
                     Yes
                   </button>
-                  <button onClick={() => onContinue(false)} disabled={busy} className="flex-1 rounded-lg border-2 border-navy px-4 py-3 text-base font-bold disabled:opacity-40">
+                  <button onClick={() => onContinue(false)} disabled={busy} className={`${styles.secondary} ${styles.grow}`}>
                     No
                   </button>
                 </div>
               </div>
             ) : (
-              <button onClick={onNext} disabled={busy} className="mt-5 w-full rounded-lg bg-signal px-4 py-3 text-base font-bold text-paper disabled:opacity-40">
+              <button onClick={onNext} disabled={busy} className={styles.primary}>
                 {result.next === "finished" ? "See your score" : "Spin again"}
               </button>
             )}
-            {error && <p className="mt-3 text-sm font-semibold">{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
           </div>
         )}
       </div>

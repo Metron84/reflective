@@ -118,10 +118,12 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   function wheelDone() {
     setSegments((prev) => spin?.wheel ?? prev);
     setBeat("reveal");
+    // One second on the lit segment, then the team name, then the clue.
+    setTimeout(() => setBeat("team"), 1000);
     setTimeout(() => {
       setBeat("question");
       setBusy(false);
-    }, 900);
+    }, 1400);
   }
 
   async function submit(text, honeypot) {
@@ -173,9 +175,9 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
 
   if (stage === "saving") {
     return (
-      <section className="mx-auto max-w-md px-5 py-16" role="status" aria-live="polite">
-        <p className="text-2xl font-black">Saving your score</p>
-        <p className="mt-2 text-base">One moment.</p>
+      <section className={styles.saving} role="status" aria-live="polite">
+        <h1 className={styles.headline}>Saving your score</h1>
+        <p className={styles.lede}>One moment.</p>
       </section>
     );
   }
@@ -183,31 +185,27 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   if (stage === "landing") {
     return (
       <>
-        <section className="mx-auto flex max-w-md flex-col px-5 py-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-navy/70">The Reflective Football</p>
-          <h1 className="mt-3 text-5xl font-black leading-[1.02]">Are You Really a Fan?</h1>
-          <p className="mt-4 text-lg font-semibold">Spin the wheel. Answer the clue. Prove it.</p>
-          <ul className="mt-5 space-y-1 text-base">
+        <section className={styles.stack}>
+          <p className={styles.kicker}>The Reflective Football</p>
+          <h1 className={styles.headline}>Are You Really a Fan?</h1>
+          <p className={styles.lede}>Spin the wheel. Answer the clue. Prove it.</p>
+          <ul className={styles.copy}>
             <li>Up to 10 questions.</li>
             <li>Right answers add points. Wrong ones take them away.</li>
             <li>No sign-up needed to play. Sign up free to save your score.</li>
           </ul>
-          <button
-            onClick={start}
-            disabled={busy}
-            className="mt-8 rounded-lg bg-signal px-5 py-4 text-lg font-bold text-paper disabled:opacity-50"
-          >
+          <button onClick={start} disabled={busy} className={`${styles.primary} ${styles.pulse}`}>
             {busy ? "Getting the wheel ready" : "Play now"}
           </button>
           {error && (
-            <p className="mt-3 text-sm font-semibold" role="alert">
+            <p className={styles.error} role="alert">
               {error}
             </p>
           )}
-          <Link href={`${base}/films`} className="mt-4 text-center text-base font-bold underline underline-offset-4">
+          <Link href={`${base}/films`} className={styles.ghost}>
             Watch films on TRF
           </Link>
-          <p className="mt-10 text-sm font-semibold text-navy/60">Football is nothing without the fans.</p>
+          <p className={styles.tagline}>Football is nothing without the fans.</p>
         </section>
         {board}
       </>
@@ -219,49 +217,59 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   }
 
   const spinning = beat === "spinning";
+  const showQuestion = beat === "question" && spin;
   return (
     <>
-      <ScoreBar score={score} answered={answered} max={max} />
-      <section className="mx-auto flex max-w-md flex-col items-center px-5 pb-10 pt-8">
-        <Wheel segments={segments} target={target} onDone={wheelDone} />
-        <div className="mt-6 flex h-16 items-center justify-center" aria-live="polite">
-          {beat === "reveal" && spin && (
-            <p className={`${styles.chipFlip} rounded-lg bg-navy px-5 py-3 text-xl font-black text-paper`}>
-              {spin.category} · {spin.value}
-            </p>
+      <section className={styles.arena}>
+        <h1 className={styles.headline}>Are You Really a Fan?</h1>
+        <ScoreBar score={score} answered={answered} max={max} />
+        <div className={styles.stage}>
+          <Wheel
+            segments={segments}
+            target={target}
+            spinId={spin?.questionId ?? null}
+            onDone={wheelDone}
+          />
+          <div className={styles.reveal} aria-live="polite">
+            {(beat === "team" || beat === "question") && spin && (
+              <p className={styles.teamReveal}>{spin.category}</p>
+            )}
+          </div>
+          <button
+            onClick={doSpin}
+            disabled={busy || spinning || beat !== "idle" || stuck}
+            className={`${styles.primary} ${styles.pulse} ${styles.spin}`}
+          >
+            {spinning ? "Spinning" : "Spin"}
+          </button>
+          {error && !stuck && <p className={styles.error}>{error}</p>}
+        </div>
+        <div className={styles.dock}>
+          {showQuestion ? (
+            <QuestionModal
+              key={spin.questionId}
+              question={spin}
+              result={result}
+              busy={busy}
+              error={stuck ? null : error}
+              onSubmit={submit}
+              onNext={next}
+              onContinue={onContinue}
+            />
+          ) : (
+            <p className={styles.dockEmpty}>Spin to draw a question.</p>
           )}
         </div>
-        <button
-          onClick={doSpin}
-          disabled={busy || spinning || beat !== "idle" || stuck}
-          className="mt-2 w-full rounded-lg bg-signal px-5 py-4 text-lg font-bold text-paper disabled:opacity-40"
-        >
-          {spinning ? "Spinning" : "Spin"}
-        </button>
-        {error && !stuck && <p className="mt-3 text-sm font-semibold">{error}</p>}
       </section>
 
-      {beat === "question" && spin && (
-        <QuestionModal
-          key={spin.questionId}
-          question={spin}
-          result={result}
-          busy={busy}
-          error={stuck ? null : error}
-          onSubmit={submit}
-          onNext={next}
-          onContinue={onContinue}
-        />
-      )}
-
       {stuck && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-navy/70 sm:items-center" role="alertdialog" aria-modal="true">
-          <div className="w-full max-w-md rounded-t-2xl bg-paper p-5 sm:rounded-2xl">
-            <p className="text-lg font-bold">{error}</p>
-            <button onClick={start} className="mt-4 w-full rounded-lg bg-signal px-4 py-3 text-base font-bold text-paper">
+        <div className={styles.alert} role="alertdialog" aria-modal="true">
+          <div className={styles.alertCard}>
+            <p className={styles.lede}>{error}</p>
+            <button onClick={start} className={styles.primary}>
               Start a new game
             </button>
-            <Link href={`${base}/films`} className="mt-3 block text-center text-base font-bold underline underline-offset-4">
+            <Link href={`${base}/films`} className={styles.ghost}>
               Watch films on TRF
             </Link>
           </div>

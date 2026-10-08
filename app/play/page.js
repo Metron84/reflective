@@ -5,7 +5,7 @@ import PlayGame from "@/components/play/PlayGame";
 import { getRenderClient } from "@/lib/supabase/server";
 import { isPlayHost, mainSiteOrigin } from "@/lib/play/host.js";
 import { dubaiWeekStart, lastDubaiWeekStart, weekLabel } from "@/lib/play/week.js";
-import styles from "./page.module.css";
+import styles from "@/components/play/play.module.css";
 
 export const metadata = {
   title: "Are You Really a Fan?",
@@ -37,7 +37,7 @@ function Board({ title, weekStart, rows, emptyHint }) {
       {rows.length ? (
         <ol className={styles.rows}>
           {rows.map((r) => (
-            <li key={`${r.rank}-${r.display_name}`} className={styles.row}>
+            <li key={`${r.rank}-${r.display_name}`} className={styles.lbRow}>
               <span className={styles.rank}>{r.rank}</span>
               <span className={styles.name}>{r.display_name}</span>
               <span className={styles.meta}>{r.correct} correct</span>
@@ -87,7 +87,7 @@ export default async function PlayPage({ searchParams }) {
           <a href={base} className={styles.hostLink}>The Reflective Football</a>
         </header>
       ) : (
-        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Play" }]} />
+        <Breadcrumb tone="navy" items={[{ label: "Home", href: "/" }, { label: "Play" }]} />
       )}
       <PlayGame autoSave={sp?.save === "1"} board={board} base={base} />
     </div>
