@@ -1,28 +1,36 @@
 import { QUESTIONS } from "@/lib/play/bank.js";
 import { applyAnswer, wheel } from "@/lib/play/game.js";
+import { missingQuestion } from "@/lib/play/question-guard.js";
+import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, db, fail, limited, loadSession, noDb, noSession, ok, saveState } from "@/lib/play/session.js";
 
 export const runtime = "nodejs";
 
-export async function POST(req) {
+async function answerPost(req, deps = {}) {
   const blocked = limited(req, "answer", 60);
   if (blocked) return blocked;
-  if (!db()) return noDb();
+  const client = deps.client ?? db();
+  if (!client) return noDb();
 
   const body = await req.json().catch(() => null);
   const text = typeof body?.answer === "string" ? body.answer.slice(0, 200) : "";
   // Honeypot: real players never fill this.
   if (body?.website) return fail(400, "Something went wrong. Try again.");
 
-  const row = await loadSession(req);
+  const row = await loadSession(req, client);
   if (!row) return noSession();
 
-  // A replayed answer finds no pending question and gets a 409.
-  const result = applyAnswer(QUESTIONS, row.state, text, Date.now());
-  if (!result) return conflict();
-  if (!(await saveState(row, result.state))) return conflict();
+  const questions = deps.questions ?? QUESTIONS;
+  const missing = missingQuestion(row.state, questions);
+  if (missing) return missing;
 
-  const q = QUESTIONS.find((x) => x.id === row.state.pending.questionId);
+  // A replayed answer finds no pending question and gets a 409.
+  const result = applyAnswer(questions, row.state, text, Date.now());
+  if (!result) return conflict();
+  if (!(await saveState(row, result.state, undefined, client))) return conflict();
+
+  const q = questions.find((x) => x.id === row.state.pending.questionId);
+  if (!q) return fail(409, "question_missing");
   return ok({
     correct: result.correct,
     timedOut: result.timedOut,
@@ -33,4 +41,8 @@ export async function POST(req) {
     wheel: wheel(result.state),
     next: result.next,
   });
+}
+
+export function POST(req) {
+  return playRoute("answer", () => answerPost(req));
 }

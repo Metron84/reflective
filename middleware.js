@@ -163,8 +163,15 @@ export async function middleware(request) {
   });
 
   // Verifies the JWT locally and refreshes the session only when the access
-  // token is stale. This is the only place a request refreshes.
-  const { data: claimsData } = await supabase.auth.getClaims();
+  // token is stale. This is the only place a request refreshes. A throw here
+  // (for example a refresh token used twice) must not become an HTML error.
+  let claimsData = null;
+  try {
+    const claims = await supabase.auth.getClaims();
+    claimsData = claims?.data ?? null;
+  } catch {
+    claimsData = null;
+  }
   if (refreshFailed) {
     // Put the request cookies back exactly as they arrived. The render sees
     // the stale token and reports `unavailable`; the browser keeps its session.
@@ -189,8 +196,10 @@ export async function middleware(request) {
 
   let response = nextWithPath(request);
 
+  const playApi = pathname === "/api/play" || pathname.startsWith("/api/play/");
   if (
     user &&
+    !playApi &&
     !isPublicPath(pathname) &&
     pathname !== "/welcome" &&
     !pathname.startsWith("/api/auth")

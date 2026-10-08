@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "validate:play": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-play-questions.mjs",
-    "test:play": "node --import ./tests/ultima/helpers/register.mjs --test tests/play/*.test.mjs",
+    "test:play": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/play/*.test.mjs",
     "test:ultima": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/ultima/*.test.mjs",
     "test:ultima:sql": "tests/ultima/sql/run.sh",
     "sync-films": "node scripts/sync-films.mjs",

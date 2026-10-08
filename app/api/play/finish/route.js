@@ -1,10 +1,12 @@
 import { canFinish } from "@/lib/play/game.js";
 import { saveOrWall } from "@/lib/play/finish.js";
+import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, db, fail, limited, loadSession, noDb, noSession, ok, saveState } from "@/lib/play/session.js";
 
 export const runtime = "nodejs";
 
-export async function POST(req) {
+export function POST(req) {
+  return playRoute("finish", async () => {
   const blocked = limited(req, "finish", 20);
   if (blocked) return blocked;
   const client = db();
@@ -24,4 +26,5 @@ export async function POST(req) {
   // Replay after freezing returns the same summary, and the same save result.
   const r = await saveOrWall(client, row);
   return ok(r.body);
+  });
 }

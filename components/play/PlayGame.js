@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchWithRetry } from "@/lib/play/fetch-retry";
+import { connectionDebugLine, fetchWithRetry } from "@/lib/play/fetch-retry";
 import { warmBrowserCheck } from "@/lib/play/warm-check";
 import FansButton from "./FansButton.js";
 import Feedback from "./Feedback.js";
@@ -48,11 +48,13 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const [finish, setFinish] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const [debugLine, setDebugLine] = useState("");
   const [stuck, setStuck] = useState(false);
   const claimed = useRef(false);
 
-  const fatal = (msg) => {
+  const fatal = (msg, debug) => {
     setError(msg);
+    setDebugLine(connectionDebugLine(debug));
     setStuck(true);
     setBusy(false);
   };
@@ -60,6 +62,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const start = useCallback(async () => {
     setBusy(true);
     setError(null);
+    setDebugLine("");
     setStuck(false);
     const r = await post("/api/play/session");
     if (!r.ok) {
@@ -127,7 +130,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     const r = await post("/api/play/spin");
     if (!r.ok) {
       if (r.data.next === "finished") return void endGame();
-      return fatal(r.data.error ?? "Could not spin. Start a new game.");
+      return fatal(r.data.error ?? "Could not spin. Start a new game.", r.debug);
     }
     setSpin(r.data);
     setBeat("spinning");
@@ -149,7 +152,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setBusy(true);
     setError(null);
     const r = await post("/api/play/answer", { answer: text, website: honeypot });
-    if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.");
+    if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.", r.debug);
     setResult(r.data);
     playSound(r.data.correct ? "correct" : "wrong");
     setStreak((n) => nextStreak(n, !!r.data.correct));
@@ -162,7 +165,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   async function endGame() {
     setBusy(true);
     const r = await post("/api/play/finish");
-    if (!r.ok) return fatal(r.data.error ?? "Could not finish. Start a new game.");
+    if (!r.ok) return fatal(r.data.error ?? "Could not finish. Start a new game.", r.debug);
     setFinish(r.data);
     setBeat("idle");
     setSpin(null);
@@ -187,7 +190,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   async function onContinue(yes) {
     setBusy(true);
     const r = await post("/api/play/continue", { choice: yes ? "yes" : "no" });
-    if (!r.ok) return fatal(r.data.error ?? "Could not continue. Start a new game.");
+    if (!r.ok) return fatal(r.data.error ?? "Could not continue. Start a new game.", r.debug);
     if (r.data.next === "finished") return void endGame();
     setSegments(r.data.wheel);
     setBusy(false);
@@ -310,6 +313,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         <div className={styles.alert} role="alertdialog" aria-modal="true">
           <div className={styles.alertCard}>
             <p className={styles.lede}>{error}</p>
+            {debugLine ? <p className={styles.debugRef}>{debugLine}</p> : null}
             <button onClick={start} className={styles.primary}>
               Start a new game
             </button>

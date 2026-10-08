@@ -156,6 +156,14 @@
   color: var(--play-gold);
 }
 
+.debugRef {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 0.55;
+}
+
 .saving {
   width: min(100%, 28rem);
   margin: 0 auto;

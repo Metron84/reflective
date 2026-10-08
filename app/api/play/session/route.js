@@ -1,10 +1,12 @@
 import { QUESTIONS, answerSeconds } from "@/lib/play/bank.js";
 import { MAX_QUESTIONS, CONTINUE_AFTER, newState, wheel } from "@/lib/play/game.js";
+import { playRoute } from "@/lib/play/route-guard.js";
 import { db, fail, limited, noDb, ok, setCookie } from "@/lib/play/session.js";
 
 export const runtime = "nodejs";
 
-export async function POST(req) {
+export function POST(req) {
+  return playRoute("session", async () => {
   const blocked = limited(req, "session", 10);
   if (blocked) return blocked;
   const client = db();
@@ -28,4 +30,5 @@ export async function POST(req) {
     }),
     data.id,
   );
+  });
 }

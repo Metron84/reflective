@@ -1,10 +1,12 @@
 import { QUESTIONS, answerSeconds } from "@/lib/play/bank.js";
 import { applySpin, canSpin, pickSpin, wheel } from "@/lib/play/game.js";
+import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, fail, limited, loadSession, noDb, noSession, ok, saveState, db } from "@/lib/play/session.js";
 
 export const runtime = "nodejs";
 
-export async function POST(req) {
+export function POST(req) {
+  return playRoute("spin", async () => {
   const blocked = limited(req, "spin", 60);
   if (blocked) return blocked;
   if (!db()) return noDb();
@@ -30,5 +32,6 @@ export async function POST(req) {
     wheel: wheel(state),
     score: state.score,
     answered: state.answered,
+  });
   });
 }
