@@ -1,8 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  CHECK_AGAIN,
+  VERIFYING,
+  forgetSession,
+  landingControl,
+  noteReload,
+  pingGate,
+  recoverChallenge,
+  rememberSession,
+  rememberedSession,
+} from "@/lib/play/browser-check";
 import { connectionDebugLine, fetchWithRetry } from "@/lib/play/fetch-retry";
-import { warmBrowserCheck } from "@/lib/play/warm-check";
+import { PLAY_PING_PATH } from "@/lib/play/warm-check";
 import FansButton from "./FansButton.js";
 import Feedback from "./Feedback.js";
 import Hero from "./Hero.js";
@@ -23,6 +34,14 @@ function post(path, body) {
     headers: { "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
   });
+}
+
+function browserStore() {
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
 }
 
 function Mute() {
@@ -50,14 +69,67 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const [error, setError] = useState(null);
   const [debugLine, setDebugLine] = useState("");
   const [stuck, setStuck] = useState(false);
+  const [held, setHeld] = useState(false);
+  const [gate, setGate] = useState("pending");
   const claimed = useRef(false);
 
   const fatal = (msg, debug) => {
     setError(msg);
     setDebugLine(connectionDebugLine(debug));
     setStuck(true);
+    setHeld(false);
     setBusy(false);
   };
+
+  function takeChallenge(r) {
+    const action = recoverChallenge(r, browserStore());
+    if (action === "none") return false;
+    if (action === "reload") {
+      setError(VERIFYING);
+      setDebugLine("");
+      setStuck(true);
+      setHeld(false);
+      setBusy(false);
+      window.location.reload();
+      return true;
+    }
+    setError(CHECK_AGAIN);
+    setDebugLine("");
+    setStuck(true);
+    setHeld(true);
+    setBusy(false);
+    return true;
+  }
+
+  function tryAgain() {
+    noteReload(browserStore());
+    window.location.reload();
+  }
+
+  function showGame(data) {
+    setSegments(data.categories ?? []);
+    setMax(data.maxQuestions ?? 10);
+    setScore(data.score ?? 0);
+    setAnswered(data.answered ?? 0);
+    setStreak(data.streak ?? 0);
+    setFinish(null);
+    setError(null);
+    setStuck(false);
+    setHeld(false);
+    if (data.spin) {
+      setSpin(data.spin);
+      setTarget(data.spin.category ?? null);
+      setResult(data.result ?? null);
+      setBeat(data.result || data.phase === "question" ? "question" : "idle");
+    } else {
+      setSpin(null);
+      setTarget(null);
+      setResult(null);
+      setBeat("idle");
+    }
+    setStage("playing");
+    setBusy(false);
+  }
 
   const start = useCallback(async () => {
     setBusy(true);
@@ -66,11 +138,13 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setStuck(false);
     const r = await post("/api/play/session");
     if (!r.ok) {
+      if (takeChallenge(r)) return;
       setBusy(false);
       setStage("landing");
       setError(r.data.error ?? "Could not start. Try again.");
       return;
     }
+    rememberSession(browserStore(), r.data.sessionId);
     setSegments(r.data.categories);
     setMax(r.data.maxQuestions);
     setScore(0);
@@ -90,6 +164,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     const r = await post("/api/play/claim");
     setBusy(false);
     if (typeof window !== "undefined") window.history.replaceState(null, "", window.location.pathname);
+    if (takeChallenge(r)) return;
     if (r.ok) {
       setFinish(r.data);
       setStage("end");
@@ -105,8 +180,53 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   }, []);
 
   useEffect(() => {
-    warmBrowserCheck();
-  }, []);
+    let cancel = false;
+    (async () => {
+      const r = await fetchWithRetry(PLAY_PING_PATH, { method: "GET" }, { extraRetries: 0 });
+      if (cancel) return;
+      const decision = pingGate(r, browserStore());
+      if (decision.reload) {
+        window.location.reload();
+        return;
+      }
+      if (decision.held) {
+        setGate("held");
+        return;
+      }
+      if (!decision.play) {
+        if (r.data?.error) setError(r.data.error);
+        return;
+      }
+      setGate("ready");
+      if (autoSave) return;
+      const store = browserStore();
+      const id = rememberedSession(store);
+      if (!id) return;
+      const saved = await fetchWithRetry("/api/play/session", { method: "GET" }, { extraRetries: 0 });
+      if (cancel) return;
+      if (takeChallenge(saved)) return;
+      if (!saved.ok || saved.data?.sessionId !== id) {
+        forgetSession(store);
+        return;
+      }
+      if (saved.data.phase === "finished") {
+        const done = await post("/api/play/finish");
+        if (cancel) return;
+        if (!done.ok) {
+          if (!takeChallenge(done)) forgetSession(store);
+          return;
+        }
+        forgetSession(store);
+        setFinish(done.data);
+        setStage("end");
+        return;
+      }
+      showGame(saved.data);
+    })();
+    return () => {
+      cancel = true;
+    };
+  }, [autoSave]);
 
   useEffect(() => armSound(), []);
 
@@ -119,6 +239,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
 
   async function retrySave() {
     const r = await post("/api/play/claim");
+    if (takeChallenge(r)) return;
     if (r.ok) setFinish(r.data);
     else setFinish((f) => ({ ...f, error: r.data.error ?? f.error }));
   }
@@ -129,6 +250,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setResult(null);
     const r = await post("/api/play/spin");
     if (!r.ok) {
+      if (takeChallenge(r)) return;
       if (r.data.next === "finished") return void endGame();
       return fatal(r.data.error ?? "Could not spin. Start a new game.", r.debug);
     }
@@ -152,7 +274,10 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setBusy(true);
     setError(null);
     const r = await post("/api/play/answer", { answer: text, website: honeypot });
-    if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.", r.debug);
+    if (!r.ok) {
+      if (takeChallenge(r)) return;
+      return fatal(r.data.error ?? "Could not check that answer. Start a new game.", r.debug);
+    }
     setResult(r.data);
     playSound(r.data.correct ? "correct" : "wrong");
     setStreak((n) => nextStreak(n, !!r.data.correct));
@@ -165,7 +290,11 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   async function endGame() {
     setBusy(true);
     const r = await post("/api/play/finish");
-    if (!r.ok) return fatal(r.data.error ?? "Could not finish. Start a new game.", r.debug);
+    if (!r.ok) {
+      if (takeChallenge(r)) return;
+      return fatal(r.data.error ?? "Could not finish. Start a new game.", r.debug);
+    }
+    forgetSession(browserStore());
     setFinish(r.data);
     setBeat("idle");
     setSpin(null);
@@ -190,7 +319,10 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   async function onContinue(yes) {
     setBusy(true);
     const r = await post("/api/play/continue", { choice: yes ? "yes" : "no" });
-    if (!r.ok) return fatal(r.data.error ?? "Could not continue. Start a new game.", r.debug);
+    if (!r.ok) {
+      if (takeChallenge(r)) return;
+      return fatal(r.data.error ?? "Could not continue. Start a new game.", r.debug);
+    }
     if (r.data.next === "finished") return void endGame();
     setSegments(r.data.wheel);
     setBusy(false);
@@ -207,6 +339,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     );
   }
 
+  const control = landingControl(busy && gate === "ready" ? "busy" : gate);
+
   if (stage === "landing") {
     return (
       <>
@@ -219,9 +353,17 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
             <li>Right answers add points. Wrong ones take them away.</li>
             <li>No sign-up needed to play. Sign up free to save your score.</li>
           </ul>
-          <button onClick={start} disabled={busy} className={`${styles.primary} ${styles.pulse}`}>
-            {busy ? "Getting the wheel ready" : "Play now"}
+          <button onClick={start} disabled={control.disabled} className={`${styles.primary} ${styles.pulse}`}>
+            {control.label}
           </button>
+          {(gate === "held" || held) && (
+            <>
+              <p className={styles.lede}>{CHECK_AGAIN}</p>
+              <button type="button" onClick={tryAgain} className={styles.secondary}>
+                Try again
+              </button>
+            </>
+          )}
           {error && (
             <p className={styles.error} role="alert">
               {error}
@@ -313,11 +455,19 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         <div className={styles.alert} role="alertdialog" aria-modal="true">
           <div className={styles.alertCard}>
             <p className={styles.lede}>{error}</p>
-            {debugLine ? <p className={styles.debugRef}>{debugLine}</p> : null}
-            <button onClick={start} className={styles.primary}>
-              Start a new game
-            </button>
-            <FansButton className={styles.fansSlot} />
+            {debugLine && !held ? <p className={styles.debugRef}>{debugLine}</p> : null}
+            {error === VERIFYING ? null : held ? (
+              <button type="button" onClick={tryAgain} className={styles.primary}>
+                Try again
+              </button>
+            ) : (
+              <>
+                <button onClick={start} className={styles.primary}>
+                  Start a new game
+                </button>
+                <FansButton className={styles.fansSlot} />
+              </>
+            )}
           </div>
         </div>
       )}

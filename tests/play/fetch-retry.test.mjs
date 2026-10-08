@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { NO_CONNECTION, fetchWithRetry } from "../../lib/play/fetch-retry.js";
+import { landingControl } from "../../lib/play/browser-check.js";
 import { PLAY_PING_PATH, warmBrowserCheck } from "../../lib/play/warm-check.js";
 
 function jsonRes(status, data) {
@@ -84,11 +85,15 @@ test("JSON 500 does not retry", async () => {
   assert.equal(result.data.error, "Could not finish. Start a new game.");
 });
 
-test("PlayGame fires the ping once on mount", async () => {
+test("PlayGame pings once and keeps Play disabled until the check passes", async () => {
   const src = readFileSync(new URL("../../components/play/PlayGame.js", import.meta.url), "utf8");
-  const calls = src.match(/warmBrowserCheck\(/g) ?? [];
-  assert.equal(calls.length, 1);
-  assert.match(src, /useEffect\(\(\) => \{\s*warmBrowserCheck\(\);\s*\}, \[\]\);/);
+  assert.equal((src.match(/fetchWithRetry\(PLAY_PING_PATH/g) ?? []).length, 1);
+  assert.match(src, /extraRetries:\s*0/);
+  assert.match(src, /landingControl\(/);
+  assert.equal(landingControl("pending").disabled, true);
+  assert.equal(landingControl("pending").label, "Verifying your browser...");
+  assert.equal(landingControl("ready").disabled, false);
+  assert.equal(landingControl("ready").label, "Play now");
 
   let n = 0;
   await warmBrowserCheck({
@@ -102,4 +107,30 @@ test("PlayGame fires the ping once on mount", async () => {
     waitMs: 0,
   });
   assert.equal(n, 1);
+});
+
+test("a checkpoint page is not retried", async () => {
+  let n = 0;
+  const result = await fetchWithRetry("/api/play/answer", { method: "POST" }, {
+    fetchImpl: async () => {
+      n += 1;
+      return {
+        ok: true,
+        status: 200,
+        redirected: true,
+        headers: { get: () => "text/html" },
+        clone() {
+          return this;
+        },
+        text: async () => "Security Checkpoint verifying your browser",
+      };
+    },
+    waitMs: 0,
+    extraRetries: 2,
+  });
+  assert.equal(n, 1);
+  assert.equal(result.ok, false);
+  assert.equal(result.data.error, NO_CONNECTION);
+  assert.equal(result.debug.kind, "challenge");
+  assert.equal(result.debug.attempts, 1);
 });
