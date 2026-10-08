@@ -1,3 +1,4 @@
+import MuteToggle from "./MuteToggle.js";
 import FansButton from "./FansButton.js";
 import fans from "./fans.module.css";
 import { FANS_LINE } from "@/lib/play/links.js";
@@ -52,6 +53,9 @@ export default function EndScreen({ base = "", finish, onAgain, onRetry, retryin
   ];
   return (
     <section className="mx-auto max-w-md px-5 py-8">
+      <div className="-mt-3 flex justify-end">
+        <MuteToggle />
+      </div>
       <p className="text-xs font-bold uppercase tracking-widest text-navy/60">Full time</p>
       <p className="mt-2 text-7xl font-black leading-none tabular-nums" data-testid="final-score">
         {s.score}

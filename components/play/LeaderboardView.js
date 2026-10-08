@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { markPlayer } from "@/lib/play/leaderboard.js";
+import MuteToggle from "./MuteToggle.js";
 import styles from "./leaderboard.module.css";
 
 /** In-app leaderboard: the finished game stays in memory, so Back returns to the same results. */
@@ -18,6 +19,7 @@ export default function LeaderboardView({ weeks = [], summary, finish, onAgain, 
         <button type="button" onClick={onBack} className={styles.back}>
           Back to results
         </button>
+        <MuteToggle />
       </div>
       <h1 className={styles.title}>This Week&apos;s Champions</h1>
       <div className={styles.score} role="status">

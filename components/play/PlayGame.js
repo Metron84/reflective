@@ -6,6 +6,7 @@ import { warmBrowserCheck } from "@/lib/play/warm-check";
 import FansButton from "./FansButton.js";
 import EndScreen from "./EndScreen.js";
 import LeaderboardView from "./LeaderboardView.js";
+import { armSound, playSound } from "@/lib/play/sound.js";
 import { stageAfter } from "@/lib/play/leaderboard.js";
 import QuestionModal from "./QuestionModal.js";
 import ScoreBar from "./ScoreBar.js";
@@ -90,6 +91,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     warmBrowserCheck();
   }, []);
 
+  useEffect(() => armSound(), []);
+
   useEffect(() => {
     if (autoSave && !claimed.current) {
       claimed.current = true;
@@ -132,6 +135,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     const r = await post("/api/play/answer", { answer: text, website: honeypot });
     if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.");
     setResult(r.data);
+    playSound(r.data.correct ? "correct" : "wrong");
     setScore(r.data.score);
     setAnswered(r.data.answered);
     setSegments(r.data.wheel);
