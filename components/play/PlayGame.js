@@ -4,8 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchWithRetry } from "@/lib/play/fetch-retry";
 import { warmBrowserCheck } from "@/lib/play/warm-check";
 import FansButton from "./FansButton.js";
+import Feedback from "./Feedback.js";
+import Hero from "./Hero.js";
 import EndScreen from "./EndScreen.js";
 import LeaderboardView from "./LeaderboardView.js";
+import { nextStreak } from "@/lib/play/feedback.js";
 import { armSound, playSound } from "@/lib/play/sound.js";
 import { stageAfter } from "@/lib/play/leaderboard.js";
 import QuestionModal from "./QuestionModal.js";
@@ -29,6 +32,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const [max, setMax] = useState(10);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [spin, setSpin] = useState(null);
   const [target, setTarget] = useState(null);
   const [result, setResult] = useState(null);
@@ -59,6 +63,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setMax(r.data.maxQuestions);
     setScore(0);
     setAnswered(0);
+    setStreak(0);
     setSpin(null);
     setTarget(null);
     setResult(null);
@@ -136,6 +141,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.");
     setResult(r.data);
     playSound(r.data.correct ? "correct" : "wrong");
+    setStreak((n) => nextStreak(n, !!r.data.correct));
     setScore(r.data.score);
     setAnswered(r.data.answered);
     setSegments(r.data.wheel);
@@ -190,8 +196,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     return (
       <>
         <section className="mx-auto flex max-w-md flex-col px-5 py-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-navy/70">The Reflective Football</p>
-          <h1 className="mt-3 text-5xl font-black leading-[1.02]">Are You Really a Fan?</h1>
+          <Hero />
           <p className="mt-4 text-lg font-semibold">Spin the wheel. Answer the clue. Prove it.</p>
           <ul className="mt-5 space-y-1 text-base">
             <li>Up to 10 questions.</li>
@@ -246,7 +251,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const spinning = beat === "spinning";
   return (
     <>
-      <ScoreBar score={score} answered={answered} max={max} />
+      <ScoreBar score={score} answered={answered} max={max} streak={streak} />
       <section className="mx-auto flex max-w-md flex-col items-center px-5 pb-10 pt-8">
         <Wheel segments={segments} target={target} onDone={wheelDone} />
         <div className="mt-6 flex h-16 items-center justify-center" aria-live="polite">
@@ -265,6 +270,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         </button>
         {error && !stuck && <p className="mt-3 text-sm font-semibold">{error}</p>}
       </section>
+
+      {result && <Feedback key={answered} result={result} />}
 
       {beat === "question" && spin && (
         <QuestionModal

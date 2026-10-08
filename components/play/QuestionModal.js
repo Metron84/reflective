@@ -1,5 +1,6 @@
 "use client";
 
+import fb from "./feedback.module.css";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 function speechCtor() {
@@ -147,7 +148,7 @@ export default function QuestionModal({
                 {result.pointsChange > 0 ? `+${result.pointsChange}` : result.pointsChange}
               </span>
             </p>
-            <p className="mt-2 text-base">
+            <p className={`mt-2 text-base ${result.correct ? "" : fb.answerReveal}`}>
               The answer: <span className="font-bold">{result.answer}</span>
             </p>
             {result.next === "continuePrompt" ? (
