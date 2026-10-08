@@ -2,23 +2,20 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchWithRetry } from "@/lib/play/fetch-retry";
+import { warmBrowserCheck } from "@/lib/play/warm-check";
 import EndScreen from "./EndScreen.js";
 import QuestionModal from "./QuestionModal.js";
 import ScoreBar from "./ScoreBar.js";
 import Wheel from "./Wheel.js";
 import styles from "./play.module.css";
 
-async function post(path, body) {
-  try {
-    const res = await fetch(path, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-    return { ok: res.ok, status: res.status, data: await res.json() };
-  } catch {
-    return { ok: false, status: 0, data: { error: "No connection. Check your signal and try again." } };
-  }
+function post(path, body) {
+  return fetchWithRetry(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 }
 
 /** `autoSave` is true when the player returns from sign-up: the server saves the finished game held by their cookie. */
@@ -85,6 +82,10 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
     }
     setStage("landing");
     setError(`${r.data.error ?? "Could not save your score."} Play again to set a new one.`);
+  }, []);
+
+  useEffect(() => {
+    warmBrowserCheck();
   }, []);
 
   useEffect(() => {
