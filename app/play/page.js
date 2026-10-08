@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import FansButton from "@/components/play/FansButton";
 import PlayGame from "@/components/play/PlayGame";
 import { getRenderClient } from "@/lib/supabase/server";
 import { isPlayHost, mainSiteOrigin } from "@/lib/play/host.js";
@@ -73,7 +74,7 @@ export default async function PlayPage({ searchParams }) {
       <Board title="Last week" weekStart={lastWeek} rows={previous} emptyHint="No scores from last week." />
       <p className={styles.note}>Weeks run Monday to Sunday, Dubai time. Your first saved score each day counts.</p>
       <div className={styles.actions}>
-        <Link href={`${base}/films`} className={styles.secondary}>Watch the films</Link>
+        <FansButton />
         <Link href={`${base}/guesser`} className={styles.secondary}>Play The Guesser</Link>
         <Link href={`${base}/ultima`} className={styles.secondary}>Play Ultima</Link>
       </div>

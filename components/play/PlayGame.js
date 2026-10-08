@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchWithRetry } from "@/lib/play/fetch-retry";
 import { warmBrowserCheck } from "@/lib/play/warm-check";
+import FansButton from "./FansButton.js";
 import EndScreen from "./EndScreen.js";
 import QuestionModal from "./QuestionModal.js";
 import ScoreBar from "./ScoreBar.js";
@@ -204,9 +204,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
               {error}
             </p>
           )}
-          <Link href={`${base}/films`} className="mt-4 text-center text-base font-bold underline underline-offset-4">
-            Watch films on TRF
-          </Link>
+          <FansButton className="mt-4" />
           <p className="mt-10 text-sm font-semibold text-navy/60">Football is nothing without the fans.</p>
         </section>
         {board}
@@ -261,9 +259,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
             <button onClick={start} className="mt-4 w-full rounded-lg bg-signal px-4 py-3 text-base font-bold text-paper">
               Start a new game
             </button>
-            <Link href={`${base}/films`} className="mt-3 block text-center text-base font-bold underline underline-offset-4">
-              Watch films on TRF
-            </Link>
+            <FansButton className="mt-3" />
           </div>
         </div>
       )}

@@ -1,4 +1,6 @@
-import Link from "next/link";
+import FansButton from "./FansButton.js";
+import fans from "./fans.module.css";
+import { FANS_LINE } from "@/lib/play/links.js";
 
 function SaveBlock({ finish, onRetry, retrying }) {
   if (finish.saved) {
@@ -72,9 +74,8 @@ export default function EndScreen({ base = "", finish, onAgain, onRetry, retryin
         <a href="/play" className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
           See the leaderboard
         </a>
-        <Link href={`${base}/films`} className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
-          Watch films on TRF
-        </Link>
+        <p className={fans.line}>{FANS_LINE}</p>
+        <FansButton />
       </div>
     </section>
   );
