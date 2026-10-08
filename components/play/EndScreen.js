@@ -42,7 +42,7 @@ function SaveBlock({ finish, onRetry, retrying }) {
   );
 }
 
-export default function EndScreen({ base = "", finish, onAgain, onRetry, retrying }) {
+export default function EndScreen({ base = "", finish, onAgain, onRetry, retrying, onLeaderboard }) {
   const s = finish.summary;
   const stats = [
     ["Questions answered", s.answered],
@@ -70,10 +70,10 @@ export default function EndScreen({ base = "", finish, onAgain, onRetry, retryin
         <button onClick={onAgain} className="rounded-lg bg-navy px-4 py-3 text-base font-bold text-paper">
           Play again
         </button>
-        {/* Plain anchor: a client link to the same route would keep the end screen mounted. */}
-        <a href="/play" className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
+        {/* A button, not a link: navigating to /play reloads the app and drops the finished game. */}
+        <button onClick={onLeaderboard} className="rounded-lg border-2 border-navy px-4 py-3 text-center text-base font-bold">
           See the leaderboard
-        </a>
+        </button>
         <p className={fans.line}>{FANS_LINE}</p>
         <FansButton />
       </div>

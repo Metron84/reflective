@@ -17,6 +17,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 const LIMIT = 20;
+const CHAMPIONS = "This Week's Champions";
 
 async function loadWeek(supabase, weekStart) {
   if (!supabase) return [];
@@ -70,7 +71,7 @@ export default async function PlayPage({ searchParams }) {
 
   const board = (
     <div className={styles.inner}>
-      <Board title="This week" weekStart={thisWeek} rows={current} emptyHint="No scores yet. Be the first on the board." />
+      <Board title={CHAMPIONS} weekStart={thisWeek} rows={current} emptyHint="No scores yet. Be the first on the board." />
       <Board title="Last week" weekStart={lastWeek} rows={previous} emptyHint="No scores from last week." />
       <p className={styles.note}>Weeks run Monday to Sunday, Dubai time. Your first saved score each day counts.</p>
       <div className={styles.actions}>
@@ -90,7 +91,15 @@ export default async function PlayPage({ searchParams }) {
       ) : (
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Play" }]} />
       )}
-      <PlayGame autoSave={sp?.save === "1"} board={board} base={base} />
+      <PlayGame
+        autoSave={sp?.save === "1"}
+        board={board}
+        base={base}
+        leaderboard={[
+          { title: CHAMPIONS, label: weekLabel(thisWeek), rows: current, emptyHint: "No scores yet. Be the first on the board." },
+          { title: "Last week", label: weekLabel(lastWeek), rows: previous, emptyHint: "No scores from last week." },
+        ]}
+      />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { fetchWithRetry } from "@/lib/play/fetch-retry";
 import { warmBrowserCheck } from "@/lib/play/warm-check";
 import FansButton from "./FansButton.js";
 import EndScreen from "./EndScreen.js";
+import LeaderboardView from "./LeaderboardView.js";
+import { stageAfter } from "@/lib/play/leaderboard.js";
 import QuestionModal from "./QuestionModal.js";
 import ScoreBar from "./ScoreBar.js";
 import Wheel from "./Wheel.js";
@@ -19,7 +21,7 @@ function post(path, body) {
 }
 
 /** `autoSave` is true when the player returns from sign-up: the server saves the finished game held by their cookie. */
-export default function PlayGame({ autoSave = false, board = null, base = "" }) {
+export default function PlayGame({ autoSave = false, board = null, base = "", leaderboard = [] }) {
   const [stage, setStage] = useState(autoSave ? "saving" : "landing");
   const [beat, setBeat] = useState("idle");
   const [segments, setSegments] = useState([]);
@@ -213,7 +215,28 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   }
 
   if (stage === "end" && finish) {
-    return <EndScreen base={base} finish={finish} onAgain={start} onRetry={retrySave} retrying={busy} />;
+    return (
+      <EndScreen
+        base={base}
+        finish={finish}
+        onAgain={start}
+        onRetry={retrySave}
+        retrying={busy}
+        onLeaderboard={() => setStage((s) => stageAfter(s, "leaderboard", finish))}
+      />
+    );
+  }
+
+  if (stage === "leaderboard" && finish) {
+    return (
+      <LeaderboardView
+        weeks={leaderboard}
+        summary={finish.summary}
+        finish={finish}
+        onAgain={start}
+        onBack={() => setStage((s) => stageAfter(s, "back", finish))}
+      />
+    );
   }
 
   const spinning = beat === "spinning";
