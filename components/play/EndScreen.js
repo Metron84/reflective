@@ -1,4 +1,7 @@
-import Link from "next/link";
+import MuteToggle from "./MuteToggle.js";
+import FansButton from "./FansButton.js";
+import fans from "./fans.module.css";
+import { FANS_LINE } from "@/lib/play/links.js";
 import styles from "./play.module.css";
 
 function SaveBlock({ finish, onRetry, retrying }) {
@@ -34,7 +37,7 @@ function SaveBlock({ finish, onRetry, retrying }) {
   );
 }
 
-export default function EndScreen({ base = "", finish, onAgain, onRetry, retrying }) {
+export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeaderboard }) {
   const s = finish.summary;
   const stats = [
     ["Questions answered", s.answered],
@@ -44,6 +47,9 @@ export default function EndScreen({ base = "", finish, onAgain, onRetry, retryin
   ];
   return (
     <section className={styles.stack}>
+      <div className={styles.muteDock}>
+        <MuteToggle />
+      </div>
       <p className={styles.kicker}>Full time</p>
       <p className={styles.scoreHero} data-testid="final-score">
         {s.score}
@@ -61,13 +67,12 @@ export default function EndScreen({ base = "", finish, onAgain, onRetry, retryin
       <button onClick={onAgain} className={styles.primary}>
         Play again
       </button>
-      {/* Plain anchor: a client link to the same route would keep the end screen mounted. */}
-      <a href="/play" className={styles.secondary}>
+      {/* A button, not a link: navigating to /play reloads the app and drops the finished game. */}
+      <button type="button" onClick={onLeaderboard} className={styles.secondary}>
         See the leaderboard
-      </a>
-      <Link href={`${base}/films`} className={styles.secondary}>
-        Watch films on TRF
-      </Link>
+      </button>
+      <p className={fans.line}>{FANS_LINE}</p>
+      <FansButton className={styles.fansSlot} />
     </section>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { playSound } from "@/lib/play/sound.js";
 import styles from "./play.module.css";
 
 const SIZE = 360;
@@ -69,6 +70,59 @@ function subscribeMotion(cb) {
 }
 const reducedNow = () => window.matchMedia(QUERY).matches;
 
+function cubicBezier(x1, y1, x2, y2) {
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  const sampleX = (u) => ((ax * u + bx) * u + cx) * u;
+  const sampleY = (u) => ((ay * u + by) * u + cy) * u;
+  const slope = (u) => (3 * ax * u + 2 * bx) * u + cx;
+  return (x) => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    let u = x;
+    for (let i = 0; i < 8; i++) {
+      const dx = sampleX(u) - x;
+      const d = slope(u);
+      if (Math.abs(dx) < 1e-5 || Math.abs(d) < 1e-6) break;
+      u = Math.min(1, Math.max(0, u - dx / d));
+    }
+    return sampleY(u);
+  };
+}
+
+const easeStart = cubicBezier(0.55, 0.02, 0.75, 0.35);
+const easeEnd = cubicBezier(0.08, 0.45, 0.05, 1);
+
+/** Same curve as the spin keyframes: slow, fast, then a long slowdown. */
+function spinProgress(t) {
+  if (t <= 0.3) return 0.1 * easeStart(t / 0.3);
+  if (t <= 0.55) return 0.1 + 0.62 * ((t - 0.3) / 0.25);
+  return 0.72 + 0.28 * easeEnd((t - 0.55) / 0.45);
+}
+
+function timeAt(progress, duration) {
+  let lo = 0;
+  let hi = 1;
+  for (let i = 0; i < 22; i++) {
+    const mid = (lo + hi) / 2;
+    if (spinProgress(mid) < progress) lo = mid;
+    else hi = mid;
+  }
+  return ((lo + hi) / 2) * duration;
+}
+
+function playQuiet(name) {
+  try {
+    playSound(name);
+  } catch {
+    // Audio can be blocked. The spin still finishes.
+  }
+}
+
 /** `target` is the category the server picked, set after the spin request returns. */
 export default function Wheel({ segments, target, spinId = null, onDone }) {
   const [rotation, setRotation] = useState(0);
@@ -116,7 +170,17 @@ export default function Wheel({ segments, target, spinId = null, onDone }) {
     setLive(true);
     setWinner(null);
     setPulse(false);
+    playQuiet("whoosh");
     const delta = to - from;
+    const tickTimers = [];
+    if (step > 0 && delta > 0) {
+      let boundary = Math.ceil((from + 1e-4) / step) * step;
+      while (boundary < to - 1e-3) {
+        const when = timeAt((boundary - from) / delta, duration);
+        tickTimers.push(setTimeout(() => playQuiet("tick"), when));
+        boundary += step;
+      }
+    }
     let settled = false;
     const anim = disc.animate(
       [
@@ -136,16 +200,19 @@ export default function Wheel({ segments, target, spinId = null, onDone }) {
         /* commitStyles is missing in older browsers; the state update matches the end angle. */
       }
       anim.cancel();
+      tickTimers.forEach(clearTimeout);
       rotRef.current = to;
       setRotation(to);
       setLive(false);
       setWinner(idx);
       setPulse(!shorten);
+      playQuiet("thunk");
       doneRef.current();
     };
     anim.onfinish = finish;
     return () => {
       settled = true;
+      tickTimers.forEach(clearTimeout);
       anim.cancel();
     };
     // Landing uses the server category. spinId retriggers when that category comes up again.

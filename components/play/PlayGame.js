@@ -1,10 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchWithRetry } from "@/lib/play/fetch-retry";
 import { warmBrowserCheck } from "@/lib/play/warm-check";
+import FansButton from "./FansButton.js";
+import Feedback from "./Feedback.js";
+import Hero from "./Hero.js";
 import EndScreen from "./EndScreen.js";
+import LeaderboardView from "./LeaderboardView.js";
+import MuteToggle from "./MuteToggle.js";
+import { nextStreak } from "@/lib/play/feedback.js";
+import { armSound, playSound } from "@/lib/play/sound.js";
+import { stageAfter } from "@/lib/play/leaderboard.js";
 import QuestionModal from "./QuestionModal.js";
 import ScoreBar from "./ScoreBar.js";
 import Wheel from "./Wheel.js";
@@ -18,14 +25,23 @@ function post(path, body) {
   });
 }
 
+function Mute() {
+  return (
+    <div className={styles.muteDock}>
+      <MuteToggle />
+    </div>
+  );
+}
+
 /** `autoSave` is true when the player returns from sign-up: the server saves the finished game held by their cookie. */
-export default function PlayGame({ autoSave = false, board = null, base = "" }) {
+export default function PlayGame({ autoSave = false, board = null, base = "", leaderboard = [] }) {
   const [stage, setStage] = useState(autoSave ? "saving" : "landing");
   const [beat, setBeat] = useState("idle");
   const [segments, setSegments] = useState([]);
   const [max, setMax] = useState(10);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [spin, setSpin] = useState(null);
   const [target, setTarget] = useState(null);
   const [result, setResult] = useState(null);
@@ -56,6 +72,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
     setMax(r.data.maxQuestions);
     setScore(0);
     setAnswered(0);
+    setStreak(0);
     setSpin(null);
     setTarget(null);
     setResult(null);
@@ -87,6 +104,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   useEffect(() => {
     warmBrowserCheck();
   }, []);
+
+  useEffect(() => armSound(), []);
 
   useEffect(() => {
     if (autoSave && !claimed.current) {
@@ -132,6 +151,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
     const r = await post("/api/play/answer", { answer: text, website: honeypot });
     if (!r.ok) return fatal(r.data.error ?? "Could not check that answer. Start a new game.");
     setResult(r.data);
+    playSound(r.data.correct ? "correct" : "wrong");
+    setStreak((n) => nextStreak(n, !!r.data.correct));
     setScore(r.data.score);
     setAnswered(r.data.answered);
     setSegments(r.data.wheel);
@@ -176,6 +197,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   if (stage === "saving") {
     return (
       <section className={styles.saving} role="status" aria-live="polite">
+        <Mute />
         <h1 className={styles.headline}>Saving your score</h1>
         <p className={styles.lede}>One moment.</p>
       </section>
@@ -186,8 +208,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
     return (
       <>
         <section className={styles.stack}>
-          <p className={styles.kicker}>The Reflective Football</p>
-          <h1 className={styles.headline}>Are You Really a Fan?</h1>
+          <Mute />
+          <Hero />
           <p className={styles.lede}>Spin the wheel. Answer the clue. Prove it.</p>
           <ul className={styles.copy}>
             <li>Up to 10 questions.</li>
@@ -202,9 +224,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
               {error}
             </p>
           )}
-          <Link href={`${base}/films`} className={styles.ghost}>
-            Watch films on TRF
-          </Link>
+          <FansButton className={styles.fansSlot} />
           <p className={styles.tagline}>Football is nothing without the fans.</p>
         </section>
         {board}
@@ -213,7 +233,28 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   }
 
   if (stage === "end" && finish) {
-    return <EndScreen base={base} finish={finish} onAgain={start} onRetry={retrySave} retrying={busy} />;
+    return (
+      <EndScreen
+        base={base}
+        finish={finish}
+        onAgain={start}
+        onRetry={retrySave}
+        retrying={busy}
+        onLeaderboard={() => setStage((s) => stageAfter(s, "leaderboard", finish))}
+      />
+    );
+  }
+
+  if (stage === "leaderboard" && finish) {
+    return (
+      <LeaderboardView
+        weeks={leaderboard}
+        summary={finish.summary}
+        finish={finish}
+        onAgain={start}
+        onBack={() => setStage((s) => stageAfter(s, "back", finish))}
+      />
+    );
   }
 
   const spinning = beat === "spinning";
@@ -221,8 +262,9 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
   return (
     <>
       <section className={styles.arena}>
+        <Mute />
         <h1 className={styles.headline}>Are You Really a Fan?</h1>
-        <ScoreBar score={score} answered={answered} max={max} />
+        <ScoreBar score={score} answered={answered} max={max} streak={streak} />
         <div className={styles.stage}>
           <Wheel
             segments={segments}
@@ -262,6 +304,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
         </div>
       </section>
 
+      {result && <Feedback key={answered} result={result} />}
+
       {stuck && (
         <div className={styles.alert} role="alertdialog" aria-modal="true">
           <div className={styles.alertCard}>
@@ -269,9 +313,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "" }) 
             <button onClick={start} className={styles.primary}>
               Start a new game
             </button>
-            <Link href={`${base}/films`} className={styles.ghost}>
-              Watch films on TRF
-            </Link>
+            <FansButton className={styles.fansSlot} />
           </div>
         </div>
       )}

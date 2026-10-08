@@ -1,5 +1,6 @@
 "use client";
 
+import fb from "./feedback.module.css";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import styles from "./play.module.css";
 
@@ -121,7 +122,7 @@ export default function QuestionModal({
             />
             <div className={styles.row}>
               <button type="submit" disabled={busy || !text.trim()} className={`${styles.primary} ${styles.grow}`}>
-                Answer
+                Lock In
               </button>
               {canSpeak && (
                 <button type="button" onClick={speak} className={styles.secondary}>
@@ -139,7 +140,7 @@ export default function QuestionModal({
                 {result.pointsChange > 0 ? `+${result.pointsChange}` : result.pointsChange}
               </span>
             </p>
-            <p className={styles.answerLine}>
+            <p className={`${styles.answerLine} ${result.correct ? "" : fb.answerReveal}`}>
               The answer: <span className={styles.gold}>{result.answer}</span>
             </p>
             {result.next === "continuePrompt" ? (
