@@ -84,9 +84,10 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   function takeChallenge(r) {
     const action = recoverChallenge(r, browserStore());
     if (action === "none") return false;
+    const line = connectionDebugLine(r.debug);
     if (action === "reload") {
       setError(VERIFYING);
-      setDebugLine("");
+      setDebugLine(line);
       setStuck(true);
       setHeld(false);
       setBusy(false);
@@ -94,7 +95,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
       return true;
     }
     setError(CHECK_AGAIN);
-    setDebugLine("");
+    setDebugLine(line);
     setStuck(true);
     setHeld(true);
     setBusy(false);
@@ -455,7 +456,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         <div className={styles.alert} role="alertdialog" aria-modal="true">
           <div className={styles.alertCard}>
             <p className={styles.lede}>{error}</p>
-            {debugLine && !held ? <p className={styles.debugRef}>{debugLine}</p> : null}
+            {debugLine ? <p className={styles.debugRef}>{debugLine}</p> : null}
             {error === VERIFYING ? null : held ? (
               <button type="button" onClick={tryAgain} className={styles.primary}>
                 Try again

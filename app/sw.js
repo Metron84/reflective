@@ -126,6 +126,32 @@ async function warmHighTrafficPages() {
   }
 }
 
+function isPlayWorkerHost() {
+  try {
+    const name = String(self.location.hostname || "");
+    return name === "play.thereflectivefootball.com" || name === "play.localhost";
+  } catch {
+    return false;
+  }
+}
+
+// The play host is only the quiz. Installing here precaches the whole archive
+// and each of those URLs is redirected back to "/". Remove any worker that
+// already landed, and do not precache.
+if (isPlayWorkerHost()) {
+  self.addEventListener("install", () => {
+    self.skipWaiting();
+  });
+  self.addEventListener("activate", (event) => {
+    event.waitUntil(
+      (async () => {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((key) => caches.delete(key)));
+        await self.registration.unregister();
+      })(),
+    );
+  });
+} else {
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
@@ -145,6 +171,12 @@ const serwist = new Serwist({
     {
       matcher: ({ sameOrigin, url: { pathname } }) =>
         sameOrigin && isNeverCacheApi(pathname),
+      handler: new NetworkOnly(),
+    },
+    // The quiz must hit the network. A cached ping or session would hide a block page.
+    {
+      matcher: ({ sameOrigin, url: { pathname } }) =>
+        sameOrigin && (pathname === "/api/play" || pathname.startsWith("/api/play/")),
       handler: new NetworkOnly(),
     },
     // Other same-origin APIs: network-first so live data wins.
@@ -357,3 +389,4 @@ self.addEventListener("notificationclick", (event) => {
     })(),
   );
 });
+}

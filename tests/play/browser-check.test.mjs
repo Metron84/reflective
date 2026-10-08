@@ -74,6 +74,20 @@ test("a challenge ping reloads once", () => {
   assert.equal(store.getItem(VERIFY_KEY), String(now));
 });
 
+test("a non-JSON 403 reloads once, then shows try again", () => {
+  const store = memory();
+  const blocked = {
+    ok: false,
+    status: 0,
+    data: {},
+    debug: { kind: "challenge", lastStatus: 403, lastContentType: "text/html", route: "answer" },
+  };
+  const now = 1_000_000;
+  assert.equal(recoverChallenge(blocked, store, now), "reload");
+  assert.equal(recoverChallenge(blocked, store, now + 1_000), "hold");
+  assert.equal(recoverChallenge(blocked, store, now + 61_000), "reload");
+});
+
 test("a second challenge within 60 seconds does not reload again", () => {
   const store = memory();
   const now = 1_000_000;

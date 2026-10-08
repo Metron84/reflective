@@ -7,6 +7,7 @@ import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { isPlayHost } from "@/lib/play/host";
+import { PLAY_SW_GUARD } from "@/lib/play/sw-cleanup";
 import { archivo } from "./fonts/archivo";
 import { bodoni } from "./fonts/bodoni";
 import "./globals.css";
@@ -126,6 +127,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="dns-prefetch" href="https://www.youtube.com" />
         <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        {playApp ? <script dangerouslySetInnerHTML={{ __html: PLAY_SW_GUARD }} /> : null}
       </head>
       <body
         className={

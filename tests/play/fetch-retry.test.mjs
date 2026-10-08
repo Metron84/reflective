@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { NO_CONNECTION, fetchWithRetry } from "../../lib/play/fetch-retry.js";
+import { NO_CONNECTION, connectionDebugLine, fetchWithRetry } from "../../lib/play/fetch-retry.js";
 import { landingControl } from "../../lib/play/browser-check.js";
 import { PLAY_PING_PATH, warmBrowserCheck } from "../../lib/play/warm-check.js";
 
@@ -31,7 +31,7 @@ test("HTML response retries, then succeeds", async () => {
     fetchImpl: async (_path, init) => {
       n += 1;
       assert.equal(init.credentials, "same-origin");
-      if (n === 1) return htmlRes(403);
+      if (n === 1) return htmlRes(503);
       return jsonRes(200, { categories: ["A"] });
     },
     waitMs: 0,
@@ -107,6 +107,50 @@ test("PlayGame pings once and keeps Play disabled until the check passes", async
     waitMs: 0,
   });
   assert.equal(n, 1);
+});
+
+test("a non-JSON 403 is not retried and keeps the edge headers", async () => {
+  let n = 0;
+  const body = `${"Blocked page. ".repeat(40)}tail`;
+  const result = await fetchWithRetry("/api/play/answer", { method: "POST" }, {
+    fetchImpl: async () => {
+      n += 1;
+      return {
+        ok: false,
+        status: 403,
+        redirected: false,
+        headers: {
+          get(name) {
+            const key = String(name).toLowerCase();
+            if (key === "content-type") return "text/html";
+            if (key === "x-vercel-mitigated") return "deny";
+            if (key === "x-vercel-id") return "iad1::abc";
+            if (key === "server") return "Vercel";
+            if (key === "cf-ray") return "ray123";
+            return null;
+          },
+        },
+        clone() {
+          return this;
+        },
+        text: async () => body,
+      };
+    },
+    waitMs: 0,
+    extraRetries: 2,
+  });
+  assert.equal(n, 1);
+  assert.equal(result.debug.kind, "challenge");
+  assert.equal(result.debug.attempts, 1);
+  assert.equal(result.debug.lastStatus, 403);
+  assert.equal(result.debug.body.length, 300);
+  assert.equal(result.debug.mitigated, "deny");
+  assert.equal(result.debug.vercelId, "iad1::abc");
+  assert.equal(result.debug.server, "Vercel");
+  assert.equal(result.debug.cfRay, "ray123");
+  const line = connectionDebugLine(result.debug);
+  assert.match(line, /^ref answer 403 text\/html challenge mitigated=deny vercel=iad1::abc server=Vercel ray=ray123 /);
+  assert.equal(line.length > 300, true);
 });
 
 test("a checkpoint page is not retried", async () => {

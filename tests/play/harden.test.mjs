@@ -80,7 +80,12 @@ test("final failure keeps no connection and reports the challenge page", async (
       ok: true,
       status: 200,
       redirected: true,
-      headers: { get: () => "text/html; charset=utf-8" },
+      headers: {
+        get(name) {
+          if (String(name).toLowerCase() === "content-type") return "text/html; charset=utf-8";
+          return null;
+        },
+      },
       clone() {
         return this;
       },
@@ -99,7 +104,10 @@ test("final failure keeps no connection and reports the challenge page", async (
   assert.equal(result.debug.lastContentType, "text/html");
   assert.equal(result.debug.redirected, true);
   assert.equal(result.debug.kind, "challenge");
-  assert.equal(result.debug.body.length <= 100, true);
+  assert.equal(result.debug.body.length <= 300, true);
   assert.match(result.debug.body, /Security Checkpoint/);
-  assert.equal(connectionDebugLine(result.debug), "ref answer 200 text/html challenge");
+  assert.equal(
+    connectionDebugLine(result.debug),
+    "ref answer 200 text/html challenge <html> Security Checkpoint verifying your browser </html>",
+  );
 });
