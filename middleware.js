@@ -13,6 +13,7 @@ import {
   withAuthCookieDomain,
 } from "@/lib/ultima/host";
 import { isPlayHost, playHostAction } from "@/lib/play/host";
+import { isObservatoryHost, observatoryHostAction } from "@/lib/observatory/host";
 
 const PUBLIC_PATHS = [
   "/signin",
@@ -105,10 +106,21 @@ function playHostResponse(request) {
   return NextResponse.redirect(url);
 }
 
-/** Subdomain routing: Ultima and the play game each own a host. */
+function observatoryHostResponse(request) {
+  const action = observatoryHostAction(request.nextUrl.pathname);
+  if (action.type === "pass") return null;
+  const url = request.nextUrl.clone();
+  url.pathname = action.to;
+  if (action.type === "rewrite") return rewriteWithPath(request, url);
+  if (!action.keepSearch) url.search = "";
+  return NextResponse.redirect(url);
+}
+
+/** Subdomain routing: Ultima, the play game and the observatory each own a host. */
 function appHostResponse(request, host) {
   if (isUltimaAppHost(host)) return ultimaHostResponse(request);
   if (isPlayHost(host)) return playHostResponse(request);
+  if (isObservatoryHost(host)) return observatoryHostResponse(request);
   return null;
 }
 

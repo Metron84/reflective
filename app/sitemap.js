@@ -3,6 +3,7 @@ import {
   FATF_INDEXABLE,
   KOTB_ENABLED,
   LALIGA_CAMPAIGN_ENABLED,
+  OBSERVATORY_ENABLED,
   CREST_ENABLED,
   SITE_URL,
   STAND_ENABLED,
@@ -43,6 +44,12 @@ export default function sitemap() {
       : []),
     ...(KOTB_ENABLED
       ? [{ path: "/king-of-the-burgers", changeFrequency: "weekly", priority: 0.8 }]
+      : []),
+    ...(OBSERVATORY_ENABLED
+      ? [
+          { path: "/observatory", changeFrequency: "weekly", priority: 0.7 },
+          { path: "/observatory/footballer-001", changeFrequency: "weekly", priority: 0.7 },
+        ]
       : []),
     ...(ULTIMA_ENABLED
       ? [

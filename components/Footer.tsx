@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SITE_SECTIONS, SOCIAL_LINKS } from "@/lib/config";
+import { SOCIAL_LINKS } from "@/lib/config";
+import { navSections } from "@/lib/nav";
 
 const footerLink =
   "text-sm text-paper transition-colors hover:text-signal";
@@ -60,7 +61,7 @@ export default function Footer() {
               Explore
             </p>
             <ul className="flex flex-col gap-2">
-              {SITE_SECTIONS.map((item) => (
+              {navSections().map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className={footerLink}>
                     {item.label}

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FATF_ENABLED, SITE_SECTIONS, TRAINING_ENABLED } from "@/lib/config";
+import { FATF_ENABLED, TRAINING_ENABLED } from "@/lib/config";
+import { navSections } from "@/lib/nav";
 import { FATF_PATH } from "@/lib/fatf";
 import DoorPendingLine from "./nav/DoorPendingLine";
 
@@ -38,7 +39,7 @@ function MenuOverlay({ onClose, auth }) {
         </button>
       </div>
       <nav className="flex flex-1 flex-col justify-center gap-8 px-8">
-        {SITE_SECTIONS.map((item) => {
+        {navSections().map((item) => {
           const active = isActiveSection(pathname, item.href);
           return (
             <Link

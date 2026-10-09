@@ -18,6 +18,8 @@ export default function ProgrammeHeader({ profile, isAdmin = false }) {
       {isAdmin ? (
         <p className={styles.adminLink}>
           <Link href="/admin/tagging">Tagging admin</Link>
+          {" · "}
+          <Link href="/admin/observatory">Observatory</Link>
         </p>
       ) : null}
       <div className={styles.rule} aria-hidden="true" />

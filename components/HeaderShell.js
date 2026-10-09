@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { FATF_ENABLED, SITE_SECTIONS, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
+import { FATF_ENABLED, TRAINING_ENABLED, WORK_WITH_US_HREF } from "@/lib/config";
+import { navSections } from "@/lib/nav";
 import { FATF_PATH } from "@/lib/fatf";
 import DoorPendingLine from "./nav/DoorPendingLine";
 import MobileMenu from "./MobileMenu";
@@ -87,7 +88,7 @@ export default function HeaderShell({ auth }) {
         </Link>
         <nav className="flex items-center gap-4 text-sm lg:gap-5">
           <div className="hidden items-center gap-5 lg:flex">
-            {SITE_SECTIONS.map((item) => {
+            {navSections().map((item) => {
               const active = isActiveSection(pathname, item.href);
               return (
                 <Link

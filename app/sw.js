@@ -15,6 +15,9 @@ const CACHE_VERSION = "net-v1";
 
 const NEVER_CACHE_API_PATHS = new Set([
   "/api/laliga",
+  "/api/observatory/footballer-001/start",
+  "/api/observatory/footballer-001/answer",
+  "/api/observatory/footballer-001/finish",
   "/api/codemaster/progress",
   "/api/codemaster/solve",
   "/api/fatf/me",
@@ -88,7 +91,7 @@ const archivePagesCache = `archive-pages-${CACHE_VERSION}-${ARCHIVE_CACHE_REVISI
 const archiveJsonCache = `archive-json-${CACHE_VERSION}-${ARCHIVE_CACHE_REVISION}`;
 
 /** High-traffic doors only — warmed into pages cache on activate. */
-const WARM_PAGE_ROUTES = ["/films", "/games", "/reflections", "/training"];
+const WARM_PAGE_ROUTES = ["/films", "/games", "/reflections", "/observatory", "/training"];
 
 const CURRENT_CACHE_NAMES = new Set([
   pagesCache,

@@ -33,6 +33,12 @@ export default function AdminNav({ active, newCount = 0 }) {
       >
         Burgers
       </Link>
+      <Link
+        href="/admin/observatory"
+        className={active === "observatory" ? styles.active : styles.link}
+      >
+        Observatory
+      </Link>
     </nav>
   );
 }
