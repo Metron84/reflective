@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { WATCHWITH_SHARE_LABEL } from "@/lib/watch-with/host";
 import { useEffect, useRef, useState } from "react";
 
 const font = { fontFamily: "var(--font-body), Archivo, sans-serif" };
@@ -57,7 +58,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   if (line) ctx.fillText(line, x, top);
 }
 
-async function drawShareCard({ name, tagline, url }) {
+async function drawShareCard({ name, tagline }) {
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1350;
@@ -85,7 +86,7 @@ async function drawShareCard({ name, tagline, url }) {
   ctx.fillRect(390, 1040, 300, 10);
   ctx.fillStyle = "#0A111F";
   ctx.font = "500 28px Archivo, sans-serif";
-  ctx.fillText(String(url).replace(/^https?:\/\//, ""), 540, 1160);
+  ctx.fillText(WATCHWITH_SHARE_LABEL, 540, 1160);
   ctx.font = "500 24px Archivo, sans-serif";
   ctx.fillText("Football is nothing without the fans.", 540, 1248);
   return canvas;
@@ -98,7 +99,7 @@ function categoryLabel(category) {
   return category;
 }
 
-export default function WatchGame({ club, clubName, headline, subline }) {
+export default function WatchGame({ club, clubName, headline, subline, rankingHref = `/watch-with/${club}/ranking` }) {
   const [run, setRun] = useState(null);
   const [left, setLeft] = useState(null);
   const [right, setRight] = useState(null);
@@ -207,13 +208,12 @@ export default function WatchGame({ club, clubName, headline, subline }) {
 
   async function share() {
     if (!run?.champion) return;
-    const pageUrl = window.location.href;
+    const pageUrl = new URL(rankingHref.replace(/\/ranking$/, "") || "/", window.location.origin).href;
     let blob = shareBlob.current;
     if (!blob) {
       const canvas = await drawShareCard({
         name: run.champion.name,
         tagline: run.champion.tagline,
-        url: pageUrl,
       });
       blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
     }
@@ -244,7 +244,6 @@ export default function WatchGame({ club, clubName, headline, subline }) {
     drawShareCard({
       name: run.champion.name,
       tagline: run.champion.tagline,
-      url: window.location.href,
     }).then((canvas) => {
       if (cancel) return;
       const preview = previewRef.current;
@@ -297,7 +296,7 @@ export default function WatchGame({ club, clubName, headline, subline }) {
           <button type="button" onClick={share} className={primaryClass}>Share my companion</button>
           {shared ? <p className="text-sm">{shared}</p> : null}
           <button type="button" onClick={begin} className={ghostClass}>Play again</button>
-          <Link href={`/watch-with/${club}/ranking`} className={linkClass}>See the ranking</Link>
+          <Link href={rankingHref} className={linkClass}>See the ranking</Link>
         </section>
       ) : null}
 
@@ -325,7 +324,7 @@ export default function WatchGame({ club, clubName, headline, subline }) {
       {capped ? (
         <section className="mt-8 flex flex-col gap-4">
           <p className="text-lg">That&apos;s five for today. Come back tomorrow.</p>
-          <Link href={`/watch-with/${club}/ranking`} className={linkClass}>See the ranking</Link>
+          <Link href={rankingHref} className={linkClass}>See the ranking</Link>
         </section>
       ) : null}
 

@@ -11,7 +11,7 @@ const TABS = [
   { id: "celebrity", label: "Celebrities" },
 ];
 
-export default function RankingBoard({ club, clubName, headline, rows, fans }) {
+export default function RankingBoard({ club, clubName, headline, rows, fans, gameHref = `/watch-with/${club}` }) {
   const [tab, setTab] = useState("all");
   const [shared, setShared] = useState(false);
   const visible = useMemo(
@@ -83,7 +83,7 @@ export default function RankingBoard({ club, clubName, headline, rows, fans }) {
       {visible.length === 0 ? <p>No companions in this group yet.</p> : null}
 
       <button type="button" onClick={share} className={tabOn}>{shared ? "Link copied" : "Share the ranking"}</button>
-      <Link href={`/watch-with/${club}`} className="text-sm font-semibold underline-offset-4 hover:underline">Play the game</Link>
+      <Link href={gameHref} className="text-sm font-semibold underline-offset-4 hover:underline">Play the game</Link>
       <footer className="pb-4 text-center text-sm">
         <p>Football is nothing without the fans.</p>
         <Link href="/" className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>

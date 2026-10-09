@@ -14,6 +14,7 @@ import {
 } from "@/lib/ultima/host";
 import { isPlayHost, playHostAction } from "@/lib/play/host";
 import { isObservatoryHost, observatoryHostAction } from "@/lib/observatory/host";
+import { isWatchWithHost, watchWithHostAction } from "@/lib/watch-with/host";
 
 const PUBLIC_PATHS = [
   "/signin",
@@ -116,11 +117,22 @@ function observatoryHostResponse(request) {
   return NextResponse.redirect(url);
 }
 
-/** Subdomain routing: Ultima, the play game and the observatory each own a host. */
+function watchWithHostResponse(request) {
+  const action = watchWithHostAction(request.nextUrl.pathname);
+  if (action.type === "pass") return null;
+  const url = request.nextUrl.clone();
+  url.pathname = action.to;
+  if (action.type === "rewrite") return rewriteWithPath(request, url);
+  if (!action.keepSearch) url.search = "";
+  return NextResponse.redirect(url);
+}
+
+/** Subdomain routing: Ultima, play, the observatory and watch-with each own a host. */
 function appHostResponse(request, host) {
   if (isUltimaAppHost(host)) return ultimaHostResponse(request);
   if (isPlayHost(host)) return playHostResponse(request);
   if (isObservatoryHost(host)) return observatoryHostResponse(request);
+  if (isWatchWithHost(host)) return watchWithHostResponse(request);
   return null;
 }
 

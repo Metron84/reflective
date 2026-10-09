@@ -1,7 +1,9 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import RankingBoard from "@/components/watch-with/RankingBoard";
 import { SITE_URL } from "@/lib/config";
 import { getClub } from "@/lib/watch-with/clubs";
+import { watchWithPaths } from "@/lib/watch-with/host";
 import { rankingFor } from "@/lib/watch-with/store";
 
 export async function generateMetadata({ params }) {
@@ -26,6 +28,8 @@ export default async function RankingPage({ params }) {
   } catch (error) {
     console.error("watch-with/ranking", error);
   }
+  const hdrs = await headers();
+  const paths = watchWithPaths(hdrs.get("host"), club.slug);
   return (
     <RankingBoard
       club={club.slug}
@@ -33,6 +37,7 @@ export default async function RankingPage({ params }) {
       headline="Who would you rather watch the match with?"
       rows={board.rows}
       fans={board.fans}
+      gameHref={paths.game}
     />
   );
 }
