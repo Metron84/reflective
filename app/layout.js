@@ -112,9 +112,10 @@ export default async function RootLayout({ children }) {
   const ultimaApp = isUltimaAppHost(hdrs.get("host"));
   const pathname = hdrs.get("x-pathname") || "";
   const crestApp = pathname === "/crest" || pathname.startsWith("/crest/");
+  const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/");
   // The play host only ever shows the game, so site navigation would lead nowhere.
   const playApp = isPlayHost(hdrs.get("host"));
-  const hideChrome = ultimaApp || crestApp || playApp;
+  const hideChrome = ultimaApp || crestApp || playApp || watchWith;
 
   return (
     <html

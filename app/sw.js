@@ -63,6 +63,7 @@ function isNeverCacheApi(pathname) {
     pathname.length > 1 && pathname.endsWith("/")
       ? pathname.slice(0, -1)
       : pathname;
+  if (normalized.startsWith("/api/watch-with/")) return true;
   return NEVER_CACHE_API_PATHS.has(normalized);
 }
 
