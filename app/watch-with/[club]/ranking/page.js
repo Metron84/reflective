@@ -2,26 +2,33 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import RankingBoard from "@/components/watch-with/RankingBoard";
 import { SITE_URL } from "@/lib/config";
-import { getClub } from "@/lib/watch-with/clubs";
+import { presentClub, previewMatches } from "@/lib/watch-with/access";
 import { watchWithPaths } from "@/lib/watch-with/host";
 import { rankingFor } from "@/lib/watch-with/store";
 
-export async function generateMetadata({ params }) {
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params, searchParams }) {
   const { club: slug } = await params;
-  const club = getClub(slug);
-  if (!club) return { title: "Ranking" };
+  const query = await searchParams;
+  const preview = typeof query.preview === "string" ? query.preview : "";
+  const club = await presentClub(slug);
+  if (!club || (!club.active && !previewMatches(preview))) return { title: "Ranking" };
   return {
     title: `Matchday companion ranking | ${club.name}`,
-    description: club.subline,
+    description: `Who ${club.fanLabel} would rather watch the match with.`,
     alternates: { canonical: `${SITE_URL}/watch-with/${club.slug}/ranking` },
+    robots: club.active ? { index: true, follow: true } : { index: false, follow: false },
   };
 }
 
-export default async function RankingPage({ params }) {
+export default async function RankingPage({ params, searchParams }) {
   const { club: slug } = await params;
-  const club = getClub(slug);
-  if (!club) notFound();
-  let board = { rows: [], fans: 0 };
+  const query = await searchParams;
+  const preview = typeof query.preview === "string" ? query.preview : "";
+  const club = await presentClub(slug);
+  if (!club || (!club.active && !previewMatches(preview))) notFound();
+  let board = { segments: { all: [], fan: [], rival: [] }, runs: { all: 0, fan: 0, rival: 0 } };
   try {
     const data = await rankingFor(slug);
     if (data) board = data;
@@ -34,9 +41,10 @@ export default async function RankingPage({ params }) {
     <RankingBoard
       club={club.slug}
       clubName={club.name}
+      fanLabel={club.fanLabel}
       headline="Who would you rather watch the match with?"
-      rows={board.rows}
-      fans={board.fans}
+      segments={board.segments}
+      runs={board.runs}
       gameHref={paths.game}
     />
   );

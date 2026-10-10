@@ -1,0 +1,287 @@
+{
+  "slug": "spurs",
+  "name": "Tottenham Hotspur",
+  "shortName": "Spurs",
+  "fanLabel": "Spurs fans",
+  "primaryColor": "#132257",
+  "accentColor": "#C8CFDB",
+  "sortOrder": 2,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Spurs fans decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "spurs-jimmy-greaves",
+      "club_slug": "spurs",
+      "name": "Jimmy Greaves",
+      "category": "player",
+      "tagline": "220 league goals, and he still says you should have shot.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-glenn-hoddle",
+      "club_slug": "spurs",
+      "name": "Glenn Hoddle",
+      "category": "player",
+      "tagline": "Sees the pass nobody else can, then explains it twice.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-ledley-king",
+      "club_slug": "spurs",
+      "name": "Ledley King",
+      "category": "player",
+      "tagline": "Quiet, calm, and the only one who never lunges.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-dave-mackay",
+      "club_slug": "spurs",
+      "name": "Dave Mackay",
+      "category": "player",
+      "tagline": "Sits with his arms folded and nobody dares move his chair.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-danny-blanchflower",
+      "club_slug": "spurs",
+      "name": "Danny Blanchflower",
+      "category": "player",
+      "tagline": "Wants the game played with style, and will say so loudly.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-harry-kane",
+      "club_slug": "spurs",
+      "name": "Harry Kane",
+      "category": "player",
+      "tagline": "Keeps count of every goal, his own included.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-son-heung-min",
+      "club_slug": "spurs",
+      "name": "Son Heung-min",
+      "category": "player",
+      "tagline": "Smiles through a 0-0 and hugs the whole row after a goal.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-david-ginola",
+      "club_slug": "spurs",
+      "name": "David Ginola",
+      "category": "player",
+      "tagline": "Treats a dull first half as a personal insult.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-mousa-dembele",
+      "club_slug": "spurs",
+      "name": "Mousa Dembele",
+      "category": "player",
+      "tagline": "Never rushes, never panics, and never gives you the ball back.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-rafael-van-der-vaart",
+      "club_slug": "spurs",
+      "name": "Rafael van der Vaart",
+      "category": "player",
+      "tagline": "Gets louder every time Arsenal lose.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-bill-nicholson",
+      "club_slug": "spurs",
+      "name": "Bill Nicholson",
+      "category": "manager",
+      "tagline": "Wants it done properly and will tell you when it is not.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-keith-burkinshaw",
+      "club_slug": "spurs",
+      "name": "Keith Burkinshaw",
+      "category": "manager",
+      "tagline": "Straight talker with a dry line for every occasion.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-arthur-rowe",
+      "club_slug": "spurs",
+      "name": "Arthur Rowe",
+      "category": "manager",
+      "tagline": "Wants it quick: push it, run into space, repeat.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-mauricio-pochettino",
+      "club_slug": "spurs",
+      "name": "Mauricio Pochettino",
+      "category": "manager",
+      "tagline": "Has you pressing from the stands by the second half.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-harry-redknapp",
+      "club_slug": "spurs",
+      "name": "Harry Redknapp",
+      "category": "manager",
+      "tagline": "Always has a bargain signing and a story to go with it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-martin-jol",
+      "club_slug": "spurs",
+      "name": "Martin Jol",
+      "category": "manager",
+      "tagline": "Warm, funny, and never tells you to calm down.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-ange-postecoglou",
+      "club_slug": "spurs",
+      "name": "Ange Postecoglou",
+      "category": "manager",
+      "tagline": "Says we attack until the end, so the whole pub attacks too.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-terry-venables",
+      "club_slug": "spurs",
+      "name": "Terry Venables",
+      "category": "manager",
+      "tagline": "Always has a plan on a napkin and a story to go with it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-juande-ramos",
+      "club_slug": "spurs",
+      "name": "Juande Ramos",
+      "category": "manager",
+      "tagline": "Few words, lots of focus, no small talk.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-john-cameron",
+      "club_slug": "spurs",
+      "name": "John Cameron",
+      "category": "manager",
+      "tagline": "Won the 1901 FA Cup, so he asks what you have won.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-adele",
+      "club_slug": "spurs",
+      "name": "Adele",
+      "category": "celebrity",
+      "tagline": "Sings along to everything and swears at the referee in the same breath.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-tom-holland",
+      "club_slug": "spurs",
+      "name": "Tom Holland",
+      "category": "celebrity",
+      "tagline": "Loses his voice by half-time and does not care.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-jude-law",
+      "club_slug": "spurs",
+      "name": "Jude Law",
+      "category": "celebrity",
+      "tagline": "Has been going for decades and tells it calmly.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-kenneth-branagh",
+      "club_slug": "spurs",
+      "name": "Kenneth Branagh",
+      "category": "celebrity",
+      "tagline": "Narrates the match like a Shakespeare play.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-steve-nash",
+      "club_slug": "spurs",
+      "name": "Steve Nash",
+      "category": "celebrity",
+      "tagline": "Plays every pass in his head before the player does.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-michael-mcintyre",
+      "club_slug": "spurs",
+      "name": "Michael McIntyre",
+      "category": "celebrity",
+      "tagline": "Turns every near miss into a five-minute routine.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-paul-whitehouse",
+      "club_slug": "spurs",
+      "name": "Paul Whitehouse",
+      "category": "celebrity",
+      "tagline": "Has an impression for every player and every ref.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "spurs-jk-rowling",
+      "club_slug": "spurs",
+      "name": "J.K. Rowling",
+      "category": "celebrity",
+      "tagline": "Knows the lore of the club better than anyone in the pub.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "spurs-bob-marley",
+      "club_slug": "spurs",
+      "name": "Bob Marley",
+      "category": "celebrity",
+      "tagline": "Keeps it calm, keeps it positive, and plays after the final whistle.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "spurs-zac-efron",
+      "club_slug": "spurs",
+      "name": "Zac Efron",
+      "category": "celebrity",
+      "tagline": "Shirt on, scarf on, first to the pub.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    }
+  ]
+}

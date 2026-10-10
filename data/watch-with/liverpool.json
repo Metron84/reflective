@@ -1,0 +1,285 @@
+{
+  "slug": "liverpool",
+  "name": "Liverpool",
+  "shortName": "Liverpool",
+  "fanLabel": "Reds",
+  "primaryColor": "#C8102E",
+  "accentColor": "#FF3B4F",
+  "sortOrder": 4,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Reds decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "liverpool-kenny-dalglish",
+      "club_slug": "liverpool",
+      "name": "Kenny Dalglish",
+      "category": "player",
+      "tagline": "Sees the pass before it happens and says nothing.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-steven-gerrard",
+      "club_slug": "liverpool",
+      "name": "Steven Gerrard",
+      "category": "player",
+      "tagline": "Never stops believing, especially at 3-0 down.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-ian-rush",
+      "club_slug": "liverpool",
+      "name": "Ian Rush",
+      "category": "player",
+      "tagline": "Waits for the one chance, then settles it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-john-barnes",
+      "club_slug": "liverpool",
+      "name": "John Barnes",
+      "category": "player",
+      "tagline": "Cool, smooth, and never flustered.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-luis-suarez",
+      "club_slug": "liverpool",
+      "name": "Luis Suarez",
+      "category": "player",
+      "tagline": "Wins every duel and argues every decision.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-mohamed-salah",
+      "club_slug": "liverpool",
+      "name": "Mohamed Salah",
+      "category": "player",
+      "tagline": "Silent until the goal, then the whole room chants his name.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-robbie-fowler",
+      "club_slug": "liverpool",
+      "name": "Robbie Fowler",
+      "category": "player",
+      "tagline": "The fans call him God, and he celebrates like one.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-jamie-carragher",
+      "club_slug": "liverpool",
+      "name": "Jamie Carragher",
+      "category": "player",
+      "tagline": "Shouts at every defender like he is still on the pitch.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-virgil-van-dijk",
+      "club_slug": "liverpool",
+      "name": "Virgil van Dijk",
+      "category": "player",
+      "tagline": "Calm, composed, and never lunges.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-roberto-firmino",
+      "club_slug": "liverpool",
+      "name": "Roberto Firmino",
+      "category": "player",
+      "tagline": "Smiles, works harder than anyone, and wants everyone involved.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-bill-shankly",
+      "club_slug": "liverpool",
+      "name": "Bill Shankly",
+      "category": "manager",
+      "tagline": "Makes you feel this match matters more than anything.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-bob-paisley",
+      "club_slug": "liverpool",
+      "name": "Bob Paisley",
+      "category": "manager",
+      "tagline": "Says very little and wins everything.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-jurgen-klopp",
+      "club_slug": "liverpool",
+      "name": "Jurgen Klopp",
+      "category": "manager",
+      "tagline": "Hugs everyone at the final whistle, win or lose.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-rafael-benitez",
+      "club_slug": "liverpool",
+      "name": "Rafael Benitez",
+      "category": "manager",
+      "tagline": "Has a note for every set piece and shares it at half-time.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-gerard-houllier",
+      "club_slug": "liverpool",
+      "name": "Gerard Houllier",
+      "category": "manager",
+      "tagline": "Calm, thoughtful, and happy to explain the long game.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-joe-fagan",
+      "club_slug": "liverpool",
+      "name": "Joe Fagan",
+      "category": "manager",
+      "tagline": "Quiet, modest, and quietly wins a treble.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-roy-evans",
+      "club_slug": "liverpool",
+      "name": "Roy Evans",
+      "category": "manager",
+      "tagline": "Wants entertaining football and a good time after.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-brendan-rodgers",
+      "club_slug": "liverpool",
+      "name": "Brendan Rodgers",
+      "category": "manager",
+      "tagline": "Talks about the process through every near miss.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-ronnie-moran",
+      "club_slug": "liverpool",
+      "name": "Ronnie Moran",
+      "category": "manager",
+      "tagline": "Has been at the club for decades and tells you every story.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-phil-thompson",
+      "club_slug": "liverpool",
+      "name": "Phil Thompson",
+      "category": "manager",
+      "tagline": "Passionate, loud, and certain about every decision.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-daniel-craig",
+      "club_slug": "liverpool",
+      "name": "Daniel Craig",
+      "category": "celebrity",
+      "tagline": "Never spills his drink, however tense it gets.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-lebron-james",
+      "club_slug": "liverpool",
+      "name": "LeBron James",
+      "category": "celebrity",
+      "tagline": "Studies every pass like it is a play from the playbook.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-samuel-l-jackson",
+      "club_slug": "liverpool",
+      "name": "Samuel L. Jackson",
+      "category": "celebrity",
+      "tagline": "Delivers every opinion at full volume and full conviction.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-liam-neeson",
+      "club_slug": "liverpool",
+      "name": "Liam Neeson",
+      "category": "celebrity",
+      "tagline": "Calm voice, intense stare, and a particular set of opinions.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-mike-myers",
+      "club_slug": "liverpool",
+      "name": "Mike Myers",
+      "category": "celebrity",
+      "tagline": "Does the voices, the chants, and the accents.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-dr-dre",
+      "club_slug": "liverpool",
+      "name": "Dr. Dre",
+      "category": "celebrity",
+      "tagline": "Brings the music for the walk to the ground.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-lana-del-rey",
+      "club_slug": "liverpool",
+      "name": "Lana Del Rey",
+      "category": "celebrity",
+      "tagline": "Quiet, moody, and cheers only at the best moments.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-millie-bobby-brown",
+      "club_slug": "liverpool",
+      "name": "Millie Bobby Brown",
+      "category": "celebrity",
+      "tagline": "Loud, excited, and thrilled to be there.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-clive-owen",
+      "club_slug": "liverpool",
+      "name": "Clive Owen",
+      "category": "celebrity",
+      "tagline": "Calm narrator, calm commentary, calm even at 90 minutes.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "liverpool-angelina-jolie",
+      "club_slug": "liverpool",
+      "name": "Angelina Jolie",
+      "category": "celebrity",
+      "tagline": "Quiet, focused, and always has the best seat.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    }
+  ]
+}

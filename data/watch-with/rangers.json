@@ -1,0 +1,284 @@
+{
+  "slug": "rangers",
+  "name": "Rangers",
+  "shortName": "Rangers",
+  "fanLabel": "Rangers fans",
+  "primaryColor": "#1B458F",
+  "accentColor": "#5B8DEF",
+  "sortOrder": 6,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Rangers fans decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "rangers-john-greig",
+      "club_slug": "rangers",
+      "name": "John Greig",
+      "category": "player",
+      "tagline": "Greatest ever Ranger, and he will not let you forget it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-ally-mccoist",
+      "club_slug": "rangers",
+      "name": "Ally McCoist",
+      "category": "player",
+      "tagline": "Has a joke for every goal and a story for every miss.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-jim-baxter",
+      "club_slug": "rangers",
+      "name": "Jim Baxter",
+      "category": "player",
+      "tagline": "Treats every dull moment as an excuse to show off.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-alan-morton",
+      "club_slug": "rangers",
+      "name": "Alan Morton",
+      "category": "player",
+      "tagline": "Small, quick, and always on the move.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-steven-davis",
+      "club_slug": "rangers",
+      "name": "Steven Davis",
+      "category": "player",
+      "tagline": "Quiet, steady, and the calmest in the stand.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-brian-laudrup",
+      "club_slug": "rangers",
+      "name": "Brian Laudrup",
+      "category": "player",
+      "tagline": "Elegant, relaxed, and always one step ahead.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-paul-gascoigne",
+      "club_slug": "rangers",
+      "name": "Paul Gascoigne",
+      "category": "player",
+      "tagline": "Pure entertainment from the first minute to the last.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-richard-gough",
+      "club_slug": "rangers",
+      "name": "Richard Gough",
+      "category": "player",
+      "tagline": "Shouts instructions and leads the singing.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-barry-ferguson",
+      "club_slug": "rangers",
+      "name": "Barry Ferguson",
+      "category": "player",
+      "tagline": "Home-grown captain who takes every defeat personally.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-jorg-albertz",
+      "club_slug": "rangers",
+      "name": "Jorg Albertz",
+      "category": "player",
+      "tagline": "A thunderous left foot and a thunderous laugh.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-bill-struth",
+      "club_slug": "rangers",
+      "name": "Bill Struth",
+      "category": "manager",
+      "tagline": "Won 18 league titles, so every opinion lands.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-walter-smith",
+      "club_slug": "rangers",
+      "name": "Walter Smith",
+      "category": "manager",
+      "tagline": "Gravelly, honest, and always has a story from the Nine in a Row.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-william-wilton",
+      "club_slug": "rangers",
+      "name": "William Wilton",
+      "category": "manager",
+      "tagline": "The club's first manager and the proudest in the stand.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-graeme-souness",
+      "club_slug": "rangers",
+      "name": "Graeme Souness",
+      "category": "manager",
+      "tagline": "Fiery, blunt, and not afraid to tell you off.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-jock-wallace",
+      "club_slug": "rangers",
+      "name": "Jock Wallace",
+      "category": "manager",
+      "tagline": "Barks orders, trains hard, and wants you fit for the second half.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-steven-gerrard",
+      "club_slug": "rangers",
+      "name": "Steven Gerrard",
+      "category": "manager",
+      "tagline": "Brings title-winning intensity and hates a draw.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-alex-mcleish",
+      "club_slug": "rangers",
+      "name": "Alex McLeish",
+      "category": "manager",
+      "tagline": "Big Eck stays calm and keeps the plan going.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-dick-advocaat",
+      "club_slug": "rangers",
+      "name": "Dick Advocaat",
+      "category": "manager",
+      "tagline": "The Little General wants every detail planned.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-scot-symon",
+      "club_slug": "rangers",
+      "name": "Scot Symon",
+      "category": "manager",
+      "tagline": "Quiet, steady, and always dressed for the occasion.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-giovanni-van-bronckhorst",
+      "club_slug": "rangers",
+      "name": "Giovanni van Bronckhorst",
+      "category": "manager",
+      "tagline": "Calm, classy, and still emotional about that European run.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-gordon-ramsay",
+      "club_slug": "rangers",
+      "name": "Gordon Ramsay",
+      "category": "celebrity",
+      "tagline": "Shouts at the referee like he is in a kitchen.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-angus-young",
+      "club_slug": "rangers",
+      "name": "Angus Young",
+      "category": "celebrity",
+      "tagline": "Loud, fast, and plays air guitar through every chant.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-drew-mcintyre",
+      "club_slug": "rangers",
+      "name": "Drew McIntyre",
+      "category": "celebrity",
+      "tagline": "Brings the wrestling entrance to every goal.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-colin-montgomerie",
+      "club_slug": "rangers",
+      "name": "Colin Montgomerie",
+      "category": "celebrity",
+      "tagline": "Quiet, then very loud at the key moment.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-simon-neil",
+      "club_slug": "rangers",
+      "name": "Simon Neil",
+      "category": "celebrity",
+      "tagline": "Sings every chant like a stadium anthem.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-hugh-grant",
+      "club_slug": "rangers",
+      "name": "Hugh Grant",
+      "category": "celebrity",
+      "tagline": "Charming and dry, and willing to do anything for a ticket.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-tom-stoltman",
+      "club_slug": "rangers",
+      "name": "Tom Stoltman",
+      "category": "celebrity",
+      "tagline": "Big enough to carry the whole row, and he might.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-amy-macdonald",
+      "club_slug": "rangers",
+      "name": "Amy Macdonald",
+      "category": "celebrity",
+      "tagline": "Sings every chant and knows every word.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-robert-carlyle",
+      "club_slug": "rangers",
+      "name": "Robert Carlyle",
+      "category": "celebrity",
+      "tagline": "Intense, focused, and fully in character.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "rangers-marti-pellow",
+      "club_slug": "rangers",
+      "name": "Marti Pellow",
+      "category": "celebrity",
+      "tagline": "Sings loudest and loves the day most.",
+      "supporter_verified": true,
+      "active": true
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { WATCHWITH_SHARE_LABEL } from "@/lib/watch-with/host";
+import { SITE_URL } from "@/lib/config";
 import { useEffect, useRef, useState } from "react";
 
 const font = { fontFamily: "var(--font-body), Archivo, sans-serif" };
@@ -58,12 +58,22 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   if (line) ctx.fillText(line, x, top);
 }
 
-async function drawShareCard({ name, tagline }) {
+function inkOn(hex) {
+  const value = String(hex || "").replace("#", "");
+  if (value.length !== 6) return "#F2EDE4";
+  const red = Number.parseInt(value.slice(0, 2), 16);
+  const green = Number.parseInt(value.slice(2, 4), 16);
+  const blue = Number.parseInt(value.slice(4, 6), 16);
+  const light = (red * 299 + green * 587 + blue * 114) / 1000;
+  return light > 160 ? "#0A111F" : "#F2EDE4";
+}
+
+async function drawShareCard({ name, tagline, primary, shareHost }) {
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1350;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#F2EDE4";
+  ctx.fillStyle = primary || "#7A263A";
   ctx.fillRect(0, 0, 1080, 1350);
   try {
     const logo = await loadImage("/brand/trf-crest-transparent.png");
@@ -75,18 +85,17 @@ async function drawShareCard({ name, tagline }) {
     ctx.fill();
   }
   ctx.textAlign = "center";
-  ctx.fillStyle = "#0A111F";
+  ctx.fillStyle = "#F2EDE4";
   ctx.font = "600 34px Archivo, sans-serif";
   ctx.fillText("Your matchday companion", 540, 360);
   ctx.font = "700 68px Archivo, sans-serif";
   wrapText(ctx, name, 540, 470, 920, 80);
   ctx.font = "500 34px Archivo, sans-serif";
   wrapText(ctx, tagline, 540, 760, 880, 48);
-  ctx.fillStyle = "#D8232A";
+  ctx.fillStyle = "#F2EDE4";
   ctx.fillRect(390, 1040, 300, 10);
-  ctx.fillStyle = "#0A111F";
   ctx.font = "500 28px Archivo, sans-serif";
-  ctx.fillText(WATCHWITH_SHARE_LABEL, 540, 1160);
+  ctx.fillText(shareHost, 540, 1160);
   ctx.font = "500 24px Archivo, sans-serif";
   ctx.fillText("Football is nothing without the fans.", 540, 1248);
   return canvas;
@@ -99,7 +108,34 @@ function categoryLabel(category) {
   return category;
 }
 
-export default function WatchGame({ club, clubName, headline, subline, rankingHref = `/watch-with/${club}/ranking` }) {
+const SIDES = ["fan", "neutral", "rival"];
+
+function readSide(club) {
+  try {
+    const match = document.cookie.match(new RegExp(`(?:^|; )ww_aff_${club}=([^;]*)`));
+    const value = match ? decodeURIComponent(match[1]) : "";
+    return SIDES.includes(value) ? value : "";
+  } catch {
+    return "";
+  }
+}
+
+function writeSide(club, value) {
+  document.cookie = `ww_aff_${club}=${encodeURIComponent(value)}; Max-Age=${60 * 60 * 24 * 365}; Path=/; SameSite=Lax`;
+}
+
+export default function WatchGame({
+  club,
+  clubName,
+  shortName,
+  headline,
+  subline,
+  rankingHref = `/watch-with/${club}/ranking`,
+  accent = "#D8232A",
+  primary = "#7A263A",
+  shareHost = `watchwith.thereflectivefootball.com/${club}`,
+  preview = "",
+}) {
   const [run, setRun] = useState(null);
   const [left, setLeft] = useState(null);
   const [right, setRight] = useState(null);
@@ -108,6 +144,8 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
   const [failed, setFailed] = useState("");
   const [capped, setCapped] = useState(false);
   const [shared, setShared] = useState("");
+  const [side, setSide] = useState("");
+  const [askingSide, setAskingSide] = useState(false);
   const retryRef = useRef(null);
   const dragRef = useRef(null);
   const previewRef = useRef(null);
@@ -120,18 +158,26 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
     setRun(state);
   }
 
-  async function begin() {
+  async function begin(nextSide) {
+    const affiliation = nextSide || side || readSide(club);
     setBusy(true);
     setFailed("");
     setCapped(false);
     setShared("");
     shareBlob.current = null;
     try {
-      const data = await post(`/api/watch-with/${club}/start`);
+      const data = await post(`/api/watch-with/${club}/start`, { affiliation, preview });
+      if (data.needsAffiliation) {
+        setAskingSide(true);
+        setBusy(false);
+        return;
+      }
+      setAskingSide(false);
       if (data.needsComplete && data.champion) {
         const finished = await post(`/api/watch-with/${club}/complete`, {
           runId: data.runId,
           championId: data.champion.id,
+          preview,
         });
         setRun(finished);
       } else {
@@ -168,11 +214,13 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
         runId: run.runId,
         winnerId: card.id,
         loserId: other.id,
+        preview,
       });
       if (data.needsComplete && data.champion) {
         const finished = await post(`/api/watch-with/${club}/complete`, {
           runId: data.runId,
           championId: data.champion.id,
+          preview,
         });
         setRun(finished);
         setLeft(null);
@@ -206,6 +254,13 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
     choose(dx < 0 ? left : right);
   }
 
+  async function pickSide(value) {
+    writeSide(club, value);
+    setSide(value);
+    setAskingSide(false);
+    if (!run?.done) await begin(value);
+  }
+
   async function share() {
     if (!run?.champion) return;
     const pageUrl = new URL(rankingHref.replace(/\/ranking$/, "") || "/", window.location.origin).href;
@@ -214,6 +269,8 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
       const canvas = await drawShareCard({
         name: run.champion.name,
         tagline: run.champion.tagline,
+        primary,
+        shareHost,
       });
       blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
     }
@@ -244,6 +301,8 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
     drawShareCard({
       name: run.champion.name,
       tagline: run.champion.tagline,
+      primary,
+      shareHost,
     }).then((canvas) => {
       if (cancel) return;
       const preview = previewRef.current;
@@ -259,17 +318,26 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
     return () => {
       cancel = true;
     };
-  }, [showingResult, run?.champion]);
+  }, [showingResult, run?.champion, primary, shareHost]);
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col px-4 py-5" style={font}>
       <header className="flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D8232A]">{clubName}</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: accent }}>{clubName}</p>
         <h1 className="text-3xl font-semibold leading-tight text-[#0A111F]">{headline}</h1>
         <p className="text-base leading-snug text-[#0A111F]">{subline}</p>
       </header>
 
-      {run && !showingResult ? (
+      {askingSide ? (
+        <section className="mt-8 flex flex-col gap-3">
+          <h2 className="text-2xl font-semibold text-[#0A111F]">Which side are you on?</h2>
+          <button type="button" onClick={() => pickSide("fan")} className={sideButton}>I support {shortName}</button>
+          <button type="button" onClick={() => pickSide("neutral")} className={sideButton}>Neutral</button>
+          <button type="button" onClick={() => pickSide("rival")} className={sideButton}>I support a rival</button>
+        </section>
+      ) : null}
+
+      {run && !showingResult && !askingSide ? (
         <div className="mt-5">
           <p className="mb-2 text-sm font-medium text-[#0A111F]">Pick {run.pick} of {run.totalPicks}</p>
           <div className="flex gap-1" aria-hidden="true">
@@ -277,18 +345,18 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
               <span
                 key={index}
                 className="h-1.5 flex-1 rounded-full"
-                style={{ background: index < run.pick ? "#D8232A" : "rgba(10,17,31,0.15)" }}
+                style={{ background: index < run.pick ? accent : "rgba(10,17,31,0.15)" }}
               />
             ))}
           </div>
         </div>
       ) : null}
 
-      {showingResult && run.champion ? (
+      {showingResult && run.champion && !askingSide ? (
         <section className="mt-6 flex flex-1 flex-col gap-4">
           <p className="text-sm font-medium text-[#0A111F]">Your matchday companion</p>
           <article className="rounded-[14px] bg-[#0A111F] p-6 text-[#F2EDE4]">
-            <p className="text-xs uppercase tracking-[0.16em] text-[#D8232A]">{categoryLabel(run.champion.category)}</p>
+            <p className="text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>{categoryLabel(run.champion.category)}</p>
             <h2 className="mt-2 text-4xl font-semibold leading-tight">{run.champion.name}</h2>
             <p className="mt-3 text-lg leading-snug">{run.champion.tagline}</p>
           </article>
@@ -296,25 +364,29 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
           <button type="button" onClick={share} className={primaryClass}>Share my companion</button>
           {shared ? <p className="text-sm">{shared}</p> : null}
           <button type="button" onClick={begin} className={ghostClass}>Play again</button>
+          <p className="text-sm text-[#0A111F]">
+            {sideLabel(side || readSide(club), shortName)}{" "}
+            <button type="button" onClick={() => setAskingSide(true)} className="font-semibold underline-offset-4 hover:underline">Change</button>
+          </p>
           <Link href={rankingHref} className={linkClass}>See the ranking</Link>
         </section>
       ) : null}
 
-      {!showingResult && left && right ? (
+      {!showingResult && !askingSide && left && right ? (
         <div
           className="mt-4 flex flex-1 flex-col"
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
         >
           <div className="grid flex-1 grid-cols-2 gap-3">
-            <Card card={left} side="left" winning={winnerSide === "left"} />
-            <Card card={right} side="right" winning={winnerSide === "right"} />
+            <Card card={left} side="left" winning={winnerSide === "left"} accent={accent} />
+            <Card card={right} side="right" winning={winnerSide === "right"} accent={accent} />
           </div>
           <div className="mt-4 grid grid-cols-2 gap-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
             <button type="button" disabled={busy} onClick={() => choose(left)} className={leftButton}>
               {left.name}
             </button>
-            <button type="button" disabled={busy} onClick={() => choose(right)} className={rightButton}>
+            <button type="button" disabled={busy} onClick={() => choose(right)} className={rightButton} style={{ background: accent, borderColor: accent, color: inkOn(accent) }}>
               {right.name}
             </button>
           </div>
@@ -339,25 +411,32 @@ export default function WatchGame({ club, clubName, headline, subline, rankingHr
 
       <footer className="mt-8 pb-4 text-center text-sm text-[#0A111F]">
         <p>Football is nothing without the fans.</p>
-        <Link href="/" className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>
+        <Link href={SITE_URL} className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>
       </footer>
     </div>
   );
 }
 
-function Card({ card, side, winning }) {
-  const right = side === "right";
+function sideLabel(value, name) {
+  if (value === "fan") return `I support ${name}`;
+  if (value === "rival") return "I support a rival";
+  if (value === "neutral") return "Neutral";
+  return "";
+}
+
+function Card({ card, winning, accent }) {
   return (
     <article
-      className={`flex min-h-[46vh] flex-col justify-end rounded-[14px] border-2 p-4 text-[#F2EDE4] motion-reduce:transition-none ${winning ? "scale-[1.03] transition-transform" : ""}`}
+      className={`flex min-h-[46vh] flex-col justify-end rounded-[14px] border-2 p-4 motion-reduce:transition-none ${winning ? "scale-[1.03] transition-transform" : ""}`}
       style={{
-        background: winning && right ? "#D8232A" : "#0A111F",
-        borderColor: right ? "#D8232A" : "#0A111F",
+        background: winning ? accent : "#0A111F",
+        borderColor: winning ? accent : "#0A111F",
+        color: winning ? inkOn(accent) : "#F2EDE4",
       }}
     >
-      <p className="text-[11px] uppercase tracking-[0.16em] text-[#F2EDE4]/70">{categoryLabel(card.category)}</p>
+      <p className="text-[11px] uppercase tracking-[0.16em] opacity-70">{categoryLabel(card.category)}</p>
       <h2 className="mt-2 text-2xl font-semibold leading-tight">{card.name}</h2>
-      <p className="mt-2 text-sm leading-snug text-[#F2EDE4]/90">{card.tagline}</p>
+      <p className="mt-2 text-sm leading-snug opacity-90">{card.tagline}</p>
     </article>
   );
 }
@@ -375,4 +454,7 @@ const leftButton =
   "min-h-14 rounded-[14px] border-2 border-[#0A111F] bg-[#0A111F] px-2 text-sm font-semibold text-[#F2EDE4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D8232A] disabled:opacity-60";
 
 const rightButton =
-  "min-h-14 rounded-[14px] border-2 border-[#D8232A] bg-[#D8232A] px-2 text-sm font-semibold text-[#F2EDE4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A111F] disabled:opacity-60";
+  "min-h-14 rounded-[14px] border-2 px-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A111F] disabled:opacity-60";
+
+const sideButton =
+  "min-h-14 w-full rounded-[14px] border-2 border-[#0A111F] px-4 text-left text-base font-semibold text-[#0A111F] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D8232A]";

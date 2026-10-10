@@ -1,0 +1,278 @@
+{
+  "slug": "arsenal",
+  "name": "Arsenal",
+  "shortName": "Arsenal",
+  "fanLabel": "Gooners",
+  "primaryColor": "#EF0107",
+  "accentColor": "#FF3B3F",
+  "sortOrder": 3,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Gooners decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "arsenal-thierry-henry",
+      "club_slug": "arsenal",
+      "name": "Thierry Henry",
+      "category": "player",
+      "tagline": "228 goals, and he still explains where the space was.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-dennis-bergkamp",
+      "club_slug": "arsenal",
+      "name": "Dennis Bergkamp",
+      "category": "player",
+      "tagline": "Says nothing for 80 minutes, then the one perfect observation.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-tony-adams",
+      "club_slug": "arsenal",
+      "name": "Tony Adams",
+      "category": "player",
+      "tagline": "Never sits down and will not let you either.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-ian-wright",
+      "club_slug": "arsenal",
+      "name": "Ian Wright",
+      "category": "player",
+      "tagline": "Celebrates every goal like he scored it, and every win like a title.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-patrick-vieira",
+      "club_slug": "arsenal",
+      "name": "Patrick Vieira",
+      "category": "player",
+      "tagline": "Takes charge of the room and the seating plan.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-robert-pires",
+      "club_slug": "arsenal",
+      "name": "Robert Pires",
+      "category": "player",
+      "tagline": "Elegant, calm, and always right about the pass.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-david-seaman",
+      "club_slug": "arsenal",
+      "name": "David Seaman",
+      "category": "player",
+      "tagline": "Safe hands, calm head, and never drops your pint.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-freddie-ljungberg",
+      "club_slug": "arsenal",
+      "name": "Freddie Ljungberg",
+      "category": "player",
+      "tagline": "Wild hair, wild celebrations, loudest in the room.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-ray-parlour",
+      "club_slug": "arsenal",
+      "name": "Ray Parlour",
+      "category": "player",
+      "tagline": "Local lad, loud, and always ready for a long shot.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-bukayo-saka",
+      "club_slug": "arsenal",
+      "name": "Bukayo Saka",
+      "category": "player",
+      "tagline": "Smiles through everything and has the whole pub smiling.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-arsene-wenger",
+      "club_slug": "arsenal",
+      "name": "Arsene Wenger",
+      "category": "manager",
+      "tagline": "Tells you calmly that you did not see the tackle.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-herbert-chapman",
+      "club_slug": "arsenal",
+      "name": "Herbert Chapman",
+      "category": "manager",
+      "tagline": "Arrives with a tactics board and a plan for the next ten years.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-george-graham",
+      "club_slug": "arsenal",
+      "name": "George Graham",
+      "category": "manager",
+      "tagline": "Wants a clean sheet and silence until the final whistle.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-mikel-arteta",
+      "club_slug": "arsenal",
+      "name": "Mikel Arteta",
+      "category": "manager",
+      "tagline": "Cannot stay in his seat and will not stop gesturing.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-harry-bradshaw",
+      "club_slug": "arsenal",
+      "name": "Harry Bradshaw",
+      "category": "manager",
+      "tagline": "Laid the foundations a century ago and wants the credit.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-bertie-mee",
+      "club_slug": "arsenal",
+      "name": "Bertie Mee",
+      "category": "manager",
+      "tagline": "Started as the physio, so he asks who is injured first.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-terry-neill",
+      "club_slug": "arsenal",
+      "name": "Terry Neill",
+      "category": "manager",
+      "tagline": "Believes in the comeback until the final second.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-george-allison",
+      "club_slug": "arsenal",
+      "name": "George Allison",
+      "category": "manager",
+      "tagline": "Steady hand, calm voice, never rattled.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-unai-emery",
+      "club_slug": "arsenal",
+      "name": "Unai Emery",
+      "category": "manager",
+      "tagline": "Has a plan for everything and a spreadsheet for the rest.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-daniel-kaluuya",
+      "club_slug": "arsenal",
+      "name": "Daniel Kaluuya",
+      "category": "celebrity",
+      "tagline": "Narrates the whole match, and it sounds like a documentary.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-idris-elba",
+      "club_slug": "arsenal",
+      "name": "Idris Elba",
+      "category": "celebrity",
+      "tagline": "Brings the sound system and the strong opinions.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-lewis-hamilton",
+      "club_slug": "arsenal",
+      "name": "Lewis Hamilton",
+      "category": "celebrity",
+      "tagline": "Wants the fastest possible counter-attack.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-colin-firth",
+      "club_slug": "arsenal",
+      "name": "Colin Firth",
+      "category": "celebrity",
+      "tagline": "Lives every last-minute goal as if it were Fever Pitch.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-dua-lipa",
+      "club_slug": "arsenal",
+      "name": "Dua Lipa",
+      "category": "celebrity",
+      "tagline": "Dances through every goal.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-mick-jagger",
+      "club_slug": "arsenal",
+      "name": "Mick Jagger",
+      "category": "celebrity",
+      "tagline": "Makes the whole stand feel like a stadium gig.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-jamie-foxx",
+      "club_slug": "arsenal",
+      "name": "Jamie Foxx",
+      "category": "celebrity",
+      "tagline": "Starts a chant, then keeps going for 90 minutes.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "arsenal-jay-z",
+      "club_slug": "arsenal",
+      "name": "Jay-Z",
+      "category": "celebrity",
+      "tagline": "Arrives late, takes the best seat, and stays very calm.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "arsenal-rihanna",
+      "club_slug": "arsenal",
+      "name": "Rihanna",
+      "category": "celebrity",
+      "tagline": "Fashion first, football second, and the whole row is watching her.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "arsenal-piers-morgan",
+      "club_slug": "arsenal",
+      "name": "Piers Morgan",
+      "category": "celebrity",
+      "tagline": "Argues with everyone on the timeline in real time.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    }
+  ]
+}

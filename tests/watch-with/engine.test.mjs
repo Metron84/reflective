@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import club from "../../data/watch-with/west-ham.json" with { type: "json" };
 import { applyElo, drawDeck, expectedPair, samePair } from "../../lib/watch-with/engine.js";
-import { isWatchWithHost, watchWithHostAction, watchWithPaths } from "../../lib/watch-with/host.js";
+import { isWatchWithHost, shareLabel, watchWithHostAction, watchWithPaths } from "../../lib/watch-with/host.js";
 
 test("the west ham pool keeps four cards inactive", () => {
   assert.equal(club.cards.length, 25);
@@ -43,15 +43,23 @@ test("the watchwith host rewrites the short urls and leaves the api alone", () =
   assert.equal(isWatchWithHost("watchwith.thereflectivefootball.com"), true);
   assert.equal(isWatchWithHost("watchwith.localhost:4343"), true);
   assert.equal(isWatchWithHost("www.thereflectivefootball.com"), false);
-  assert.deepEqual(watchWithHostAction("/"), { type: "rewrite", to: "/watch-with/west-ham" });
-  assert.deepEqual(watchWithHostAction("/ranking"), { type: "rewrite", to: "/watch-with/west-ham/ranking" });
+  assert.deepEqual(watchWithHostAction("/"), { type: "rewrite", to: "/watch-with" });
+  assert.deepEqual(watchWithHostAction("/west-ham"), { type: "rewrite", to: "/watch-with/west-ham" });
+  assert.deepEqual(watchWithHostAction("/west-ham/ranking"), { type: "rewrite", to: "/watch-with/west-ham/ranking" });
+  assert.deepEqual(watchWithHostAction("/ranking"), { type: "redirect", to: "/west-ham/ranking", keepSearch: true });
   assert.deepEqual(watchWithHostAction("/api/watch-with/west-ham/pick"), { type: "pass" });
   assert.deepEqual(watchWithHostAction("/_next/static/chunk.js"), { type: "pass" });
   assert.deepEqual(watchWithHostAction("/brand/trf-crest-transparent.png"), { type: "pass" });
-  assert.deepEqual(watchWithPaths("watchwith.thereflectivefootball.com", "west-ham"), { game: "/", ranking: "/ranking" });
-  assert.deepEqual(watchWithPaths("thereflectivefootball.com", "west-ham"), {
-    game: "/watch-with/west-ham",
-    ranking: "/watch-with/west-ham/ranking",
+  assert.equal(shareLabel("spurs"), "watchwith.thereflectivefootball.com/spurs");
+  assert.deepEqual(watchWithPaths("watchwith.thereflectivefootball.com", "spurs"), {
+    hub: "/",
+    game: "/spurs",
+    ranking: "/spurs/ranking",
+  });
+  assert.deepEqual(watchWithPaths("thereflectivefootball.com", "spurs"), {
+    hub: "/watch-with",
+    game: "/watch-with/spurs",
+    ranking: "/watch-with/spurs/ranking",
   });
 });
 

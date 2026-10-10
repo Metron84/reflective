@@ -1,0 +1,284 @@
+{
+  "slug": "aston-villa",
+  "name": "Aston Villa",
+  "shortName": "Villa",
+  "fanLabel": "Villans",
+  "primaryColor": "#670E36",
+  "accentColor": "#95BFE5",
+  "sortOrder": 5,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Villans decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "aston-villa-paul-mcgrath",
+      "club_slug": "aston-villa",
+      "name": "Paul McGrath",
+      "category": "player",
+      "tagline": "The fans call him God, and he stays calm like one.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-john-mcginn",
+      "club_slug": "aston-villa",
+      "name": "John McGinn",
+      "category": "player",
+      "tagline": "Never stops running, never stops talking, never stops celebrating.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-jack-grealish",
+      "club_slug": "aston-villa",
+      "name": "Jack Grealish",
+      "category": "player",
+      "tagline": "Boyhood fan, so he knows the chants and the pub.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-gordon-cowans",
+      "club_slug": "aston-villa",
+      "name": "Gordon Cowans",
+      "category": "player",
+      "tagline": "Calm, wise, and always sees the pass.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-dwight-yorke",
+      "club_slug": "aston-villa",
+      "name": "Dwight Yorke",
+      "category": "player",
+      "tagline": "Smiles at everything, including a 0-0.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-peter-withe",
+      "club_slug": "aston-villa",
+      "name": "Peter Withe",
+      "category": "player",
+      "tagline": "Tells the story of the 1982 winner every time.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-stiliyan-petrov",
+      "club_slug": "aston-villa",
+      "name": "Stiliyan Petrov",
+      "category": "player",
+      "tagline": "Humble, brave, and the most popular man in the stand.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-dennis-mortimer",
+      "club_slug": "aston-villa",
+      "name": "Dennis Mortimer",
+      "category": "player",
+      "tagline": "Led the team to Europe and still leads the room.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-ian-taylor",
+      "club_slug": "aston-villa",
+      "name": "Ian Taylor",
+      "category": "player",
+      "tagline": "Lived the dream and is happy to retell it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-emiliano-martinez",
+      "club_slug": "aston-villa",
+      "name": "Emiliano Martinez",
+      "category": "player",
+      "tagline": "Fiery, loud, and ready to wind up the opposition.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-unai-emery",
+      "club_slug": "aston-villa",
+      "name": "Unai Emery",
+      "category": "manager",
+      "tagline": "Talks about the next match during this one.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-ron-saunders",
+      "club_slug": "aston-villa",
+      "name": "Ron Saunders",
+      "category": "manager",
+      "tagline": "Hard, serious, and quietly proud of the 1981 title.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-tony-barton",
+      "club_slug": "aston-villa",
+      "name": "Tony Barton",
+      "category": "manager",
+      "tagline": "Steps up quietly and wins the biggest prize.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-brian-little",
+      "club_slug": "aston-villa",
+      "name": "Brian Little",
+      "category": "manager",
+      "tagline": "Won the League Cup as a player and a manager, and tells you twice.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-dean-smith",
+      "club_slug": "aston-villa",
+      "name": "Dean Smith",
+      "category": "manager",
+      "tagline": "Boyhood fan who knows every chant.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-george-ramsay",
+      "club_slug": "aston-villa",
+      "name": "George Ramsay",
+      "category": "manager",
+      "tagline": "Won six titles and six cups, so he is hard to argue with.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-graham-taylor",
+      "club_slug": "aston-villa",
+      "name": "Graham Taylor",
+      "category": "manager",
+      "tagline": "Shouts instructions from the stand, whether or not you asked.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-ron-atkinson",
+      "club_slug": "aston-villa",
+      "name": "Ron Atkinson",
+      "category": "manager",
+      "tagline": "Talks loud, dresses louder, and enjoys himself most.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-martin-oneill",
+      "club_slug": "aston-villa",
+      "name": "Martin O'Neill",
+      "category": "manager",
+      "tagline": "Intense, driven, and winding up the whole row.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-john-gregory",
+      "club_slug": "aston-villa",
+      "name": "John Gregory",
+      "category": "manager",
+      "tagline": "Confident, chatty, and sure the title is next.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-prince-william",
+      "club_slug": "aston-villa",
+      "name": "Prince William",
+      "category": "celebrity",
+      "tagline": "Knows the fans, the chants, and the stands from his school days.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-tom-hanks",
+      "club_slug": "aston-villa",
+      "name": "Tom Hanks",
+      "category": "celebrity",
+      "tagline": "Picked the club because it sounded like a lovely holiday, and stayed.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-ozzy-osbourne",
+      "club_slug": "aston-villa",
+      "name": "Ozzy Osbourne",
+      "category": "celebrity",
+      "tagline": "Loudest voice in the stand and the loudest laugh.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-david-bradley",
+      "club_slug": "aston-villa",
+      "name": "David Bradley",
+      "category": "celebrity",
+      "tagline": "Celebrates on the pitch if you let him.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-nigel-kennedy",
+      "club_slug": "aston-villa",
+      "name": "Nigel Kennedy",
+      "category": "celebrity",
+      "tagline": "Wild, eccentric, and fully committed to the cause.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-lee-child",
+      "club_slug": "aston-villa",
+      "name": "Lee Child",
+      "category": "celebrity",
+      "tagline": "Names the characters after the players and quietly takes notes.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-brendan-gleeson",
+      "club_slug": "aston-villa",
+      "name": "Brendan Gleeson",
+      "category": "celebrity",
+      "tagline": "Quiet, wry, and a very good storyteller.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-ian-bell",
+      "club_slug": "aston-villa",
+      "name": "Ian Bell",
+      "category": "celebrity",
+      "tagline": "Quiet, studious, and keeps a score of everything.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-mark-williams",
+      "club_slug": "aston-villa",
+      "name": "Mark Williams",
+      "category": "celebrity",
+      "tagline": "Warm, funny, and cheers every goal like a family dinner.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "aston-villa-greg-davies",
+      "club_slug": "aston-villa",
+      "name": "Greg Davies",
+      "category": "celebrity",
+      "tagline": "Towering, sarcastic, and blocks the view in the best way.",
+      "supporter_verified": true,
+      "active": true
+    }
+  ]
+}

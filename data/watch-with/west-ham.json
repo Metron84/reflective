@@ -1,6 +1,11 @@
 {
   "slug": "west-ham",
-  "name": "West Ham",
+  "name": "West Ham United",
+  "shortName": "West Ham",
+  "fanLabel": "Hammers",
+  "primaryColor": "#7A263A",
+  "accentColor": "#1BB1E7",
+  "sortOrder": 1,
   "headline": "Who would you rather watch the match with?",
   "subline": "Pick your matchday companion. The Hammers decide the ranking.",
   "deckSize": 16,

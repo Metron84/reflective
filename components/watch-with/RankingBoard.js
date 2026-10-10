@@ -2,24 +2,48 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { SITE_URL } from "@/lib/config";
+import { COUNTING_VOTES } from "@/lib/watch-with/engine";
 
 const font = { fontFamily: "var(--font-body), Archivo, sans-serif" };
-const TABS = [
+const CATEGORIES = [
   { id: "all", label: "All" },
   { id: "player", label: "Players" },
   { id: "manager", label: "Managers" },
   { id: "celebrity", label: "Celebrities" },
 ];
 
-export default function RankingBoard({ club, clubName, headline, rows, fans, gameHref = `/watch-with/${club}` }) {
+export default function RankingBoard({
+  club,
+  clubName,
+  fanLabel,
+  headline,
+  segments,
+  runs,
+  gameHref = `/watch-with/${club}`,
+}) {
+  const [segment, setSegment] = useState("fan");
   const [tab, setTab] = useState("all");
   const [shared, setShared] = useState(false);
-  const visible = useMemo(
-    () => rows
-      .map((row, index) => ({ ...row, rank: index + 1 }))
-      .filter((row) => tab === "all" || row.category === tab),
-    [rows, tab],
-  );
+  const segmentTabs = [
+    { id: "fan", label: fanLabel },
+    { id: "all", label: "Everyone" },
+    { id: "rival", label: "Rivals" },
+  ];
+  const visible = useMemo(() => {
+    const pool = (segments?.[segment] ?? []).filter((row) => tab === "all" || row.category === tab);
+    const ranked = pool
+      .filter((row) => row.votes >= COUNTING_VOTES)
+      .sort((a, b) => b.elo - a.elo || a.name.localeCompare(b.name));
+    const counting = pool
+      .filter((row) => row.votes < COUNTING_VOTES)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return [
+      ...ranked.map((row, index) => ({ ...row, rank: index + 1, counting: false })),
+      ...counting.map((row) => ({ ...row, rank: null, counting: true })),
+    ];
+  }, [segments, segment, tab]);
+  const completed = runs?.[segment] ?? 0;
 
   async function share() {
     const url = window.location.href;
@@ -46,17 +70,20 @@ export default function RankingBoard({ club, clubName, headline, rows, fans, gam
       <header className="flex flex-col gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D8232A]">{clubName}</p>
         <h1 className="text-3xl font-semibold leading-tight text-[#0A111F] sm:text-4xl">{headline}</h1>
-        <p className="text-[#0A111F]">{fans} {fans === 1 ? "fan has" : "fans have"} played.</p>
+        <p className="text-[#0A111F]">{completed} completed {completed === 1 ? "run" : "runs"}.</p>
       </header>
 
       <div className="flex flex-wrap gap-2">
-        {TABS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setTab(item.id)}
-            className={tab === item.id ? tabOn : tabOff}
-          >
+        {segmentTabs.map((item) => (
+          <button key={item.id} type="button" onClick={() => setSegment(item.id)} className={segment === item.id ? tabOn : tabOff}>
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {CATEGORIES.map((item) => (
+          <button key={item.id} type="button" onClick={() => setTab(item.id)} className={tab === item.id ? tabOn : tabOff}>
             {item.label}
           </button>
         ))}
@@ -64,17 +91,20 @@ export default function RankingBoard({ club, clubName, headline, rows, fans, gam
 
       <ol className="flex flex-col gap-3">
         {visible.map((row) => {
-          const counting = row.votes < 30;
           const rate = row.votes ? Math.round((row.wins / row.votes) * 100) : 0;
           return (
             <li key={row.id} className="rounded-[14px] border-2 border-[#0A111F] bg-[#0A111F] p-4 text-[#F2EDE4]">
               <div className="flex items-baseline justify-between gap-3">
-                <p className="text-sm text-[#D8232A]">#{row.rank}</p>
+                <p className="text-sm text-[#D8232A]">{row.rank ? `#${row.rank}` : "Still counting"}</p>
                 <p className="text-xs uppercase tracking-[0.14em]">{categoryLabel(row.category)}</p>
               </div>
               <h2 className="mt-1 text-2xl font-semibold">{row.name}</h2>
               <p className="mt-1 text-sm leading-snug text-[#F2EDE4]/90">{row.tagline}</p>
-              <p className="mt-3 text-sm">{counting ? "still counting" : `${rate}% win rate`}</p>
+              <p className="mt-3 text-sm">
+                {row.counting ? "still counting" : `${rate}% win rate`}
+                {" · "}
+                {row.votes} {row.votes === 1 ? "vote" : "votes"}
+              </p>
             </li>
           );
         })}
@@ -86,7 +116,7 @@ export default function RankingBoard({ club, clubName, headline, rows, fans, gam
       <Link href={gameHref} className="text-sm font-semibold underline-offset-4 hover:underline">Play the game</Link>
       <footer className="pb-4 text-center text-sm">
         <p>Football is nothing without the fans.</p>
-        <Link href="/" className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>
+        <Link href={SITE_URL} className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>
       </footer>
     </div>
   );

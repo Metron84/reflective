@@ -52,10 +52,13 @@ export default function sitemap() {
           { path: "/observatory/footballer-001", changeFrequency: "weekly", priority: 0.7 },
         ]
       : []),
-    ...listClubs().flatMap((club) => [
-      { path: `/watch-with/${club.slug}`, changeFrequency: "weekly", priority: 0.7 },
-      { path: `/watch-with/${club.slug}/ranking`, changeFrequency: "daily", priority: 0.6 },
-    ]),
+    { path: "/watch-with", changeFrequency: "weekly", priority: 0.7 },
+    ...listClubs()
+      .filter((club) => club.slug === "west-ham")
+      .flatMap((club) => [
+        { path: `/watch-with/${club.slug}`, changeFrequency: "weekly", priority: 0.7 },
+        { path: `/watch-with/${club.slug}/ranking`, changeFrequency: "daily", priority: 0.6 },
+      ]),
     ...(ULTIMA_ENABLED
       ? [
           { path: "/ultima", changeFrequency: "weekly", priority: 0.75 },
