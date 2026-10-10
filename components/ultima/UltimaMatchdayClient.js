@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { formatGstTime } from "@/lib/ultima/gst";
 import UltimaCountryTag from "./UltimaCountryTag";
 import UltimaPanel from "./UltimaPanel";
 import UltimaStaffMessage from "./UltimaStaffMessage";
@@ -39,9 +38,7 @@ export default function UltimaMatchdayClient({ initial = null }) {
     }
   }, []);
 
-  // One fetch on open asks the server to refresh if it is due. After that, poll
-  // only while a match is on, and only while this tab is visible. The server
-  // limits the upstream refresh to once every two minutes whoever is polling.
+  // Reads stored scores. The cron writes them. Poll while a match is on.
   const pollable = Boolean(data?.pollable);
   useEffect(() => {
     const id = setTimeout(load, 0);
@@ -98,8 +95,10 @@ export default function UltimaMatchdayClient({ initial = null }) {
     <div className={styles.mdPage}>
       <UltimaStatsStrip items={stats} />
       <p className={styles.mdNote}>
-        Kickoffs in Dubai time.
-        {data.updatedAt ? ` Updated ${formatGstTime(data.updatedAt)}.` : ""}
+        {data.sample ? <span className={styles.sampleChip}>SAMPLE</span> : null}
+        {" "}
+        Kickoffs in Dubai time. {STATE_LABELS[data.gameweek.state] ?? data.gameweek.state}.
+        {data.updatedAt ? ` ${updatedAgo(data.updatedAt)}.` : ""}
         {failed ? " Could not refresh. Showing the last scores." : ""}
       </p>
 
@@ -146,6 +145,7 @@ export default function UltimaMatchdayClient({ initial = null }) {
                     <span className={styles.mdMgrName}>
                       {m.name}
                       {m.yours ? <span className={styles.mdYou}>You</span> : null}
+                      {m.live ? <span className={styles.mdLive}>LIVE</span> : null}
                     </span>
                     <span className={styles.mdPts}>{m.total}</span>
                   </button>
@@ -158,6 +158,25 @@ export default function UltimaMatchdayClient({ initial = null }) {
       </div>
     </div>
   );
+}
+
+function updatedAgo(iso, now = Date.now()) {
+  const seconds = Math.max(0, Math.round((now - new Date(iso).getTime()) / 1000));
+  if (!Number.isFinite(seconds)) return "";
+  if (seconds < 60) return `updated ${seconds}s ago`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `updated ${minutes}m ago`;
+  return `updated ${Math.round(minutes / 60)}h ago`;
+}
+
+function pointParts(row) {
+  const bits = [];
+  if (row.goals) bits.push(`Goal ${row.goals}`);
+  if (row.assists) bits.push(`Assist ${row.assists}`);
+  if (row.rating) bits.push(`Rating ${row.rating}`);
+  if (row.captainExtra) bits.push(`Captain +${row.captainExtra}`);
+  if (row.bolt) bits.push(`Bolt +${row.bolt}`);
+  return bits.join(" · ");
 }
 
 function FixtureRow({ fixture }) {
@@ -225,6 +244,7 @@ function XvList({ xv, compact = false }) {
                   {r.points}
                   {r.captain ? <span className={styles.mdDouble}> x2</span> : null}
                 </span>
+                {pointParts(r) ? <span className={styles.mdBreak}>{pointParts(r)}</span> : null}
               </div>
             ))
           ) : (

@@ -7424,13 +7424,21 @@ button.capCellLocked {
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
 }
 
+.mdBreak {
+  flex: 1 0 100%;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
 .mdPlayer {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
   min-height: 40px;
-  padding: 0 12px;
+  padding: 0.4rem 12px;
   border-bottom: 1px solid var(--office-line, rgba(230, 225, 216, 0.12));
   font-family: var(--font-archivo), sans-serif;
   font-size: 14px;
@@ -7472,6 +7480,10 @@ button.capCellLocked {
     display: grid;
     grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
     align-items: start;
+  }
+
+  .mdPlayer {
+    align-items: center;
   }
 }
 
