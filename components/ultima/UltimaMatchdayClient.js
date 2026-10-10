@@ -8,7 +8,8 @@ import UltimaStatsStrip from "./UltimaStatsStrip";
 import { useUltimaPlayerCard } from "./UltimaPlayerCard";
 import styles from "./ultima.module.css";
 
-const POLL_MS = 60_000;
+const LIVE_POLL_MS = 30_000;
+const QUIET_POLL_MS = 5 * 60_000;
 
 const STATE_LABELS = {
   upcoming: "Upcoming",
@@ -20,8 +21,9 @@ const STATE_LABELS = {
 export default function UltimaMatchdayClient({ initial = null }) {
   const [data, setData] = useState(initial);
   const [failed, setFailed] = useState(!initial);
-  const [openId, setOpenId] = useState(null);
+  const [openId, setOpenId] = useState(initial?.you?.id ?? null);
   const busy = useRef(false);
+  const didOpen = useRef(Boolean(initial?.you?.id));
 
   const load = useCallback(async () => {
     if (busy.current) return;
@@ -29,7 +31,12 @@ export default function UltimaMatchdayClient({ initial = null }) {
     try {
       const res = await fetch("/api/ultima/matchday", { cache: "no-store" });
       if (!res.ok) throw new Error("bad status");
-      setData(await res.json());
+      const next = await res.json();
+      setData(next);
+      if (!didOpen.current && next?.you?.id) {
+        didOpen.current = true;
+        setOpenId(next.you.id);
+      }
       setFailed(false);
     } catch {
       setFailed(true);
@@ -38,24 +45,23 @@ export default function UltimaMatchdayClient({ initial = null }) {
     }
   }, []);
 
-  // Reads stored scores. The cron writes them. Poll while a match is on.
-  const pollable = Boolean(data?.pollable);
+  // Reads stored scores. The cron writes them. A refresh never closes the open row.
+  const anyLive = Boolean(data?.anyLive);
   useEffect(() => {
     const id = setTimeout(load, 0);
     return () => clearTimeout(id);
   }, [load]);
   useEffect(() => {
-    if (!pollable) return undefined;
     const tick = () => {
       if (document.visibilityState === "visible") load();
     };
-    const id = setInterval(tick, POLL_MS);
+    const id = setInterval(tick, anyLive ? LIVE_POLL_MS : QUIET_POLL_MS);
     document.addEventListener("visibilitychange", tick);
     return () => {
       clearInterval(id);
       document.removeEventListener("visibilitychange", tick);
     };
-  }, [pollable, load]);
+  }, [anyLive, load]);
 
   if (!data) {
     return (
@@ -87,7 +93,7 @@ export default function UltimaMatchdayClient({ initial = null }) {
   const stats = [
     { label: "Gameweek", value: String(data.gameweek.number) },
     { label: "Status", value: STATE_LABELS[data.gameweek.state] ?? data.gameweek.state },
-    { label: "Your points", value: you ? String(you.total) : "-" },
+    { label: "Your points", value: data.waitingForStats ? "Waiting for stats" : you ? String(you.total) : "-" },
     { label: "Your rank", value: you ? String(you.rank) : "-" },
   ];
 
@@ -103,6 +109,33 @@ export default function UltimaMatchdayClient({ initial = null }) {
       </p>
 
       <div className={styles.mdDesk}>
+        <UltimaPanel title="Managers" action={<span className={styles.opPanelAction}>Gameweek points</span>}>
+          {data.managers.map((m) => {
+            const open = openId === m.id;
+            return (
+              <div key={m.id}>
+                <button
+                  type="button"
+                  className={styles.mdMgr}
+                  aria-expanded={open}
+                  onClick={() => setOpenId(open ? null : m.id)}
+                >
+                  <span className={styles.mdRank}>{m.rank}</span>
+                  <span className={styles.mdMgrName}>
+                    {m.name}
+                    {m.yours ? <span className={styles.mdYou}>You</span> : null}
+                    {m.live ? <span className={styles.mdLive}>LIVE</span> : null}
+                  </span>
+                  <span className={data.waitingForStats ? styles.mdWait : styles.mdPts}>
+                    {data.waitingForStats ? "Waiting for stats" : m.total}
+                  </span>
+                </button>
+                {open ? <XvList xv={m.xv} /> : null}
+              </div>
+            );
+          })}
+        </UltimaPanel>
+
         <UltimaPanel title="Fixtures" live={data.anyLive}>
           {!data.anyFixtures ? (
             <p className={styles.mdEmpty}>No fixtures this gameweek yet.</p>
@@ -121,40 +154,6 @@ export default function UltimaMatchdayClient({ initial = null }) {
             </div>
           ))}
         </UltimaPanel>
-
-        <div className={styles.mdSide}>
-          <UltimaPanel
-            title="My XV"
-            action={<span className={styles.opPanelAction}>{you ? you.total : "-"}</span>}
-          >
-            {you ? <XvList xv={you.xv} /> : <p className={styles.mdEmpty}>No XV set.</p>}
-          </UltimaPanel>
-
-          <UltimaPanel title="Managers" action={<span className={styles.opPanelAction}>Gameweek points</span>}>
-            {data.managers.map((m) => {
-              const open = openId === m.id;
-              return (
-                <div key={m.id}>
-                  <button
-                    type="button"
-                    className={styles.mdMgr}
-                    aria-expanded={open}
-                    onClick={() => setOpenId(open ? null : m.id)}
-                  >
-                    <span className={styles.mdRank}>{m.rank}</span>
-                    <span className={styles.mdMgrName}>
-                      {m.name}
-                      {m.yours ? <span className={styles.mdYou}>You</span> : null}
-                      {m.live ? <span className={styles.mdLive}>LIVE</span> : null}
-                    </span>
-                    <span className={styles.mdPts}>{m.total}</span>
-                  </button>
-                  {open ? <XvList xv={m.xv} compact /> : null}
-                </div>
-              );
-            })}
-          </UltimaPanel>
-        </div>
       </div>
     </div>
   );

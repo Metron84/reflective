@@ -163,6 +163,30 @@ test("a final gameweek shows every XV; a country with no open time in a live wee
   assert.ok(noTimes.managers.find((m) => m.id === "m2").xv.countries.every((c) => c.visible));
 });
 
+test("a tie breaks by goals, then assists, then reverse draft slot, and equal totals share a rank", () => {
+  const ranked = rankManagers([
+    { id: "late", name: "Late", total: 10, goals: 1, assists: 0, draftSlot: 10 },
+    { id: "goals", name: "Goals", total: 10, goals: 2, assists: 0, draftSlot: 1 },
+    { id: "assists", name: "Assists", total: 10, goals: 1, assists: 1, draftSlot: 1 },
+    { id: "top", name: "Top", total: 11, goals: 0, assists: 0, draftSlot: 1 },
+  ]);
+  assert.deepEqual(
+    ranked.map((row) => row.id),
+    ["top", "goals", "assists", "late"],
+  );
+  assert.deepEqual(
+    ranked.map((row) => row.rank),
+    [1, 2, 2, 2],
+  );
+});
+
+test("no stat rows with fixtures is waiting, and a real zero is not", () => {
+  const f = { id: "f", league: "pl", kickoff: "2026-10-10T14:00:00Z", status: "FT", home_club: "A", away_club: "B", home_score: 0, away_score: 0 };
+  assert.equal(build({ fixtures: [f], stats: [] }).waitingForStats, true);
+  assert.equal(build({ fixtures: [f] }).waitingForStats, false);
+  assert.equal(build({ fixtures: [], stats: [] }).waitingForStats, false);
+});
+
 test("managers rank by gameweek points, equal points share a rank", () => {
   const ranked = rankManagers([
     { id: "a", name: "A", total: 10 },

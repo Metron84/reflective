@@ -7419,6 +7419,13 @@ button.capCellLocked {
   font-size: 16px;
 }
 
+.mdWait {
+  max-width: 5.5rem;
+  font-size: 11px;
+  line-height: 1.25;
+  text-align: right;
+}
+
 .mdDouble {
   font-size: 12px;
   color: var(--office-muted, rgba(230, 225, 216, 0.58));
