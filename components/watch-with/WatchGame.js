@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { SITE_URL } from "@/lib/config";
+import SaveResult from "@/components/watch-with/SaveResult";
 import { useEffect, useRef, useState } from "react";
 
 const font = { fontFamily: "var(--font-body), Archivo, sans-serif" };
@@ -135,6 +136,7 @@ export default function WatchGame({
   primary = "#7A263A",
   shareHost = `watchwith.thereflectivefootball.com/${club}`,
   preview = "",
+  accountEmail = "",
 }) {
   const [run, setRun] = useState(null);
   const [left, setLeft] = useState(null);
@@ -362,6 +364,7 @@ export default function WatchGame({
           </article>
           <canvas ref={previewRef} className="h-auto w-full rounded-[14px] border-2 border-[#0A111F]" aria-label={`Share card for ${run.champion.name}`} />
           <button type="button" onClick={share} className={primaryClass}>Share my companion</button>
+          <SaveResult club={club} runId={run.runId} accountEmail={accountEmail} preview={preview} />
           {shared ? <p className="text-sm">{shared}</p> : null}
           <button type="button" onClick={begin} className={ghostClass}>Play again</button>
           <p className="text-sm text-[#0A111F]">

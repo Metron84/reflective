@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import WatchGame from "@/components/watch-with/WatchGame";
+import { getAuthContext } from "@/lib/auth/session";
 import { SITE_URL } from "@/lib/config";
 import { presentClub, previewMatches } from "@/lib/watch-with/access";
 import { shareLabel, watchWithPaths } from "@/lib/watch-with/host";
@@ -29,6 +30,8 @@ export default async function WatchWithPage({ params, searchParams }) {
   if (!club || (!club.active && !previewMatches(preview))) notFound();
   const hdrs = await headers();
   const paths = watchWithPaths(hdrs.get("host"), club.slug);
+  const auth = await getAuthContext();
+  const accountEmail = auth.isSignedIn ? String(auth.user?.email || "") : "";
   return (
     <WatchGame
       club={club.slug}
@@ -41,6 +44,7 @@ export default async function WatchWithPage({ params, searchParams }) {
       primary={club.primaryColor}
       shareHost={shareLabel(club.slug)}
       preview={club.active ? "" : preview}
+      accountEmail={accountEmail}
     />
   );
 }

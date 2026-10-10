@@ -20,6 +20,7 @@ export default function RankingBoard({
   headline,
   segments,
   runs,
+  verifiedFans = 0,
   gameHref = `/watch-with/${club}`,
 }) {
   const [segment, setSegment] = useState("fan");
@@ -29,12 +30,16 @@ export default function RankingBoard({
     { id: "fan", label: fanLabel },
     { id: "all", label: "Everyone" },
     { id: "rival", label: "Rivals" },
+    { id: "verified", label: "Verified fans" },
   ];
   const visible = useMemo(() => {
     const pool = (segments?.[segment] ?? []).filter((row) => tab === "all" || row.category === tab);
     const ranked = pool
       .filter((row) => row.votes >= COUNTING_VOTES)
-      .sort((a, b) => b.elo - a.elo || a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        if (segment === "verified") return (b.winRate ?? 0) - (a.winRate ?? 0) || a.name.localeCompare(b.name);
+        return b.elo - a.elo || a.name.localeCompare(b.name);
+      });
     const counting = pool
       .filter((row) => row.votes < COUNTING_VOTES)
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -70,7 +75,8 @@ export default function RankingBoard({
       <header className="flex flex-col gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D8232A]">{clubName}</p>
         <h1 className="text-3xl font-semibold leading-tight text-[#0A111F] sm:text-4xl">{headline}</h1>
-        <p className="text-[#0A111F]">{completed} completed {completed === 1 ? "run" : "runs"}.</p>
+        <p className="text-[#0A111F]">{verifiedFans} verified {verifiedFans === 1 ? "fan" : "fans"}. {runs?.all ?? 0} completed {runs?.all === 1 ? "run" : "runs"}.</p>
+        <p className="text-sm text-[#0A111F]">{completed} in this view.</p>
       </header>
 
       <div className="flex flex-wrap gap-2">
@@ -117,6 +123,12 @@ export default function RankingBoard({
       <footer className="pb-4 text-center text-sm">
         <p>Football is nothing without the fans.</p>
         <Link href={SITE_URL} className="mt-2 inline-block underline-offset-4 hover:underline">The Reflective Football</Link>
+        <a
+          className="mt-2 block underline-offset-4 hover:underline"
+          href="mailto:info@thereflectivefootball.com?subject=Delete%20my%20watch-with%20data"
+        >
+          Delete my data
+        </a>
       </footer>
     </div>
   );

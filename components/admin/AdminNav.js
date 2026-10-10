@@ -39,6 +39,12 @@ export default function AdminNav({ active, newCount = 0 }) {
       >
         Observatory
       </Link>
+      <Link
+        href="/admin/watch-with/west-ham/report"
+        className={active === "watch-with" ? styles.active : styles.link}
+      >
+        Watch-with
+      </Link>
     </nav>
   );
 }

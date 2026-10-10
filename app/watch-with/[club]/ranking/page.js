@@ -45,6 +45,7 @@ export default async function RankingPage({ params, searchParams }) {
       headline="Who would you rather watch the match with?"
       segments={board.segments}
       runs={board.runs}
+      verifiedFans={board.verifiedFans ?? 0}
       gameHref={paths.game}
     />
   );

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import club from "../../data/watch-with/west-ham.json" with { type: "json" };
 import { applyElo, drawDeck, expectedPair, samePair } from "../../lib/watch-with/engine.js";
+import { readFanToken, signFanToken } from "../../lib/watch-with/token.js";
 import { isWatchWithHost, shareLabel, watchWithHostAction, watchWithPaths } from "../../lib/watch-with/host.js";
 
 test("the west ham pool keeps four cards inactive", () => {
@@ -61,6 +62,13 @@ test("the watchwith host rewrites the short urls and leaves the api alone", () =
     game: "/watch-with/spurs",
     ranking: "/watch-with/spurs/ranking",
   });
+});
+
+test("a verification token only opens for the same email and club", () => {
+  const token = signFanToken("Fan@Example.com", "spurs", "test-secret", 1_000);
+  assert.deepEqual(readFanToken(token, "test-secret", 1_000), { email: "fan@example.com", club: "spurs" });
+  assert.equal(readFanToken(token, "other-secret", 1_000), null);
+  assert.equal(readFanToken(token, "test-secret", 1_000 + 8 * 24 * 60 * 60 * 1000), null);
 });
 
 test("an even match moves 12 points at K 24", () => {
