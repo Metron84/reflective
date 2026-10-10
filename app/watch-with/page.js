@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Who would you rather watch the match with? | The Reflective Football",
-  description: "Dream matchday. Any era, living or legend. Pick your club.",
+  description: "Dream matchday. Any era. You choose who sits next to you.",
   alternates: { canonical: `${SITE_URL}/watch-with` },
 };
 

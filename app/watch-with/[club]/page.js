@@ -37,6 +37,7 @@ export default async function WatchWithPage({ params, searchParams }) {
       club={club.slug}
       clubName={club.shortName}
       shortName={club.shortName}
+      fanLabel={club.fanLabel}
       headline={club.headline}
       subline={club.subline}
       rankingHref={paths.ranking}

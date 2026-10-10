@@ -66,25 +66,27 @@ export default function SaveResult({ club, runId, accountEmail = "", preview = "
       {note ? <p className="text-sm font-semibold">{note}</p> : (
         <>
           <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-transparent px-3 text-base text-[#0A111F]" />
-          <input value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="First name" className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-transparent px-3 text-base text-[#0A111F]" />
-          <select value={location} onChange={(event) => setLocation(event.target.value)} className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-[#F2EDE4] px-3 text-base text-[#0A111F]">
-            {LOCATIONS.map((item) => (
-              <option key={item.id || "blank"} value={item.id}>{item.label}</option>
-            ))}
-          </select>
-          <input value={supportersClub} onChange={(event) => setSupportersClub(event.target.value)} placeholder="Supporters club you belong to" className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-transparent px-3 text-base text-[#0A111F]" />
           <label className="flex items-start gap-2 text-sm">
             <input type="checkbox" checked={consentSave} onChange={(event) => setConsentSave(event.target.checked)} className="mt-1" />
             Save my result and verify my vote
           </label>
-          <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" checked={consentMarketing} onChange={(event) => setConsentMarketing(event.target.checked)} className="mt-1" />
-            Send me TRF updates
-          </label>
+          <div className="flex flex-col gap-3 opacity-60">
+            <input value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="First name" className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-transparent px-3 text-base text-[#0A111F]" />
+            <select value={location} onChange={(event) => setLocation(event.target.value)} className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-[#F2EDE4] px-3 text-base text-[#0A111F]">
+              {LOCATIONS.map((item) => (
+                <option key={item.id || "blank"} value={item.id}>{item.label}</option>
+              ))}
+            </select>
+            <input value={supportersClub} onChange={(event) => setSupportersClub(event.target.value)} placeholder="Supporters club you belong to" className="min-h-12 rounded-[14px] border-2 border-[#0A111F] bg-transparent px-3 text-base text-[#0A111F]" />
+            <label className="flex items-start gap-2 text-sm">
+              <input type="checkbox" checked={consentMarketing} onChange={(event) => setConsentMarketing(event.target.checked)} className="mt-1" />
+              Send me TRF updates
+            </label>
+          </div>
           <p className="text-xs text-[#0A111F]/80">We never show your email publicly. Ask us to delete it any time.</p>
           {failed ? <p className="text-sm">{failed}</p> : null}
           <button type="submit" disabled={busy || !consentSave} className="min-h-12 rounded-[14px] bg-[#D8232A] px-4 text-base font-semibold text-[#F2EDE4] disabled:opacity-60">
-            Save
+            Save and join the ranking
           </button>
         </>
       )}
