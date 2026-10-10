@@ -52,6 +52,7 @@ export default function UltimaAdminClient({
   const [overridePoints, setOverridePoints] = useState("");
   const [overrideBolt, setOverrideBolt] = useState("0");
   const [overrideReason, setOverrideReason] = useState("");
+  const [rescoreGw, setRescoreGw] = useState("");
   const [gwNumber, setGwNumber] = useState("");
   const [gwStart, setGwStart] = useState("");
   const [gwEnd, setGwEnd] = useState("");
@@ -93,6 +94,11 @@ export default function UltimaAdminClient({
           setMessage(data.code ? `Invite: ${data.code}` : "Done.");
         }
         if (data.code) setInviteCode(data.code);
+        if (action === "sync_stats") {
+          setMessage(
+            `Stats written ${data.written ?? 0}, failed ${data.failed ?? 0}. ${data.managers ?? 0} managers rescored. ${data.state ?? ""}.`,
+          );
+        }
         if (action === "schedule_draft" && data.scheduledAt) {
           setSavedAt(data.scheduledAt);
           setScheduleAt(toGstInputValue(data.scheduledAt));
@@ -385,6 +391,28 @@ export default function UltimaAdminClient({
         </div>
       </UltimaPanel>
 
+      <UltimaPanel title="Resync stats and rescore">
+        <p className={styles.utNote}>Pulls Sportmonks stats for one gameweek, then writes the stored scores again.</p>
+        <div className={styles.utPad}>
+          <label className={styles.field}>
+            Gameweek
+            <select value={rescoreGw} onChange={(e) => setRescoreGw(e.target.value)}>
+              <option value="">Choose</option>
+              {weeks.map((gw) => (
+                <option key={gw.id} value={gw.id}>
+                  GW{gw.number} · {gw.state}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className={styles.utActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("rescore")}>
+            Resync and rescore
+          </button>
+        </div>
+      </UltimaPanel>
+
       <UltimaPanel title="Score override">
         <p className={styles.utNote}>Writes a public log row. Use a typed reason.</p>
         <div className={styles.utPad}>
@@ -526,6 +554,16 @@ export default function UltimaAdminClient({
             })
           }
           busy={busy === "undo_pick"}
+        />
+      ) : null}
+
+      {confirm === "rescore" ? (
+        <ConfirmSheet
+          title="Resync this gameweek?"
+          body="This pulls match stats and rewrites every manager score for the gameweek you chose."
+          onClose={() => setConfirm(null)}
+          onConfirm={() => act("sync_stats", { gameweek_id: rescoreGw })}
+          busy={busy === "sync_stats"}
         />
       ) : null}
 
