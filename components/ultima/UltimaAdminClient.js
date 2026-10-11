@@ -94,11 +94,6 @@ export default function UltimaAdminClient({
           setMessage(data.code ? `Invite: ${data.code}` : "Done.");
         }
         if (data.code) setInviteCode(data.code);
-        if (action === "sync_stats") {
-          setMessage(
-            `Stats written ${data.written ?? 0}, failed ${data.failed ?? 0}. ${data.managers ?? 0} managers rescored. ${data.state ?? ""}.`,
-          );
-        }
         if (action === "schedule_draft" && data.scheduledAt) {
           setSavedAt(data.scheduledAt);
           setScheduleAt(toGstInputValue(data.scheduledAt));
@@ -106,6 +101,73 @@ export default function UltimaAdminClient({
         }
         setConfirm(null);
       }
+      return data;
+    } catch {
+      setError("Connection lost.");
+      return null;
+    } finally {
+      setBusy("");
+    }
+  }
+
+  async function resyncGameweek(gameweekId) {
+    if (!gameweekId) {
+      setError("Choose a gameweek.");
+      return;
+    }
+    setMessage("");
+    setError("");
+    setBusy("sync_stats");
+    setConfirm(null);
+
+    // -1 = import missing fixtures first; then follow nextCursor for stats chunks.
+    let cursor = -1;
+    let written = 0;
+    let failed = 0;
+    let managers = 0;
+    let missingImported = 0;
+    let state = "";
+    const failures = [];
+    const unmatched = [];
+
+    try {
+      for (let pass = 0; pass < 80; pass += 1) {
+        setMessage(`Resyncing… chunk ${pass + 1}${written ? ` · ${written} stats so far` : ""}`);
+        const res = await fetch("/api/ultima/admin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "sync_stats", gameweek_id: gameweekId, cursor }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError(data.message ?? "Resync failed.");
+          return;
+        }
+        written += data.written ?? 0;
+        failed += data.failed ?? 0;
+        managers += data.managers ?? 0;
+        missingImported += data.missingImported ?? 0;
+        state = data.state ?? state;
+        for (const row of data.fixtures ?? []) {
+          if (row.status === "failed") failures.push(row);
+        }
+        for (const gap of data.unmatchedPlayers ?? []) unmatched.push(gap);
+        if (!data.moreRemaining) break;
+        cursor = data.nextCursor ?? 0;
+      }
+
+      const failLines = failures
+        .slice(0, 8)
+        .map((row) => `${row.league || "?"} ${row.reason || "failed"}`)
+        .join(" · ");
+      const ligue1Gaps = unmatched.filter((row) => row.league === "ligue1");
+      const gapLine = ligue1Gaps.length
+        ? ` Unmatched Ligue 1 players: ${[...new Set(ligue1Gaps.map((row) => row.sportmonksPlayerId))].slice(0, 12).join(", ")}.`
+        : "";
+      setMessage(
+        `Stats written ${written}, failed ${failed}. ${managers} managers rescored. ${missingImported} fixtures newly stored. ${state || ""}.${failLines ? ` Failures: ${failLines}.` : ""}${gapLine}`,
+      );
+      if (failures.length) setError(`${failures.length} fixture sync failure${failures.length === 1 ? "" : "s"}.`);
     } catch {
       setError("Connection lost.");
     } finally {
@@ -562,7 +624,7 @@ export default function UltimaAdminClient({
           title="Resync this gameweek?"
           body="This pulls match stats and rewrites every manager score for the gameweek you chose."
           onClose={() => setConfirm(null)}
-          onConfirm={() => act("sync_stats", { gameweek_id: rescoreGw })}
+          onConfirm={() => resyncGameweek(rescoreGw)}
           busy={busy === "sync_stats"}
         />
       ) : null}

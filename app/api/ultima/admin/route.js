@@ -152,7 +152,9 @@ export async function POST(request) {
       result = await commissionerSyncFixtures(competition.id, user.id, body.gameweek_id);
       break;
     case "sync_stats":
-      result = await commissionerSyncStats(competition.id, user.id, body.gameweek_id);
+      result = await commissionerSyncStats(competition.id, user.id, body.gameweek_id, {
+        cursor: body.cursor,
+      });
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });
