@@ -6,7 +6,7 @@ import { presentClub, previewMatches } from "@/lib/watch-with/access";
 import { watchWithPaths } from "@/lib/watch-with/host";
 import { rankingFor } from "@/lib/watch-with/store";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata({ params, searchParams }) {
   const { club: slug } = await params;

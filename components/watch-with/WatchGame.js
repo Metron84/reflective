@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { SITE_URL } from "@/lib/config";
 import SaveResult from "@/components/watch-with/SaveResult";
+import { MIN_PICK_GAP_MS } from "@/lib/watch-with/engine";
+import { advanceRun } from "@/lib/watch-with/local-run";
 import { useEffect, useRef, useState } from "react";
 
 const font = { fontFamily: "var(--font-body), Archivo, sans-serif" };
 const SOUND_KEY = "ww-sound";
 const FULL_FIRST = new Set(["son", "van", "sir", "prince"]);
+const NETWORK_RETRIES = 3;
 
 function sidesFor(pair, incumbentId) {
   if (!pair || pair.length < 2) return [null, null];
@@ -244,6 +247,7 @@ export default function WatchGame({
   const [soundOn, setSoundOn] = useState(false);
   const [motionOk, setMotionOk] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
+  const [reconnecting, setReconnecting] = useState(false);
   const retryRef = useRef(null);
   const dragRef = useRef(null);
   const shareBlob = useRef(null);
@@ -251,6 +255,10 @@ export default function WatchGame({
   const soundRef = useRef(false);
   const ribbonTimer = useRef(null);
   const chimeRef = useRef("");
+  const queueRef = useRef(Promise.resolve());
+  const queueOpen = useRef(true);
+  const lastPickOk = useRef(0);
+  const runRef = useRef(null);
   soundRef.current = soundOn;
 
   function showPair(state, holdSide) {
@@ -259,6 +267,7 @@ export default function WatchGame({
     setLeft(nextLeft);
     setRight(nextRight);
     setRun(state);
+    runRef.current = state;
     if (held) setEnterSide(holdSide === "left" ? "right" : "left");
     else setEnterSide(null);
     return state;
@@ -283,8 +292,12 @@ export default function WatchGame({
     setPhase(null);
     setStreak({ id: null, n: 0 });
     setCelebrate(false);
+    setReconnecting(false);
     chimeRef.current = "";
     shareBlob.current = null;
+    queueOpen.current = true;
+    queueRef.current = Promise.resolve();
+    lastPickOk.current = 0;
     try {
       const data = await post(`/api/watch-with/${club}/start`, { affiliation, preview });
       if (data.needsAffiliation) {
@@ -294,14 +307,7 @@ export default function WatchGame({
       }
       setAskingSide(false);
       if (data.needsComplete && data.champion) {
-        const finished = await post(`/api/watch-with/${club}/complete`, {
-          runId: data.runId,
-          championId: data.champion.id,
-          preview,
-        });
-        setRun(finished);
-        setLeft(null);
-        setRight(null);
+        await revealChampion(data);
       } else {
         showPair(data);
       }
@@ -337,28 +343,123 @@ export default function WatchGame({
     return () => media.removeEventListener?.("change", sync);
   }, []);
 
-  async function finishRun(data) {
+  async function revealChampion(local) {
     setLeft(null);
     setRight(null);
     setPhase(null);
     setFinding(true);
     await wait(1800);
-    const finished = await post(`/api/watch-with/${club}/complete`, {
-      runId: data.runId,
-      championId: data.champion.id,
-      preview,
-    });
     setFinding(false);
-    setRun(finished);
+    setRun(local);
+    runRef.current = local;
     setCelebrate(true);
+    // Complete only after every queued pick has reached the server.
+    queueRef.current
+      .then(() => post(`/api/watch-with/${club}/complete`, {
+        runId: local.runId,
+        championId: local.champion.id,
+        preview,
+      }))
+      .then((finished) => {
+        setRun((current) => ({ ...current, ...finished, social: finished.social }));
+        runRef.current = { ...local, ...finished, social: finished.social };
+      })
+      .catch(() => {
+        // The local champion is already on screen; social proof can stay empty.
+      });
+  }
+
+  async function postPick(payload) {
+    let lastError = null;
+    for (let attempt = 0; attempt < NETWORK_RETRIES; attempt += 1) {
+      try {
+        const gap = MIN_PICK_GAP_MS - (Date.now() - lastPickOk.current);
+        if (lastPickOk.current && gap > 0) {
+          await new Promise((resolve) => setTimeout(resolve, gap));
+        }
+        const data = await post(`/api/watch-with/${club}/pick`, payload);
+        lastPickOk.current = Date.now();
+        setReconnecting(false);
+        return data;
+      } catch (error) {
+        lastError = error;
+        if (error.status && error.status >= 400 && error.status < 500) throw error;
+        setReconnecting(true);
+        await new Promise((resolve) => setTimeout(resolve, 200 * (attempt + 1)));
+      }
+    }
+    setReconnecting(true);
+    throw lastError || new Error("Reconnecting");
+  }
+
+  async function resyncFromServer(message) {
+    queueOpen.current = false;
+    setFailed(message || "We lost the step. Catching you up.");
+    try {
+      const data = await post(`/api/watch-with/${club}/start`, {
+        affiliation: side || readSide(club),
+        preview,
+      });
+      if (data?.needsComplete && data.champion) {
+        await revealChampion(data);
+      } else if (data?.pair) {
+        showPair(data);
+        setFailed("");
+        queueOpen.current = true;
+      } else if (data?.state) {
+        showPair(data.state);
+        setFailed("");
+        queueOpen.current = true;
+      }
+    } catch (error) {
+      if (error.code === "daily-cap") setCapped(true);
+      setFailed(error.message || message || "Something went wrong. Tap to try again.");
+      retryRef.current = () => resyncFromServer(message);
+    }
+  }
+
+  function enqueuePick(payload) {
+    if (!queueOpen.current) return;
+    queueRef.current = queueRef.current
+      .then(async () => {
+        if (!queueOpen.current) return;
+        try {
+          await postPick(payload);
+        } catch (error) {
+          if (error.state) {
+            showPair(error.state);
+            setFailed(error.message || "That pick did not count. Showing your place.");
+            queueOpen.current = false;
+            return;
+          }
+          if (error.code === "daily-cap") {
+            setCapped(true);
+            queueOpen.current = false;
+            return;
+          }
+          if (error.status && error.status >= 400 && error.status < 500) {
+            await resyncFromServer(error.message || "That pick did not count. Catching you up.");
+            return;
+          }
+          setReconnecting(true);
+          // Keep the queue so later picks still leave in order after retries.
+          throw error;
+        }
+      })
+      .catch(() => {
+        // Network failures stay in reconnecting state; the fan keeps playing locally
+        // until a rejection forces a resync.
+      });
   }
 
   async function choose(card) {
-    if (!run || busy || lockRef.current || !left || !right || !card) return;
+    const current = runRef.current || run;
+    if (!current || busy || lockRef.current || !left || !right || !card || !queueOpen.current) return;
     lockRef.current = true;
     setBusy(true);
     setFailed("");
     setDragX(0);
+    const loser = card.id === left.id ? right : left;
     const winnerSide = card.id === left.id ? "left" : "right";
     setPhase(winnerSide);
     if (soundRef.current) playTap();
@@ -367,31 +468,29 @@ export default function WatchGame({
     } catch {
       // Vibration is optional.
     }
+
+    const next = advanceRun(current, card.id);
+    enqueuePick({
+      runId: current.runId,
+      winnerId: card.id,
+      loserId: loser.id,
+      preview,
+    });
+
     await wait(280);
-    try {
-      const data = await post(`/api/watch-with/${club}/pick`, {
-        runId: run.runId,
-        winnerId: card.id,
-        loserId: card.id === left.id ? right.id : left.id,
-        preview,
-      });
-      if (data.needsComplete && data.champion) {
-        await finishRun(data);
-      } else {
-        const next = data.state || data;
-        setStreak((current) => (
-          current.id === next.incumbentId ? { id: next.incumbentId, n: current.n + 1 } : { id: next.incumbentId, n: 1 }
-        ));
-        showPair(next, winnerSide);
-        showRibbon(next);
-        setPhase("in");
-        await wait(160);
-      }
-    } catch (error) {
-      if (error.state) showPair(error.state);
-      if (error.code === "daily-cap") setCapped(true);
-      retryRef.current = () => choose(card);
-      setFailed(error.message || "Something went wrong. Tap to try again.");
+    if (next.needsComplete && next.champion) {
+      setStreak((prev) => (
+        prev.id === next.incumbentId ? { id: next.incumbentId, n: prev.n + 1 } : { id: next.incumbentId, n: 1 }
+      ));
+      await revealChampion(next);
+    } else {
+      setStreak((prev) => (
+        prev.id === next.incumbentId ? { id: next.incumbentId, n: prev.n + 1 } : { id: next.incumbentId, n: 1 }
+      ));
+      showPair(next, winnerSide);
+      showRibbon(next);
+      setPhase("in");
+      await wait(160);
     }
     setPhase(null);
     setEnterSide(null);
@@ -602,6 +701,10 @@ export default function WatchGame({
 
       {ribbon ? (
         <p className="mt-3 rounded-[14px] bg-[#0A111F] px-3 py-2 text-center text-sm font-semibold text-[#F2EDE4]" aria-live="polite">{ribbon}</p>
+      ) : null}
+
+      {reconnecting ? (
+        <p className="mt-2 text-center text-sm font-medium text-[#0A111F]" role="status">Reconnecting</p>
       ) : null}
 
       {finding ? (

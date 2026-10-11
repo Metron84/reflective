@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/config";
 import { pickerClubs } from "@/lib/watch-with/access";
 import { watchWithPaths } from "@/lib/watch-with/host";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = {
   title: "Who would you rather watch the match with? | The Reflective Football",
