@@ -120,8 +120,8 @@ export default function UltimaAdminClient({
     setBusy("sync_stats");
     setConfirm(null);
 
-    // -1 = import missing fixtures first; then follow nextCursor for stats chunks.
-    let cursor = -1;
+    // -5..-1 import one league per call, then 0+ walks fixture stats.
+    let cursor = -5;
     let written = 0;
     let failed = 0;
     let managers = 0;
