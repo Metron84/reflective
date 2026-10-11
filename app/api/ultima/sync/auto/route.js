@@ -17,13 +17,13 @@ async function handle(request) {
   }
 
   const url = new URL(request.url);
-  const cursor = Number(url.searchParams.get("cursor") || 0);
   const batchSize = Number(url.searchParams.get("batch") || AUTO_SYNC_BATCH_SIZE);
   const gameweekId = url.searchParams.get("gameweek") || null;
 
+  // Cron never needs a cursor: each call takes the oldest eligible fixtures.
   const result = await runUltimaAutoSync({
     gameweekId: gameweekId && /^[0-9a-f-]{36}$/i.test(gameweekId) ? gameweekId : null,
-    cursor: Number.isFinite(cursor) ? cursor : 0,
+    cursor: 0,
     batchSize: Number.isFinite(batchSize) ? batchSize : AUTO_SYNC_BATCH_SIZE,
     force: false,
     rescore: true,
