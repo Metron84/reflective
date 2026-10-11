@@ -24,22 +24,24 @@ export default function ClubPicker({ clubs, pathsFor }) {
             <li key={club.slug}>
               {club.active ? (
                 <article
-                  className="ww-card relative flex h-full min-h-52 flex-col justify-between rounded-[14px] p-4 text-[#F2EDE4] motion-reduce:transform-none"
+                  className="ww-card flex h-full min-h-52 flex-col justify-between rounded-[14px] p-4 text-[#F2EDE4] motion-reduce:transform-none"
                   style={{ background: club.primaryColor }}
                 >
-                  <Link href={paths.game} className="absolute inset-0 rounded-[14px]" aria-label={`Play ${club.name}`} />
-                  <div className="pointer-events-none relative z-10">
+                  <div>
                     <h2 className="text-2xl font-semibold leading-tight">{club.name}</h2>
                     <p className="mt-1 text-sm text-[#F2EDE4]/80">{club.fanLabel}</p>
                   </div>
-                  <div className="relative z-10 mt-6 flex flex-col gap-2">
-                    <p className="pointer-events-none text-xs">
+                  <div className="mt-6 flex flex-col gap-2">
+                    <p className="text-xs">
                       {runs === 0 ? "Be the first to play" : `${runs} completed ${runs === 1 ? "run" : "runs"}`}
                     </p>
-                    <span className="ww-play pointer-events-none inline-flex min-h-14 items-center justify-center rounded-[14px] bg-[#F2EDE4] px-3 text-lg font-semibold text-[#0A111F]">
+                    <Link
+                      href={paths.game}
+                      className="ww-play inline-flex min-h-14 items-center justify-center rounded-[14px] bg-[#F2EDE4] px-3 text-lg font-semibold text-[#0A111F]"
+                    >
                       Play
-                    </span>
-                    <Link href={paths.ranking} className="relative z-20 text-center text-sm font-semibold underline-offset-4 hover:underline">
+                    </Link>
+                    <Link href={paths.ranking} className="text-center text-sm font-semibold underline-offset-4 hover:underline">
                       Ranking
                     </Link>
                   </div>
