@@ -1,0 +1,280 @@
+{
+  "slug": "chelsea",
+  "name": "Chelsea",
+  "shortName": "Chelsea",
+  "fanLabel": "Blues",
+  "primaryColor": "#034694",
+  "accentColor": "#6CA0DC",
+  "sortOrder": 7,
+  "headline": "Who would you rather watch the match with?",
+  "subline": "Pick your matchday companion. The Blues decide the ranking.",
+  "deckSize": 16,
+  "cards": [
+    {
+      "id": "chelsea-petr-cech",
+      "club_slug": "chelsea",
+      "name": "Petr Cech",
+      "category": "player",
+      "tagline": "Never panics, and has the clean sheet record to prove it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-peter-osgood",
+      "club_slug": "chelsea",
+      "name": "Peter Osgood",
+      "category": "player",
+      "tagline": "King of the Bridge, so he expects the best seat.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-ngolo-kante",
+      "club_slug": "chelsea",
+      "name": "N'Golo Kante",
+      "category": "player",
+      "tagline": "Quiet, smiling, and covers every inch of the room.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-ashley-cole",
+      "club_slug": "chelsea",
+      "name": "Ashley Cole",
+      "category": "player",
+      "tagline": "Sharp, serious, and never beaten down the left.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-dennis-wise",
+      "club_slug": "chelsea",
+      "name": "Dennis Wise",
+      "category": "player",
+      "tagline": "Wound up from kick-off and happy to start an argument.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-frank-lampard",
+      "club_slug": "chelsea",
+      "name": "Frank Lampard",
+      "category": "player",
+      "tagline": "Counts every goal, 211 of them, and still wants one more.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-john-terry",
+      "club_slug": "chelsea",
+      "name": "John Terry",
+      "category": "player",
+      "tagline": "Captain, leader, legend, and he will organise the whole pub.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-didier-drogba",
+      "club_slug": "chelsea",
+      "name": "Didier Drogba",
+      "category": "player",
+      "tagline": "Silent until the big moment, then he takes over the room.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-eden-hazard",
+      "club_slug": "chelsea",
+      "name": "Eden Hazard",
+      "category": "player",
+      "tagline": "Glides through the game and tells you to relax.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-gianfranco-zola",
+      "club_slug": "chelsea",
+      "name": "Gianfranco Zola",
+      "category": "player",
+      "tagline": "Smiles at every trick and wants everyone to enjoy the game.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-thomas-tuchel",
+      "club_slug": "chelsea",
+      "name": "Thomas Tuchel",
+      "category": "manager",
+      "tagline": "Intense, detailed, and has a plan for every set piece.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-guus-hiddink",
+      "club_slug": "chelsea",
+      "name": "Guus Hiddink",
+      "category": "manager",
+      "tagline": "Calm, kind, and the friendliest man in the room.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-ruud-gullit",
+      "club_slug": "chelsea",
+      "name": "Ruud Gullit",
+      "category": "manager",
+      "tagline": "Cool, stylish, and judges the football with a smile.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-claudio-ranieri",
+      "club_slug": "chelsea",
+      "name": "Claudio Ranieri",
+      "category": "manager",
+      "tagline": "Changes his mind at half-time and makes it sound brilliant.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-emma-hayes",
+      "club_slug": "chelsea",
+      "name": "Emma Hayes",
+      "category": "manager",
+      "tagline": "Reads every phase of play and tells you what happens next.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-jose-mourinho",
+      "club_slug": "chelsea",
+      "name": "Jose Mourinho",
+      "category": "manager",
+      "tagline": "Tells you he is the special one, then proves it.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-carlo-ancelotti",
+      "club_slug": "chelsea",
+      "name": "Carlo Ancelotti",
+      "category": "manager",
+      "tagline": "Raised eyebrow, relaxed shrug, and sees everything.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-antonio-conte",
+      "club_slug": "chelsea",
+      "name": "Antonio Conte",
+      "category": "manager",
+      "tagline": "Shouts every instruction from the sofa as if he were on the touchline.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-roberto-di-matteo",
+      "club_slug": "chelsea",
+      "name": "Roberto Di Matteo",
+      "category": "manager",
+      "tagline": "Quietly confident, and he has already won the big one.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-gianluca-vialli",
+      "club_slug": "chelsea",
+      "name": "Gianluca Vialli",
+      "category": "manager",
+      "tagline": "Warm, stylish, and treats every match as a celebration.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-richard-attenborough",
+      "club_slug": "chelsea",
+      "name": "Richard Attenborough",
+      "category": "celebrity",
+      "tagline": "Narrates the match like a classic film, and nobody interrupts.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-suggs",
+      "club_slug": "chelsea",
+      "name": "Suggs",
+      "category": "celebrity",
+      "tagline": "Starts the singing and keeps it going until the final whistle.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-sebastian-coe",
+      "club_slug": "chelsea",
+      "name": "Sebastian Coe",
+      "category": "celebrity",
+      "tagline": "Times every run, every substitution, and every final whistle.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-michael-caine",
+      "club_slug": "chelsea",
+      "name": "Michael Caine",
+      "category": "celebrity",
+      "tagline": "Tells a story from the old days, and it is a good one.",
+      "supporter_verified": true,
+      "active": true
+    },
+    {
+      "id": "chelsea-damon-albarn",
+      "club_slug": "chelsea",
+      "name": "Damon Albarn",
+      "category": "celebrity",
+      "tagline": "Hums the tune of every chant and adds a harmony.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "chelsea-emma-watson",
+      "club_slug": "chelsea",
+      "name": "Emma Watson",
+      "category": "celebrity",
+      "tagline": "Quietly knows more than she lets on, then makes a sharp point.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "chelsea-guy-ritchie",
+      "club_slug": "chelsea",
+      "name": "Guy Ritchie",
+      "category": "celebrity",
+      "tagline": "Plots every move like a film and wants a second take.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "chelsea-jeremy-clarkson",
+      "club_slug": "chelsea",
+      "name": "Jeremy Clarkson",
+      "category": "celebrity",
+      "tagline": "Loud opinions, louder complaints, and a strong view on the referee.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    },
+    {
+      "id": "chelsea-will-ferrell",
+      "club_slug": "chelsea",
+      "name": "Will Ferrell",
+      "category": "celebrity",
+      "tagline": "Treats every corner like a scene and plays it for laughs.",
+      "supporter_verified": false,
+      "active": false,
+      "source_note": "needs source before launch"
+    }
+  ]
+}
