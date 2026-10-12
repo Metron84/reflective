@@ -3,9 +3,12 @@ import test from "node:test";
 import {
   fixtureNeedsStatusRefresh,
   fixtureNeedsUnscored,
+  isNonPlayingRaw,
   mergeScoreQueue,
   nextScoreQueue,
   prepareAutoSyncBatch,
+  settlePendingRescores,
+  storedStatusForRemote,
   upsertPlayerScores,
 } from "../../lib/ultima/auto-sync-select.js";
 
@@ -123,4 +126,83 @@ test("the score queue advances and does not rewind", () => {
   const first = mergeScoreQueue([], ["a", "b", "c", "d"]);
   const next = mergeScoreQueue(first.slice(3), ["d", "e"]);
   assert.deepEqual(next, ["d", "e"]);
+});
+
+test("remaining falls only by fixtures that were actually scored", () => {
+  const saved = Array.from({ length: 40 }, (_, i) => `fx-${i}`);
+  const merged = mergeScoreQueue(saved, ["fx-0"]);
+  assert.equal(merged.length, 40);
+  const after = nextScoreQueue(merged, [{ id: "fx-0", status: "FT", ok: true }]);
+  assert.equal(after.length, 39);
+  assert.equal(after.includes("fx-0"), false);
+  assert.equal(after[0], "fx-1");
+});
+
+test("budget order is pending rescore, then status refresh, then scoring", async () => {
+  const order = [];
+  const settled = await settlePendingRescores(["gw-1"], async () => {
+    order.push("rescore");
+  });
+  assert.deepEqual(settled.pending, []);
+  const now = new Date("2026-10-12T20:00:00Z");
+  const past = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString();
+  const planned = await prepareAutoSyncBatch({
+    fixtures: [{
+      id: "fx-0",
+      league: "pl",
+      status: "NS",
+      kickoff_at: past,
+      gameweek_id: "gw-1",
+    }],
+    statCounts: new Map(),
+    currentGameweekId: "gw-1",
+    now,
+    fetchStatus: async () => {
+      order.push("refresh");
+      return { status: "FT", raw_status: "FT" };
+    },
+    savedQueue: Array.from({ length: 40 }, (_, i) => `fx-${i}`),
+    scoreBatchSize: 1,
+  });
+  if (!planned.skipScoring && planned.batch.length) order.push("score");
+  assert.deepEqual(order, ["rescore", "refresh", "score"]);
+  const kept = await settlePendingRescores(["gw-2"], async () => {
+    throw new Error("no");
+  });
+  assert.deepEqual(kept.pending, ["gw-2"]);
+  const after = nextScoreQueue(planned.queue, [{ id: "fx-0", status: "FT", ok: true }]);
+  assert.equal(after.length, 39);
+  assert.equal(planned.queue.length, 40);
+});
+
+test("postponed fixtures are stored and not refreshed again, and an unchanged status waits 30 minutes", () => {
+  const now = new Date("2026-10-12T20:00:00Z");
+  const past = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString();
+  assert.equal(isNonPlayingRaw("postponed"), true);
+  assert.equal(isNonPlayingRaw("cancelled"), true);
+  assert.equal(isNonPlayingRaw("abandoned"), true);
+  assert.equal(storedStatusForRemote("postponed"), "POSTP");
+  assert.equal(storedStatusForRemote("abandoned"), "CANC");
+  assert.equal(
+    fixtureNeedsStatusRefresh({ league: "pl", status: "POSTP", kickoff_at: past }, now),
+    false,
+  );
+  const recent = new Date(now.getTime() - 10 * 60 * 1000).toISOString();
+  assert.equal(
+    fixtureNeedsStatusRefresh(
+      { league: "pl", status: "NS", kickoff_at: past },
+      now,
+      { unchangedAt: recent },
+    ),
+    false,
+  );
+  const old = new Date(now.getTime() - 31 * 60 * 1000).toISOString();
+  assert.equal(
+    fixtureNeedsStatusRefresh(
+      { league: "pl", status: "NS", kickoff_at: past },
+      now,
+      { unchangedAt: old },
+    ),
+    true,
+  );
 });
