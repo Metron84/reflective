@@ -3,7 +3,8 @@ import test from "node:test";
 import {
   fixtureNeedsStatusRefresh,
   fixtureNeedsUnscored,
-  isNonPlayingRaw,
+  fixturesThatScore,
+  isStaleLive,
   mergeScoreQueue,
   nextScoreQueue,
   prepareAutoSyncBatch,
@@ -11,6 +12,7 @@ import {
   storedStatusForRemote,
   upsertPlayerScores,
 } from "../../lib/ultima/auto-sync-select.js";
+import { isNonPlayingStatus, resolveSportmonksState } from "../../lib/ultima/fixture-status.js";
 
 const day = 24 * 60 * 60 * 1000;
 
@@ -175,17 +177,123 @@ test("budget order is pending rescore, then status refresh, then scoring", async
   assert.equal(planned.queue.length, 40);
 });
 
+test("every Sportmonks state maps explicitly and an unknown state is not stored", () => {
+  const expected = {
+    NS: "NS",
+    "1st": "1st",
+    HT: "HT",
+    "2nd": "2nd",
+    BREAK: "BREAK",
+    ET: "ET",
+    PEN_LIVE: "PEN_LIVE",
+    FT: "FT",
+    AET: "AET",
+    FT_PEN: "FT_PEN",
+    POSTP: "POSTP",
+    CANC: "CANC",
+    ABAN: "ABAN",
+    SUSP: "SUSP",
+    INT: "INT",
+    DELAYED: "DELAYED",
+    TBA: "TBA",
+    AWARDED: "AWARDED",
+    WO: "WO",
+  };
+  for (const [raw, canonical] of Object.entries(expected)) {
+    assert.equal(storedStatusForRemote(raw), canonical, raw);
+    assert.ok(resolveSportmonksState(raw), raw);
+  }
+  assert.equal(storedStatusForRemote("not-a-state"), null);
+  assert.equal(storedStatusForRemote("POSTPONED-UNKNOWN"), null);
+  assert.notEqual(storedStatusForRemote("not-a-state"), "POSTP");
+});
+
+test("an unknown state leaves the stored status unchanged", async () => {
+  const now = new Date("2026-10-12T20:00:00Z");
+  const past = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
+  const planned = await prepareAutoSyncBatch({
+    fixtures: [{ id: "fx", league: "pl", status: "NS", kickoff_at: past, gameweek_id: "gw" }],
+    statCounts: new Map(),
+    now,
+    fetchStatus: async () => ({ raw_status: "MYSTERY", status: "MYSTERY" }),
+    savedQueue: [],
+  });
+  assert.equal(planned.fixtures.get("fx").status, "NS");
+  assert.deepEqual(planned.unknownStates, [{
+    fixture_id: "fx",
+    stored_status: "NS",
+    sportmonks_status: "MYSTERY",
+  }]);
+});
+
+test("a live fixture more than 3 hours after kickoff is refetched once and then left alone", async () => {
+  const now = new Date("2026-10-12T20:00:00Z");
+  const kickoff = new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString();
+  const fixture = { id: "live-1", league: "pl", status: "2nd", kickoff_at: kickoff, gameweek_id: "gw" };
+  assert.equal(isStaleLive(fixture, now), true);
+  let fetches = 0;
+  const first = await prepareAutoSyncBatch({
+    fixtures: [fixture],
+    statCounts: new Map(),
+    now,
+    fetchStatus: async () => {
+      fetches += 1;
+      return { raw_status: "2nd", status: "2nd" };
+    },
+    savedQueue: ["live-1"],
+  });
+  assert.equal(fetches, 1);
+  assert.equal(first.queue.includes("live-1"), false);
+  assert.equal(first.staleLiveEvents.length, 1);
+  const second = await prepareAutoSyncBatch({
+    fixtures: [{ ...fixture, status: "2nd" }],
+    statCounts: new Map(),
+    now,
+    fetchStatus: async () => {
+      fetches += 1;
+      return { raw_status: "2nd", status: "2nd" };
+    },
+    savedQueue: ["live-1"],
+    staleLive: first.staleLive,
+    unchangedAt: first.unchangedAt,
+  });
+  assert.equal(fetches, 1);
+  assert.equal(second.queue.includes("live-1"), false);
+  const moved = await prepareAutoSyncBatch({
+    fixtures: [{ ...fixture, status: "2nd" }],
+    statCounts: new Map(),
+    now,
+    fetchStatus: async () => ({ raw_status: "FT", status: "FT" }),
+    savedQueue: [],
+    staleLive: first.staleLive,
+    unchangedAt: {},
+  });
+  assert.equal(moved.queue.includes("live-1"), true);
+  assert.equal(moved.staleLive["live-1"], undefined);
+});
+
+test("an abandoned match scores nothing and a replay fixture scores instead", () => {
+  const fixtures = [
+    { id: "abandoned", status: "ABAN", home_club_id: 1, away_club_id: 2 },
+    { id: "replay", status: "FT", home_club_id: 1, away_club_id: 2 },
+    { id: "other", status: "FT", home_club_id: 3, away_club_id: 4 },
+  ];
+  assert.deepEqual(fixturesThatScore(fixtures).map((row) => row.id), ["replay", "other"]);
+  assert.equal(isNonPlayingStatus("ABAN"), true);
+  assert.equal(isNonPlayingStatus("2nd"), false);
+});
+
 test("postponed fixtures are stored and not refreshed again, and an unchanged status waits 30 minutes", () => {
   const now = new Date("2026-10-12T20:00:00Z");
   const past = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString();
-  assert.equal(isNonPlayingRaw("postponed"), true);
-  assert.equal(isNonPlayingRaw("cancelled"), true);
-  assert.equal(isNonPlayingRaw("abandoned"), true);
-  assert.equal(isNonPlayingRaw("ABAN"), true);
-  assert.equal(isNonPlayingRaw("2nd"), false);
+  assert.equal(isNonPlayingStatus("postponed"), true);
+  assert.equal(isNonPlayingStatus("cancelled"), true);
+  assert.equal(isNonPlayingStatus("abandoned"), true);
+  assert.equal(isNonPlayingStatus("ABAN"), true);
+  assert.equal(isNonPlayingStatus("2nd"), false);
   assert.equal(storedStatusForRemote("postponed"), "POSTP");
-  assert.equal(storedStatusForRemote("ABAN"), "CANC");
-  assert.equal(storedStatusForRemote("2nd"), "LIVE");
+  assert.equal(storedStatusForRemote("ABAN"), "ABAN");
+  assert.equal(storedStatusForRemote("2nd"), "2nd");
   assert.equal(
     fixtureNeedsStatusRefresh({ league: "pl", status: "POSTP", kickoff_at: past }, now),
     false,
