@@ -4,7 +4,9 @@ import {
   fixtureNeedsStatusRefresh,
   fixtureNeedsUnscored,
   mergeScoreQueue,
+  nextScoreQueue,
   prepareAutoSyncBatch,
+  upsertPlayerScores,
 } from "../../lib/ultima/auto-sync-select.js";
 
 const day = 24 * 60 * 60 * 1000;
@@ -41,11 +43,56 @@ test("a not-started fixture is refreshed to full time and queued for scoring in 
   assert.equal(result.batch[0].status, "FT");
 });
 
-test("full time fixtures that already have player rows are not queued", () => {
-  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "FT" }, 0), true);
-  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "LIVE" }, 0), true);
-  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "FT" }, 12), false);
+test("full time without stats_final stays queued, including when rows already exist", () => {
+  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "FT", stats_final: false }, 0), true);
+  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "FT", stats_final: false }, 12), true);
+  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "FT", stats_final: true }, 12), false);
+  assert.equal(fixtureNeedsUnscored({ league: "pl", status: "LIVE" }, 4), true);
   assert.equal(fixtureNeedsUnscored({ league: "pl", status: "NS" }, 0), false);
+});
+
+test("a fixture scored while live is rescored at full time without doubling points", async () => {
+  const now = new Date("2026-10-12T20:00:00Z");
+  const kickoff = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
+  const base = {
+    id: "fx",
+    league: "pl",
+    kickoff_at: kickoff,
+    gameweek_id: "gw",
+    stats_final: false,
+  };
+  const livePass = await prepareAutoSyncBatch({
+    fixtures: [{ ...base, status: "LIVE" }],
+    statCounts: new Map([["fx", 0]]),
+    currentGameweekId: "gw",
+    now,
+    fetchStatus: async () => null,
+  });
+  assert.equal(livePass.batch[0].status, "LIVE");
+  const afterLive = nextScoreQueue(livePass.queue, [{ id: "fx", status: "LIVE", ok: true }]);
+  assert.deepEqual(afterLive, ["fx"]);
+
+  const liveRows = [{ fixture_id: "fx", player_id: "p1", goals: 1, assists: 0 }];
+  const ftPass = await prepareAutoSyncBatch({
+    fixtures: [{ ...base, status: "FT" }],
+    statCounts: new Map([["fx", liveRows.length]]),
+    currentGameweekId: "gw",
+    now,
+    savedQueue: afterLive,
+    fetchStatus: async () => null,
+  });
+  assert.equal(ftPass.batch[0].status, "FT");
+
+  const finalRows = upsertPlayerScores(liveRows, [
+    { fixture_id: "fx", player_id: "p1", goals: 1, assists: 1 },
+  ]);
+  assert.equal(finalRows.length, 1);
+  const points = finalRows[0].goals * 3 + finalRows[0].assists;
+  assert.equal(points, 4);
+
+  const afterFinal = nextScoreQueue(ftPass.queue, [{ id: "fx", status: "FT", ok: true }]);
+  assert.deepEqual(afterFinal, []);
+  assert.equal(fixtureNeedsUnscored({ ...base, status: "FT", stats_final: true }, 1), false);
 });
 
 test("status refresh only includes kickoffs that have passed and are not full time", () => {
