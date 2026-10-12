@@ -38,7 +38,7 @@ export function makeFakeDb(handler = () => ({ data: [], error: null })) {
         return api;
       },
     };
-    for (const method of ["eq", "neq", "in", "gte", "lte", "lt", "gt", "or", "order", "limit", "range", "is"]) {
+    for (const method of ["eq", "neq", "in", "gte", "lte", "lt", "gt", "not", "or", "order", "limit", "range", "is"]) {
       api[method] = (...args) => {
         query.filters.push([method, ...args]);
         return api;
