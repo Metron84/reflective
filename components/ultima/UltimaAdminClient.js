@@ -175,6 +175,36 @@ export default function UltimaAdminClient({
     }
   }
 
+  async function recomputeGameweek(gameweekId) {
+    if (!gameweekId) {
+      setError("Choose a gameweek.");
+      return;
+    }
+    setMessage("");
+    setError("");
+    setBusy("recompute_gameweek");
+    setConfirm(null);
+    try {
+      const res = await fetch("/api/ultima/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "recompute_gameweek", gameweek_id: gameweekId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message ?? "Recompute failed.");
+        return;
+      }
+      setMessage(
+        `GW${data.gameweek} recomputed. ${data.rows_linked} stat rows linked, ${data.lineups_autostarted} lineups auto-started, ${data.managers.length} managers rescored.`,
+      );
+    } catch {
+      setError("Connection lost.");
+    } finally {
+      setBusy("");
+    }
+  }
+
   async function syncClubs(apply) {
     setMessage("");
     setError("");
@@ -472,6 +502,9 @@ export default function UltimaAdminClient({
           <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("rescore")}>
             Resync and rescore
           </button>
+          <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("recompute")}>
+            Recompute gameweek
+          </button>
         </div>
       </UltimaPanel>
 
@@ -626,6 +659,16 @@ export default function UltimaAdminClient({
           onClose={() => setConfirm(null)}
           onConfirm={() => resyncGameweek(rescoreGw)}
           busy={busy === "sync_stats"}
+        />
+      ) : null}
+
+      {confirm === "recompute" ? (
+        <ConfirmSheet
+          title="Recompute this gameweek?"
+          body="This links unmatched stat rows, starts any unset lineups in draft order, and rewrites every manager score for the gameweek you chose."
+          onClose={() => setConfirm(null)}
+          onConfirm={() => recomputeGameweek(rescoreGw)}
+          busy={busy === "recompute_gameweek"}
         />
       ) : null}
 

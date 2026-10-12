@@ -20,6 +20,7 @@ import {
   commissionerCreateGameweek,
   commissionerSyncFixtures,
   commissionerSyncStats,
+  commissionerRecomputeGameweek,
   generateInviteCode,
   requireCommissioner,
 } from "@/lib/ultima/server/admin";
@@ -155,6 +156,9 @@ export async function POST(request) {
       result = await commissionerSyncStats(competition.id, user.id, body.gameweek_id, {
         cursor: body.cursor,
       });
+      break;
+    case "recompute_gameweek":
+      result = await commissionerRecomputeGameweek(competition.id, user.id, body.gameweek_id);
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });
