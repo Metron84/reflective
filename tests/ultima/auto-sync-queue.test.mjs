@@ -181,8 +181,11 @@ test("postponed fixtures are stored and not refreshed again, and an unchanged st
   assert.equal(isNonPlayingRaw("postponed"), true);
   assert.equal(isNonPlayingRaw("cancelled"), true);
   assert.equal(isNonPlayingRaw("abandoned"), true);
+  assert.equal(isNonPlayingRaw("ABAN"), true);
+  assert.equal(isNonPlayingRaw("2nd"), false);
   assert.equal(storedStatusForRemote("postponed"), "POSTP");
-  assert.equal(storedStatusForRemote("abandoned"), "CANC");
+  assert.equal(storedStatusForRemote("ABAN"), "CANC");
+  assert.equal(storedStatusForRemote("2nd"), "LIVE");
   assert.equal(
     fixtureNeedsStatusRefresh({ league: "pl", status: "POSTP", kickoff_at: past }, now),
     false,
