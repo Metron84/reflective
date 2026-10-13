@@ -28,7 +28,7 @@
 
 .heading {
   margin: 0;
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.75rem, 5vw, 2.25rem);
   line-height: 1.1;
 }

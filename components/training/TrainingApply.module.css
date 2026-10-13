@@ -30,7 +30,7 @@
 .heading {
   margin: 0.85rem 0 0;
   max-width: 18ch;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 500;
   line-height: 1.15;
@@ -133,7 +133,7 @@
 
 .termsHeading {
   margin: 0.5rem 0 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.25;

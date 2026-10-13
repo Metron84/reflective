@@ -82,8 +82,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
  */
 export async function renderArrivalSharePng(club) {
   await Promise.all([
-    loadFont("Bodoni Moda", "/crest/fonts/bodoni-latin-400-normal.woff2"),
-    loadFont("Bodoni Moda", "/crest/fonts/bodoni-latin-600-italic.woff2"),
+    loadFont("Archivo", "/crest/fonts/archivo-latin-600-normal.woff2"),
     loadFont("Archivo", "/crest/fonts/archivo-latin-500-normal.woff2"),
     loadFont("Archivo", "/crest/fonts/archivo-latin-400-normal.woff2"),
   ]);
@@ -131,10 +130,10 @@ export async function renderArrivalSharePng(club) {
   ctx.fillStyle = CREAM;
 
   let y = badgeImg ? textTop + 150 : textTop + 40;
-  ctx.font = '600 72px "Bodoni Moda", Georgia, serif';
+  ctx.font = '600 72px "Archivo", system-ui, sans-serif';
   y = wrapText(ctx, displayName, W / 2, y, W - 100, 78) + 36;
 
-  ctx.font = '400 40px "Bodoni Moda", Georgia, serif';
+  ctx.font = '400 40px "Archivo", system-ui, sans-serif';
   ctx.fillText(`Welcome to ${ground.city}`, W / 2, y);
   y += 52;
 
@@ -143,7 +142,7 @@ export async function renderArrivalSharePng(club) {
   ctx.fillText(ground.stadiumName, W / 2, y);
   y += 72;
 
-  ctx.font = '400 34px "Bodoni Moda", Georgia, serif';
+  ctx.font = '400 34px "Archivo", system-ui, sans-serif';
   ctx.fillStyle = CREAM;
   y = wrapText(ctx, TAGLINE, W / 2, y, W - 120, 42) + 48;
 

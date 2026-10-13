@@ -23,6 +23,8 @@ export default function sitemap() {
     { path: "/guesser", changeFrequency: "daily", priority: 0.9 },
     { path: "/codemaster", changeFrequency: "weekly", priority: 0.8 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
+    { path: "/competitions", changeFrequency: "weekly", priority: 0.7 },
+    { path: "/events", changeFrequency: "weekly", priority: 0.7 },
     ...(CREST_ENABLED
       ? [{ path: "/crest", changeFrequency: "weekly", priority: 0.8 }]
       : []),

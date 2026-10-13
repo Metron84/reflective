@@ -7,7 +7,7 @@ import { watchWithPaths } from "@/lib/watch-with/host";
 export const revalidate = 300;
 
 export const metadata = {
-  title: "Who would you rather watch the match with? | The Reflective Football",
+  title: "Who would you rather watch the match with?",
   description: "Dream matchday. Any era. You choose who sits next to you.",
   alternates: { canonical: `${SITE_URL}/watch-with` },
 };

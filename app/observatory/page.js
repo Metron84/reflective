@@ -3,7 +3,7 @@ import { OBSERVATORY_ENABLED, SITE_URL } from "@/lib/config";
 import { REPORT_DOI } from "@/lib/report";
 
 export const metadata = {
-  title: "The Observatory | The Reflective Football",
+  title: "The Observatory",
   description: "Where TRF studies football fans. Open studies you can take part in, and the reports that come out of them.",
   alternates: { canonical: `${SITE_URL}/observatory` },
   robots: OBSERVATORY_ENABLED ? { index: true, follow: true } : { index: false, follow: false },
@@ -29,6 +29,17 @@ export default function ObservatoryPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[#D8232A]">Open</p>
             <h3 className="mt-2 text-2xl font-semibold">What should a footballer be?</h3>
             <p className="mt-2">Ten questions. Two minutes. Anonymous.</p>
+          </Link>
+        </section>
+
+        <section className="flex flex-col gap-4" aria-label="Library">
+          <h2 className="text-sm font-semibold uppercase tracking-widest">Library</h2>
+          <Link
+            href="/archive"
+            className="rounded-[14px] border-2 border-[#0A111F] p-5 transition-colors motion-reduce:transition-none hover:bg-[#0A111F]/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D8232A]"
+          >
+            <h3 className="text-2xl font-semibold">Library</h3>
+            <p className="mt-2">Read, watch and listen. Where to start with every work in the archive.</p>
           </Link>
         </section>
 

@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { loadArchivoForOg, loadBodoniModaForOg } from "@/lib/archive/og-font";
+import { loadArchivoForOg, loadArchivoBlackForOg } from "@/lib/archive/og-font";
 
 export const runtime = "nodejs";
 export const alt = "For All The Fans";
@@ -7,8 +7,8 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const [bodoni, archivo] = await Promise.all([
-    loadBodoniModaForOg(),
+  const [archivoBlack, archivo] = await Promise.all([
+    loadArchivoBlackForOg(),
     loadArchivoForOg(),
   ]);
 
@@ -49,7 +49,7 @@ export default async function Image() {
               fontSize: 72,
               lineHeight: 1.05,
               color: "#F2EDE4",
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
             }}
           >
             For All The Fans
@@ -61,7 +61,7 @@ export default async function Image() {
               fontSize: 28,
               lineHeight: 1.3,
               color: "#F2EDE4",
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
               maxWidth: 900,
             }}
           >
@@ -85,8 +85,8 @@ export default async function Image() {
       ...size,
       fonts: [
         {
-          name: "Bodoni Moda",
-          data: bodoni,
+          name: "Archivo Black",
+          data: archivoBlack,
           style: "normal",
           weight: 400,
         },

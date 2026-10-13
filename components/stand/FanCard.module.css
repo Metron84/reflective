@@ -99,7 +99,7 @@
 
 .title {
   margin: 1.15rem 0 0;
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.65rem, 5vw, 2.15rem);
   font-weight: 500;
   line-height: 1.12;
@@ -186,7 +186,7 @@
 }
 
 .declarationText {
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-style: italic;
   font-size: 1rem;
   line-height: 1.35;

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getPreviewEntries } from "@/lib/archive/index";
 import { ARCHIVE_MEDIUM_TAGS } from "@/lib/archive/labels";
-import { loadBodoniModaForOg } from "@/lib/archive/og-font";
+import { loadArchivoBlackForOg } from "@/lib/archive/og-font";
 
 export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
@@ -16,7 +16,7 @@ export default async function Image({ params }: Props) {
   const entry = getPreviewEntries().find((item) => item.id === id);
   const title = entry?.title ?? "The Beautiful Archive";
   const medium = entry ? ARCHIVE_MEDIUM_TAGS[entry.medium] : "Archive";
-  const fontData = await loadBodoniModaForOg();
+  const fontData = await loadArchivoBlackForOg();
 
   return new ImageResponse(
     (
@@ -38,7 +38,7 @@ export default async function Image({ params }: Props) {
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "#D8232A",
-            fontFamily: "Bodoni Moda",
+            fontFamily: "Archivo Black",
             fontWeight: 600,
           }}
         >
@@ -57,7 +57,7 @@ export default async function Image({ params }: Props) {
               fontSize: title.length > 48 ? 56 : 72,
               lineHeight: 1.05,
               color: "#0A111F",
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
               fontWeight: 600,
               maxWidth: 1000,
             }}
@@ -70,7 +70,7 @@ export default async function Image({ params }: Props) {
               fontSize: 26,
               color: "#0A111F",
               opacity: 0.72,
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
               fontWeight: 600,
             }}
           >
@@ -83,10 +83,10 @@ export default async function Image({ params }: Props) {
       ...size,
       fonts: [
         {
-          name: "Bodoni Moda",
+          name: "Archivo Black",
           data: fontData,
           style: "normal",
-          weight: 600,
+          weight: 400,
         },
       ],
     },

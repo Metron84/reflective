@@ -26,7 +26,7 @@
 
 .title {
   margin: 0;
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.75rem, 5vw, 2.4rem);
   line-height: 1.1;
   color: #0a111f;
@@ -34,7 +34,7 @@
 
 .h2 {
   margin: 0.35rem 0 0;
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 1.35rem;
   line-height: 1.2;
 }

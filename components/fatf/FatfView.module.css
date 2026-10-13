@@ -39,7 +39,7 @@
 .headline,
 .closeHeadline {
   margin: 16px 0 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(2.25rem, 6vw, 4.5rem);
   font-weight: 500;
   line-height: 1.05;
@@ -136,7 +136,7 @@
 
 .h2 {
   margin: 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.75rem, 4vw, 2.6rem);
   font-weight: 500;
   line-height: 1.12;
@@ -144,7 +144,7 @@
 
 .h3 {
   margin: 0 0 8px;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 1.35rem;
   font-weight: 500;
 }
@@ -176,7 +176,7 @@
 }
 
 .num {
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 2rem;
   line-height: 1;
   color: #d8232a;
@@ -249,7 +249,7 @@
 
 .revealHeading {
   margin: 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 1.7rem;
   font-weight: 500;
   line-height: 1.15;

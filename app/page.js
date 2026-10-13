@@ -1,20 +1,12 @@
-import HomeTree from "@/components/home/HomeTree";
-import TrainingRibbon from "@/components/home/TrainingRibbon";
-import KotbRibbon from "@/components/home/KotbRibbon";
-import LaLigaRibbon from "@/components/home/LaLigaRibbon";
+import Hero from "@/components/home/Hero";
+import Doors from "@/components/home/Doors";
+import NextUp from "@/components/home/NextUp";
+import ReachBand from "@/components/home/ReachBand";
+import BadgeStrip from "@/components/home/BadgeStrip";
 import ReportSection from "@/components/home/ReportSection";
-import {
-  HOME_RIBBON,
-  KOTB_ENABLED,
-  LALIGA_CAMPAIGN_ENABLED,
-  SITE_DESCRIPTION,
-  SITE_URL,
-  SOCIAL_LINKS,
-  TRAINING_ENABLED,
-  getHeroPromoVideoSrc,
-} from "@/lib/config";
-import { getAuthContext } from "@/lib/auth/session";
-import { getHomepageDoorMeta } from "@/lib/homepage-status";
+import { SITE_DESCRIPTION, SITE_URL, SOCIAL_LINKS } from "@/lib/config";
+import { BADGES_ENABLED, NEXT_UP } from "@/lib/home";
+import { getHomeBadges, getHomeDoors, getHomeHeroSrc } from "@/lib/homepage-status";
 import { REPORT_DOI } from "@/lib/report";
 
 export const metadata = {
@@ -82,20 +74,8 @@ const structuredData = {
 
 export const revalidate = 60;
 
-function HomeCampaignRibbon() {
-  if (HOME_RIBBON === "laliga" && LALIGA_CAMPAIGN_ENABLED) {
-    return <LaLigaRibbon />;
-  }
-  if (HOME_RIBBON === "kotb" && KOTB_ENABLED) {
-    return <KotbRibbon />;
-  }
-  return null;
-}
-
-export default async function Home() {
-  const { isSignedIn } = await getAuthContext();
-  const doorMeta = getHomepageDoorMeta();
-  const promoVideoSrc = getHeroPromoVideoSrc();
+export default function Home() {
+  const doors = getHomeDoors();
 
   return (
     <>
@@ -103,13 +83,11 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <HomeTree
-        doorMeta={doorMeta}
-        promoVideoSrc={promoVideoSrc}
-        isSignedIn={isSignedIn}
-        ribbon={<HomeCampaignRibbon />}
-      />
-      {TRAINING_ENABLED ? <TrainingRibbon /> : null}
+      <Hero imageSrc={getHomeHeroSrc()} />
+      <Doors doors={doors} />
+      <NextUp item={NEXT_UP} />
+      <ReachBand />
+      {BADGES_ENABLED ? <BadgeStrip badges={getHomeBadges()} /> : null}
       <ReportSection />
     </>
   );

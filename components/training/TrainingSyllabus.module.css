@@ -32,7 +32,7 @@
 
 .heading {
   margin: 0.85rem 0 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.75rem, 4.5vw, 3rem);
   font-weight: 500;
   line-height: 1.15;
@@ -71,7 +71,7 @@
 
 .mobileTitle {
   margin: 0.5rem 0 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 2rem;
   font-weight: 500;
   line-height: 1.1;
@@ -214,7 +214,7 @@
 
   .pinnedTitle {
     margin: 0.85rem 0 0;
-    font-family: var(--font-display), "Bodoni Moda", serif;
+    font-family: var(--font-display), "Archivo Black", sans-serif;
     font-size: 3rem;
     font-weight: 500;
     line-height: 1.05;
@@ -278,7 +278,7 @@
 
 .methodTitle {
   margin: 0;
-  font-family: var(--font-display), "Bodoni Moda", serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: clamp(1.35rem, 3vw, 1.85rem);
   font-weight: 500;
   line-height: 1.2;

@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
 import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
@@ -10,7 +10,8 @@ import { isPlayHost } from "@/lib/play/host";
 import { isWatchWithHost } from "@/lib/watch-with/host";
 import { PLAY_SW_GUARD } from "@/lib/play/sw-cleanup";
 import { archivo } from "./fonts/archivo";
-import { bodoni } from "./fonts/bodoni";
+import { archivoBlack } from "./fonts/archivo-black";
+import { montserrat } from "./fonts/montserrat";
 import "./globals.css";
 
 const SITE_METADATA = {
@@ -44,7 +45,7 @@ const SITE_METADATA = {
         url: "/og-default.jpg",
         width: 1200,
         height: 630,
-        alt: "The Reflective Football. Watch. Vote. Play.",
+        alt: "The Reflective Football. Football is nothing without the fans.",
       },
     ],
   },
@@ -121,7 +122,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${bodoni.variable} ${archivo.variable} h-full antialiased`}
+      className={`${archivoBlack.variable} ${archivo.variable} ${montserrat.variable} h-full antialiased`}
     >
       <head>
         {/* Film-of-the-day / YouTube taps: skip DNS + TLS handshake cost. */}
@@ -141,9 +142,9 @@ export default async function RootLayout({ children }) {
         }
       >
         <NavigationProgress />
-        {hideChrome ? null : <Header />}
+        {hideChrome ? null : <SiteHeader />}
         <main className="flex flex-1 flex-col">{children}</main>
-        {hideChrome ? null : <Footer />}
+        {hideChrome ? null : <SiteFooter />}
         {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp ? null : <InstallHint />}
       </body>
     </html>

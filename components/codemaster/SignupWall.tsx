@@ -46,7 +46,7 @@ export default function SignupWall({
         {FREE_PLAYS} codes decoded
       </p>
       <h2
-        className="mt-2 font-[Bodoni_Moda,Georgia,serif] text-[clamp(36px,9vw,60px)] leading-[0.95]"
+        className="mt-2 font-display text-[clamp(36px,9vw,60px)] leading-[0.95]"
         style={{ color: NAVY }}
       >
         Keep what you have cracked
@@ -64,7 +64,7 @@ export default function SignupWall({
         <p className="font-[Archivo,system-ui,sans-serif] text-[12px] uppercase tracking-[0.18em] opacity-70">
           Waiting to be saved
         </p>
-        <p className="mt-2 font-[Bodoni_Moda,Georgia,serif] text-[30px] leading-none">
+        <p className="mt-2 font-display text-[30px] leading-none">
           {rank.title}
         </p>
         <p className="mt-2 font-[Archivo,system-ui,sans-serif] text-[14px] tabular-nums opacity-80">

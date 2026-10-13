@@ -19,7 +19,7 @@
 
 .catalogTitle {
   margin: 0;
-  font-family: var(--font-bodoni), Georgia, serif;
+  font-family: var(--font-display), "Archivo Black", sans-serif;
   font-size: 1.25rem;
 }
 

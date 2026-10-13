@@ -132,7 +132,7 @@ export default function PlayView({
       {phase === 'attribution' && questions[step] ? (
         <div className="mt-10 border-t pt-6" style={{ borderColor: 'rgba(10,17,31,0.2)' }}>
           <p
-            className="font-[Bodoni_Moda,Georgia,serif] text-[26px] leading-tight"
+            className="font-display text-[26px] leading-tight"
             style={{ color: NAVY }}
           >
             {questions[step].prompt}
@@ -165,7 +165,7 @@ export default function PlayView({
       {phase === 'reveal' ? (
         <div className="mt-10 border-t pt-6" style={{ borderColor: 'rgba(10,17,31,0.2)' }}>
           <p
-            className="font-[Bodoni_Moda,Georgia,serif] text-[clamp(22px,5vw,34px)] leading-[1.15]"
+            className="font-display text-[clamp(22px,5vw,34px)] leading-[1.15]"
             style={{ color: NAVY }}
           >
             {puzzle.kind === 'quote' ? `“${toSentence(puzzle.text)}”` : toSentence(puzzle.text)}

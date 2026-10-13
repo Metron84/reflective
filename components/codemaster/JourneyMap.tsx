@@ -50,7 +50,7 @@ export default function JourneyMap({
         The Reflective Football
       </p>
       <h1
-        className="mt-2 font-[Bodoni_Moda,Georgia,serif] text-[clamp(46px,13vw,104px)] leading-[0.88]"
+        className="mt-2 font-display text-[clamp(46px,13vw,104px)] leading-[0.88]"
         style={{ color: NAVY }}
       >
         Codemaster
@@ -70,7 +70,7 @@ export default function JourneyMap({
         style={{ background: NAVY, color: CREAM }}
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <span className="font-[Bodoni_Moda,Georgia,serif] text-[30px] leading-none">
+          <span className="font-display text-[30px] leading-none">
             {rank.title}
           </span>
           <span className="font-[Archivo,system-ui,sans-serif] text-[13px] tabular-nums opacity-80">
@@ -130,7 +130,7 @@ export default function JourneyMap({
                 </span>
                 <span className="min-w-0 flex-1">
                   <span
-                    className="block font-[Bodoni_Moda,Georgia,serif] text-[clamp(22px,5vw,30px)] leading-tight"
+                    className="block font-display text-[clamp(22px,5vw,30px)] leading-tight"
                     style={{ color: NAVY }}
                   >
                     {chapter.title}
@@ -189,7 +189,7 @@ export function ChapterView({ chapter, puzzles, progress, onPlay, onBack }: Chap
         Chapter {String(chapter.number).padStart(2, '0')}
       </p>
       <h2
-        className="mt-1 font-[Bodoni_Moda,Georgia,serif] text-[clamp(34px,9vw,60px)] leading-[0.95]"
+        className="mt-1 font-display text-[clamp(34px,9vw,60px)] leading-[0.95]"
         style={{ color: NAVY }}
       >
         {chapter.title}

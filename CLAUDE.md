@@ -23,7 +23,7 @@ thereflectivefootball.com — the website of The Reflective Football (TRF), a fa
 - Dark sections remain where footage leads: film cards, video heroes, The Guesser board, and any block built around a still or embed sits on navy — footage always pops from dark. The rhythm of the site is cream editorial pages punctuated by dark cinematic footage blocks.
 - Background: use the subtle cream texture asset (public/brand/texture-cream-site-bg.png) or an equivalent CSS grain — never flat sterile white, never heavy marble.
 - Accessibility: navy on cream passes contrast easily; never place red text on navy or cream body text below AA contrast.
-- Type: Bodoni Moda (display/headlines), Archivo (UI/body).
+- Type: Archivo Black (display/headlines), Archivo and Montserrat (UI/body).
 - Logo: circular crest, navy/red/cream. Assets in /public/brand/: trf-crest-transparent.png (1072px, master, works on light and dark), trf-icon-512/192/180/32.png, favicon.ico. A true vector SVG does not exist yet; the PNG master is sufficient for v1.
 - The design must feel like TRF films: dark, cinematic, footage-led, editorial. Never template-like. Consult the frontend-design skill.
 - Tagline: "Football is nothing without the fans."
@@ -72,7 +72,7 @@ Summary: one competition, 10 seats, live snake draft (30 rounds), 30-man squad, 
 - Server fetches real channel stats for https://www.youtube.com/@TheReflectiveFootball via the YouTube Data API v3 (key in env vars; resolve the channel ID from the handle on first run and store it) every 10–15 minutes; store timestamped readings in a Supabase `channel_stats` table.
 - Client renders an odometer-style counter that ticks upward at the computed views-per-minute velocity from recent readings, re-syncing to each real reading. It is an estimate between real anchor points — never invent a number unmoored from API data.
 - Combined-platform figure includes an Instagram views value stored in Supabase that Melo updates manually.
-- Digits animate on page load. Design it as a cinematic hero moment ("X views and counting", Bodoni display, fans-first framing) — one counter on the home page, not a widget scattered across pages.
+- Digits animate on page load. Design it as a cinematic hero moment ("X views and counting", Archivo Black display, fans-first framing) — one counter on the home page, not a widget scattered across pages.
 - Cache API calls sensibly; the free YouTube API quota (10,000 units/day) is far more than enough at one channels.list call per 10 minutes, but never poll from the client.
 
 ## Engineering rules

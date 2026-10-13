@@ -5,6 +5,9 @@ import styles from "./GuesserHeroCard.module.css";
 function isWideCover(slug) {
   return (
     slug === "ultima" ||
+    slug === "reflectives" ||
+    slug === "for-all-the-fans" ||
+    slug === "concierge" ||
     slug === "the-crest" ||
     slug === "king-of-the-burgers"
   );
@@ -14,7 +17,7 @@ function isExternalHref(href) {
   return typeof href === "string" && /^https?:\/\//i.test(href);
 }
 
-export default function LiveGameCard({ game, strapline }) {
+export default function LiveGameCard({ game, strapline, action = "Play" }) {
   return (
     <Link
       href={game.href}
@@ -44,7 +47,7 @@ export default function LiveGameCard({ game, strapline }) {
         {game.statusLabel ? (
           <p className={styles.strapline}>{game.statusLabel}</p>
         ) : null}
-        <span className={styles.play}>Play</span>
+        <span className={styles.play}>{action}</span>
       </div>
     </Link>
   );

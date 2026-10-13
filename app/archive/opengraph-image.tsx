@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { loadBodoniModaForOg } from "@/lib/archive/og-font";
+import { loadArchivoBlackForOg } from "@/lib/archive/og-font";
 
 export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
@@ -7,7 +7,7 @@ export const contentType = "image/png";
 export const alt = "The Beautiful Archive";
 
 export default async function Image() {
-  const fontData = await loadBodoniModaForOg();
+  const fontData = await loadArchivoBlackForOg();
 
   return new ImageResponse(
     (
@@ -29,7 +29,7 @@ export default async function Image() {
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "#D8232A",
-            fontFamily: "Bodoni Moda",
+            fontFamily: "Archivo Black",
             fontWeight: 600,
           }}
         >
@@ -48,7 +48,7 @@ export default async function Image() {
               fontSize: 72,
               lineHeight: 1.05,
               color: "#0A111F",
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
               fontWeight: 600,
               maxWidth: 1000,
             }}
@@ -61,7 +61,7 @@ export default async function Image() {
               fontSize: 28,
               color: "#0A111F",
               opacity: 0.72,
-              fontFamily: "Bodoni Moda",
+              fontFamily: "Archivo Black",
               fontWeight: 600,
             }}
           >
@@ -74,10 +74,10 @@ export default async function Image() {
       ...size,
       fonts: [
         {
-          name: "Bodoni Moda",
+          name: "Archivo Black",
           data: fontData,
           style: "normal",
-          weight: 600,
+          weight: 400,
         },
       ],
     },

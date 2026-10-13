@@ -24,7 +24,7 @@ async function loadFont(family, url) {
  */
 export async function renderShareCardPng(scores, archetypeName, primaryClubName) {
   await Promise.all([
-    loadFont("Bodoni Moda", "/crest/fonts/bodoni-latin-400-normal.woff2"),
+    loadFont("Archivo", "/crest/fonts/archivo-latin-600-normal.woff2"),
     loadFont("Archivo", "/crest/fonts/archivo-latin-500-normal.woff2"),
   ]);
 
@@ -49,7 +49,7 @@ export async function renderShareCardPng(scores, archetypeName, primaryClubName)
   ctx.fillStyle = NAVY;
   ctx.textAlign = "center";
 
-  ctx.font = '600 56px "Bodoni Moda", Georgia, serif';
+  ctx.font = '600 56px "Archivo", system-ui, sans-serif';
   wrapText(ctx, archetypeName, W / 2, 820, W - 120, 64);
 
   ctx.font = '500 40px "Archivo", system-ui, sans-serif';
