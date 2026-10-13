@@ -26,7 +26,8 @@ export default function ObservatoryPage() {
       title: "Library",
       hook: "Read, watch and listen. Where to start with every work in the archive.",
       href: "/archive",
-      cover: "/brand/films-hero-bg.jpg",
+      cover: "/observatory/library.svg",
+      coverFocus: "50% 50%",
       action: "Browse",
     },
     {
