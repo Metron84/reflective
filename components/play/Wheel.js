@@ -20,6 +20,9 @@ const LOOKUP = {
   Chelsea: { fill: "#1B4F9C", ink: "#F2EDE4" },
   Spurs: { fill: "#F2EDE4", ink: "#0A111F" },
   "West Ham": { fill: "#6E1E32", ink: "#F2EDE4" },
+  "Manchester United": { fill: "#111111", ink: "#D8232A" },
+  Liverpool: { fill: "#00A398", ink: "#0A111F" },
+  Rangers: { fill: "#1B458F", ink: "#FFFFFF", ring: "#FFFFFF" },
 };
 
 const FALLBACK = [
@@ -49,8 +52,23 @@ function band(a0, a1) {
   return `M ${x0} ${y0} A ${R_OUT} ${R_OUT} 0 ${large} 1 ${x1} ${y1} L ${x2} ${y2} A ${R_IN} ${R_IN} 0 ${large} 0 ${x3} ${y3} Z`;
 }
 
+/** Arc along one radius, used for the ring on a segment. */
+function arc(a0, a1, radius) {
+  const [x0, y0] = polar(a0, radius);
+  const [x1, y1] = polar(a1, radius);
+  return `M ${x0} ${y0} A ${radius} ${radius} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1} ${y1}`;
+}
+
 function initials(name) {
-  const known = { Arsenal: "ARS", Chelsea: "CHE", Spurs: "SPU", "West Ham": "WHU" };
+  const known = {
+    Arsenal: "ARS",
+    Chelsea: "CHE",
+    Spurs: "SPU",
+    "West Ham": "WHU",
+    "Manchester United": "MUN",
+    Liverpool: "LIV",
+    Rangers: "RAN",
+  };
   if (known[name]) return known[name];
   const parts = name.split(/\s+/).filter(Boolean);
   if (parts.length >= 2) return parts.slice(0, 3).map((p) => p[0]).join("").toUpperCase();
@@ -246,6 +264,15 @@ export default function Wheel({ segments, target, spinId = null, onDone }) {
                   className={lit ? (pulse ? styles.winner : styles.winnerStill) : undefined}
                 >
                   <path d={band(a0, a1)} fill={paint.fill} stroke="#0A111F" strokeWidth={3} />
+                  {paint.ring ? (
+                    <path
+                      d={arc(a0 + 3, a1 - 3, R_OUT - 7)}
+                      fill="none"
+                      stroke={paint.ring}
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                    />
+                  ) : null}
                   <text
                     x={tx}
                     y={ty}
