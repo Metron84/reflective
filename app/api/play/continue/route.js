@@ -1,5 +1,5 @@
 import { QUESTIONS } from "@/lib/play/bank.js";
-import { applyContinue, wheel } from "@/lib/play/game.js";
+import { applyContinue, skipsLeft, wheel } from "@/lib/play/game.js";
 import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, db, fail, limited, loadSession, noDb, noSession, ok, saveState } from "@/lib/play/session.js";
 
@@ -27,6 +27,7 @@ export function POST(req) {
     wheel: wheel(state),
     score: state.score,
     answered: state.answered,
+    skipsLeft: skipsLeft(state),
   });
   });
 }

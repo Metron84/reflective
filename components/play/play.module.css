@@ -867,3 +867,24 @@
     transition: none;
   }
 }
+
+/* Secondary action under the answer field. Quieter than Lock In so it never competes. */
+.skip {
+  min-height: 44px;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-color: rgba(242, 237, 228, 0.2);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: rgba(242, 237, 228, 0.75);
+}
+
+.skip:hover:not(:disabled) {
+  color: var(--play-cream);
+}
+
+.skip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

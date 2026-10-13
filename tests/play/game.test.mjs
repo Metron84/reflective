@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   activeCategories, applyAnswer, applyContinue, applySpin, canFinish, canSpin, eligible,
-  newState, pickSpin, summarize, wheel, GRACE_MS, SPIN_ALLOWANCE_MS,
+  applySkip, newState, pickSpin, skipsLeft, summarize, wheel, GRACE_MS, MAX_SKIPS, SPIN_ALLOWANCE_MS,
 } from "@/lib/play/game.js";
 
 const VALUES = [100, 200, 300, 400, 500];
@@ -129,4 +129,93 @@ test("no ends the game and the summary adds up", () => {
 test("continue is only valid in the continue phase", () => {
   const qs = bank(["A"]);
   assert.equal(applyContinue(qs, newState(qs), true), null);
+});
+
+function open(qs, state, now = 1000) {
+  return applySpin(state, pickSpin(qs, state, seeded(state.answered + 7)), now, 45);
+}
+
+test("a new game has no skips used and allows two", () => {
+  const s = newState(bank(["A", "B"]));
+  assert.equal(s.skipsUsed, 0);
+  assert.equal(MAX_SKIPS, 2);
+  assert.equal(skipsLeft(s), 2);
+});
+
+test("a skip scores 0 and is recorded as skipped, not incorrect", () => {
+  const qs = bank(["A", "B"]);
+  const spun = open(qs, newState(qs));
+  const r = applySkip(qs, spun, 2000);
+  assert.equal(r.error, undefined);
+  assert.equal(r.state.score, 0);
+  assert.equal(r.state.skipsUsed, 1);
+  assert.equal(r.state.pending, null);
+  assert.equal(r.state.answers.at(-1).pointsChange, 0);
+  assert.equal(r.state.answers.at(-1).skipped, true);
+  const sum = summarize(r.state);
+  assert.deepEqual([sum.answered, sum.correct, sum.incorrect, sum.skipped], [1, 0, 0, 1]);
+  assert.equal(r.next, "spin");
+});
+
+test("a skip keeps the cell used, serves the id, and counts as a question", () => {
+  const qs = bank(["A", "B"]);
+  const spun = open(qs, newState(qs));
+  const q = qs.find((x) => x.id === spun.pending.questionId);
+  const r = applySkip(qs, spun, 2000);
+  assert.ok(r.state.usedCells.includes(`${q.category}|${q.value}`));
+  assert.ok(r.state.served.includes(q.id));
+  assert.equal(r.state.answered, 1);
+  assert.equal(eligible(qs, r.state).some((x) => x.id === q.id), false);
+});
+
+test("the third skip is rejected and changes nothing", () => {
+  const qs = bank(["A", "B", "C"]);
+  let s = newState(qs);
+  for (let i = 0; i < 2; i++) s = applySkip(qs, open(qs, s), 2000).state;
+  assert.equal(s.skipsUsed, 2);
+  assert.equal(skipsLeft(s), 0);
+  const spun = open(qs, s);
+  assert.deepEqual(applySkip(qs, spun, 2000), { error: "no_skips" });
+  assert.equal(spun.skipsUsed, 2);
+  assert.equal(spun.pending.questionId !== undefined, true);
+});
+
+test("a skip after the timer has expired is rejected, an answer then counts as wrong", () => {
+  const qs = bank(["A", "B"]);
+  const spun = open(qs, newState(qs), 1000);
+  const late = spun.pending.deadline + 1;
+  assert.deepEqual(applySkip(qs, spun, late), { error: "expired" });
+  const q = qs.find((x) => x.id === spun.pending.questionId);
+  const res = applyAnswer(qs, spun, q.acceptedAnswers[0], spun.pending.deadline + GRACE_MS + 1);
+  assert.equal(res.timedOut, true);
+  assert.equal(res.pointsChange, -q.value);
+  assert.equal(res.state.skipsUsed, 0);
+});
+
+test("a skip needs an open question", () => {
+  const qs = bank(["A"]);
+  assert.deepEqual(applySkip(qs, newState(qs), 1000), { error: "none" });
+});
+
+test("skips carry across the continue prompt after question 5", () => {
+  const qs = bank(["A", "B", "C"]);
+  let s = newState(qs);
+  s = applySkip(qs, open(qs, s), 2000).state;
+  for (let i = 0; i < 3; i++) s = play(qs, s, true).res.state;
+  const last = applySkip(qs, open(qs, s), 2000);
+  assert.equal(last.next, "continuePrompt");
+  assert.equal(last.state.answered, 5);
+  assert.equal(last.state.skipsUsed, 2);
+  const after = applyContinue(qs, last.state, true);
+  assert.equal(after.skipsUsed, 2);
+  assert.equal(skipsLeft(after), 0);
+  assert.deepEqual(applySkip(qs, open(qs, after), 2000), { error: "no_skips" });
+});
+
+test("a skip on the tenth question ends the game", () => {
+  const qs = bank(["A", "B", "C"]);
+  let s = { ...newState(qs), answered: 9, continued: true };
+  const r = applySkip(qs, open(qs, s), 2000);
+  assert.equal(r.next, "finished");
+  assert.equal(r.state.phase, "finished");
 });

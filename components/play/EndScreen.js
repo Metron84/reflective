@@ -43,6 +43,7 @@ export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeader
     ["Questions answered", s.answered],
     ["Correct", s.correct],
     ["Incorrect", s.incorrect],
+    ...(s.skipped ? [["Skipped", s.skipped]] : []),
     ["Average points per question", s.averagePoints],
   ];
   return (
