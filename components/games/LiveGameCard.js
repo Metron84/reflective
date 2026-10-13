@@ -5,6 +5,8 @@ import styles from "./GuesserHeroCard.module.css";
 function isWideCover(slug) {
   return (
     slug === "ultima" ||
+    slug === "are-you-really-a-fan" ||
+    slug === "watch-with" ||
     slug === "the-crest" ||
     slug === "king-of-the-burgers"
   );

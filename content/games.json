@@ -1,11 +1,11 @@
 [
   {
-    "slug": "ultima",
-    "title": "Ultima",
-    "hook": "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.",
+    "slug": "are-you-really-a-fan",
+    "title": "Are You Really a Fan?",
+    "hook": "Spin the wheel. Prove it.",
     "status": "live",
-    "href": "/ultima",
-    "cover": "/ultima/ultima-card.png"
+    "href": "/play",
+    "cover": "/games/are-you-really-a-fan.svg"
   },
   {
     "slug": "the-crest",
@@ -13,15 +13,15 @@
     "hook": "The club that sounds like you.",
     "status": "live",
     "href": "/crest",
-    "cover": "/crest/crest-card.png"
+    "cover": "/games/the-crest.svg"
   },
   {
-    "slug": "king-of-the-burgers",
-    "title": "King of the Burgers",
-    "hook": "Eight Dubai burgers. Two supporters clubs judge each one.",
+    "slug": "watch-with",
+    "title": "Watch With",
+    "hook": "Who would you rather watch a match with? Starting with West Ham.",
     "status": "live",
-    "href": "/king-of-the-burgers",
-    "cover": "/king-of-the-burgers/kotb-card.svg"
+    "href": "/watch-with",
+    "cover": "/games/watch-with.svg"
   },
   {
     "slug": "codemaster",
@@ -38,6 +38,22 @@
     "status": "live",
     "href": "/guesser",
     "cover": null
+  },
+  {
+    "slug": "ultima",
+    "title": "Ultima",
+    "hook": "Draft Europe's top five. Thirty players. Fifteen score each week. Invite only.",
+    "status": "live",
+    "href": "/ultima",
+    "cover": "/games/ultima.svg"
+  },
+  {
+    "slug": "king-of-the-burgers",
+    "title": "King of the Burgers",
+    "hook": "Eight Dubai burgers. Two supporters clubs judge each one.",
+    "status": "live",
+    "href": "/king-of-the-burgers",
+    "cover": "/king-of-the-burgers/kotb-card.svg"
   },
   {
     "slug": "the-stand",
