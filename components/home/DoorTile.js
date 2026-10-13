@@ -36,8 +36,8 @@ export default function DoorTile({ door, index }) {
           className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-navy via-navy/70 to-transparent"
           aria-hidden
         />
-        <div className="absolute inset-x-0 bottom-0 p-5">
-          <h3 className="flex items-center gap-2.5 font-display text-2xl uppercase leading-none tracking-wide text-paper sm:text-3xl">
+        <div className="absolute inset-x-0 bottom-0 p-5 lg:p-4">
+          <h3 className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-display text-2xl uppercase leading-none tracking-wide text-paper [overflow-wrap:normal] [word-break:normal] sm:text-3xl lg:text-[clamp(1.25rem,2.2vw,1.875rem)] lg:tracking-normal">
             {door.label}
             {door.live ? (
               <span

@@ -1,5 +1,7 @@
 .card {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
   border: 1px solid rgba(10, 17, 31, 0.12);
   background: #f2ede4;
@@ -61,6 +63,7 @@
 }
 
 .body {
+  flex: 1;
   padding: 1.5rem 1.25rem 1.75rem;
 }
 

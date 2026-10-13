@@ -6,6 +6,9 @@ import { SOCIAL_ICONS } from "./nav/SocialIcons";
 const footerLink =
   "inline-flex min-h-[2rem] items-center text-sm text-paper transition-colors hover:text-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal";
 
+const emailLink =
+  "inline-flex min-h-[2rem] items-center break-words text-xs text-paper transition-colors hover:text-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal lg:text-sm";
+
 const columnHeading =
   "text-xs font-medium uppercase tracking-widest text-paper/50";
 
@@ -34,7 +37,18 @@ export default function SiteFooter() {
   ];
 
   return (
-    <footer className="bg-navy text-paper">
+    <>
+      <div className="border-t border-navy/10 bg-paper">
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-6">
+          <a
+            href="#"
+            className="inline-flex min-h-12 items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-navy transition-colors hover:text-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+          >
+            Back to top <span aria-hidden>↑</span>
+          </a>
+        </div>
+      </div>
+    <footer className="border-t border-paper/15 bg-navy text-paper">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
         <div className="mb-10 flex flex-col gap-3 lg:mb-12">
           <p className="font-display text-xl uppercase leading-tight tracking-wide sm:text-2xl">
@@ -45,7 +59,7 @@ export default function SiteFooter() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-8">
+        <div className="grid grid-cols-2 gap-10 lg:grid-cols-[1fr_1fr_1fr_1.6fr] lg:gap-8">
           <nav aria-label="Take part" className="flex flex-col gap-3">
             <p className={columnHeading}>Take part</p>
             <ul className="flex flex-col gap-1">
@@ -102,19 +116,19 @@ export default function SiteFooter() {
             </ul>
           </nav>
 
-          <div className="flex flex-col gap-3">
+          <div className="col-span-2 flex flex-col gap-3 lg:col-span-1">
             <p className={columnHeading}>Contact</p>
             <ul className="flex flex-col gap-1">
               <li>
                 <a
                   href="mailto:info@thereflectivefootball.com"
-                  className={`${footerLink} break-all`}
+                  className={emailLink}
                 >
                   info@thereflectivefootball.com
                 </a>
               </li>
               <li>
-                <a href={`mailto:${MAIL}`} className={`${footerLink} break-all`}>
+                <a href={`mailto:${MAIL}`} className={emailLink}>
                   {MAIL}
                 </a>
               </li>
@@ -162,5 +176,6 @@ export default function SiteFooter() {
         </div>
       </div>
     </footer>
+    </>
   );
 }

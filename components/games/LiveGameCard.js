@@ -5,9 +5,6 @@ import styles from "./GuesserHeroCard.module.css";
 function isWideCover(slug) {
   return (
     slug === "ultima" ||
-    slug === "reflectives" ||
-    slug === "for-all-the-fans" ||
-    slug === "concierge" ||
     slug === "the-crest" ||
     slug === "king-of-the-burgers"
   );
@@ -17,7 +14,7 @@ function isExternalHref(href) {
   return typeof href === "string" && /^https?:\/\//i.test(href);
 }
 
-export default function LiveGameCard({ game, strapline, action = "Play" }) {
+export default function LiveGameCard({ game, strapline, action = "Play", wide = false }) {
   return (
     <Link
       href={game.href}
@@ -26,7 +23,7 @@ export default function LiveGameCard({ game, strapline, action = "Play" }) {
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}
     >
-      <div className={isWideCover(game.slug) ? styles.coverUltima : styles.cover}>
+      <div className={wide || isWideCover(game.slug) ? styles.coverUltima : styles.cover}>
         {game.cover ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -34,6 +31,7 @@ export default function LiveGameCard({ game, strapline, action = "Play" }) {
             alt=""
             loading="eager"
             className={styles.coverImage}
+            style={game.coverFocus ? { objectPosition: game.coverFocus } : undefined}
           />
         ) : (
           <GameCoverBySlug slug={game.slug} />
@@ -47,7 +45,7 @@ export default function LiveGameCard({ game, strapline, action = "Play" }) {
         {game.statusLabel ? (
           <p className={styles.strapline}>{game.statusLabel}</p>
         ) : null}
-        <span className={styles.play}>{action}</span>
+        <span className={styles.play}>{game.action ?? action}</span>
       </div>
     </Link>
   );

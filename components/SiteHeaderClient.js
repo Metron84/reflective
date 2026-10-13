@@ -29,7 +29,7 @@ function Wordmark({ tone = "navy", onClick }) {
         className="h-8 w-8 shrink-0"
       />
       <span
-        className={`font-display text-sm uppercase leading-none tracking-wide sm:text-base ${
+        className={`font-display text-sm uppercase leading-none tracking-wide sm:text-base lg:hidden xl:block ${
           tone === "cream" ? "text-paper" : "text-navy"
         }`}
       >
@@ -92,7 +92,7 @@ function UserMenu({ profile }) {
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-navy text-xs font-medium text-paper">
           {initial}
         </span>
-        <span className="max-w-[8rem] truncate text-sm">{name}</span>
+        <span className="max-w-[8rem] truncate whitespace-nowrap text-sm">{name}</span>
       </button>
       {open ? (
         <div
@@ -252,7 +252,7 @@ export default function SiteHeaderClient({ auth }) {
           <Wordmark />
         </div>
 
-        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Main" className="hidden items-center lg:flex lg:gap-6 xl:gap-8">
           {DOORS.map((door) => {
             const active = isActivePath(pathname, door.href);
             return (
@@ -286,7 +286,7 @@ export default function SiteHeaderClient({ auth }) {
               <Link
                 prefetch={false}
                 href="/signin"
-                className={`px-2 py-2 text-sm font-semibold uppercase tracking-widest text-navy/80 transition-colors hover:text-navy ${focusRing}`}
+                className={`whitespace-nowrap px-2 py-2 text-sm font-semibold uppercase tracking-widest text-navy/80 transition-colors hover:text-navy ${focusRing}`}
               >
                 Sign in
               </Link>
@@ -294,7 +294,7 @@ export default function SiteHeaderClient({ auth }) {
           </div>
           <a
             href={PARTNERS.href}
-            className={`hidden rounded-full border-2 border-signal px-5 py-2 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:bg-signal hover:text-paper lg:inline-block ${focusRing}`}
+            className={`hidden whitespace-nowrap rounded-full border-2 border-signal px-5 py-2 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:bg-signal hover:text-paper lg:inline-block ${focusRing}`}
           >
             {PARTNERS.label}
           </a>

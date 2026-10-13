@@ -16,7 +16,8 @@ export default function CompetitionsPage() {
       title: "The Reflectives",
       hook: "Eight awards for the fans of the summer. Sign up free to vote.",
       href: "/reflections",
-      cover: "/reflections/hero-still.jpg",
+      cover: "/home/doors/competitions-mario.jpg",
+      coverFocus: "38% 40%",
       statusLabel: null,
     },
     ...(KOTB_ENABLED
@@ -40,6 +41,7 @@ export default function CompetitionsPage() {
       title="Competitions"
       cards={cards}
       action="Enter"
+      wide
       next={{ href: "/events", eyebrow: "Events", title: "See the events" }}
     />
   );

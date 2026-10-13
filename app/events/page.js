@@ -28,7 +28,8 @@ export default function EventsPage() {
       title: "Concierge",
       hook: "Find where your club watches in Dubai.",
       href: "/concierge",
-      cover: "/brand/films-hero-bg.jpg",
+      cover: "/home/doors/events-arsenal.jpg",
+      coverFocus: "48% 45%",
       statusLabel: null,
     },
   ];
@@ -40,6 +41,7 @@ export default function EventsPage() {
       title="Events"
       cards={cards}
       action="Open"
+      wide
       next={{ href: "/observatory", eyebrow: "Observatory", title: "Study the fans" }}
     />
   );

@@ -5,9 +5,21 @@ import Breadcrumb from "@/components/Breadcrumb";
 import styles from "@/app/games/page.module.css";
 
 /**
- * Door hub: same card grid as /games. cards: [{ slug, title, hook, href, cover, statusLabel? }]
+ * Shared hub template for /games, /competitions, /events and /observatory.
+ * cards: [{ slug, title, hook, href, cover, coverFocus?, statusLabel?, action?, strapline? }]
+ * children render below the card grid (for example "More games coming").
  */
-export default function HubPage({ crumb, eyebrow, title, context, cards, action, next }) {
+export default function HubPage({
+  crumb,
+  eyebrow,
+  title,
+  context,
+  cards,
+  action,
+  wide = false,
+  next,
+  children,
+}) {
   return (
     <div className={styles.page}>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: crumb }]} />
@@ -22,11 +34,17 @@ export default function HubPage({ crumb, eyebrow, title, context, cards, action,
           <ul className={styles.comingGrid}>
             {cards.map((card) => (
               <li key={card.slug}>
-                <LiveGameCard game={card} action={action} />
+                <LiveGameCard
+                  game={card}
+                  strapline={card.strapline}
+                  action={action}
+                  wide={wide}
+                />
               </li>
             ))}
           </ul>
         </section>
+        {children}
         {next ? (
           <SectionContinue
             nextHref={next.href}
