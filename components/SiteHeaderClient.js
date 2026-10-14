@@ -213,11 +213,11 @@ function MenuSheet({ onClose, auth, pathname }) {
         ) : (
           <Link
             prefetch={false}
-            href="/signin"
+            href="/account"
             onClick={onClose}
             className={`block rounded-full border border-paper/30 py-3 text-center text-sm font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60 ${focusRing}`}
           >
-            Sign in
+            Start your Programme
           </Link>
         )}
         <a
@@ -285,10 +285,10 @@ export default function SiteHeaderClient({ auth }) {
             ) : (
               <Link
                 prefetch={false}
-                href="/signin"
+                href="/account"
                 className={`whitespace-nowrap px-2 py-2 text-sm font-semibold uppercase tracking-widest text-navy/80 transition-colors hover:text-navy ${focusRing}`}
               >
-                Sign in
+                Start your Programme
               </Link>
             )}
           </div>

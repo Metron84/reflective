@@ -1,31 +1,25 @@
+import ProgrammeCTA from "@/components/ProgrammeCTA";
 import MuteToggle from "./MuteToggle.js";
 import FansButton from "./FansButton.js";
 import fans from "./fans.module.css";
 import { FANS_LINE } from "@/lib/play/links.js";
 import styles from "./play.module.css";
 
-function SaveBlock({ finish, onRetry, retrying }) {
+function SaveBlock({ finish, onRetry, retrying, base }) {
   if (finish.saved) {
     return (
-      <div className={styles.notice} role="status">
-        <p className={styles.prompt}>Score saved</p>
-        <p className={styles.lede}>
+      <>
+        <p className={styles.lede} role="status">
           {finish.saved.counted
             ? "It counts for this week's leaderboard."
             : "Your first saved score each day counts for the leaderboard."}
         </p>
-      </div>
+        <ProgrammeCTA signedIn accountOrigin={base} />
+      </>
     );
   }
   if (finish.signedIn === false) {
-    return (
-      <div>
-        <a href={finish.signInHref} className={styles.primary}>
-          Sign up free to save your score
-        </a>
-        <p className={styles.tagline}>Already a member? Sign in on the same page.</p>
-      </div>
-    );
+    return <ProgrammeCTA signedIn={false} />;
   }
   return (
     <div className={styles.notice} role="alert">
@@ -64,7 +58,7 @@ export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeader
           </div>
         ))}
       </dl>
-      <SaveBlock finish={finish} onRetry={onRetry} retrying={retrying} />
+      <SaveBlock finish={finish} onRetry={onRetry} retrying={retrying} base={base} />
       <button onClick={onAgain} className={styles.primary}>
         Play again
       </button>
@@ -72,11 +66,6 @@ export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeader
       <button type="button" onClick={onLeaderboard} className={styles.secondary}>
         See the leaderboard
       </button>
-      {finish.signedIn !== false ? (
-        <a href={`${base}/account`} className={styles.secondary}>
-          See it in My Programme
-        </a>
-      ) : null}
       <p className={fans.line}>{FANS_LINE}</p>
       <FansButton className={styles.fansSlot} />
     </section>

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import PuzzleBoard from './PuzzleBoard';
+import ProgrammeCTA from '@/components/ProgrammeCTA';
 import {
   buildAttribution,
   scoreFor,
@@ -225,16 +226,8 @@ export default function PlayView({
             >
               Back to the chapter
             </button>
-            {signedIn ? (
-              <a
-                href="/account"
-                className="rounded-full border px-6 py-3 font-[Archivo,system-ui,sans-serif] text-[14px] font-semibold uppercase tracking-[0.1em]"
-                style={{ borderColor: NAVY, color: NAVY }}
-              >
-                See it in My Programme
-              </a>
-            ) : null}
           </div>
+          <ProgrammeCTA signedIn={signedIn} tone="light" />
         </div>
       ) : null}
     </div>

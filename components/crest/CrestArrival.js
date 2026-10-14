@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary, colourMap, leagueMap, userVector } from "@/lib/crest/match";
 import { buildReport, closeBehindReason, roomPercent, visibleRoomClubs } from "@/lib/crest/report";
-import { crestSignupHref } from "@/lib/crest/signup";
+import ProgrammeCTA from "@/components/ProgrammeCTA";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestSwipe.module.css";
 
@@ -41,6 +41,8 @@ const FAMILY_SWATCH = {
  *   stake?: string|null,
  *   saveState?: "idle"|"saving"|"saved"|"error",
  *   saveMessage?: string,
+ *   signedIn?: boolean|null,
+ *   onKeepResult?: () => void,
  *   onSave?: () => void,
  *   onOpenReport: () => void,
  *   onRestart: () => void,
@@ -52,6 +54,8 @@ export default function CrestArrival({
   stake = null,
   saveState = "idle",
   saveMessage = "",
+  signedIn = null,
+  onKeepResult,
   onSave,
   onOpenReport,
   onRestart,
@@ -256,15 +260,18 @@ export default function CrestArrival({
       ) : null}
 
       <div className={styles.next}>
-        {onSave ? (
+        {signedIn && saveState !== "saved" && onSave ? (
           <button
             type="button"
             className={styles.saveCta}
             onClick={onSave}
-            disabled={!ready || saveState === "saving" || saveState === "saved"}
+            disabled={!ready || saveState === "saving"}
           >
-            {saveState === "saved" ? "Saved." : saveState === "saving" ? "Saving…" : "Save your results"}
+            {saveState === "saving" ? "Saving…" : "Save your results"}
           </button>
+        ) : null}
+        {signedIn === false || saveState === "saved" ? (
+          <ProgrammeCTA signedIn={saveState === "saved"} onStart={onKeepResult} />
         ) : null}
         {saveMessage ? <p className={styles.saveNote}>{saveMessage}</p> : null}
         <button
@@ -279,9 +286,6 @@ export default function CrestArrival({
           Swipe again
         </button>
         <div className={styles.nextPair}>
-          <Link href={crestSignupHref(club.slug)} className={styles.nextGhost}>
-            Join The Reflective Football
-          </Link>
           <Link href="/films" className={styles.nextGhost}>
             Watch the films
           </Link>

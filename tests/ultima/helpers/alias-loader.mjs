@@ -19,6 +19,13 @@ export async function resolve(specifier, context, nextResolve) {
       if (isFile(candidate)) return nextResolve(pathToFileURL(candidate).href, context);
     }
   }
+  // Next lets repo files import "./config" with no extension. Node does not, so try .js.
+  if (/^\.{1,2}\//.test(specifier) && !/\.[a-z]+$/i.test(specifier) && context.parentURL?.startsWith(ROOT.href)) {
+    const base = fileURLToPath(new URL(specifier, context.parentURL));
+    for (const candidate of [`${base}.js`, `${base}.mjs`, `${base}/index.js`]) {
+      if (isFile(candidate)) return nextResolve(pathToFileURL(candidate).href, context);
+    }
+  }
   // Node's ESM resolver wants the extension on Next's subpath exports.
   if (/^next\/[a-z-]+$/.test(specifier)) {
     return nextResolve(`${specifier}.js`, context);

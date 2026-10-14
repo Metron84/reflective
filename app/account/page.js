@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
+import ProgrammePitch from "@/components/account/ProgrammePitch";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
 import RevealsProvider from "@/components/account/RevealsProvider";
 import NextUp from "@/components/account/NextUp";
@@ -24,7 +25,16 @@ export const dynamic = "force-dynamic";
 export default async function AccountPage() {
   const auth = await getAuthContext();
   if (!auth.isSignedIn) {
-    redirect("/signin?next=/account");
+    // Signed out: say what the Programme holds, with one way in.
+    return (
+      <div className={styles.page}>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "My Programme" }]} />
+        <div className={styles.inner}>
+          <p className={styles.eyebrow}>My Programme</p>
+          <ProgrammePitch />
+        </div>
+      </div>
+    );
   }
   if (!auth.profile?.welcome_completed) {
     redirect("/welcome?next=/account");
