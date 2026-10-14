@@ -4,7 +4,7 @@
 -- Unlock rules live in lib/account/badges.js:
 --   perfect_ten     10 out of 10 correct in a fan_quiz_scores row.
 --   no_safety_net   10 answered with skipped = 0 in a fan_quiz_scores row.
---   every_league    every Crest league revealed (awarded by POST /api/account/every-league).
+--   every_league    every Crest league revealed (awarded server-side when crest_reveals covers every league).
 --   codebreaker     first Codemaster rank above the starting rank (codemaster_solves count).
 -- Awards land in user_badges, which already exists. No schema change.
 

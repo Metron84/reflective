@@ -28,8 +28,9 @@ test("Codebreaker unlocks at the first rank above the starting rank", () => {
   assert.equal(c(true), true);
 });
 
-test("Every League is never computed from tables", () => {
+test("Every League follows the server-side reveal check", () => {
   assert.equal(def("every_league").check(ctx()), false);
+  assert.equal(def("every_league").check(ctx({ everyLeague: true })), true);
 });
 
 test("Perfect Ten tease shows best score once the member has played", () => {

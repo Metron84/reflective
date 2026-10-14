@@ -3,6 +3,7 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
+import RevealsProvider from "@/components/account/RevealsProvider";
 import NextUp from "@/components/account/NextUp";
 import GamesSection from "@/components/account/GamesSection";
 import CrestTile from "@/components/account/CrestTile";
@@ -41,23 +42,20 @@ export default async function AccountPage() {
           crestClub={programme.crest?.clubName ?? null}
         />
 
-        <NextUp
-          userId={auth.user.id}
-          quizOpen={programme.games.quiz.openToday}
-          codemasterInProgress={programme.games.codemaster.inProgress}
-          savedAt={programme.crestLeagues?.savedAt ?? null}
-          competitions={(programme.crestLeagues?.leagues ?? []).map((l) => l.competition)}
-        />
-        <GamesSection
-          games={programme.games}
-          crestTile={
-            <CrestTile
-              userId={auth.user.id}
-              crest={programme.crest}
-              leagues={programme.crestLeagues}
-            />
-          }
-        />
+        <RevealsProvider
+          key={`${programme.crestLeagues?.savedAt ?? "none"}|${programme.revealed.join(",")}`}
+          initial={programme.revealed}
+        >
+          <NextUp
+            quizOpen={programme.games.quiz.openToday}
+            codemasterInProgress={programme.games.codemaster.inProgress}
+            competitions={(programme.crestLeagues?.leagues ?? []).map((l) => l.competition)}
+          />
+          <GamesSection
+            games={programme.games}
+            crestTile={<CrestTile crest={programme.crest} leagues={programme.crestLeagues} />}
+          />
+        </RevealsProvider>
         <HonoursSection honours={programme.honours} />
         <ArchiveSection ballot={programme.ballot} />
         <SettingsPanel

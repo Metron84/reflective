@@ -1,46 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
-import {
-  parseRevealed,
-  revealSnapshot,
-  subscribeReveals,
-  writeRevealed,
-} from "@/lib/crest/reveal-store";
+import { useReveals } from "./RevealsProvider";
 import styles from "./CrestTile.module.css";
 
 /**
  * @param {{
- *   userId: string,
  *   crest: {clubName: string, roomPct: number}|null,
  *   leagues: {savedAt: string, leagues: object[]}|null,
  * }} props
  */
-export default function CrestTile({ userId, crest, leagues }) {
-  const savedAt = leagues?.savedAt ?? null;
+export default function CrestTile({ crest, leagues }) {
   const rows = leagues?.leagues ?? [];
-  const raw = useSyncExternalStore(
-    subscribeReveals,
-    () => revealSnapshot(userId),
-    () => ""
-  );
-  const revealed = useMemo(() => parseRevealed(raw, savedAt), [raw, savedAt]);
-
-  const allRevealed = rows.length > 0 && rows.every((r) => revealed.includes(r.competition));
-  useEffect(() => {
-    if (!allRevealed) return;
-    // Every League honour. Idempotent, so repeating it on return visits is harmless.
-    fetch("/api/account/every-league", { method: "POST" }).catch(() => {});
-  }, [allRevealed]);
-
-  const reveal = useCallback(
-    (competition) => {
-      if (revealed.includes(competition)) return;
-      writeRevealed(userId, savedAt, [...revealed, competition]);
-    },
-    [userId, savedAt, revealed]
-  );
+  const { revealed, reveal } = useReveals();
 
   return (
     <article id="crest-tile" className={`${styles.tile} ${crest ? "" : styles.quiet}`}>

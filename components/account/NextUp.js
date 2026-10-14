@@ -1,28 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useMemo } from "react";
 import { pickNextUp } from "@/lib/account/next-up";
-import { parseRevealed, revealSnapshot, subscribeReveals } from "@/lib/crest/reveal-store";
+import { useReveals } from "./RevealsProvider";
 import styles from "./NextUp.module.css";
 
 /**
- * Reveal state lives in the browser, so priority 2 is decided here. Everything else
- * is decided on the server from each game's own table.
+ * Priority 2 follows the live reveal state, so a tap in the Crest tile updates this card
+ * at once. Everything else is decided on the server from each game's own table.
  *
- * @param {{userId: string, quizOpen: boolean, codemasterInProgress: boolean, savedAt: string|null, competitions: string[]}} props
+ * @param {{quizOpen: boolean, codemasterInProgress: boolean, competitions: string[]}} props
  */
-export default function NextUp({ userId, quizOpen, codemasterInProgress, savedAt, competitions }) {
-  const raw = useSyncExternalStore(
-    subscribeReveals,
-    () => revealSnapshot(userId),
-    () => ""
-  );
+export default function NextUp({ quizOpen, codemasterInProgress, competitions }) {
+  const { revealed } = useReveals();
   const next = useMemo(() => {
-    const revealed = new Set(savedAt ? parseRevealed(raw, savedAt) : []);
-    const unrevealed = competitions.filter((c) => !revealed.has(c)).length;
+    const unrevealed = competitions.filter((c) => !revealed.includes(c)).length;
     return pickNextUp({ quizOpen, unrevealed, codemasterInProgress });
-  }, [raw, savedAt, competitions, quizOpen, codemasterInProgress]);
+  }, [revealed, competitions, quizOpen, codemasterInProgress]);
 
   function scroll(event) {
     const target = next.scrollTo && document.getElementById(next.scrollTo);
