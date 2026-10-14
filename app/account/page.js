@@ -3,6 +3,7 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
+import NextUp from "@/components/account/NextUp";
 import GamesSection from "@/components/account/GamesSection";
 import CrestTile from "@/components/account/CrestTile";
 import HonoursSection from "@/components/account/HonoursSection";
@@ -39,6 +40,13 @@ export default async function AccountPage() {
           crestClub={programme.crest?.clubName ?? null}
         />
 
+        <NextUp
+          userId={auth.user.id}
+          quizOpen={programme.games.quiz.openToday}
+          codemasterInProgress={programme.games.codemaster.inProgress}
+          savedAt={programme.crestLeagues?.savedAt ?? null}
+          competitions={(programme.crestLeagues?.leagues ?? []).map((l) => l.competition)}
+        />
         <GamesSection
           games={programme.games}
           crestTile={
