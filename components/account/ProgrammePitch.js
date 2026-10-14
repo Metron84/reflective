@@ -4,7 +4,7 @@ import styles from "./ProgrammePitch.module.css";
 const HOLDS = [
   {
     title: "Game scores",
-    copy: "Your best scores and streaks in Are You Really a Fan?, Codemaster and The Guesser.",
+    copy: "Your best scores in Are You Really a Fan?, Codemaster and The Guesser.",
   },
   {
     title: "Crest leagues",

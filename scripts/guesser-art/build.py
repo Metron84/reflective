@@ -6,6 +6,7 @@ files render the same everywhere (img tags, link previews, no web fonts needed).
 Outputs:
   public/games/the-guesser.svg          1200x500, the /games card cover (2.4:1)
   public/games/the-guesser-og.svg       1200x630, the Open Graph and Twitter source
+  public/games/the-guesser-band.svg     1200x900 (4:3), the home page band
 
 Needs: pip install fonttools brotli. Fonts: Archivo Black (this folder) and Archivo Regular
 (public/crest/fonts). Run from the repo root: python3 scripts/guesser-art/build.py
@@ -112,3 +113,9 @@ for name, size, base, sizes in [("Title", 64, "GUESSER", None)]:
 print("Twenty points. width", round(width(REGULAR, "Twenty points.", 40)))
 print("tagline og width", round(width(REGULAR, TAGLINE, 28)))
 print("title og width", round(width(BLACK, "THE GUESSER", 64, 0.03)))
+
+# Home band, 1200x900 (4:3): the Open Graph stack scaled up and centred. Content stays 140px+ from every edge.
+k = 1.15
+dyb = (900 - 630 * k) / 2
+band = f'<g transform="translate({600 * (1 - k):.2f} {dyb:.2f}) scale({k})">{og}</g>'
+open("public/games/the-guesser-band.svg", "w").write(svg(1200, 900, band, TITLE))
