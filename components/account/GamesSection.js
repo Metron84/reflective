@@ -67,10 +67,14 @@ export default function GamesSection({ games, crestTile }) {
         <Tile
           name="The Guesser"
           played={guesser.boards > 0}
-          quiet="One footballer a day. Six leagues."
+          quiet="Five players a day. Twenty points."
           href="/guesser"
-          cta="Open The Guesser"
-          stats={[["Boards played", guesser.boards]]}
+          cta={guesser.today == null ? "Play today" : "Open The Guesser"}
+          stats={[
+            ["Today", guesser.today == null ? "Not yet" : `${guesser.today}/${guesser.max}`],
+            ["Best", guesser.best == null ? "None" : `${guesser.best}/${guesser.max}`],
+            ["Played", guesser.boards],
+          ]}
         />
       </div>
     </section>

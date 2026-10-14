@@ -1,0 +1,549 @@
+.game {
+  --cream: #f2ede4;
+  --navy: #0a111f;
+  --signal: #d8232a;
+  display: grid;
+  gap: 0.625rem;
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 2rem;
+  box-sizing: border-box;
+  /* Room for the sticky header (4rem) when the board is scrolled into view. */
+  scroll-margin-top: 4.5rem;
+  color: var(--cream);
+  font-family: var(--font-body), Archivo, sans-serif;
+  text-align: left;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(242, 237, 228, 0.82);
+}
+
+.player {
+  color: var(--cream);
+}
+
+.topEnd {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+}
+
+.scoreline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mute {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 1px solid rgba(242, 237, 228, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  cursor: pointer;
+}
+
+.mute:focus-visible,
+.primary:focus-visible,
+.input:focus-visible,
+.go:focus-visible,
+.pick:focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 3px;
+}
+
+.dots {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(242, 237, 228, 0.2);
+}
+
+.dotNow {
+  background: rgba(242, 237, 228, 0.7);
+}
+
+.dotGood {
+  background: #6fd08c;
+}
+
+.dotMiss {
+  background: rgba(242, 237, 228, 0.45);
+}
+
+.panel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+  background: rgba(242, 237, 228, 0.05);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  line-height: 1;
+}
+
+.copy {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: rgba(242, 237, 228, 0.88);
+}
+
+.primary {
+  display: grid;
+  place-items: center;
+  min-height: 52px;
+  padding: 0 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--signal);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid rgba(242, 237, 228, 0.4);
+}
+
+.clues {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.clue {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-left: 3px solid var(--cream);
+  background: rgba(242, 237, 228, 0.1);
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+.clueNew {
+  animation: land 0.35s ease-out both;
+}
+
+.clueLabel {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.78);
+}
+
+.earlier {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.past {
+  padding: 0.35rem 0.75rem;
+  border-left: 2px solid rgba(242, 237, 228, 0.35);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: rgba(242, 237, 228, 0.88);
+}
+
+.pastLabel {
+  margin-right: 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.7);
+}
+
+.meter {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.cylinders {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.cyl {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: center;
+}
+
+.tube {
+  position: relative;
+  width: 100%;
+  height: 3.25rem;
+  overflow: hidden;
+  border: 2px solid rgba(242, 237, 228, 0.55);
+  border-radius: 12px;
+  background: rgba(242, 237, 228, 0.06);
+}
+
+/* While the player types, the cylinders shrink so the clue stays above the keyboard. */
+.meterHeld .tube {
+  height: 2.25rem;
+}
+
+.tubeActive {
+  border-color: var(--cream);
+  box-shadow: 0 0 0 2px rgba(216, 35, 42, 0.9);
+}
+
+.liquid {
+  position: absolute;
+  inset: auto 0 0 0;
+  background: var(--cream);
+  transition: height 0.1s linear;
+}
+
+.cylLabel {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.final {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.finalBar {
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(242, 237, 228, 0.15);
+}
+
+.finalFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--cream);
+  transition: width 0.1s linear;
+}
+
+.finalLabel {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(242, 237, 228, 0.82);
+}
+
+/* The answer box: always on screen, above the clue. Tapping it buzzes in. */
+.answer {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem 0.7rem;
+  border: 2px solid var(--cream);
+  border-radius: 14px;
+  background: rgba(242, 237, 228, 0.08);
+}
+
+.answerIdle {
+  background: var(--signal);
+}
+
+.answerOut {
+  border-color: rgba(242, 237, 228, 0.3);
+  color: rgba(242, 237, 228, 0.78);
+}
+
+.frozen {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.countdown {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0 0.9rem;
+  border: 2px solid var(--cream);
+  border-radius: 10px;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: inherit;
+  /* 16px or more keeps iOS from zooming the page on focus. */
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.input::placeholder {
+  color: rgba(10, 17, 31, 0.72);
+}
+
+.input:disabled {
+  background: rgba(242, 237, 228, 0.12);
+  border-color: rgba(242, 237, 228, 0.3);
+  color: rgba(242, 237, 228, 0.78);
+}
+
+.input:disabled::placeholder {
+  color: rgba(242, 237, 228, 0.78);
+}
+
+.go {
+  min-width: 5.25rem;
+  min-height: 48px;
+  padding: 0 1rem;
+  border: 2px solid var(--cream);
+  border-radius: 10px;
+  background: var(--navy);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.go:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Name suggestions: one swipeable row on a phone so the clue stays in view. */
+.picks {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0 0 0.1rem;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.picks::-webkit-scrollbar {
+  display: none;
+}
+
+.pick {
+  display: grid;
+  gap: 0.05rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0.25rem 0.8rem;
+  border: 1px solid rgba(242, 237, 228, 0.5);
+  border-radius: 10px;
+  background: rgba(242, 237, 228, 0.12);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pickCtx {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(242, 237, 228, 0.8);
+}
+
+.notice {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.reveal {
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.revealName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.big {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.rows {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(242, 237, 228, 0.22);
+}
+
+.rowPts {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.links {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@keyframes land {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clueNew {
+    animation: none;
+  }
+
+  .liquid,
+  .finalFill {
+    transition: none;
+  }
+}
+
+@media (min-width: 641px) {
+  .game {
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  .kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+  }
+
+  .tube,
+  .meterHeld .tube {
+    max-width: 4.5rem;
+    height: 5.5rem;
+  }
+
+  .cylLabel {
+    font-size: 1.25rem;
+  }
+
+  .clue {
+    padding: 0.8rem 0.9rem;
+    font-size: 1.25rem;
+  }
+
+  .past {
+    font-size: 0.875rem;
+  }
+
+  .picks {
+    display: grid;
+    overflow: visible;
+  }
+
+  .pick {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,11 +1,7 @@
 import Link from "next/link";
-import GuesserBoardCover from "@/components/covers/GuesserBoardCover";
-import { CLUE_OPENING_LABEL } from "@/lib/guesser/clues";
 import { puzzleNumber } from "@/lib/guesser/config";
 
-export default function GuesserBand({ openingClue }) {
-  const tease =
-    openingClue ?? "SAMPLE: What they meant to the game, not what the stats say.";
+export default function GuesserBand() {
   const puzzle = puzzleNumber();
 
   return (
@@ -16,31 +12,29 @@ export default function GuesserBand({ openingClue }) {
             The Guesser
           </p>
           <h2 className="mt-3 font-display text-3xl text-paper sm:text-4xl">
-            One player a day. Six guesses.
+            Five players a day. Clues on a timer. Buzz in before the points drain.
           </h2>
-          <div className="mt-8">
-            <p className="text-xs uppercase tracking-[0.25em] text-paper/50">
-              Puzzle #{puzzle}
-            </p>
-            <div className="mt-4 border-t border-signal pt-5">
-              <p className="text-[10px] uppercase tracking-widest text-paper/40">
-                {CLUE_OPENING_LABEL}
-              </p>
-              <p className="mt-3 font-display text-lg leading-snug text-paper/90 sm:text-xl">
-                {tease}
-              </p>
-            </div>
-          </div>
+          <p className="mt-8 text-xs uppercase tracking-[0.25em] text-paper/50">
+            Board #{puzzle}
+          </p>
           <Link
             prefetch={false}
             href="/guesser"
-            className="mt-8 inline-block rounded-full border border-paper/30 px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
+            className="mt-6 inline-block rounded-full border border-paper/30 px-8 py-3 text-xs font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60"
           >
-            Play The Guesser
+            Play today&apos;s board
           </Link>
         </div>
-        <div className="aspect-[4/3] overflow-hidden rounded-sm border border-paper/10 lg:aspect-square">
-          <GuesserBoardCover />
+        <div className="aspect-[4/3] overflow-hidden rounded-sm border border-paper/10 bg-navy">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/games/the-guesser-band.svg"
+            alt="The Guesser: five players, twenty points. A player silhouette with a red question mark, four cylinders worth 4, 3, 2 and 1 points, and a red BUZZ button."
+            width={1200}
+            height={900}
+            loading="lazy"
+            className="h-full w-full object-contain"
+          />
         </div>
       </div>
     </section>
