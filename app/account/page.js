@@ -41,7 +41,13 @@ export default async function AccountPage() {
 
         <GamesSection
           games={programme.games}
-          crestTile={<CrestTile crest={programme.crest} />}
+          crestTile={
+            <CrestTile
+              userId={auth.user.id}
+              crest={programme.crest}
+              leagues={programme.crestLeagues}
+            />
+          }
         />
         <HonoursSection honours={programme.honours} />
         <SettingsPanel

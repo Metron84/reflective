@@ -1,0 +1,163 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: rgba(255, 255, 255, 0.4);
+  scroll-margin-top: 1rem;
+}
+
+.quiet {
+  background: transparent;
+  border-style: dashed;
+}
+
+.name {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0a111f;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.stats dt {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.6);
+}
+
+.stats dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.1;
+  color: #0a111f;
+}
+
+.empty {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: rgba(10, 17, 31, 0.7);
+}
+
+.leagues {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hidden,
+.revealed {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(10, 17, 31, 0.18);
+  border-left-width: 4px;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+.hidden {
+  background: #f2ede4;
+  color: #0a111f;
+  cursor: pointer;
+}
+
+.hidden:hover {
+  border-color: #0a111f;
+}
+
+.hidden:focus-visible {
+  outline: 2px solid #d8232a;
+  outline-offset: 2px;
+}
+
+.revealed {
+  animation: flip 0.45s ease both;
+  border-color: transparent;
+  border-left-width: 6px;
+}
+
+.leagueName {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tap {
+  font-size: 0.875rem;
+  color: rgba(10, 17, 31, 0.75);
+}
+
+.club {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.match {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.cta {
+  margin-top: 0.25rem;
+  display: inline-grid;
+  place-items: center;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background: #b81d23;
+}
+
+@keyframes flip {
+  from {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealed {
+    animation: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .tile {
+    grid-column: 1 / -1;
+  }
+
+  .leagues {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
