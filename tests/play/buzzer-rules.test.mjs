@@ -4,6 +4,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { ROUND_MS } from "@/lib/guesser/buzzer/engine.js";
 import { nameFor } from "@/lib/guesser/buzzer/pool.js";
+import { nextSyncDelay, unlockSeconds } from "@/lib/guesser/buzzer/client-clock.js";
 import { ANSWER_GRACE_MS, ANSWER_MS, BOARD, WINDOW_MS, WRONGS, newGame, perfectFrom, pointsOf } from "./helpers/buzzer-harness.mjs";
 
 const W = WINDOW_MS;
@@ -426,4 +427,135 @@ test("12. a full mixed board totals the expected score and saves it to plays", a
   assert.equal(row.attempts, 5);
   assert.deepEqual(row.guesses.players.map((p) => p.pts), [4, 3, 0, 2, 4]);
   assert.deepEqual(row.guesses.players.map((p) => p.ok), [true, true, false, true, true]);
+});
+
+// The client asks the server again at the time the server reported, and the answer box only re-enables
+// on a server reading that says the buzzer is unlocked. These tests play that loop on the fake clock.
+
+test("13. the unlock re-sync is never earlier than the server's unlock time, after a wrong answer or a time-out", async () => {
+  for (const via of ["wrong", "timeout"]) {
+    for (const raw of [500, 2000, 9700, 9999, 10300, 15000, 19950, 25000, 29900, 35000]) {
+      const g = newGame();
+      await g.start();
+      g.rawAt(raw);
+      const buzzed = await g.buzz();
+      let locked;
+      if (via === "wrong") {
+        locked = await g.answerWrong(WRONGS[0]);
+      } else {
+        // The client asks again once the typing deadline has passed, and the server settles the time-out.
+        g.wait(nextSyncDelay(buzzed.current));
+        locked = await g.state();
+      }
+      const label = `${via} at ${raw}`;
+      if (!locked.current?.lockedOut) continue; // the clock was already past the next clue: nothing to wait for
+
+      const delay = nextSyncDelay(locked.current);
+      assert.ok(delay >= locked.current.unlocksInMs, `${label}: re-sync ${delay} is before the unlock ${locked.current.unlocksInMs}`);
+      // Before the server's unlock time the server still refuses, so the box must still be disabled.
+      g.wait(locked.current.unlocksInMs - 1);
+      assert.equal((await g.buzz()).outcome, "locked-out", `${label}: buzz one ms early`);
+      // At the client's re-sync time the server reports unlocked, the box enables, and the buzz is accepted.
+      g.wait(delay - (locked.current.unlocksInMs - 1));
+      const reading = await g.state();
+      assert.equal(reading.current.lockedOut, false, `${label}: still locked at the re-sync`);
+      assert.equal((await g.buzz()).outcome, "frozen", `${label}: buzz refused after the box enabled`);
+    }
+  }
+});
+
+test("14. the lock countdown counts down from the server's unlock time and never hits 0 while locked", async () => {
+  const g = newGame();
+  await g.start();
+  g.rawAt(2000);
+  await g.buzz();
+  const locked = await g.answerWrong(WRONGS[0]);
+  assert.equal(locked.current.unlocksInMs, 8000);
+  assert.equal(unlockSeconds(locked.current, 0), 8);
+  assert.equal(unlockSeconds(locked.current, 1), 8);
+  assert.equal(unlockSeconds(locked.current, 1500), 7);
+  assert.equal(unlockSeconds(locked.current, 7999), 1);
+  assert.equal(unlockSeconds(locked.current, 20000), 1); // waiting on the server, not 0
+  assert.equal(unlockSeconds({ lockedOut: false, unlocksInMs: 0 }, 0), 0);
+});
+
+test("15. unrecognised text keeps the typing clock running: retries never reset the 10 second window", async () => {
+  const g = newGame();
+  await g.start();
+  g.rawAt(2000);
+  const buzzed = await g.buzz();
+  const buzzWall = g.clock.t;
+  assert.equal(buzzed.current.answerRemainingMs, ANSWER_MS);
+  const deadline = (body, wall) => wall + nextSyncDelay(body.current);
+  const firstDeadline = deadline(buzzed, buzzWall);
+  const stored = () => g.db.rows[0].guesses.players[0];
+  const bzAtBuzz = stored().bz;
+  const revAtBuzz = g.db.rows[0].guesses.rev;
+
+  // First retry at 3s: unrecognised, nothing used, 7s left.
+  g.wait(3000);
+  const first = await g.call("answer", { text: "zzzzzz" });
+  assert.equal(first.outcome, "unknown");
+  assert.equal(first.current.frozen, true);
+  assert.equal(first.current.answerRemainingMs, ANSWER_MS - 3000);
+  assert.equal(deadline(first, g.clock.t), firstDeadline); // the same absolute deadline
+
+  // Second retry at 6s, an ambiguous name this time: 4s left, not 10.
+  g.wait(3000);
+  const second = await g.call("answer", { text: "Silla" });
+  assert.equal(second.outcome, "ambiguous");
+  assert.equal(second.current.answerRemainingMs, ANSWER_MS - 6000);
+  assert.equal(deadline(second, g.clock.t), firstDeadline);
+
+  // Nothing was written by either retry: the freeze time and revision are exactly as at the buzz.
+  assert.equal(stored().bz, bzAtBuzz);
+  assert.equal(g.db.rows[0].guesses.rev, revAtBuzz);
+  assert.deepEqual(second.current.wrong, []);
+
+  // Third retry at 9s: 1s left. Then the window runs out: even the right answer is too late.
+  g.wait(3000);
+  const third = await g.call("answer", { text: "qqqqqq" });
+  assert.equal(third.current.answerRemainingMs, ANSWER_MS - 9000);
+  g.wait(ANSWER_MS - 9000 + ANSWER_GRACE_MS + 1); // 10s + grace after the buzz
+  const late = await g.call("answer", { personId: BOARD[0] });
+  assert.equal(late.outcome, "late");
+  assert.equal(late.score, 0);
+  assert.equal(late.current.lockedOut, true); // treated as a miss: locked until the next clue
+  assert.equal(late.current.unlocksAtMs, W);
+});
+
+test("16. retrying unrecognised text until the typing window ends in the final window ends the player at 0", async () => {
+  const g = newGame();
+  await g.start();
+  g.rawAt(4 * W + 1000);
+  await g.buzz();
+  g.wait(4000);
+  const retry = await g.call("answer", { text: "nonsense" });
+  assert.equal(retry.outcome, "unknown");
+  assert.equal(retry.current.answerRemainingMs, ANSWER_MS - 4000);
+  g.wait(ANSWER_MS - 4000 + ANSWER_GRACE_MS + 1);
+  const late = await g.call("answer", { text: "more nonsense" });
+  assert.equal(late.outcome, "late");
+  assert.equal(late.players[0].state, "done");
+  assert.equal(late.players[0].points, 0);
+  assert.equal(late.players[0].name, nameOf(BOARD[0]));
+  assert.equal(late.status, "between");
+});
+
+test("17. a repeated wrong name keeps the same typing clock too", async () => {
+  const g = newGame();
+  await g.start();
+  g.rawAt(2000);
+  await g.buzz();
+  await g.answerWrong(WRONGS[0]);
+  await g.unlock();
+  await g.buzz();
+  g.wait(2000);
+  const one = await g.call("answer", { personId: WRONGS[0] });
+  assert.equal(one.outcome, "repeat");
+  assert.equal(one.current.answerRemainingMs, ANSWER_MS - 2000);
+  g.wait(2000);
+  const two = await g.call("answer", { text: nameOf(WRONGS[0]) });
+  assert.equal(two.outcome, "repeat");
+  assert.equal(two.current.answerRemainingMs, ANSWER_MS - 4000);
 });

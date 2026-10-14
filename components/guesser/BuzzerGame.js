@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import ProgrammeCTA from "@/components/ProgrammeCTA";
 import { ANSWER_GRACE_MS, BUZZER_WINDOW_SECONDS, ROUND_MS, WINDOW_MS, cluesAt, valueAt } from "@/lib/guesser/buzzer/engine";
+import { nextSyncDelay, unlockSeconds } from "@/lib/guesser/buzzer/client-clock";
 import { filterNames } from "@/lib/guesser/buzzer/names";
 import { armSound, getMuted, playSound, setMuted, subscribeMuted } from "@/lib/play/sound";
 import styles from "./BuzzerGame.module.css";
@@ -136,23 +137,17 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
         ? Math.min(ROUND_MS, cur.elapsedMs + (times.froze - times.synced))
         : Math.min(ROUND_MS, cur.elapsedMs + sinceSync);
   const answerLeft = cur?.frozen ? Math.max(0, cur.answerRemainingMs - sinceSync) : 0;
-  // After a wrong answer the buzzer stays locked until the next window starts. The server decides;
-  // this only counts the seconds down between readings.
-  const unlockLeft = cur?.lockedOut ? Math.max(0, cur.unlocksInMs - sinceSync) : 0;
+  // After a wrong answer or a time-out the buzzer stays locked until the server says otherwise. The
+  // countdown is counted from the server's `unlocksInMs`, but it never re-enables the box: only a
+  // fresh server reading with `lockedOut: false` does.
   const locked = Boolean(cur?.lockedOut) && !freezing;
+  const unlockLeftSeconds = unlockSeconds(cur, sinceSync);
 
   // Ask the server again when the next thing is due: a new clue, the end of the round, or the
   // end of the typing window. If the server's clock is a touch behind ours, ask again shortly.
   useEffect(() => {
     if (!cur || freezing) return undefined;
-    let delay;
-    if (cur.frozen) {
-      delay = cur.answerRemainingMs + ANSWER_GRACE_MS + 200;
-    } else {
-      const nextBoundary = Math.min(ROUND_MS, (Math.floor(cur.elapsedMs / WINDOW_MS) + 1) * WINDOW_MS);
-      delay = nextBoundary - cur.elapsedMs + 150;
-    }
-    const id = setTimeout(sync, Math.max(150, delay));
+    const id = setTimeout(sync, nextSyncDelay(cur));
     return () => clearTimeout(id);
   }, [view, cur, freezing, sync]);
 
@@ -423,8 +418,8 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
               {Math.ceil(answerLeft / 1000)}
             </span>
           ) : locked ? (
-            <span className={styles.countdown} aria-label={`${Math.max(1, Math.ceil(unlockLeft / 1000))} seconds until the buzzer unlocks`}>
-              {Math.max(1, Math.ceil(unlockLeft / 1000))}
+            <span className={styles.countdown} aria-label={`${unlockLeftSeconds} seconds until the buzzer unlocks`}>
+              {unlockLeftSeconds}
             </span>
           ) : null}
         </p>
