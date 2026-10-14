@@ -23,6 +23,7 @@ interface Props {
   onNext: () => void;
   onBack: () => void;
   hasNext: boolean;
+  signedIn?: boolean;
 }
 
 type Phase = 'grid' | 'attribution' | 'reveal';
@@ -38,6 +39,7 @@ export default function PlayView({
   onNext,
   onBack,
   hasNext,
+  signedIn = false,
 }: Props) {
   const questions = useMemo(() => buildAttribution(puzzle, allPuzzles), [puzzle, allPuzzles]);
   const [phase, setPhase] = useState<Phase>('grid');
@@ -223,6 +225,15 @@ export default function PlayView({
             >
               Back to the chapter
             </button>
+            {signedIn ? (
+              <a
+                href="/account"
+                className="rounded-full border px-6 py-3 font-[Archivo,system-ui,sans-serif] text-[14px] font-semibold uppercase tracking-[0.1em]"
+                style={{ borderColor: NAVY, color: NAVY }}
+              >
+                See it in My Programme
+              </a>
+            ) : null}
           </div>
         </div>
       ) : null}

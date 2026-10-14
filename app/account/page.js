@@ -3,6 +3,8 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
+import GamesSection from "@/components/account/GamesSection";
+import CrestTile from "@/components/account/CrestTile";
 import HonoursSection from "@/components/account/HonoursSection";
 import AdminBlock from "@/components/account/AdminBlock";
 import SettingsPanel from "@/components/account/SettingsPanel";
@@ -37,6 +39,10 @@ export default async function AccountPage() {
           crestClub={programme.crest?.clubName ?? null}
         />
 
+        <GamesSection
+          games={programme.games}
+          crestTile={<CrestTile crest={programme.crest} />}
+        />
         <HonoursSection honours={programme.honours} />
         <SettingsPanel
           key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
