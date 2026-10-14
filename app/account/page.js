@@ -8,6 +8,7 @@ import GamesSection from "@/components/account/GamesSection";
 import CrestTile from "@/components/account/CrestTile";
 import HonoursSection from "@/components/account/HonoursSection";
 import AdminBlock from "@/components/account/AdminBlock";
+import ArchiveSection from "@/components/account/ArchiveSection";
 import SettingsPanel from "@/components/account/SettingsPanel";
 import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./page.module.css";
@@ -58,6 +59,7 @@ export default async function AccountPage() {
           }
         />
         <HonoursSection honours={programme.honours} />
+        <ArchiveSection ballot={programme.ballot} />
         <SettingsPanel
           key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
           initialName={programme.profile.preferredName}

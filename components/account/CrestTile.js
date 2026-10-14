@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
 import {
   parseRevealed,
   revealSnapshot,
@@ -26,6 +26,13 @@ export default function CrestTile({ userId, crest, leagues }) {
     () => ""
   );
   const revealed = useMemo(() => parseRevealed(raw, savedAt), [raw, savedAt]);
+
+  const allRevealed = rows.length > 0 && rows.every((r) => revealed.includes(r.competition));
+  useEffect(() => {
+    if (!allRevealed) return;
+    // Every League honour. Idempotent, so repeating it on return visits is harmless.
+    fetch("/api/account/every-league", { method: "POST" }).catch(() => {});
+  }, [allRevealed]);
 
   const reveal = useCallback(
     (competition) => {
