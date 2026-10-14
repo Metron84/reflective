@@ -78,3 +78,30 @@ test("autocomplete filter matches name starts, surnames and aliases", () => {
   assert.deepEqual(filterNames(list, ""), []);
   assert.ok(filterNames(list, "a", 6).length <= 6);
 });
+
+test("one character off still resolves: a typo, a missing letter, an extra letter, accents and case", () => {
+  assert.deepEqual(resolveGuessText("Diego Maradonna"), { type: "one", personId: "diego-maradona" }); // extra letter
+  assert.deepEqual(resolveGuessText("Diego Maradna"), { type: "one", personId: "diego-maradona" }); // missing letter
+  assert.deepEqual(resolveGuessText("Diego Maredona"), { type: "one", personId: "diego-maradona" }); // wrong letter
+  assert.deepEqual(resolveGuessText("MARADONNA"), { type: "one", personId: "diego-maradona" }); // surname, case
+  assert.deepEqual(resolveGuessText("Dïégo Maradóna"), { type: "one", personId: "diego-maradona" }); // accents
+});
+
+test("two characters off does not resolve", () => {
+  assert.equal(resolveGuessText("Diego Maradnna x").type, "none");
+  assert.equal(resolveGuessText("Maradoonna").type, "none");
+});
+
+test("short names stay exact so near neighbours do not merge (Xavi and Xabi)", () => {
+  const xavi = resolveGuessText("xavi");
+  const xabi = resolveGuessText("xabi");
+  assert.equal(xavi.type, "one");
+  assert.notEqual(xavi.personId, xabi.personId);
+  // A one-letter slip on a four-letter key never guesses a different player.
+  assert.equal(resolveGuessText("xave").type, "none");
+});
+
+test("a typo of the day's answer counts as the answer, even when it is also close to someone else", () => {
+  const near = resolveGuessText("Maradonna", "diego-maradona");
+  assert.deepEqual(near, { type: "one", personId: "diego-maradona" });
+});
