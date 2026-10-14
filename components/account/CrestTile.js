@@ -57,7 +57,6 @@ export default function CrestTile({ crest, leagues }) {
                             {row.label}
                           </span>
                           <span className={styles.club}>{row.clubName}</span>
-                          <span className={styles.match}>{row.matchPct}% match</span>
                         </span>
                       </div>
                     ) : (

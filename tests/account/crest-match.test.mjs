@@ -23,7 +23,7 @@ const answers = CARDS.map((c, i) => ({
 test("matchLeague returns a club from that competition only", () => {
   const best = matchLeague(answers, "Premier League");
   assert.equal(best.club.competition, "Premier League");
-  assert.ok(best.matchPct >= 0 && best.matchPct <= 100);
+  assert.ok(best.probability > 0 && best.probability <= 1);
 });
 
 test("matchLeague is null for a competition with no clubs", () => {
