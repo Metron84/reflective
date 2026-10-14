@@ -65,6 +65,24 @@ test("codemaster tile: title, ranked-up flag and in-progress", () => {
   assert.equal(summariseCodemaster(670, meta).inProgress, false);
 });
 
-test("guesser tile sums boards across modes", () => {
-  assert.equal(summariseGuesser([{ played: 3 }, { played: 2 }, { played: 0 }]).boards, 5);
+const board = (day, pts) => ({
+  mode: "buzzer",
+  puzzle_date: day,
+  guesses: { players: pts.map((p, i) => ({ st: "done", pts: p, ok: p > 0, pid: p > 0 ? `x${i}` : null })) },
+});
+
+test("guesser tile: today's score out of 20, best score and boards played", () => {
+  const rows = [board("2026-10-13", [4, 4, 4, 3, 3]), board("2026-10-14", [1, 0, 2, 0, 0])];
+  const g = summariseGuesser(rows, NOW); // NOW is Dubai day 2026-10-14
+  assert.deepEqual(g, { boards: 2, today: 3, best: 18, max: 20 });
+});
+
+test("guesser tile: nothing played yet", () => {
+  assert.deepEqual(summariseGuesser([], NOW), { boards: 0, today: null, best: null, max: 20 });
+});
+
+test("guesser tile: a board still in progress is not a score", () => {
+  const open = { mode: "buzzer", puzzle_date: "2026-10-14", guesses: { players: [{ st: "done", pts: 4 }, { st: "live" }] } };
+  assert.equal(summariseGuesser([open], NOW).today, null);
+  assert.equal(summariseGuesser([open], NOW).boards, 0);
 });
