@@ -41,6 +41,5 @@
   "slavia-prague": {"primary": "#D71920", "secondary": "#FFFFFF"},
   "besiktas": {"primary": "#1A1A1A", "secondary": "#FFFFFF"},
   "fenerbahce": {"primary": "#002A5C", "secondary": "#FFED00"},
-  "galatasaray": {"primary": "#A90432", "secondary": "#FDB912"},
-  "deportivo-la-coruna": {"primary": "#0067B1", "secondary": "#FFFFFF"}
+  "galatasaray": {"primary": "#A90432", "secondary": "#FDB912"}
 }

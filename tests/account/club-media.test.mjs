@@ -127,6 +127,25 @@ test("known aliases reach the Sportmonks names", () => {
   assert.ok(clubKeys(C("inter-milan", "Inter Milan")).includes("inter"));
 });
 
+test("Deportivo La Coruña matches Sportmonks' \"Deportivo A Coruña\" and never claims Alavés", () => {
+  const depor = C("deportivo-la-coruna", "Deportivo La Coruña", { competition: "LaLiga" });
+  const alaves = C("alaves", "Deportivo Alavés", { competition: "LaLiga" });
+  const laliga = [T(10, "Deportivo A Coruña"), T(11, "Deportivo Alavés"), T(12, "Real Madrid")];
+
+  const both = matchLeagueClubs([depor, alaves], laliga);
+  assert.equal(both.get("deportivo-la-coruna").team.id, 10);
+  assert.equal(both.get("alaves").team.id, 11);
+
+  // Run alone (--slug), with Alavés' team still free, it still takes only its own team.
+  assert.equal(matchLeagueClubs([depor], laliga).get("deportivo-la-coruna").team.id, 10);
+
+  // If Sportmonks had no A Coruña team, Deportivo stays unmatched. It does not take Alavés.
+  const without = matchLeagueClubs([depor], [T(11, "Deportivo Alavés"), T(12, "Real Madrid")]);
+  assert.equal(without.get("deportivo-la-coruna").team, null);
+  const reverse = matchLeagueClubs([alaves], [T(10, "Deportivo A Coruña"), T(12, "Real Madrid")]);
+  assert.equal(reverse.get("alaves").team, null);
+});
+
 test("Paris FC cannot take Paris Saint-Germain's team", () => {
   const teams = [T(1, "Paris Saint Germain"), T(2, "Lyon")];
   const m = matchLeagueClubs([C("psg", "Paris Saint-Germain"), C("paris-fc", "Paris FC")], teams);
