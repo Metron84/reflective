@@ -3,11 +3,8 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
-import ProgrammeTodayLine from "@/components/account/ProgrammeTodayLine";
-import GuesserSection from "@/components/account/GuesserSection";
-import ReflectionsBallot from "@/components/account/ReflectionsBallot";
 import HonoursSection from "@/components/account/HonoursSection";
-import CrestSection from "@/components/account/CrestSection";
+import AdminBlock from "@/components/account/AdminBlock";
 import SettingsPanel from "@/components/account/SettingsPanel";
 import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./page.module.css";
@@ -37,16 +34,9 @@ export default async function AccountPage() {
         <p className={styles.eyebrow}>My Programme</p>
         <ProgrammeHeader
           profile={programme.profile}
-          isAdmin={profileIsAdmin(auth.profile)}
+          crestClub={programme.crest?.clubName ?? null}
         />
 
-        <ProgrammeTodayLine todayLine={programme.todayLine} />
-        <GuesserSection
-          modeStats={programme.modeStats}
-          shareStats={programme.shareStats}
-        />
-        <ReflectionsBallot ballot={programme.ballot} />
-        <CrestSection crest={programme.crest} />
         <HonoursSection honours={programme.honours} />
         <SettingsPanel
           key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
@@ -56,6 +46,7 @@ export default async function AccountPage() {
           email={programme.email}
           clubOptions={programme.clubOptions}
         />
+        {profileIsAdmin(auth.profile) ? <AdminBlock /> : null}
       </div>
     </div>
   );
