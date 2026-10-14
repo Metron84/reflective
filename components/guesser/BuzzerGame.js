@@ -136,6 +136,10 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
         ? Math.min(ROUND_MS, cur.elapsedMs + (times.froze - times.synced))
         : Math.min(ROUND_MS, cur.elapsedMs + sinceSync);
   const answerLeft = cur?.frozen ? Math.max(0, cur.answerRemainingMs - sinceSync) : 0;
+  // After a wrong answer the buzzer stays locked until the next window starts. The server decides;
+  // this only counts the seconds down between readings.
+  const unlockLeft = cur?.lockedOut ? Math.max(0, cur.unlocksInMs - sinceSync) : 0;
+  const locked = Boolean(cur?.lockedOut) && !freezing;
 
   // Ask the server again when the next thing is due: a new clue, the end of the round, or the
   // end of the typing window. If the server's clock is a touch behind ours, ask again shortly.
@@ -191,7 +195,7 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   // Tapping the answer box is the buzz. The input takes focus from the player's own tap, so the
   // keyboard opens at once; the server then freezes the clock.
   async function tap() {
-    if (!cur || cur.frozen || cur.lockedOut || freezing || buzzing.current) return;
+    if (!cur || cur.frozen || locked || freezing || buzzing.current) return;
     buzzing.current = true;
     playSound("buzz");
     setTimes((t) => ({ ...t, froze: performance.now() }));
@@ -218,10 +222,11 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
     else if (data.outcome === "ambiguous") {
       setNotice("More than one player has that name. Pick one.");
       setOptions(data.options);
-    } else if (data.outcome === "wrong") setNotice("Not him. The clock is moving again.");
-    else if (data.outcome === "late") setNotice("Time ran out. The clock is moving again.");
+    } else if (data.outcome === "repeat") {
+      setNotice("You already tried that one.");
+    } else if (data.outcome === "late") setNotice("Time ran out. The clock is moving again.");
     else setNotice("");
-    if (data.outcome === "unknown" || data.outcome === "ambiguous") setTimeout(() => inputRef.current?.focus(), 50);
+    if (data.outcome === "unknown" || data.outcome === "ambiguous" || data.outcome === "repeat") setTimeout(() => inputRef.current?.focus(), 50);
   }
 
   async function copyShare() {
@@ -365,10 +370,13 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   const newest = shown.length - 1;
   const earlier = shown.slice(0, newest).map((text, i) => ({ text, i })).reverse();
   const pts = (n) => `${n} point${n === 1 ? "" : "s"}`;
-  const head = notice
-    ? notice
-    : cur.lockedOut
-      ? "Locked out. Watch the rest of the clues land."
+  const finalNext = cur.unlocksAtMs >= WINDOW_MS * 4;
+  const head = locked
+    ? finalNext
+      ? "Not quite. The final window unlocks your buzzer."
+      : "Not quite. Next clue unlocks your buzzer."
+    : notice
+      ? notice
       : held
         ? `Frozen at ${pts(cur.frozen ? cur.value : value)}`
         : `${pts(value)} right now`;
@@ -402,7 +410,7 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
       </div>
 
       <form
-        className={`${styles.answer} ${held ? styles.answerHeld : cur.lockedOut ? styles.answerOut : styles.answerIdle}`}
+        className={`${styles.answer} ${held ? styles.answerHeld : locked ? styles.answerOut : styles.answerIdle}`}
         onSubmit={(e) => {
           e.preventDefault();
           if (cur.frozen && query.trim()) submit({ text: query });
@@ -413,6 +421,10 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
           {cur.frozen ? (
             <span className={styles.countdown} aria-label={`${Math.ceil(answerLeft / 1000)} seconds left`}>
               {Math.ceil(answerLeft / 1000)}
+            </span>
+          ) : locked ? (
+            <span className={styles.countdown} aria-label={`${Math.max(1, Math.ceil(unlockLeft / 1000))} seconds until the buzzer unlocks`}>
+              {Math.max(1, Math.ceil(unlockLeft / 1000))}
             </span>
           ) : null}
         </p>
@@ -425,8 +437,8 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={tap}
             onClick={tap}
-            placeholder={held ? "Type the player's name" : cur.lockedOut ? "Locked out" : "Tap to answer"}
-            disabled={cur.lockedOut}
+            placeholder={held ? "Type the player's name" : locked ? "Buzzer locked" : "Tap to answer"}
+            disabled={locked}
             autoComplete="off"
             autoCapitalize="words"
             spellCheck={false}
@@ -456,6 +468,11 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
           <span className={styles.clueLabel}>Clue {newest + 1} · {CLUE_LABELS[newest]}</span>
           {shown[newest]}
         </p>
+        {cur.wrong?.length ? (
+          <p className={styles.tried}>
+            <span className={styles.triedLabel}>Not</span> {cur.wrong.join(", ")}
+          </p>
+        ) : null}
         {earlier.length ? (
           <ul className={styles.earlier}>
             {earlier.map(({ text, i }) => (

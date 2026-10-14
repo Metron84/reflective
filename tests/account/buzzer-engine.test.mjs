@@ -7,6 +7,8 @@ import {
   MAX_SCORE,
   ROUND_MS,
   WINDOW_MS,
+  lockUntil,
+  wrongGuesses,
   BUZZER_WINDOW_SECONDS,
   answer,
   buzz,
@@ -199,4 +201,93 @@ test("a tap the UI showed in a window is never scored below it: the grace covers
     const res = answer(b, seenByServer + 1000, "p0", "p0", pidAt);
     assert.equal(res.points, shownValue, `window ${k}`);
   }
+});
+
+const W = WINDOW_MS;
+// A player who buzzes at raw clock `at` and answers wrong straight away (clock resumes at `at - grace`).
+function wrongAt(at, guess = "nope") {
+  const t = T0 + at;
+  const b1 = buzz(live(), t, pidAt).board;
+  return answer(b1, t + 400, guess, "p0", pidAt);
+}
+
+test("a wrong answer locks the buzzer until the next window, then the player can buzz at that value", () => {
+  const res = wrongAt(2000);
+  assert.equal(res.correct, false);
+  assert.equal(res.ended, false);
+  const p = res.board.players[0];
+  assert.equal(p.st, "live");
+  assert.equal(lockUntil(p), W); // locked until window 2 starts
+  // The clock resumed at the 2s the server saw the buzz, so the 10s mark arrives 8s after the wrong answer.
+  const resume = T0 + 2400;
+  assert.equal(buzz(res.board, resume + 7900, pidAt).reason, "locked-out");
+  const again = buzz(res.board, resume + 8100, pidAt);
+  assert.equal(again.ok, true);
+  assert.equal(again.board.players[0].fe, W); // never reaches back into the locked window
+  const fin = answer(again.board, resume + 9000, "p0", "p0", pidAt);
+  assert.equal(fin.correct, true);
+  assert.equal(fin.points, 3);
+});
+
+test("each clue's value is available after a wrong answer in the window before it", () => {
+  for (const [at, pointsAfter] of [[2000, 3], [12000, 2], [22000, 1]]) {
+    const res = wrongAt(at);
+    const lock = lockUntil(res.board.players[0]);
+    assert.equal(lock, (Math.floor((at - BUZZ_GRACE_MS) / W) + 1) * W);
+    // Wait for the clock to reach the lock, then buzz and answer right.
+    const clockNow = lock + 50;
+    const resumeAt = T0 + at + 400; // wall time of the wrong answer; the clock read at - grace then
+    const wall = resumeAt + (clockNow - at);
+    const b = buzz(res.board, wall, pidAt);
+    assert.equal(b.ok, true, `buzz after lock at ${at}`);
+    assert.equal(answer(b.board, wall + 500, "p0", "p0", pidAt).points, pointsAfter);
+  }
+});
+
+test("a wrong answer in the final window ends the player at 0 and reveals", () => {
+  const res = wrongAt(4 * W + 2000);
+  assert.equal(res.correct, false);
+  assert.equal(res.ended, true);
+  const p = res.board.players[0];
+  assert.equal(p.st, "done");
+  assert.equal(p.pts, 0);
+  assert.equal(p.ok, false);
+  assert.equal(p.pid, "p0");
+});
+
+test("a wrong answer on the last clue locks until the final window, where a second miss ends the player", () => {
+  const first = wrongAt(3 * W + 2000);
+  assert.equal(lockUntil(first.board.players[0]), 4 * W);
+  const clockAfter = 3 * W + 2000;
+  const wall = T0 + 3 * W + 2400 + (4 * W + 100 - clockAfter);
+  const b = buzz(first.board, wall, pidAt);
+  assert.equal(b.ok, true);
+  const second = answer(b.board, wall + 300, "other", "p0", pidAt);
+  assert.equal(second.ended, true);
+  assert.equal(second.board.players[0].st, "done");
+});
+
+test("running out of typing time is a miss: locks until the next window, or ends the player in the final window", () => {
+  const b1 = buzz(live(), T0 + 3000, pidAt).board;
+  const out = settle(b1, T0 + 3000 + ANSWER_MS + ANSWER_GRACE_MS + 1, pidAt);
+  assert.equal(out.players[0].st, "live");
+  assert.equal(lockUntil(out.players[0]), W);
+  assert.deepEqual(wrongGuesses(out.players[0]), []); // no name was given
+  const f1 = buzz(live(), T0 + 4 * W + 1000, pidAt).board;
+  const fOut = settle(f1, T0 + 4 * W + 1000 + ANSWER_MS + ANSWER_GRACE_MS + 1, pidAt);
+  assert.equal(fOut.players[0].st, "done");
+  assert.equal(fOut.players[0].pts, 0);
+});
+
+test("wrong guesses are remembered in order", () => {
+  const first = wrongAt(2000, "g1");
+  assert.deepEqual(wrongGuesses(first.board.players[0]), ["g1"]);
+});
+
+test("a board saved under the one-guess rule stays locked for the rest of the round", () => {
+  const legacy = { ...live().players[0], w: 1 };
+  delete legacy.lk;
+  delete legacy.wg;
+  assert.equal(lockUntil(legacy), ROUND_MS);
+  assert.deepEqual(wrongGuesses(legacy), []);
 });

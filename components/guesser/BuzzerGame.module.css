@@ -178,6 +178,28 @@
   color: rgba(242, 237, 228, 0.78);
 }
 
+.tried {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-left: 3px solid rgba(242, 237, 228, 0.55);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: line-through;
+  text-decoration-color: rgba(242, 237, 228, 0.5);
+  color: rgba(242, 237, 228, 0.85);
+}
+
+.triedLabel {
+  margin-right: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+}
+
 .earlier {
   display: grid;
   gap: 0.3rem;
@@ -301,7 +323,9 @@
 
 .answerOut {
   border-color: rgba(242, 237, 228, 0.3);
-  color: rgba(242, 237, 228, 0.78);
+  border-style: dashed;
+  background: rgba(242, 237, 228, 0.04);
+  color: rgba(242, 237, 228, 0.9);
 }
 
 .frozen {

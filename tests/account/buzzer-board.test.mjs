@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { runAction, describe } from "@/lib/guesser/buzzer/board.js";
 import { claimBuzzerRun, findRun } from "@/lib/guesser/buzzer/store.js";
-import { ANSWER_MS, ROUND_MS, newBoard } from "@/lib/guesser/buzzer/engine.js";
+import { ANSWER_MS, ROUND_MS, WINDOW_MS, newBoard } from "@/lib/guesser/buzzer/engine.js";
 
 const DAY = "2026-10-15";
 const IDS = ["a", "b", "c", "d", "e"];
@@ -228,4 +228,95 @@ test("describe never includes clues past the unlocked count", () => {
   board.players[0] = { ...board.players[0], st: "live", t0: 0, pz: 0 };
   const view = describe(board, { ids: IDS, now: 4000, day: DAY, number: 1, cluesFor: (id) => CLUES[id], nameFor: (id) => NAMES[id], hasRun: true });
   assert.deepEqual(view.current.clues, ["a1"]);
+});
+
+test("after a wrong answer the buzzer is locked until the next clue, with a countdown and the wrong guess listed", async () => {
+  const store = memoryStore();
+  const clock = { t: T0 };
+  await runAction({ action: "start" }, deps(store, clock));
+  clock.t = T0 + 2000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t = T0 + 3000;
+  const wrong = await runAction({ action: "answer", body: { personId: "b" } }, deps(store, clock));
+  assert.equal(wrong.body.outcome, "wrong");
+  assert.equal(wrong.body.players[0].state, "live");
+  const c = wrong.body.current;
+  assert.equal(c.lockedOut, true);
+  assert.equal(c.frozen, false);
+  assert.deepEqual(c.wrong, ["Bravo Two"]);
+  assert.equal(c.clues.length, 1);
+  // The clock resumed at the 2s the server saw the buzz, so 8s remain until the second clue.
+  assert.equal(c.unlocksInMs, 8000);
+  assert.ok(!JSON.stringify(wrong.body).includes("Alpha One"));
+});
+
+test("the server refuses a buzz while locked, then allows it when the next clue lands, at the new value", async () => {
+  const store = memoryStore();
+  const clock = { t: T0 };
+  await runAction({ action: "start" }, deps(store, clock));
+  clock.t = T0 + 2000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t = T0 + 3000;
+  await runAction({ action: "answer", body: { personId: "b" } }, deps(store, clock));
+  clock.t = T0 + 3000 + 7900;
+  assert.equal((await runAction({ action: "buzz" }, deps(store, clock))).body.outcome, "locked-out");
+  clock.t = T0 + 3000 + 8100;
+  const open = await runAction({ action: "buzz" }, deps(store, clock));
+  assert.equal(open.body.outcome, "frozen");
+  assert.equal(open.body.current.value, 3);
+  assert.equal(open.body.current.clues.length, 2);
+  clock.t += 1000;
+  const ok = await runAction({ action: "answer", body: { text: "Alpha" } }, deps(store, clock));
+  assert.equal(ok.body.outcome, "correct");
+  assert.equal(ok.body.points, 3);
+});
+
+test("a second answer in the same window is rejected", async () => {
+  const store = memoryStore();
+  const clock = { t: T0 };
+  await runAction({ action: "start" }, deps(store, clock));
+  clock.t = T0 + 2000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t = T0 + 2500;
+  await runAction({ action: "answer", body: { personId: "b" } }, deps(store, clock));
+  // Without buzzing again, even the right answer is refused and nothing changes.
+  clock.t = T0 + 3000;
+  const sneaky = await runAction({ action: "answer", body: { personId: "a" } }, deps(store, clock));
+  assert.equal(sneaky.body.outcome, "rejected");
+  assert.equal(sneaky.body.score, 0);
+  assert.equal(sneaky.body.players[0].state, "live");
+  assert.equal(sneaky.body.current.lockedOut, true);
+});
+
+test("a repeated wrong guess does not use up the next buzz", async () => {
+  const store = memoryStore();
+  const clock = { t: T0 };
+  await runAction({ action: "start" }, deps(store, clock));
+  clock.t = T0 + 2000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t = T0 + 2500;
+  await runAction({ action: "answer", body: { personId: "b" } }, deps(store, clock));
+  clock.t = T0 + 2500 + 9000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t += 500;
+  const again = await runAction({ action: "answer", body: { text: "Bravo" } }, deps(store, clock));
+  assert.equal(again.body.outcome, "repeat");
+  assert.equal(again.body.current.frozen, true);
+  assert.deepEqual(again.body.current.wrong, ["Bravo Two"]);
+});
+
+test("a wrong answer in the final window ends the player at 0 and reveals the name", async () => {
+  const store = memoryStore();
+  const clock = { t: T0 };
+  await runAction({ action: "start" }, deps(store, clock));
+  clock.t = T0 + 4 * WINDOW_MS + 2000;
+  await runAction({ action: "buzz" }, deps(store, clock));
+  clock.t += 500;
+  const res = await runAction({ action: "answer", body: { personId: "b" } }, deps(store, clock));
+  assert.equal(res.body.outcome, "wrong");
+  assert.equal(res.body.players[0].state, "done");
+  assert.equal(res.body.players[0].points, 0);
+  assert.equal(res.body.players[0].name, "Alpha One");
+  assert.equal(res.body.current, null);
+  assert.equal(res.body.status, "between");
 });
