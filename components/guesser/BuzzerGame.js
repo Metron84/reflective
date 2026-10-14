@@ -71,6 +71,8 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   const [copied, setCopied] = useState(false);
   const lastSecond = useRef(-1);
   const inputRef = useRef(null);
+  const gameRef = useRef(null);
+  const buzzing = useRef(false);
   const viewRef = useRef(null);
 
   const apply = useCallback((data) => {
@@ -180,14 +182,28 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
     setBusy(false);
   }
 
+  // Keep the status line, cylinders, answer box and clue on screen once the keyboard opens.
+  function frameBoard() {
+    if (typeof window === "undefined" || !window.matchMedia("(max-width: 640px)").matches) return;
+    gameRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
+  }
+
+  // Tapping the answer box is the buzz. The input takes focus from the player's own tap, so the
+  // keyboard opens at once; the server then freezes the clock.
   async function tap() {
-    if (!cur || cur.frozen || cur.lockedOut || freezing) return;
+    if (!cur || cur.frozen || cur.lockedOut || freezing || buzzing.current) return;
+    buzzing.current = true;
     playSound("buzz");
     setTimes((t) => ({ ...t, froze: performance.now() }));
     setFreezing(true);
     setNotice("");
+    setTimeout(frameBoard, 60);
+    setTimeout(frameBoard, 350);
     const data = apply(await post("buzz"));
-    if (data?.current?.frozen) setTimeout(() => inputRef.current?.focus(), 50);
+    buzzing.current = false;
+    if (data?.current?.frozen && document.activeElement !== inputRef.current) {
+      inputRef.current?.focus({ preventScroll: true });
+    }
   }
 
   async function submit(body) {
@@ -245,21 +261,20 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   const doneCount = view.players.filter((p) => p.state === "done").length;
   const lastDone = [...view.players].reverse().find((p) => p.state === "done");
 
+  const playing = view.status === "live" || view.status === "between";
   const header = (
     <>
       <div className={styles.top}>
-        <div>
-          <p className={styles.kicker}>
-            The Guesser #{view.number}
-            {view.status === "live" || view.status === "between" ? ` · Player ${view.index} of ${view.total}` : ""}
-          </p>
+        <p className={styles.kicker}>The Guesser #{view.number}</p>
+        {playing ? <p className={`${styles.kicker} ${styles.player}`}>Player {view.index} of {view.total}</p> : null}
+        <div className={styles.topEnd}>
           {view.status !== "intro" ? (
-            <p className={styles.scoreline}>
-              {view.score} / {view.maxScore} points
+            <p className={styles.scoreline} aria-label={`${view.score} of ${view.maxScore} points`}>
+              {view.score}/{view.maxScore}
             </p>
           ) : null}
+          <MuteButton />
         </div>
-        <MuteButton />
       </div>
       <ol className={styles.dots} aria-hidden="true">
         {view.players.map((p) => (
@@ -345,42 +360,35 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   const unlocked = Math.max(cur.unlocked, 1);
   const inFinal = elapsed >= CLUE_MS * 4;
   const finalLeft = inFinal ? Math.max(0, 1 - (elapsed - CLUE_MS * 4) / CLUE_MS) : 1;
-  const showAnswer = cur.frozen;
+  const held = cur.frozen || freezing;
+  const shown = cur.clues.slice(0, unlocked);
+  const newest = shown.length - 1;
+  const earlier = shown.slice(0, newest).map((text, i) => ({ text, i })).reverse();
+  const pts = (n) => `${n} point${n === 1 ? "" : "s"}`;
+  const head = notice
+    ? notice
+    : cur.lockedOut
+      ? "Locked out. Watch the rest of the clues land."
+      : held
+        ? `Frozen at ${pts(cur.frozen ? cur.value : value)}`
+        : `${pts(value)} right now`;
 
   return (
-    <div className={styles.game}>
+    <div className={styles.game} ref={gameRef}>
       {header}
 
-      <ul className={styles.clues} aria-label="Clues">
-        {[0, 1, 2, 3].map((i) =>
-          i < cur.clues.length ? (
-            <li key={i} className={`${styles.clue} ${i === unlocked - 1 && i > 0 ? styles.clueNew : ""}`}>
-              <span className={styles.clueLabel}>Clue {i + 1} · {CLUE_LABELS[i]}</span>
-              {cur.clues[i]}
-            </li>
-          ) : (
-            <li key={i} className={styles.slot}>
-              Clue {i + 1} · {CLUE_LABELS[i]} in {Math.max(1, Math.ceil((i * CLUE_MS - elapsed) / 1000))}s
-            </li>
-          ),
-        )}
-      </ul>
-
-      <div className={styles.meter}>
-        <p className={styles.worth} aria-live="off">
-          {value} point{value === 1 ? "" : "s"} {cur.frozen || freezing ? "frozen" : "on offer"}
-        </p>
+      <div className={`${styles.meter} ${held ? styles.meterHeld : ""}`}>
         <div className={styles.cylinders} aria-hidden="true">
-          {[4, 3, 2, 1].map((pts, i) => {
+          {[4, 3, 2, 1].map((n, i) => {
             const into = elapsed - i * CLUE_MS;
             const fill = into <= 0 ? 1 : into >= CLUE_MS ? 0 : 1 - into / CLUE_MS;
             const active = into >= 0 && into < CLUE_MS;
             return (
-              <div key={pts} className={styles.cyl}>
+              <div key={n} className={styles.cyl}>
                 <div className={`${styles.tube} ${active ? styles.tubeActive : ""}`}>
                   <div className={styles.liquid} style={{ height: `${Math.round(fill * 100)}%` }} />
                 </div>
-                <span className={styles.cylLabel}>{pts}</span>
+                <span className={styles.cylLabel}>{n}</span>
               </div>
             );
           })}
@@ -389,65 +397,76 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
           <div className={styles.finalBar}>
             <div className={styles.finalFill} style={{ width: `${Math.round(finalLeft * 100)}%` }} />
           </div>
-          <p className={styles.finalLabel}>Final window · 1 point</p>
+          <p className={styles.finalLabel}>Final 5s · 1 pt</p>
         </div>
       </div>
 
-      {showAnswer ? (
-        <form
-          className={styles.answer}
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (query.trim()) submit({ text: query });
-          }}
-        >
-          <p className={styles.frozen}>
-            <span>Frozen at {cur.value} point{cur.value === 1 ? "" : "s"}</span>
+      <form
+        className={`${styles.answer} ${held ? styles.answerHeld : cur.lockedOut ? styles.answerOut : styles.answerIdle}`}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (cur.frozen && query.trim()) submit({ text: query });
+        }}
+      >
+        <p className={styles.frozen} role="status">
+          <span>{head}</span>
+          {cur.frozen ? (
             <span className={styles.countdown} aria-label={`${Math.ceil(answerLeft / 1000)} seconds left`}>
               {Math.ceil(answerLeft / 1000)}
             </span>
-          </p>
+          ) : null}
+        </p>
+        <div className={styles.field}>
           <input
             ref={inputRef}
             className={styles.input}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type the player's name"
+            onFocus={tap}
+            onClick={tap}
+            placeholder={held ? "Type the player's name" : cur.lockedOut ? "Locked out" : "Tap to answer"}
+            disabled={cur.lockedOut}
             autoComplete="off"
             autoCapitalize="words"
             spellCheck={false}
-            aria-label="Player name"
+            aria-label="Tap to answer, then type the player's name"
             enterKeyHint="go"
           />
-          {suggestions.length ? (
-            <ul className={styles.picks}>
-              {suggestions.map(([id, name, , context]) => (
-                <li key={id}>
-                  <button type="button" className={styles.pick} onClick={() => submit({ personId: id })} disabled={busy}>
-                    <span>{name}</span>
-                    <span className={styles.pickCtx}>{context}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          <button type="submit" className={styles.primary} disabled={busy || !query.trim()}>
+          <button type="submit" className={styles.go} disabled={busy || !cur.frozen || !query.trim()}>
             Answer
           </button>
-          {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
-        </form>
-      ) : (
-        <>
-          <button type="button" className={styles.tap} onClick={tap} disabled={cur.lockedOut || freezing}>
-            {cur.lockedOut ? "Locked out" : "Tap to answer"}
-            <span className={styles.tapSub}>
-              {cur.lockedOut ? "Watch the rest of the clues land" : `${value} point${value === 1 ? "" : "s"} right now`}
-            </span>
-          </button>
-          {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
-        </>
-      )}
+        </div>
+        {cur.frozen && suggestions.length ? (
+          <ul className={styles.picks}>
+            {suggestions.map(([id, name, , context]) => (
+              <li key={id}>
+                <button type="button" className={styles.pick} onClick={() => submit({ personId: id })} disabled={busy}>
+                  <span>{name}</span>
+                  <span className={styles.pickCtx}>{context}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </form>
+
+      <section className={styles.clues} aria-label="Clues">
+        <p className={`${styles.clue} ${newest > 0 ? styles.clueNew : ""}`} key={newest}>
+          <span className={styles.clueLabel}>Clue {newest + 1} · {CLUE_LABELS[newest]}</span>
+          {shown[newest]}
+        </p>
+        {earlier.length ? (
+          <ul className={styles.earlier}>
+            {earlier.map(({ text, i }) => (
+              <li key={i} className={styles.past}>
+                <span className={styles.pastLabel}>{i + 1} · {CLUE_LABELS[i]}</span>
+                {text}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
 
       <p className={styles.sr} aria-live="polite">
         Clue {unlocked} showing. {value} points on offer.

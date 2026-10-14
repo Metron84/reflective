@@ -29,12 +29,12 @@ export default async function GuesserPage() {
   return (
     <div>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "The Guesser" }]} />
-      <section className="bg-gradient-to-b from-navy to-navy-deep px-4 pb-8 pt-12 text-center">
+      <section className="bg-gradient-to-b from-navy to-navy-deep px-4 pb-4 pt-8 text-center sm:pb-8 sm:pt-12">
         <p className="text-xs uppercase tracking-[0.35em] text-paper/70">The Reflective Football</p>
-        <h1 className="mt-4 font-display text-5xl text-paper sm:text-6xl">The Guesser</h1>
-        <p className="mt-3 text-base text-paper/80">{GUESSER_STRAPLINE}</p>
+        <h1 className="mt-2 scroll-mt-28 font-display text-4xl text-paper sm:mt-4 sm:text-6xl">The Guesser</h1>
+        <p className="mt-1 text-base text-paper/80 sm:mt-3">{GUESSER_STRAPLINE}</p>
         <p className="sr-only">Board number {number}</p>
-        <div className="mt-8">
+        <div className="mt-3 sm:mt-8">
           <BuzzerGame names={getAutocompleteList()} signedIn={isSignedIn} />
         </div>
       </section>
