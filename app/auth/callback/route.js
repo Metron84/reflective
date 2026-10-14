@@ -79,7 +79,8 @@ export async function GET(request) {
       .eq("id", user.id)
       .maybeSingle();
 
-    if (!profile?.welcome_completed) {
+    // The claim step runs first. It ends at /account, which sends first-timers to /welcome.
+    if (!profile?.welcome_completed && !next.startsWith("/auth/claim")) {
       return finish(
         NextResponse.redirect(`${origin}/welcome?next=${encodeURIComponent(next)}`),
       );

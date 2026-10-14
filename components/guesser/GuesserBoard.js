@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import ProgrammeCTA from "@/components/ProgrammeCTA";
 import ClueLadder from "./ClueLadder";
 import GuessInput from "./GuessInput";
 import GuesserSignupPopup from "./GuesserSignupPopup";
@@ -401,6 +402,8 @@ export default function GuesserBoard({
                 {copied ? "Copied" : "Share your grid"}
               </button>
             ) : null}
+
+            <ProgrammeCTA signedIn={isSignedIn} />
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link

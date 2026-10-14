@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { signPayload, saltedHash } from "@/lib/signing";
-import { getServiceClient } from "@/lib/supabase";
+import { signPayload } from "@/lib/signing";
 import { getSessionUser } from "@/lib/auth/session";
 import { getUserGameProgress } from "@/lib/auth/plays";
+import { recordPlay } from "@/lib/guesser/record-play";
 import { gstDay, MAX_ATTEMPTS } from "@/lib/guesser/config";
 import {
   getShippableModes,
@@ -32,34 +32,6 @@ import {
 } from "@/lib/guesser/state";
 
 export const runtime = "nodejs";
-
-async function recordPlay(state, mode, game, userId = null) {
-  const supabase = getServiceClient();
-  if (!supabase) return;
-  if (!userId && !state.sid) return;
-
-  const row = {
-    puzzle_date: state.day,
-    mode,
-    guesses: {
-      rows: game.guesses,
-      revealedClues: game.revealedClues ?? [],
-    },
-    solved: game.solved,
-    attempts: game.attempts,
-    user_id: userId,
-    session_hash: userId ? null : saltedHash(state.sid),
-  };
-
-  const conflict = userId
-    ? "user_id,puzzle_date,mode"
-    : "session_hash,puzzle_date,mode";
-
-  await supabase
-    .from("plays")
-    .upsert(row, { onConflict: conflict, ignoreDuplicates: false })
-    .then(() => {}, () => {});
-}
 
 export async function POST(request) {
   let body;

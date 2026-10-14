@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { SITE_URL } from "@/lib/config";
+import ProgrammeCTA from "@/components/ProgrammeCTA";
 import SaveResult from "@/components/watch-with/SaveResult";
 import { MIN_PICK_GAP_MS } from "@/lib/watch-with/engine";
 import { advanceRun } from "@/lib/watch-with/local-run";
@@ -228,6 +229,7 @@ export default function WatchGame({
   shareHost = `watchwith.thereflectivefootball.com/${club}`,
   preview = "",
   accountEmail = "",
+  signInOrigin = "",
 }) {
   const [run, setRun] = useState(null);
   const [left, setLeft] = useState(null);
@@ -731,6 +733,7 @@ export default function WatchGame({
           ) : null}
           <button type="button" onClick={share} className={primaryClass}>Share my companion</button>
           <SaveResult club={club} runId={run.runId} accountEmail={accountEmail} preview={preview} />
+          {!accountEmail ? <ProgrammeCTA signedIn={false} tone="light" claim={false} signInOrigin={signInOrigin} /> : null}
           {shared ? <p className="text-sm" role="status">{shared}</p> : null}
           <Link href={rankingHref} className={ghostClass}>See the ranking</Link>
           <button type="button" onClick={begin} className={linkClass}>Play again</button>

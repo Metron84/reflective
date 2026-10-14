@@ -1,0 +1,89 @@
+.pitch {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  text-align: center;
+  font-family: var(--font-body), Archivo, sans-serif;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 9vw, 3.5rem);
+  line-height: 0.98;
+  color: #0a111f;
+}
+
+.lede {
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(10, 17, 31, 0.75);
+}
+
+.holds {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.hold {
+  padding: 1rem;
+  border: 1px solid rgba(10, 17, 31, 0.14);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.holdTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0a111f;
+}
+
+.holdCopy {
+  margin: 0.4rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: rgba(10, 17, 31, 0.78);
+}
+
+.button {
+  display: grid;
+  place-items: center;
+  min-height: 52px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  background: #d8232a;
+  color: #f2ede4;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: #b81d23;
+}
+
+.button:focus-visible {
+  outline: 2px solid #0a111f;
+  outline-offset: 3px;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: rgba(10, 17, 31, 0.65);
+}
+
+@media (min-width: 640px) {
+  .holds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .button {
+    justify-self: center;
+    min-width: 18rem;
+  }
+}

@@ -4,7 +4,7 @@ import WatchGame from "@/components/watch-with/WatchGame";
 import { getAuthContext } from "@/lib/auth/session";
 import { SITE_URL } from "@/lib/config";
 import { presentClub, previewMatches } from "@/lib/watch-with/access";
-import { shareLabel, watchWithPaths } from "@/lib/watch-with/host";
+import { isWatchWithHost, shareLabel, watchWithPaths } from "@/lib/watch-with/host";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +46,7 @@ export default async function WatchWithPage({ params, searchParams }) {
       shareHost={shareLabel(club.slug)}
       preview={club.active ? "" : preview}
       accountEmail={accountEmail}
+      signInOrigin={isWatchWithHost(hdrs.get("host")) ? SITE_URL : ""}
     />
   );
 }

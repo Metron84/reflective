@@ -7,6 +7,7 @@ import { parseBallot } from "@/lib/crest/result-store";
 import { decodeResume } from "@/lib/crest/resume";
 import {
   clearPendingSave,
+  fetchCrestStatus,
   loadCrestResult,
   readPendingSave,
   saveCrestResult,
@@ -36,6 +37,8 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   const [saved, setSaved] = useState(null);
   const [saveState, setSaveState] = useState("idle");
   const [saveMessage, setSaveMessage] = useState("");
+  // null until the first check answers; only a definite false shows the sign-up prompt.
+  const [signedIn, setSignedIn] = useState(null);
   const boardRef = useRef(null);
   const booted = useRef(false);
 
@@ -48,8 +51,9 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
     booted.current = true;
 
     async function boot() {
-      const stored = await loadCrestResult();
-      if (stored) setSaved(stored);
+      const status = await fetchCrestStatus();
+      setSignedIn(status.signedIn);
+      if (status.saved) setSaved(status.saved);
 
       let ballot = null;
       if (resumeToken) {
@@ -80,11 +84,13 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
       if (put.ok) {
         setSaved(put.result);
         setSaveState("saved");
+        setSignedIn(true);
         clearPendingSave();
         return;
       }
       if (put.needSignIn) {
         writePendingSave(parsed);
+        setSignedIn(false);
         setSaveState("idle");
         return;
       }
@@ -186,12 +192,15 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
     if (put.ok) {
       setSaved(put.result);
       setSaveState("saved");
+      setSignedIn(true);
       clearPendingSave();
       return;
     }
     if (put.needSignIn) {
+      // The Programme CTA takes it from here: it keeps the result and signs the player up.
       writePendingSave(ballot);
-      window.location.assign("/signin?next=/crest");
+      setSignedIn(false);
+      setSaveState("idle");
       return;
     }
     setSaveState("error");
@@ -236,6 +245,8 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
           stake={stake}
           saveState={saveState}
           saveMessage={saveMessage}
+          signedIn={signedIn}
+          onKeepResult={() => writePendingSave({ answers, stake, scope: group })}
           onSave={saveResults}
           onOpenReport={() => setStep("report")}
           onRestart={restart}
