@@ -1,20 +1,32 @@
 /**
  * Club media for the Crest league reveal: Sportmonks id, badge, and two colours per club.
  *
- *   node scripts/crest-club-media.mjs                  # all clubs, writes the JSON files
+ *   node scripts/crest-club-media.mjs --refresh        # redo every club (use after a rework)
+ *   node scripts/crest-club-media.mjs                  # only clubs not yet in the JSON
  *   node scripts/crest-club-media.mjs --dry-run        # no writes
- *   node scripts/crest-club-media.mjs --slug=arsenal   # one club
+ *   node scripts/crest-club-media.mjs --slug=psg       # one club
  *   node scripts/crest-club-media.mjs --limit=10       # first ten clubs
- *   node scripts/crest-club-media.mjs --refresh        # redo clubs already in the file
  *
- * Needs SPORTMONKS_API_KEY (bare token) in the environment or .env.local. The token is
- * sent in the Authorization header and never printed. Needs `sharp` (ships with Next)
- * only when a club has to get its colours from the badge image.
+ * Needs SPORTMONKS_API_KEY (bare token) in the environment or .env.local. The token goes
+ * in the Authorization header and is never printed; errors name the path, never the URL.
+ * Needs `sharp` (ships with Next) when a club has to take its colours from the badge.
+ *
+ * How a club is matched, in order:
+ *   1. League first. For every Crest competition Sportmonks covers, fetch all teams of the
+ *      current season and match club slugs locally (accents, FC/AC/SSC/CF affixes and known
+ *      aliases normalised). League IDs: the Ultima env vars (SPORTMONKS_LEAGUE_ID_PL, _LALIGA,
+ *      _SERIEA, _BUNDESLIGA, _LIGUE1), then every other competition discovered from /leagues,
+ *      so Championship and the second tiers are used when the plan returns them.
+ *   2. Fallback. /teams/search with common_name, then name, only for clubs still unmatched.
+ *   3. Overrides. lib/crest/club-media-overrides.json is applied last and wins.
+ * A club is matched only when one team is a clear winner. Nothing is guessed.
  *
  * Output:
  *   lib/crest/club-media.json            keyed by club slug
- *   lib/crest/club-media-unmatched.json  clubs it could not match, with the reason
- * A club is matched only when one Sportmonks team is a clear winner. Nothing is guessed.
+ *   lib/crest/club-media-unmatched.json  every club still missing, with category and reason:
+ *                                        league_outside_plan, league_empty_season, not_found,
+ *                                        no_competition, or an override error
+ * With --refresh, a club the new run cannot match keeps its previous entry.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -22,15 +34,21 @@ import { fileURLToPath } from "node:url";
 import { CLUBS } from "../lib/crest/clubs.js";
 import {
   dominantColours,
+  matchLeagueClubs,
+  parseOverride,
   pickTeam,
+  resolveLeagues,
   searchQueries,
   sportmonksColours,
+  unmatchedCategory,
 } from "../lib/crest/media-match.js";
 import { SPORTMONKS_BASE, sportmonksApiKey } from "./crest/sportmonks-env.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MEDIA_PATH = join(ROOT, "lib/crest/club-media.json");
 const UNMATCHED_PATH = join(ROOT, "lib/crest/club-media-unmatched.json");
+const OVERRIDES_PATH = join(ROOT, "lib/crest/club-media-overrides.json");
+const MAX_PAGES = 40;
 
 function loadEnvLocal() {
   const path = join(ROOT, ".env.local");
@@ -60,31 +78,77 @@ function parseArgs(argv) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** GET with the token in a header. Errors name the path only, never the URL or token. */
+/** GET with the token in a header. Errors carry a status and name the path only. */
 async function smGet(path, params = {}) {
-  const token = sportmonksApiKey();
   const url = new URL(`${SPORTMONKS_BASE}${path}`);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
 
   for (let attempt = 0; attempt < 4; attempt += 1) {
-    const res = await fetch(url, { headers: { Accept: "application/json", Authorization: token } });
+    const res = await fetch(url, {
+      headers: { Accept: "application/json", Authorization: sportmonksApiKey() },
+    });
     if (res.status === 429) {
       await sleep(2000 * (attempt + 1));
       continue;
     }
-    if (res.status === 401 || res.status === 403 || res.status === 402) {
-      throw new Error(`Sportmonks refused ${path} (${res.status}). Check the token and plan.`);
+    if (!res.ok) {
+      const err = new Error(`Sportmonks ${path} returned ${res.status}`);
+      err.status = res.status;
+      throw err;
     }
-    if (!res.ok) throw new Error(`Sportmonks ${path} returned ${res.status}`);
     return res.json();
   }
-  throw new Error(`Sportmonks ${path} rate limited`);
+  const err = new Error(`Sportmonks ${path} rate limited`);
+  err.status = 429;
+  throw err;
 }
 
-async function findTeam(club) {
+/** 401 means the token itself is bad, so there is no point carrying on. */
+function rethrowIfBadToken(err) {
+  if (err.status === 401) {
+    throw new Error("Sportmonks rejected the token (401). Check SPORTMONKS_API_KEY.");
+  }
+}
+
+async function smPages(path, params = {}) {
+  const rows = [];
+  for (let page = 1; page <= MAX_PAGES; page += 1) {
+    const body = await smGet(path, page > 1 ? { ...params, page } : params);
+    rows.push(...(body.data ?? []));
+    if (!body.pagination?.has_more) break;
+  }
+  return rows;
+}
+
+/** State of one league: ok (with teams), outside_plan, empty_season or unresolved. */
+async function loadLeague(competition, league) {
+  if (!league) return { status: "unresolved", teams: [] };
+  try {
+    const res = await smGet(`/leagues/${league.id}`, { include: "currentSeason" });
+    const seasonId =
+      res?.data?.currentseason?.id ?? res?.data?.currentSeason?.id ?? res?.data?.current_season_id;
+    if (!seasonId) return { status: "empty_season", teams: [], league };
+    const teams = await smPages(`/teams/seasons/${seasonId}`);
+    if (!teams.length) return { status: "empty_season", teams: [], league, seasonId };
+    return { status: "ok", teams, league, seasonId };
+  } catch (err) {
+    rethrowIfBadToken(err);
+    if (err.status === 403) return { status: "outside_plan", teams: [], league };
+    throw err;
+  }
+}
+
+async function searchFallback(club) {
   let lastReason = "no candidates";
   for (const query of searchQueries(club)) {
-    const body = await smGet(`/teams/search/${encodeURIComponent(query)}`, { include: "country" });
+    let body;
+    try {
+      body = await smGet(`/teams/search/${encodeURIComponent(query)}`, { include: "country" });
+    } catch (err) {
+      rethrowIfBadToken(err);
+      if (err.status === 403) return { team: null, reason: "search is outside the plan (403)" };
+      throw err;
+    }
     const picked = pickTeam(club, body.data ?? []);
     if (picked.team) return picked;
     lastReason = picked.reason;
@@ -109,6 +173,90 @@ async function coloursFromBadge(imageUrl) {
   return dominantColours(data);
 }
 
+async function entryFromTeam(team, matchSource) {
+  let colours = sportmonksColours(team);
+  let colourSource = "sportmonks";
+  if (!colours) {
+    colours = await coloursFromBadge(team.image_path);
+    colourSource = "badge";
+  }
+  if (!colours) return { error: "badge has no usable colour" };
+  return {
+    entry: {
+      sportmonks_id: team.id,
+      badge_url: team.image_path,
+      primary: colours.primary,
+      secondary: colours.secondary,
+      colour_source: colourSource,
+      match_source: matchSource,
+      matched_name: team.name,
+    },
+  };
+}
+
+function readJson(path, fallback) {
+  return existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : fallback;
+}
+
+/** Manual overrides, applied last. Returns { applied: n, errors: [{slug, reason}] }. */
+async function applyOverrides(media, teamById) {
+  const overrides = readJson(OVERRIDES_PATH, {});
+  const errors = [];
+  let applied = 0;
+  for (const [slug, raw] of Object.entries(overrides)) {
+    if (!CLUBS.some((c) => c.slug === slug)) {
+      errors.push({ slug, reason: "override names a slug that is not in CLUBS" });
+      continue;
+    }
+    const parsed = parseOverride(raw);
+    if (parsed.error) {
+      errors.push({ slug, reason: `override: ${parsed.error}` });
+      continue;
+    }
+    const o = parsed.value;
+    try {
+      const base = media[slug] ?? {};
+      let team = null;
+      if (o.sportmonks_id) {
+        team = teamById.get(o.sportmonks_id) ?? (await smGet(`/teams/${o.sportmonks_id}`)).data ?? null;
+      }
+      const badge = o.badge_url ?? team?.image_path ?? base.badge_url ?? null;
+      if (!badge) {
+        errors.push({ slug, reason: "override has no badge: give badge_url or a sportmonks_id with an image" });
+        continue;
+      }
+      let primary = o.primary;
+      let secondary = o.secondary ?? null;
+      let colourSource = "override";
+      if (!primary) {
+        const keep = base.badge_url === badge && base.primary;
+        const found = keep ? { primary: base.primary, secondary: base.secondary } : await coloursFromBadge(badge);
+        if (!found) {
+          errors.push({ slug, reason: "override badge has no usable colour; give primary" });
+          continue;
+        }
+        primary = found.primary;
+        secondary = o.secondary ?? found.secondary;
+        colourSource = keep ? base.colour_source : "badge";
+      }
+      media[slug] = {
+        sportmonks_id: o.sportmonks_id ?? base.sportmonks_id ?? null,
+        badge_url: badge,
+        primary,
+        secondary,
+        colour_source: colourSource,
+        match_source: "override",
+        matched_name: team?.name ?? base.matched_name ?? "manual override",
+      };
+      applied += 1;
+    } catch (err) {
+      rethrowIfBadToken(err);
+      errors.push({ slug, reason: `override: ${err.message}` });
+    }
+  }
+  return { applied, errors };
+}
+
 async function main() {
   loadEnvLocal();
   const args = parseArgs(process.argv);
@@ -117,9 +265,8 @@ async function main() {
     process.exit(1);
   }
 
-  const existing = existsSync(MEDIA_PATH) ? JSON.parse(readFileSync(MEDIA_PATH, "utf8")) : {};
+  const existing = readJson(MEDIA_PATH, {});
   const media = { ...existing };
-  const unmatched = [];
 
   let clubs = args.slug ? CLUBS.filter((c) => c.slug === args.slug) : CLUBS;
   if (args.slug && !clubs.length) {
@@ -127,63 +274,107 @@ async function main() {
     process.exit(1);
   }
   if (args.limit) clubs = clubs.slice(0, args.limit);
+  const todo = clubs.filter((c) => args.refresh || !media[c.slug]);
 
-  let done = 0;
-  for (const club of clubs) {
-    done += 1;
-    if (media[club.slug] && !args.refresh) continue;
-    try {
-      const { team, reason } = await findTeam(club);
-      if (!team) {
-        unmatched.push({ slug: club.slug, name: club.name, reason });
-        console.log(`[${done}/${clubs.length}] UNMATCHED ${club.slug}: ${reason}`);
-        continue;
-      }
-      let colours = sportmonksColours(team);
-      let colourSource = "sportmonks";
-      if (!colours) {
-        colours = await coloursFromBadge(team.image_path);
-        colourSource = "badge";
-      }
-      if (!colours) {
-        unmatched.push({ slug: club.slug, name: club.name, reason: "badge has no usable colour" });
-        console.log(`[${done}/${clubs.length}] UNMATCHED ${club.slug}: badge has no usable colour`);
-        continue;
-      }
-      media[club.slug] = {
-        sportmonks_id: team.id,
-        badge_url: team.image_path,
-        primary: colours.primary,
-        secondary: colours.secondary,
-        colour_source: colourSource,
-        matched_name: team.name,
-      };
-      console.log(`[${done}/${clubs.length}] ${club.slug} -> ${team.name} (${colourSource})`);
-    } catch (err) {
-      if (/refused|rate limited/.test(err.message)) throw err;
-      unmatched.push({ slug: club.slug, name: club.name, reason: `error: ${err.message}` });
-      console.log(`[${done}/${clubs.length}] UNMATCHED ${club.slug}: ${err.message}`);
+  // 1. League first.
+  let leagueRows = [];
+  try {
+    leagueRows = await smPages("/leagues", { include: "country" });
+  } catch (err) {
+    rethrowIfBadToken(err);
+    console.log(`League listing unavailable (${err.status ?? "error"}). Using the Ultima env league IDs only.`);
+  }
+  const resolved = resolveLeagues(leagueRows, process.env);
+  const competitions = [...new Set(CLUBS.map((c) => c.competition).filter(Boolean))];
+  const leagues = new Map();
+  console.log("Leagues");
+  for (const competition of competitions) {
+    const state = await loadLeague(competition, resolved[competition]);
+    leagues.set(competition, state);
+    const id = resolved[competition] ? `id ${resolved[competition].id} (${resolved[competition].source})` : "no league id";
+    const detail = state.status === "ok" ? `${state.teams.length} teams` : state.status;
+    console.log(`  ${competition.padEnd(22)} ${id.padEnd(20)} ${detail}`);
+    await sleep(100);
+  }
+
+  const teamById = new Map();
+  for (const s of leagues.values()) for (const t of s.teams) teamById.set(t.id, t);
+
+  const pending = new Map(); // slug -> reason it is still unmatched after the league pass
+  const fresh = {};
+  for (const [competition, state] of leagues) {
+    const inLeague = todo.filter((c) => c.competition === competition);
+    if (!inLeague.length || state.status !== "ok") continue;
+    const matches = matchLeagueClubs(inLeague, state.teams);
+    for (const club of inLeague) {
+      const m = matches.get(club.slug);
+      if (m?.team) fresh[club.slug] = { team: m.team, source: "league" };
+      else pending.set(club.slug, m?.reason ?? "not found in league teams");
     }
+  }
+
+  // 2. Fallback search, only for clubs still unmatched.
+  const fallbackReason = new Map();
+  const needSearch = todo.filter((c) => !fresh[c.slug]);
+  console.log(`\nLeague pass matched ${Object.keys(fresh).length} of ${todo.length}. Searching for ${needSearch.length}.`);
+  for (const club of needSearch) {
+    const { team, reason } = await searchFallback(club);
+    if (team) fresh[club.slug] = { team, source: "search" };
+    else fallbackReason.set(club.slug, reason);
     await sleep(150);
   }
 
-  // Keep the file stable: sorted by slug, so reruns diff cleanly.
+  // Colours and entries.
+  const failures = new Map();
+  for (const club of todo) {
+    const hit = fresh[club.slug];
+    if (!hit) continue;
+    try {
+      const out = await entryFromTeam(hit.team, hit.source);
+      if (out.entry) media[club.slug] = out.entry;
+      else failures.set(club.slug, out.error);
+    } catch (err) {
+      failures.set(club.slug, err.message);
+    }
+  }
+
+  // 3. Overrides, last.
+  const overrides = await applyOverrides(media, teamById);
+
+  // Report.
   const sorted = Object.fromEntries(Object.entries(media).sort(([a], [b]) => a.localeCompare(b)));
-  console.log(`\nMatched ${Object.keys(sorted).length} of ${CLUBS.length}. Unmatched this run: ${unmatched.length}.`);
-  for (const u of unmatched) console.log(`  ${u.slug}  ${u.reason}`);
+  const bySource = {};
+  for (const e of Object.values(sorted)) bySource[e.match_source ?? "previous run"] = (bySource[e.match_source ?? "previous run"] ?? 0) + 1;
+  const unmatched = [];
+  for (const club of CLUBS) {
+    if (sorted[club.slug]) continue;
+    const override = overrides.errors.find((e) => e.slug === club.slug);
+    const detail = failures.get(club.slug) ?? `search: ${fallbackReason.get(club.slug) ?? "not attempted"}`;
+    const base = unmatchedCategory(club, leagues.get(club.competition), detail);
+    const reason = [base.reason, pending.get(club.slug) && `league: ${pending.get(club.slug)}`, override?.reason]
+      .filter(Boolean)
+      .join("; ");
+    unmatched.push({ slug: club.slug, name: club.name, competition: club.competition ?? null, category: base.category, reason });
+  }
+  for (const e of overrides.errors) {
+    if (!unmatched.some((u) => u.slug === e.slug)) console.log(`  override error ${e.slug}: ${e.reason}`);
+  }
+
+  console.log(`\nMatched ${Object.keys(sorted).length} of ${CLUBS.length}. Sources: ${JSON.stringify(bySource)}. Overrides applied: ${overrides.applied}.`);
+  const byCategory = {};
+  for (const u of unmatched) byCategory[u.category] = [...(byCategory[u.category] ?? []), u];
+  for (const [category, list] of Object.entries(byCategory)) {
+    console.log(`\n${category} (${list.length})`);
+    for (const u of list) console.log(`  ${u.slug}  [${u.competition ?? "none"}]  ${u.reason}`);
+  }
 
   if (args.dryRun) {
     console.log("\nDry run: nothing written.");
     return;
   }
   writeFileSync(MEDIA_PATH, JSON.stringify(sorted, null, 2) + "\n");
-  // Whole-run unmatched list = every club still missing from the media file.
-  const stillMissing = CLUBS.filter((c) => !sorted[c.slug]).map((c) => {
-    const hit = unmatched.find((u) => u.slug === c.slug);
-    return { slug: c.slug, name: c.name, reason: hit?.reason ?? "not attempted in this run" };
-  });
-  writeFileSync(UNMATCHED_PATH, JSON.stringify(stillMissing, null, 2) + "\n");
-  console.log(`Wrote ${MEDIA_PATH}\nWrote ${UNMATCHED_PATH}`);
+  writeFileSync(UNMATCHED_PATH, JSON.stringify(unmatched, null, 2) + "\n");
+  console.log(`\nWrote ${MEDIA_PATH}\nWrote ${UNMATCHED_PATH}`);
 }
 
 main().catch((err) => {
