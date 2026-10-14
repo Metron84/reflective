@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { DOORS, PARTNERS, SOCIALS, isActivePath } from "@/lib/nav";
+import ProgrammeButton from "./ProgrammeButton";
 import { SOCIAL_ICONS } from "./nav/SocialIcons";
 
 const focusRing =
@@ -231,7 +232,7 @@ function MenuSheet({ onClose, auth, pathname }) {
   );
 }
 
-export default function SiteHeaderClient({ auth }) {
+export default function SiteHeaderClient({ auth, programme = null }) {
   const pathname = usePathname() ?? "";
   const [open, setOpen] = useState(false);
   const signedIn = auth?.isSignedIn && auth?.profile;
@@ -278,20 +279,18 @@ export default function SiteHeaderClient({ auth }) {
         </nav>
 
         <div className="flex items-center justify-self-end gap-1 lg:gap-3">
+          <ProgrammeButton
+            signedIn={Boolean(signedIn)}
+            initials={programme?.initials}
+            memberNumber={programme?.memberNumber}
+            pending={Boolean(programme?.pending)}
+          />
           <SocialIconLinks className="hidden lg:flex" />
-          <div className="hidden lg:block">
-            {signedIn ? (
+          {signedIn ? (
+            <div className="hidden lg:block">
               <UserMenu profile={auth.profile} />
-            ) : (
-              <Link
-                prefetch={false}
-                href="/account"
-                className={`whitespace-nowrap px-2 py-2 text-sm font-semibold uppercase tracking-widest text-navy/80 transition-colors hover:text-navy ${focusRing}`}
-              >
-                Start your Programme
-              </Link>
-            )}
-          </div>
+            </div>
+          ) : null}
           <a
             href={PARTNERS.href}
             className={`hidden whitespace-nowrap rounded-full border-2 border-signal px-5 py-2 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:bg-signal hover:text-paper lg:inline-block ${focusRing}`}
