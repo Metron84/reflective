@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { allowsBoth, PART_LABEL, TOTAL } from "@/lib/crest/cards";
-import { DEFAULT_ALPHA, nextCard } from "@/lib/crest/engine";
+import { DEFAULT_ALPHA, nextCard } from "@/lib/crest/match";
 import { parseBallot } from "@/lib/crest/result-store";
 import { decodeResume } from "@/lib/crest/resume";
 import {
