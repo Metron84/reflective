@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import ProgrammeCTA from "@/components/ProgrammeCTA";
-import { ANSWER_GRACE_MS, CLUE_MS, ROUND_MS, cluesAt, valueAt } from "@/lib/guesser/buzzer/engine";
+import { ANSWER_GRACE_MS, BUZZER_WINDOW_SECONDS, ROUND_MS, WINDOW_MS, cluesAt, valueAt } from "@/lib/guesser/buzzer/engine";
 import { filterNames } from "@/lib/guesser/buzzer/names";
 import { armSound, getMuted, playSound, setMuted, subscribeMuted } from "@/lib/play/sound";
 import styles from "./BuzzerGame.module.css";
@@ -145,7 +145,7 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
     if (cur.frozen) {
       delay = cur.answerRemainingMs + ANSWER_GRACE_MS + 200;
     } else {
-      const nextBoundary = Math.min(ROUND_MS, (Math.floor(cur.elapsedMs / CLUE_MS) + 1) * CLUE_MS);
+      const nextBoundary = Math.min(ROUND_MS, (Math.floor(cur.elapsedMs / WINDOW_MS) + 1) * WINDOW_MS);
       delay = nextBoundary - cur.elapsedMs + 150;
     }
     const id = setTimeout(sync, Math.max(150, delay));
@@ -295,7 +295,7 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
         <section className={styles.panel}>
           <h2 className={styles.title}>Five players. Twenty points.</h2>
           <p className={styles.copy}>
-            A clue lands every 5 seconds, and the points on offer drain with it. Tap to answer to
+            A new clue lands every {BUZZER_WINDOW_SECONDS} seconds, just as the points drop. Tap to answer to
             freeze the clock, then name the player. A wrong answer costs nothing, but you only get one.
           </p>
           <button type="button" className={styles.primary} onClick={start} disabled={busy}>
@@ -358,8 +358,8 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
   // Live round.
   const value = valueAt(elapsed);
   const unlocked = Math.max(cur.unlocked, 1);
-  const inFinal = elapsed >= CLUE_MS * 4;
-  const finalLeft = inFinal ? Math.max(0, 1 - (elapsed - CLUE_MS * 4) / CLUE_MS) : 1;
+  const inFinal = elapsed >= WINDOW_MS * 4;
+  const finalLeft = inFinal ? Math.max(0, 1 - (elapsed - WINDOW_MS * 4) / WINDOW_MS) : 1;
   const held = cur.frozen || freezing;
   const shown = cur.clues.slice(0, unlocked);
   const newest = shown.length - 1;
@@ -380,9 +380,9 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
       <div className={`${styles.meter} ${held ? styles.meterHeld : ""}`}>
         <div className={styles.cylinders} aria-hidden="true">
           {[4, 3, 2, 1].map((n, i) => {
-            const into = elapsed - i * CLUE_MS;
-            const fill = into <= 0 ? 1 : into >= CLUE_MS ? 0 : 1 - into / CLUE_MS;
-            const active = into >= 0 && into < CLUE_MS;
+            const into = elapsed - i * WINDOW_MS;
+            const fill = into <= 0 ? 1 : into >= WINDOW_MS ? 0 : 1 - into / WINDOW_MS;
+            const active = into >= 0 && into < WINDOW_MS;
             return (
               <div key={n} className={styles.cyl}>
                 <div className={`${styles.tube} ${active ? styles.tubeActive : ""}`}>
@@ -397,7 +397,7 @@ export default function BuzzerGame({ names, signedIn: signedInProp }) {
           <div className={styles.finalBar}>
             <div className={styles.finalFill} style={{ width: `${Math.round(finalLeft * 100)}%` }} />
           </div>
-          <p className={styles.finalLabel}>Final 5s · 1 pt</p>
+          <p className={styles.finalLabel}>Final {BUZZER_WINDOW_SECONDS}s · 1 pt</p>
         </div>
       </div>
 

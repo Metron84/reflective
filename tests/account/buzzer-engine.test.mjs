@@ -6,6 +6,8 @@ import {
   BUZZ_GRACE_MS,
   MAX_SCORE,
   ROUND_MS,
+  WINDOW_MS,
+  BUZZER_WINDOW_SECONDS,
   answer,
   buzz,
   cluesAt,
@@ -26,22 +28,38 @@ function live(now = T0) {
   return start(newBoard(), now, pidAt);
 }
 
-test("points step 4, 3, 2, 1 every 5 seconds, then the final window is still 1, then 0", () => {
-  const cases = [[0, 4], [4999, 4], [5000, 3], [9999, 3], [10000, 2], [14999, 2], [15000, 1], [19999, 1], [20000, 1], [24999, 1], [25000, 0]];
+test("points step 4, 3, 2, 1 every 10 seconds, then the final window is still 1, then 0", () => {
+  assert.equal(BUZZER_WINDOW_SECONDS, 10);
+  const cases = [[0, 4], [9999, 4], [10000, 3], [19999, 3], [20000, 2], [29999, 2], [30000, 1], [39999, 1], [40000, 1], [49999, 1], [50000, 0]];
   for (const [ms, pts] of cases) assert.equal(valueAt(ms), pts, `${ms}ms`);
-  assert.equal(ROUND_MS, 25000);
+  assert.equal(ROUND_MS, 50000);
   assert.equal(MAX_SCORE, 20);
 });
 
-test("a new clue lands every 5 seconds, up to 4", () => {
-  assert.deepEqual([0, 4999, 5000, 10000, 15000, 24000].map(cluesAt), [1, 1, 2, 3, 4, 4]);
+test("a new clue lands every 10 seconds, up to 4", () => {
+  assert.deepEqual([0, 9999, 10000, 20000, 30000, 49000].map(cluesAt), [1, 1, 2, 3, 4, 4]);
+});
+
+test("a clue and its point value change at the same instant, across the whole round", () => {
+  // Window k (0-based) shows k+1 clues for 4-k points, except the final window, which adds no clue.
+  for (let k = 0; k < 5; k++) {
+    for (const off of [0, 1, WINDOW_MS - 1]) {
+      const ms = k * WINDOW_MS + off;
+      assert.equal(valueAt(ms), Math.max(1, 4 - k), `value at ${ms}`);
+      assert.equal(cluesAt(ms), Math.min(4, k + 1), `clues at ${ms}`);
+    }
+  }
+  for (let k = 1; k < 4; k++) {
+    assert.notEqual(valueAt(k * WINDOW_MS - 1), valueAt(k * WINDOW_MS));
+    assert.notEqual(cluesAt(k * WINDOW_MS - 1), cluesAt(k * WINDOW_MS));
+  }
 });
 
 test("a correct answer scores the value frozen at the tap", () => {
   const b0 = live();
-  const { board: b1, ok } = buzz(b0, T0 + 7200 + BUZZ_GRACE_MS, pidAt); // raw 7.5s, 7.2s after grace
+  const { board: b1, ok } = buzz(b0, T0 + 12200 + BUZZ_GRACE_MS, pidAt); // raw 12.5s, 12.2s after grace
   assert.equal(ok, true);
-  const res = answer(b1, T0 + 9000, "p0", "p0", pidAt);
+  const res = answer(b1, T0 + 14000, "p0", "p0", pidAt);
   assert.equal(res.correct, true);
   assert.equal(res.points, 3);
   assert.equal(res.board.players[0].pts, 3);
@@ -66,7 +84,8 @@ test("a wrong answer costs nothing and the drain resumes where it stopped", () =
   assert.equal(p.bz, null);
   // Resumed at 3s of clock, not 8s: 4 seconds on it reads 7s.
   assert.equal(elapsed(p, T0 + 12000), 7000);
-  assert.equal(valueAt(elapsed(p, T0 + 12000)), 3);
+  assert.equal(valueAt(elapsed(p, T0 + 12000)), 4);
+  assert.equal(valueAt(elapsed(p, T0 + 17000)), 3);
 });
 
 test("one wrong guess per player: after it the buzzer is locked", () => {
@@ -94,7 +113,7 @@ test("an answer sent after the typing window is not accepted as correct", () => 
   assert.equal(res.board.players[0].pts, 0);
 });
 
-test("a round nobody answers ends at 25 seconds with 0 points", () => {
+test("a round nobody answers ends after the final window with 0 points", () => {
   const b = settle(live(), T0 + ROUND_MS, pidAt);
   assert.equal(b.players[0].st, "done");
   assert.equal(b.players[0].pts, 0);
@@ -103,8 +122,8 @@ test("a round nobody answers ends at 25 seconds with 0 points", () => {
 });
 
 test("a buzz inside the final window scores 1", () => {
-  const b1 = buzz(live(), T0 + 22000, pidAt).board;
-  assert.equal(answer(b1, T0 + 23000, "p0", "p0", pidAt).points, 1);
+  const b1 = buzz(live(), T0 + 45000, pidAt).board;
+  assert.equal(answer(b1, T0 + 46000, "p0", "p0", pidAt).points, 1);
 });
 
 test("a buzz after the round has run out is refused", () => {
@@ -114,12 +133,12 @@ test("a buzz after the round has run out is refused", () => {
 });
 
 test("the grace takes a little off the clock so a laggy tap near a boundary keeps the higher value", () => {
-  // The player tapped at 4.9s but the request landed at 5.1s.
-  const b1 = buzz(live(), T0 + 5100, pidAt).board;
-  assert.equal(answer(b1, T0 + 5200, "p0", "p0", pidAt).points, 4);
+  // The player tapped at 9.9s but the request landed at 10.1s.
+  const b1 = buzz(live(), T0 + 10100, pidAt).board;
+  assert.equal(answer(b1, T0 + 10200, "p0", "p0", pidAt).points, 4);
   // A tap well past the boundary is still 3.
-  const b2 = buzz(live(), T0 + 5600, pidAt).board;
-  assert.equal(answer(b2, T0 + 5700, "p0", "p0", pidAt).points, 3);
+  const b2 = buzz(live(), T0 + 10600, pidAt).board;
+  assert.equal(answer(b2, T0 + 10700, "p0", "p0", pidAt).points, 3);
 });
 
 test("you cannot answer without tapping first", () => {
@@ -155,7 +174,7 @@ test("a full board of perfect answers scores 20 and completes", () => {
 
 test("score only counts finished players and mixes correct, wrong and timed out", () => {
   let board = start(newBoard(), T0, pidAt);
-  board = answer(buzz(board, T0 + 6000, pidAt).board, T0 + 6500, "p0", "p0", pidAt).board; // 3
+  board = answer(buzz(board, T0 + 12000, pidAt).board, T0 + 12500, "p0", "p0", pidAt).board; // 3
   board = start(board, T0 + 7000, pidAt);
   board = settle(board, T0 + 7000 + ROUND_MS, pidAt); // 0
   assert.equal(score(board), 3);
@@ -169,4 +188,15 @@ test("the engine never mutates its input", () => {
   settle(b0, T0 + 99999, pidAt);
   answer(buzz(b0, T0 + 1000, pidAt).board, T0 + 2000, "x", "p0", pidAt);
   assert.equal(JSON.stringify(b0), snapshot);
+});
+
+test("a tap the UI showed in a window is never scored below it: the grace covers the trip to the server", () => {
+  for (let k = 1; k < 4; k++) {
+    // The player taps with 50ms left in window k; the request reaches the server 250ms later.
+    const shownValue = valueAt(k * WINDOW_MS - 50);
+    const seenByServer = T0 + k * WINDOW_MS - 50 + 250;
+    const b = buzz(live(), seenByServer, pidAt).board;
+    const res = answer(b, seenByServer + 1000, "p0", "p0", pidAt);
+    assert.equal(res.points, shownValue, `window ${k}`);
+  }
 });

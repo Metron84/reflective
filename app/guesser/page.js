@@ -8,7 +8,7 @@ import { dubaiDay } from "@/lib/play/week.js";
 
 export const metadata = {
   title: "The Guesser",
-  description: "Five footballers a day. Clues land every five seconds and the points drain. Tap to answer.",
+  description: "Five footballers a day. A new clue lands each time the points drop. Tap to answer.",
   alternates: { canonical: "/guesser" },
   openGraph: {
     title: "The Guesser | The Reflective Football",

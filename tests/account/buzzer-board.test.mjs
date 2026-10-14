@@ -79,11 +79,11 @@ test("later clues arrive on the server's clock, whatever the client says", async
   const store = memoryStore();
   const clock = { t: T0 };
   await runAction({ action: "start" }, deps(store, clock));
-  clock.t = T0 + 4900;
+  clock.t = T0 + 9900;
   assert.deepEqual((await runAction({ action: "state" }, deps(store, clock))).body.current.clues, ["a1"]);
-  clock.t = T0 + 5000;
+  clock.t = T0 + 10000;
   assert.deepEqual((await runAction({ action: "state" }, deps(store, clock))).body.current.clues, ["a1", "a2"]);
-  clock.t = T0 + 15000;
+  clock.t = T0 + 30000;
   assert.equal((await runAction({ action: "state" }, deps(store, clock))).body.current.clues.length, 4);
   // A client claiming a different time in the body changes nothing.
   const res = await runAction({ action: "state", body: { elapsedMs: 99999, now: 1 } }, deps(store, { t: T0 + 100 }));
@@ -94,12 +94,12 @@ test("buzz freezes, a correct answer scores the frozen value, and the answer is 
   const store = memoryStore();
   const clock = { t: T0 };
   await runAction({ action: "start" }, deps(store, clock));
-  clock.t = T0 + 6000;
+  clock.t = T0 + 12000;
   const buzzed = await runAction({ action: "buzz" }, deps(store, clock));
   assert.equal(buzzed.body.outcome, "frozen");
   assert.equal(buzzed.body.current.frozen, true);
   assert.equal(buzzed.body.current.value, 3);
-  clock.t = T0 + 16000; // typed slowly
+  clock.t = T0 + 22000; // typed slowly
   const res = await runAction({ action: "answer", body: { personId: "a" } }, deps(store, clock));
   assert.equal(res.body.outcome, "correct");
   assert.equal(res.body.points, 3);
@@ -151,7 +151,7 @@ test("typing too slowly counts as the wrong guess, checked by the server", async
   assert.equal(late.body.score, 0);
 });
 
-test("a round nobody answers closes at 25 seconds and reveals the name", async () => {
+test("a round nobody answers closes after the final window and reveals the name", async () => {
   const store = memoryStore();
   await runAction({ action: "start" }, deps(store, { t: T0 }));
   const res = await runAction({ action: "state" }, deps(store, { t: T0 + ROUND_MS + 1 }));
