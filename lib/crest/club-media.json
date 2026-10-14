@@ -387,13 +387,13 @@
     "matched_name": "Darmstadt 98"
   },
   "deportivo-la-coruna": {
-    "sportmonks_id": null,
-    "badge_url": null,
-    "primary": "#0067B1",
-    "secondary": "#FFFFFF",
-    "colour_source": "override",
-    "match_source": "override",
-    "matched_name": "manual override"
+    "sportmonks_id": 429,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/429.png",
+    "primary": "#E9E4D8",
+    "secondary": "#68236C",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Deportivo A Coruña"
   },
   "derby-county": {
     "sportmonks_id": 24,
