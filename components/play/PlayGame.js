@@ -61,6 +61,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [skipsLeft, setSkipsLeft] = useState(2);
   const [spin, setSpin] = useState(null);
   const [target, setTarget] = useState(null);
   const [result, setResult] = useState(null);
@@ -128,6 +129,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
       setResult(null);
       setBeat("idle");
     }
+    setSkipsLeft(data.skipsLeft ?? 2);
     setStage("playing");
     setBusy(false);
   }
@@ -151,6 +153,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setScore(0);
     setAnswered(0);
     setStreak(0);
+    setSkipsLeft((r.data.maxSkips ?? 2) - (r.data.skipsUsed ?? 0));
     setSpin(null);
     setTarget(null);
     setResult(null);
@@ -256,6 +259,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
       return fatal(r.data.error ?? "Could not spin. Start a new game.", r.debug);
     }
     setSpin(r.data);
+    if (r.data.skipsLeft !== undefined) setSkipsLeft(r.data.skipsLeft);
     setBeat("spinning");
     setTarget(r.data.category);
   }
@@ -286,6 +290,36 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
     setAnswered(r.data.answered);
     setSegments(r.data.wheel);
     setBusy(false);
+  }
+
+  /** Resolves true when the skip went through or was settled as a timeout, false when the player can still answer. */
+  async function skip() {
+    setBusy(true);
+    setError(null);
+    const r = await post("/api/play/skip");
+    if (!r.ok) {
+      if (takeChallenge(r)) return true;
+      if (r.data.next === "answer" && r.data.error?.startsWith("Time")) {
+        await submit("", "");
+        return true;
+      }
+      if (r.data.next === "answer") {
+        setSkipsLeft(0);
+        setError(r.data.error);
+        setBusy(false);
+        return false;
+      }
+      fatal(r.data.error ?? "Could not skip. Start a new game.", r.debug);
+      return true;
+    }
+    setResult(r.data);
+    setStreak(0);
+    setScore(r.data.score);
+    setAnswered(r.data.answered);
+    setSkipsLeft(r.data.skipsLeft);
+    setSegments(r.data.wheel);
+    setBusy(false);
+    return true;
   }
 
   async function endGame() {
@@ -441,6 +475,8 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
               busy={busy}
               error={stuck ? null : error}
               onSubmit={submit}
+              skipsLeft={skipsLeft}
+              onSkip={skip}
               onNext={next}
               onContinue={onContinue}
             />
@@ -450,7 +486,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         </div>
       </section>
 
-      {result && <Feedback key={answered} result={result} />}
+      {result && !result.skipped && <Feedback key={answered} result={result} />}
 
       {stuck && (
         <div className={styles.alert} role="alertdialog" aria-modal="true">

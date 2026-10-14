@@ -30,7 +30,7 @@ function fakeClient(result) {
 }
 const echo = (userId, already = false) => (a) => ({
   data: [{ out_score: a.p_score, out_answered: a.p_answered, out_correct: a.p_correct,
-    out_incorrect: a.p_incorrect, out_counted: true, out_already_claimed: already, out_user_id: userId }],
+    out_incorrect: a.p_incorrect, out_skipped: a.p_skipped, out_counted: true, out_already_claimed: already, out_user_id: userId }],
 });
 
 test("claims with values read from the session row", async () => {
@@ -39,11 +39,21 @@ test("claims with values read from the session row", async () => {
   assert.equal(r.status, 200);
   assert.deepEqual(c.calls.rpc[0], {
     name: "fan_quiz_claim",
-    args: { p_user: ME, p_session: SID, p_score: 200, p_answered: 3, p_correct: 2, p_incorrect: 1, p_completed: DONE },
+    args: { p_user: ME, p_session: SID, p_score: 200, p_answered: 3, p_correct: 2, p_incorrect: 1, p_skipped: 0, p_completed: DONE },
   });
   assert.equal(r.saved.counted, true);
   assert.equal(c.calls.updates.length, 1);
   assert.equal(c.calls.updates[0].claimed_by, ME);
+});
+
+test("skipped questions are sent on their own, not as incorrect", async () => {
+  const c = fakeClient(echo(ME));
+  const skip = { correct: false, skipped: true, pointsChange: 0 };
+  const r = await claimSession(c, row([A(200), skip, A(-100), skip]), ME, NOW);
+  assert.equal(r.status, 200);
+  const a = c.calls.rpc[0].args;
+  assert.deepEqual([a.p_answered, a.p_correct, a.p_incorrect, a.p_skipped, a.p_score], [4, 1, 1, 2, 100]);
+  assert.equal(r.saved.skipped, 2);
 });
 
 test("a negative score is saved as is", async () => {

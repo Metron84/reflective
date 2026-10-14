@@ -270,6 +270,268 @@
     ]
   },
   {
+    "id": "arsenal-100-c1",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "Arsenal have played their home games at this stadium since 2006.",
+    "answer": "Emirates Stadium",
+    "matchMode": "fuzzy",
+    "tags": [
+      "emirates"
+    ],
+    "check": "searched",
+    "source": "inquirer.net (2014 FA Cup report: Emirates since 2006)",
+    "acceptedAnswers": [
+      "emirates stadium",
+      "the emirates",
+      "emirates"
+    ]
+  },
+  {
+    "id": "arsenal-100-c2",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "Arsenal's traditional nickname is this.",
+    "answer": "The Gunners",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nickname"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "the gunners",
+      "gunners"
+    ]
+  },
+  {
+    "id": "arsenal-100-c3",
+    "category": "Arsenal",
+    "value": 100,
+    "clue": "This Frenchman managed Arsenal for 22 years, from 1996 to 2018.",
+    "answer": "Arsene Wenger",
+    "matchMode": "fuzzy",
+    "tags": [
+      "wenger"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "arsene wenger",
+      "wenger"
+    ]
+  },
+  {
+    "id": "arsenal-200-c1",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "Arsenal won the 2002 FA Cup final 2-0 against this opponent.",
+    "answer": "Chelsea",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2002-fa-cup"
+    ],
+    "check": "record",
+    "source": "club record",
+    "acceptedAnswers": [
+      "chelsea"
+    ]
+  },
+  {
+    "id": "arsenal-200-c2",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "Arsenal clinched the 2003-04 Premier League title with a 2-2 draw at this ground.",
+    "answer": "White Hart Lane",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2004-title"
+    ],
+    "check": "searched",
+    "source": "Reuters via ahram.org.eg (April 2004, Tottenham 2-2 Arsenal)",
+    "acceptedAnswers": [
+      "white hart lane"
+    ]
+  },
+  {
+    "id": "arsenal-200-c3",
+    "category": "Arsenal",
+    "value": 200,
+    "clue": "This Welsh midfielder scored the extra-time winner in Arsenal's 3-2 win over Hull City in the 2014 FA Cup final.",
+    "answer": "Aaron Ramsey",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2014-fa-cup"
+    ],
+    "check": "searched",
+    "source": "thefa.com, skysports.com (109th minute)",
+    "acceptedAnswers": [
+      "aaron ramsey",
+      "ramsey"
+    ]
+  },
+  {
+    "id": "arsenal-300-c1",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This Chilean scored the opening goal in Arsenal's 2-1 win in the 2017 FA Cup final.",
+    "answer": "Alexis Sanchez",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2017-fa-cup"
+    ],
+    "check": "searched",
+    "source": "thefa.com match report (Sanchez 4, Ramsey 79)",
+    "acceptedAnswers": [
+      "alexis sanchez",
+      "sanchez",
+      "alexis"
+    ]
+  },
+  {
+    "id": "arsenal-300-c2",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This captain scored both goals in Arsenal's 2-1 win in the 2020 FA Cup final.",
+    "answer": "Pierre-Emerick Aubameyang",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2020-fa-cup"
+    ],
+    "check": "searched",
+    "source": "cbssports.com, AP, sportsmole.co.uk",
+    "acceptedAnswers": [
+      "pierre-emerick aubameyang",
+      "pierre emerick aubameyang",
+      "aubameyang",
+      "auba"
+    ]
+  },
+  {
+    "id": "arsenal-300-c3",
+    "category": "Arsenal",
+    "value": 300,
+    "clue": "This French defender was the first player to feature for Chelsea, Arsenal and Tottenham.",
+    "answer": "William Gallas",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gallas"
+    ],
+    "check": "searched",
+    "source": "goal.com, footballgroundmap.com",
+    "acceptedAnswers": [
+      "william gallas",
+      "gallas"
+    ]
+  },
+  {
+    "id": "arsenal-400-c1",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "Arsenal lost the 2006 Champions League final to this club.",
+    "answer": "Barcelona",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2006-cl-final"
+    ],
+    "check": "searched",
+    "source": "uefa.com (Campbell to leave Gunners)",
+    "acceptedAnswers": [
+      "barcelona",
+      "fc barcelona",
+      "barca"
+    ]
+  },
+  {
+    "id": "arsenal-400-c2",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "This defender scored an extra-time header to win the 1993 FA Cup final replay for Arsenal.",
+    "answer": "Andy Linighan",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1993-cups"
+    ],
+    "check": "searched",
+    "source": "woolwicharsenal blog, aisa.org, classicfootballshirts.com",
+    "acceptedAnswers": [
+      "andy linighan",
+      "andrew linighan",
+      "linighan"
+    ]
+  },
+  {
+    "id": "arsenal-400-c3",
+    "category": "Arsenal",
+    "value": 400,
+    "clue": "This defender left Tottenham for Arsenal on a free transfer in 2001.",
+    "answer": "Sol Campbell",
+    "matchMode": "fuzzy",
+    "tags": [
+      "campbell"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org, uefa.com, yahoo.com",
+    "acceptedAnswers": [
+      "sol campbell",
+      "campbell"
+    ]
+  },
+  {
+    "id": "arsenal-500-c1",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "Arsenal's record league win over Tottenham, 6-0, came in this season.",
+    "answer": "1934-35",
+    "matchMode": "strict",
+    "tags": [
+      "1935"
+    ],
+    "check": "searched",
+    "source": "seanelvidge.com league head-to-head (6 March 1935)",
+    "acceptedAnswers": [
+      "1934-35",
+      "1934/35",
+      "1935",
+      "34-35"
+    ]
+  },
+  {
+    "id": "arsenal-500-c2",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "This forward scored a famous solo goal in Arsenal's 4-2 win over Liverpool at Highbury on Good Friday 2004.",
+    "answer": "Thierry Henry",
+    "matchMode": "fuzzy",
+    "tags": [
+      "henry"
+    ],
+    "check": "searched",
+    "source": "premierleague.com, onlinegooner.com, lastwordonsports.com",
+    "acceptedAnswers": [
+      "thierry henry",
+      "henry"
+    ]
+  },
+  {
+    "id": "arsenal-500-c3",
+    "category": "Arsenal",
+    "value": 500,
+    "clue": "In 1993 Arsenal became the first English club to win both the FA Cup and the League Cup in one season, beating this club in both finals.",
+    "answer": "Sheffield Wednesday",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1993-cups"
+    ],
+    "check": "searched",
+    "source": "wikipedia.org 1993 FA Cup final, woolwicharsenal blog",
+    "acceptedAnswers": [
+      "sheffield wednesday",
+      "sheffield wed",
+      "wednesday"
+    ]
+  },
+  {
     "id": "spurs-100-c1",
     "category": "Spurs",
     "value": 100,
@@ -530,6 +792,535 @@
       "ajax",
       "ajax amsterdam",
       "afc ajax"
+    ]
+  },
+  {
+    "id": "rangers-100-c1",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "Rangers' home ground in Glasgow.",
+    "answer": "Ibrox",
+    "matchMode": "fuzzy",
+    "tags": [
+      "ibrox"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ibrox",
+      "ibrox stadium",
+      "ibrox park"
+    ]
+  },
+  {
+    "id": "rangers-100-c2",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "Rangers' rivals in the Old Firm derby.",
+    "answer": "Celtic",
+    "matchMode": "fuzzy",
+    "tags": [
+      "old-firm"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "celtic",
+      "celtic fc"
+    ]
+  },
+  {
+    "id": "rangers-100-c3",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "The short nickname Rangers fans use for their club.",
+    "answer": "The Gers",
+    "matchMode": "fuzzy",
+    "tags": [
+      "nickname"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "gers",
+      "the gers",
+      "teddy bears",
+      "the light blues",
+      "light blues"
+    ]
+  },
+  {
+    "id": "rangers-100-c4",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "The city Rangers call home.",
+    "answer": "Glasgow",
+    "matchMode": "fuzzy",
+    "tags": [
+      "city"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "glasgow"
+    ]
+  },
+  {
+    "id": "rangers-100-c5",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "This former Liverpool captain managed Rangers to the 2020-21 league title.",
+    "answer": "Steven Gerrard",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gerrard"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "steven gerrard",
+      "gerrard",
+      "stevie g"
+    ]
+  },
+  {
+    "id": "rangers-100-c6",
+    "category": "Rangers",
+    "value": 100,
+    "clue": "The colour of Rangers' home shirt.",
+    "answer": "Royal blue",
+    "matchMode": "fuzzy",
+    "tags": [
+      "kit"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "blue",
+      "royal blue"
+    ]
+  },
+  {
+    "id": "rangers-200-c1",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "Rangers won this European trophy in 1972.",
+    "answer": "European Cup Winners' Cup",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1972-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "cup winners cup",
+      "cup winners' cup",
+      "european cup winners cup",
+      "european cup winners' cup",
+      "ecwc"
+    ]
+  },
+  {
+    "id": "rangers-200-c2",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "The year Rangers were founded.",
+    "answer": "1872",
+    "matchMode": "strict",
+    "tags": [
+      "founding"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "1872"
+    ]
+  },
+  {
+    "id": "rangers-200-c3",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "This Danish winger starred for Rangers in the 1990s and later won the European Championship with Denmark.",
+    "answer": "Brian Laudrup",
+    "matchMode": "fuzzy",
+    "tags": [
+      "laudrup"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "brian laudrup",
+      "laudrup"
+    ]
+  },
+  {
+    "id": "rangers-200-c4",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "This English midfielder played for Rangers from 1995 to 1998.",
+    "answer": "Paul Gascoigne",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gascoigne"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "paul gascoigne",
+      "gascoigne",
+      "gazza"
+    ]
+  },
+  {
+    "id": "rangers-200-c5",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "Rangers' all-time record goalscorer, with 355 goals.",
+    "answer": "Ally McCoist",
+    "matchMode": "fuzzy",
+    "tags": [
+      "mccoist"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ally mccoist",
+      "mccoist",
+      "super ally"
+    ]
+  },
+  {
+    "id": "rangers-200-c6",
+    "category": "Rangers",
+    "value": 200,
+    "clue": "Rangers won this league in 2021 to stop Celtic winning ten in a row.",
+    "answer": "Scottish Premiership",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2021-title"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "scottish premiership",
+      "premiership",
+      "spfl",
+      "scottish premier league"
+    ]
+  },
+  {
+    "id": "rangers-300-c1",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "Rangers beat this Soviet club in the 1972 Cup Winners' Cup final.",
+    "answer": "Dynamo Moscow",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1972-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "dynamo moscow",
+      "dinamo moscow",
+      "dynamo"
+    ]
+  },
+  {
+    "id": "rangers-300-c2",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "The city that hosted the 1972 Cup Winners' Cup final.",
+    "answer": "Barcelona",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1972-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "barcelona"
+    ]
+  },
+  {
+    "id": "rangers-300-c3",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "The number of consecutive league titles Rangers won from 1989 to 1997.",
+    "answer": "9",
+    "matchMode": "strict",
+    "tags": [
+      "nine-in-a-row"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "9",
+      "nine",
+      "nine in a row"
+    ]
+  },
+  {
+    "id": "rangers-300-c4",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "He managed Rangers for most of the nine-in-a-row run.",
+    "answer": "Walter Smith",
+    "matchMode": "fuzzy",
+    "tags": [
+      "walter-smith"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "walter smith",
+      "smith"
+    ]
+  },
+  {
+    "id": "rangers-300-c5",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "This German club beat Rangers on penalties in the 2022 Europa League final.",
+    "answer": "Eintracht Frankfurt",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2022-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "eintracht frankfurt",
+      "frankfurt",
+      "eintracht"
+    ]
+  },
+  {
+    "id": "rangers-300-c6",
+    "category": "Rangers",
+    "value": 300,
+    "clue": "The Spanish city that hosted the 2022 Europa League final.",
+    "answer": "Seville",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2022-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "seville",
+      "sevilla"
+    ]
+  },
+  {
+    "id": "rangers-400-c1",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "Rangers lost the 2008 UEFA Cup final to this Russian club.",
+    "answer": "Zenit Saint Petersburg",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2008-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "zenit",
+      "zenit saint petersburg",
+      "zenit st petersburg",
+      "zenit st. petersburg"
+    ]
+  },
+  {
+    "id": "rangers-400-c2",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "The English city that hosted the 2008 UEFA Cup final.",
+    "answer": "Manchester",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2008-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "manchester"
+    ]
+  },
+  {
+    "id": "rangers-400-c3",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "He scored twice for Rangers in the 1972 Cup Winners' Cup final.",
+    "answer": "Willie Johnston",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1972-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "willie johnston",
+      "johnston"
+    ]
+  },
+  {
+    "id": "rangers-400-c4",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "This Dutch manager took Rangers to the 2022 Europa League final.",
+    "answer": "Giovanni van Bronckhorst",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2022-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "giovanni van bronckhorst",
+      "van bronckhorst",
+      "gio"
+    ]
+  },
+  {
+    "id": "rangers-400-c5",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "He arrived as player-manager in 1986 and brought English internationals like Terry Butcher to Ibrox.",
+    "answer": "Graeme Souness",
+    "matchMode": "fuzzy",
+    "tags": [
+      "souness"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "graeme souness",
+      "souness"
+    ]
+  },
+  {
+    "id": "rangers-400-c6",
+    "category": "Rangers",
+    "value": 400,
+    "clue": "Rangers knocked out these English champions in the 1992-93 Champions League Battle of Britain.",
+    "answer": "Leeds United",
+    "matchMode": "fuzzy",
+    "tags": [
+      "battle-of-britain"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "leeds",
+      "leeds united"
+    ]
+  },
+  {
+    "id": "rangers-500-c1",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "Rangers' four young founders are remembered by this collective name.",
+    "answer": "The Gallant Pioneers",
+    "matchMode": "fuzzy",
+    "tags": [
+      "founding"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "gallant pioneers",
+      "the gallant pioneers"
+    ]
+  },
+  {
+    "id": "rangers-500-c2",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "Rangers played their first matches on this Glasgow park.",
+    "answer": "Glasgow Green",
+    "matchMode": "fuzzy",
+    "tags": [
+      "founding"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "glasgow green",
+      "flesher's haugh",
+      "fleshers haugh"
+    ]
+  },
+  {
+    "id": "rangers-500-c3",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "Fans voted him the Greatest Ever Ranger in 1999.",
+    "answer": "John Greig",
+    "matchMode": "fuzzy",
+    "tags": [
+      "greig"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "john greig",
+      "greig"
+    ]
+  },
+  {
+    "id": "rangers-500-c4",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "Rangers' longest-serving manager, in charge from 1920 to 1954.",
+    "answer": "Bill Struth",
+    "matchMode": "fuzzy",
+    "tags": [
+      "struth"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "bill struth",
+      "struth"
+    ]
+  },
+  {
+    "id": "rangers-500-c5",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "The season Rangers won their 55th league title.",
+    "answer": "2020-21",
+    "matchMode": "strict",
+    "tags": [
+      "2021-title"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "2020-21",
+      "2020/21",
+      "2020-2021",
+      "2020/2021",
+      "2021"
+    ]
+  },
+  {
+    "id": "rangers-500-c6",
+    "category": "Rangers",
+    "value": 500,
+    "clue": "The score in Rangers' 1972 Cup Winners' Cup final win.",
+    "answer": "3-2",
+    "matchMode": "strict",
+    "tags": [
+      "1972-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "3-2",
+      "3 2",
+      "3–2"
     ]
   },
   {
@@ -817,265 +1608,1051 @@
     ]
   },
   {
-    "id": "arsenal-100-c1",
-    "category": "Arsenal",
+    "id": "liverpool-100-c1",
+    "category": "Liverpool",
     "value": 100,
-    "clue": "Arsenal have played their home games at this stadium since 2006.",
-    "answer": "Emirates Stadium",
+    "clue": "Liverpool's home ground since 1892.",
+    "answer": "Anfield",
     "matchMode": "fuzzy",
     "tags": [
-      "emirates"
+      "anfield"
     ],
-    "check": "searched",
-    "source": "inquirer.net (2014 FA Cup report: Emirates since 2006)",
+    "check": "record",
+    "source": "club history",
     "acceptedAnswers": [
-      "emirates stadium",
-      "the emirates",
-      "emirates"
+      "anfield"
     ]
   },
   {
-    "id": "arsenal-100-c2",
-    "category": "Arsenal",
+    "id": "liverpool-100-c2",
+    "category": "Liverpool",
     "value": 100,
-    "clue": "Arsenal's traditional nickname is this.",
-    "answer": "The Gunners",
+    "clue": "The anthem Liverpool fans sing before every home game.",
+    "answer": "You'll Never Walk Alone",
+    "matchMode": "fuzzy",
+    "tags": [
+      "anthem"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "you'll never walk alone",
+      "youll never walk alone",
+      "ynwa"
+    ]
+  },
+  {
+    "id": "liverpool-100-c3",
+    "category": "Liverpool",
+    "value": 100,
+    "clue": "Liverpool's rivals in the Merseyside derby.",
+    "answer": "Everton",
+    "matchMode": "fuzzy",
+    "tags": [
+      "merseyside-derby"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "everton",
+      "everton fc"
+    ]
+  },
+  {
+    "id": "liverpool-100-c4",
+    "category": "Liverpool",
+    "value": 100,
+    "clue": "Liverpool signed this Egyptian forward from Roma in 2017.",
+    "answer": "Mohamed Salah",
+    "matchMode": "fuzzy",
+    "tags": [
+      "salah"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "mohamed salah",
+      "salah",
+      "mo salah"
+    ]
+  },
+  {
+    "id": "liverpool-100-c5",
+    "category": "Liverpool",
+    "value": 100,
+    "clue": "This German manager won the 2019 Champions League and the 2020 league title with Liverpool.",
+    "answer": "Jurgen Klopp",
+    "matchMode": "fuzzy",
+    "tags": [
+      "klopp"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "jurgen klopp",
+      "jürgen klopp",
+      "klopp"
+    ]
+  },
+  {
+    "id": "liverpool-100-c6",
+    "category": "Liverpool",
+    "value": 100,
+    "clue": "This Scottish manager built the modern Liverpool in the 1960s and has a statue outside Anfield.",
+    "answer": "Bill Shankly",
+    "matchMode": "fuzzy",
+    "tags": [
+      "shankly"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "bill shankly",
+      "shankly"
+    ]
+  },
+  {
+    "id": "liverpool-200-c1",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "Liverpool came back from 3-0 down to beat this club in the 2005 Champions League final.",
+    "answer": "AC Milan",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2005-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ac milan",
+      "milan"
+    ]
+  },
+  {
+    "id": "liverpool-200-c2",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "The famous stand behind the goal at Anfield.",
+    "answer": "The Kop",
+    "matchMode": "fuzzy",
+    "tags": [
+      "kop"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "the kop",
+      "kop",
+      "spion kop"
+    ]
+  },
+  {
+    "id": "liverpool-200-c3",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "He holds Liverpool's appearance record, with 857 games.",
+    "answer": "Ian Callaghan",
+    "matchMode": "fuzzy",
+    "tags": [
+      "records"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ian callaghan",
+      "callaghan",
+      "cally"
+    ]
+  },
+  {
+    "id": "liverpool-200-c4",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "Liverpool's all-time record goalscorer, with 346 goals.",
+    "answer": "Ian Rush",
+    "matchMode": "fuzzy",
+    "tags": [
+      "rush"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ian rush",
+      "rush"
+    ]
+  },
+  {
+    "id": "liverpool-200-c5",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "Liverpool beat this English club 2-0 in the 2019 Champions League final.",
+    "answer": "Tottenham Hotspur",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "tottenham",
+      "tottenham hotspur",
+      "spurs"
+    ]
+  },
+  {
+    "id": "liverpool-200-c6",
+    "category": "Liverpool",
+    "value": 200,
+    "clue": "This Liverpool captain lifted the Champions League trophy in Istanbul in 2005.",
+    "answer": "Steven Gerrard",
+    "matchMode": "fuzzy",
+    "tags": [
+      "gerrard"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "steven gerrard",
+      "gerrard",
+      "stevie g"
+    ]
+  },
+  {
+    "id": "liverpool-300-c1",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "The year Liverpool Football Club was founded.",
+    "answer": "1892",
+    "matchMode": "strict",
+    "tags": [
+      "founding"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "1892"
+    ]
+  },
+  {
+    "id": "liverpool-300-c2",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "This Spanish manager led Liverpool to the 2005 Champions League.",
+    "answer": "Rafael Benitez",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2005-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "rafael benitez",
+      "rafael benítez",
+      "benitez",
+      "benítez",
+      "rafa"
+    ]
+  },
+  {
+    "id": "liverpool-300-c3",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "He scored Liverpool's second goal in the 2019 Champions League final.",
+    "answer": "Divock Origi",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "divock origi",
+      "origi"
+    ]
+  },
+  {
+    "id": "liverpool-300-c4",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "Liverpool overturned a 3-0 first-leg defeat to beat this club 4-0 in the 2019 semi-final.",
+    "answer": "Barcelona",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2019-semi"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "barcelona",
+      "fc barcelona",
+      "barca",
+      "barça"
+    ]
+  },
+  {
+    "id": "liverpool-300-c5",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "This manager won three European Cups with Liverpool, in 1977, 1978 and 1981.",
+    "answer": "Bob Paisley",
+    "matchMode": "fuzzy",
+    "tags": [
+      "paisley"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "bob paisley",
+      "paisley"
+    ]
+  },
+  {
+    "id": "liverpool-300-c6",
+    "category": "Liverpool",
+    "value": 300,
+    "clue": "Liverpool signed this Dutch defender from Southampton in January 2018.",
+    "answer": "Virgil van Dijk",
+    "matchMode": "fuzzy",
+    "tags": [
+      "van-dijk"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "virgil van dijk",
+      "van dijk",
+      "vvd"
+    ]
+  },
+  {
+    "id": "liverpool-400-c1",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "Liverpool won their first European Cup in 1977, beating this German club in Rome.",
+    "answer": "Borussia Monchengladbach",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1977-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "borussia monchengladbach",
+      "borussia mönchengladbach",
+      "monchengladbach",
+      "mönchengladbach",
+      "gladbach"
+    ]
+  },
+  {
+    "id": "liverpool-400-c2",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "He scored the winner against Club Brugge in the 1978 European Cup final.",
+    "answer": "Kenny Dalglish",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1978-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "kenny dalglish",
+      "dalglish",
+      "king kenny"
+    ]
+  },
+  {
+    "id": "liverpool-400-c3",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "This Dutch manager succeeded Jurgen Klopp in 2024.",
+    "answer": "Arne Slot",
+    "matchMode": "fuzzy",
+    "tags": [
+      "slot"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "arne slot",
+      "slot"
+    ]
+  },
+  {
+    "id": "liverpool-400-c4",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "This goalkeeper's wobbly legs distracted Roma in the 1984 European Cup final shootout.",
+    "answer": "Bruce Grobbelaar",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1984-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "bruce grobbelaar",
+      "grobbelaar"
+    ]
+  },
+  {
+    "id": "liverpool-400-c5",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "Liverpool beat this Italian club on penalties in the 1984 European Cup final.",
+    "answer": "Roma",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1984-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "roma",
+      "as roma"
+    ]
+  },
+  {
+    "id": "liverpool-400-c6",
+    "category": "Liverpool",
+    "value": 400,
+    "clue": "This Liverpool striker won the 2001 Ballon d'Or.",
+    "answer": "Michael Owen",
+    "matchMode": "fuzzy",
+    "tags": [
+      "owen"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "michael owen",
+      "owen"
+    ]
+  },
+  {
+    "id": "liverpool-500-c1",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "Liverpool beat this Spanish club 1-0 in the 1981 European Cup final in Paris.",
+    "answer": "Real Madrid",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1981-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "real madrid",
+      "madrid"
+    ]
+  },
+  {
+    "id": "liverpool-500-c2",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "This left-back scored the winner in the 1981 European Cup final.",
+    "answer": "Alan Kennedy",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1981-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "alan kennedy",
+      "kennedy"
+    ]
+  },
+  {
+    "id": "liverpool-500-c3",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "Liverpool won the 2001 UEFA Cup final 5-4 on a golden goal against this Spanish club.",
+    "answer": "Alaves",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2001-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "alaves",
+      "alavés",
+      "deportivo alaves",
+      "deportivo alavés"
+    ]
+  },
+  {
+    "id": "liverpool-500-c4",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "This Everton landlord founded Liverpool in 1892 after Everton left Anfield.",
+    "answer": "John Houlding",
+    "matchMode": "fuzzy",
+    "tags": [
+      "founding"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "john houlding",
+      "houlding"
+    ]
+  },
+  {
+    "id": "liverpool-500-c5",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "This goalkeeper saved Andriy Shevchenko's decisive penalty in the 2005 final.",
+    "answer": "Jerzy Dudek",
+    "matchMode": "fuzzy",
+    "tags": [
+      "2005-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "jerzy dudek",
+      "dudek"
+    ]
+  },
+  {
+    "id": "liverpool-500-c6",
+    "category": "Liverpool",
+    "value": 500,
+    "clue": "Liverpool's record competitive win was 11-0 in 1974 against this Norwegian club.",
+    "answer": "Stromsgodset",
+    "matchMode": "fuzzy",
+    "tags": [
+      "record-win"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "stromsgodset",
+      "strømsgodset"
+    ]
+  },
+  {
+    "id": "manchester-united-100-c1",
+    "category": "Manchester United",
+    "value": 100,
+    "clue": "Manchester United's home ground is nicknamed the Theatre of Dreams.",
+    "answer": "Old Trafford",
+    "matchMode": "fuzzy",
+    "tags": [
+      "old-trafford"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "old trafford"
+    ]
+  },
+  {
+    "id": "manchester-united-100-c2",
+    "category": "Manchester United",
+    "value": 100,
+    "clue": "Manchester United's nickname, taken from the devil on the club crest.",
+    "answer": "The Red Devils",
     "matchMode": "fuzzy",
     "tags": [
       "nickname"
     ],
     "check": "record",
-    "source": "club record",
+    "source": "club history",
     "acceptedAnswers": [
-      "the gunners",
-      "gunners"
+      "red devils",
+      "the red devils"
     ]
   },
   {
-    "id": "arsenal-100-c3",
-    "category": "Arsenal",
+    "id": "manchester-united-100-c3",
+    "category": "Manchester United",
     "value": 100,
-    "clue": "This Frenchman managed Arsenal for 22 years, from 1996 to 2018.",
-    "answer": "Arsene Wenger",
+    "clue": "This Scot managed Manchester United from 1986 to 2013.",
+    "answer": "Sir Alex Ferguson",
     "matchMode": "fuzzy",
     "tags": [
-      "wenger"
+      "ferguson"
     ],
     "check": "record",
-    "source": "club record",
+    "source": "club history",
     "acceptedAnswers": [
-      "arsene wenger",
-      "wenger"
+      "alex ferguson",
+      "ferguson",
+      "sir alex ferguson",
+      "sir alex"
     ]
   },
   {
-    "id": "arsenal-200-c1",
-    "category": "Arsenal",
+    "id": "manchester-united-100-c4",
+    "category": "Manchester United",
+    "value": 100,
+    "clue": "Manchester United's city rivals in the Manchester derby.",
+    "answer": "Manchester City",
+    "matchMode": "fuzzy",
+    "tags": [
+      "manchester-derby"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "manchester city",
+      "man city"
+    ]
+  },
+  {
+    "id": "manchester-united-100-c5",
+    "category": "Manchester United",
+    "value": 100,
+    "clue": "This Portuguese forward won the 2008 Ballon d'Or while at Manchester United.",
+    "answer": "Cristiano Ronaldo",
+    "matchMode": "fuzzy",
+    "tags": [
+      "ronaldo"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "cristiano ronaldo",
+      "ronaldo",
+      "cr7"
+    ]
+  },
+  {
+    "id": "manchester-united-100-c6",
+    "category": "Manchester United",
+    "value": 100,
+    "clue": "This Northern Irish winger, nicknamed the Fifth Beatle, won the 1968 European Cup with United.",
+    "answer": "George Best",
+    "matchMode": "fuzzy",
+    "tags": [
+      "best"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "george best",
+      "best"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c1",
+    "category": "Manchester United",
     "value": 200,
-    "clue": "Arsenal won the 2002 FA Cup final 2-0 against this opponent.",
+    "clue": "Manchester United were known by this name until 1902.",
+    "answer": "Newton Heath",
+    "matchMode": "fuzzy",
+    "tags": [
+      "newton-heath"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "newton heath",
+      "newton heath lyr"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c2",
+    "category": "Manchester United",
+    "value": 200,
+    "clue": "He scored the stoppage-time winner in the 1999 Champions League final.",
+    "answer": "Ole Gunnar Solskjaer",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1999-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ole gunnar solskjaer",
+      "solskjaer",
+      "ole gunnar solskjær",
+      "solskjær",
+      "ole"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c3",
+    "category": "Manchester United",
+    "value": 200,
+    "clue": "Beckham, Scholes, Giggs, Butt and the Neville brothers came through as this academy group.",
+    "answer": "Class of '92",
+    "matchMode": "fuzzy",
+    "tags": [
+      "class-of-92"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "class of 92",
+      "class of '92",
+      "the class of 92",
+      "class of 1992"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c4",
+    "category": "Manchester United",
+    "value": 200,
+    "clue": "He holds the record for most appearances for Manchester United, with 963.",
+    "answer": "Ryan Giggs",
+    "matchMode": "fuzzy",
+    "tags": [
+      "giggs"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ryan giggs",
+      "giggs"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c5",
+    "category": "Manchester United",
+    "value": 200,
+    "clue": "This Scot managed United to their first European Cup in 1968.",
+    "answer": "Sir Matt Busby",
+    "matchMode": "fuzzy",
+    "tags": [
+      "busby"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "matt busby",
+      "busby",
+      "sir matt busby"
+    ]
+  },
+  {
+    "id": "manchester-united-200-c6",
+    "category": "Manchester United",
+    "value": 200,
+    "clue": "This French forward joined United from Leeds in 1992 and famously wore his collar turned up.",
+    "answer": "Eric Cantona",
+    "matchMode": "fuzzy",
+    "tags": [
+      "cantona"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "eric cantona",
+      "cantona"
+    ]
+  },
+  {
+    "id": "manchester-united-300-c1",
+    "category": "Manchester United",
+    "value": 300,
+    "clue": "Manchester United's all-time record goalscorer, with 253 goals.",
+    "answer": "Wayne Rooney",
+    "matchMode": "fuzzy",
+    "tags": [
+      "rooney"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "wayne rooney",
+      "rooney"
+    ]
+  },
+  {
+    "id": "manchester-united-300-c2",
+    "category": "Manchester United",
+    "value": 300,
+    "clue": "United beat this English club on penalties in the 2008 Champions League final in Moscow.",
     "answer": "Chelsea",
     "matchMode": "fuzzy",
     "tags": [
-      "2002-fa-cup"
+      "2008-final"
     ],
     "check": "record",
-    "source": "club record",
+    "source": "club history",
     "acceptedAnswers": [
-      "chelsea"
+      "chelsea",
+      "chelsea fc"
     ]
   },
   {
-    "id": "arsenal-200-c2",
-    "category": "Arsenal",
-    "value": 200,
-    "clue": "Arsenal clinched the 2003-04 Premier League title with a 2-2 draw at this ground.",
-    "answer": "White Hart Lane",
-    "matchMode": "fuzzy",
-    "tags": [
-      "2004-title"
-    ],
-    "check": "searched",
-    "source": "Reuters via ahram.org.eg (April 2004, Tottenham 2-2 Arsenal)",
-    "acceptedAnswers": [
-      "white hart lane"
-    ]
-  },
-  {
-    "id": "arsenal-200-c3",
-    "category": "Arsenal",
-    "value": 200,
-    "clue": "This Welsh midfielder scored the extra-time winner in Arsenal's 3-2 win over Hull City in the 2014 FA Cup final.",
-    "answer": "Aaron Ramsey",
-    "matchMode": "fuzzy",
-    "tags": [
-      "2014-fa-cup"
-    ],
-    "check": "searched",
-    "source": "thefa.com, skysports.com (109th minute)",
-    "acceptedAnswers": [
-      "aaron ramsey",
-      "ramsey"
-    ]
-  },
-  {
-    "id": "arsenal-300-c1",
-    "category": "Arsenal",
+    "id": "manchester-united-300-c3",
+    "category": "Manchester United",
     "value": 300,
-    "clue": "This Chilean scored the opening goal in Arsenal's 2-1 win in the 2017 FA Cup final.",
-    "answer": "Alexis Sanchez",
-    "matchMode": "fuzzy",
-    "tags": [
-      "2017-fa-cup"
-    ],
-    "check": "searched",
-    "source": "thefa.com match report (Sanchez 4, Ramsey 79)",
-    "acceptedAnswers": [
-      "alexis sanchez",
-      "sanchez",
-      "alexis"
-    ]
-  },
-  {
-    "id": "arsenal-300-c2",
-    "category": "Arsenal",
-    "value": 300,
-    "clue": "This captain scored both goals in Arsenal's 2-1 win in the 2020 FA Cup final.",
-    "answer": "Pierre-Emerick Aubameyang",
-    "matchMode": "fuzzy",
-    "tags": [
-      "2020-fa-cup"
-    ],
-    "check": "searched",
-    "source": "cbssports.com, AP, sportsmole.co.uk",
-    "acceptedAnswers": [
-      "pierre-emerick aubameyang",
-      "pierre emerick aubameyang",
-      "aubameyang",
-      "auba"
-    ]
-  },
-  {
-    "id": "arsenal-300-c3",
-    "category": "Arsenal",
-    "value": 300,
-    "clue": "This French defender was the first player to feature for Chelsea, Arsenal and Tottenham.",
-    "answer": "William Gallas",
-    "matchMode": "fuzzy",
-    "tags": [
-      "gallas"
-    ],
-    "check": "searched",
-    "source": "goal.com, footballgroundmap.com",
-    "acceptedAnswers": [
-      "william gallas",
-      "gallas"
-    ]
-  },
-  {
-    "id": "arsenal-400-c1",
-    "category": "Arsenal",
-    "value": 400,
-    "clue": "Arsenal lost the 2006 Champions League final to this club.",
-    "answer": "Barcelona",
-    "matchMode": "fuzzy",
-    "tags": [
-      "2006-cl-final"
-    ],
-    "check": "searched",
-    "source": "uefa.com (Campbell to leave Gunners)",
-    "acceptedAnswers": [
-      "barcelona",
-      "fc barcelona",
-      "barca"
-    ]
-  },
-  {
-    "id": "arsenal-400-c2",
-    "category": "Arsenal",
-    "value": 400,
-    "clue": "This defender scored an extra-time header to win the 1993 FA Cup final replay for Arsenal.",
-    "answer": "Andy Linighan",
-    "matchMode": "fuzzy",
-    "tags": [
-      "1993-cups"
-    ],
-    "check": "searched",
-    "source": "woolwicharsenal blog, aisa.org, classicfootballshirts.com",
-    "acceptedAnswers": [
-      "andy linighan",
-      "andrew linighan",
-      "linighan"
-    ]
-  },
-  {
-    "id": "arsenal-400-c3",
-    "category": "Arsenal",
-    "value": 400,
-    "clue": "This defender left Tottenham for Arsenal on a free transfer in 2001.",
-    "answer": "Sol Campbell",
-    "matchMode": "fuzzy",
-    "tags": [
-      "campbell"
-    ],
-    "check": "searched",
-    "source": "wikipedia.org, uefa.com, yahoo.com",
-    "acceptedAnswers": [
-      "sol campbell",
-      "campbell"
-    ]
-  },
-  {
-    "id": "arsenal-500-c1",
-    "category": "Arsenal",
-    "value": 500,
-    "clue": "Arsenal's record league win over Tottenham, 6-0, came in this season.",
-    "answer": "1934-35",
+    "clue": "The year Manchester United first won the European Cup.",
+    "answer": "1968",
     "matchMode": "strict",
     "tags": [
-      "1935"
+      "1968-final"
     ],
-    "check": "searched",
-    "source": "seanelvidge.com league head-to-head (6 March 1935)",
+    "check": "record",
+    "source": "club history",
     "acceptedAnswers": [
-      "1934-35",
-      "1934/35",
-      "1935",
-      "34-35"
+      "1968"
     ]
   },
   {
-    "id": "arsenal-500-c2",
-    "category": "Arsenal",
-    "value": 500,
-    "clue": "This forward scored a famous solo goal in Arsenal's 4-2 win over Liverpool at Highbury on Good Friday 2004.",
-    "answer": "Thierry Henry",
+    "id": "manchester-united-300-c4",
+    "category": "Manchester United",
+    "value": 300,
+    "clue": "Busby's young side of the 1950s was known by this nickname.",
+    "answer": "The Busby Babes",
     "matchMode": "fuzzy",
     "tags": [
-      "henry"
+      "busby"
     ],
-    "check": "searched",
-    "source": "premierleague.com, onlinegooner.com, lastwordonsports.com",
+    "check": "record",
+    "source": "club history",
     "acceptedAnswers": [
-      "thierry henry",
-      "henry"
+      "busby babes",
+      "the busby babes"
     ]
   },
   {
-    "id": "arsenal-500-c3",
-    "category": "Arsenal",
-    "value": 500,
-    "clue": "In 1993 Arsenal became the first English club to win both the FA Cup and the League Cup in one season, beating this club in both finals.",
-    "answer": "Sheffield Wednesday",
+    "id": "manchester-united-300-c5",
+    "category": "Manchester United",
+    "value": 300,
+    "clue": "United signed Cristiano Ronaldo from this Portuguese club in 2003.",
+    "answer": "Sporting CP",
     "matchMode": "fuzzy",
     "tags": [
-      "1993-cups"
+      "ronaldo"
     ],
-    "check": "searched",
-    "source": "wikipedia.org 1993 FA Cup final, woolwicharsenal blog",
+    "check": "record",
+    "source": "club history",
     "acceptedAnswers": [
-      "sheffield wednesday",
-      "sheffield wed",
-      "wednesday"
+      "sporting",
+      "sporting cp",
+      "sporting lisbon",
+      "sporting clube de portugal"
+    ]
+  },
+  {
+    "id": "manchester-united-300-c6",
+    "category": "Manchester United",
+    "value": 300,
+    "clue": "This goalkeeper captained United in the 1999 Champions League final.",
+    "answer": "Peter Schmeichel",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1999-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "peter schmeichel",
+      "schmeichel"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c1",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "United beat this Portuguese club 4-1 in the 1968 European Cup final at Wembley.",
+    "answer": "Benfica",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1968-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "benfica",
+      "sl benfica"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c2",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "The year Old Trafford first hosted Manchester United.",
+    "answer": "1910",
+    "matchMode": "strict",
+    "tags": [
+      "old-trafford"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "1910"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c3",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "He scored United's equaliser in the 1999 Champions League final, before the winner.",
+    "answer": "Teddy Sheringham",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1999-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "teddy sheringham",
+      "sheringham"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c4",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "The number of league titles United won under Sir Alex Ferguson.",
+    "answer": "13",
+    "matchMode": "strict",
+    "tags": [
+      "ferguson"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "13",
+      "thirteen"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c5",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "United re-signed Paul Pogba from this Italian club in 2016.",
+    "answer": "Juventus",
+    "matchMode": "fuzzy",
+    "tags": [
+      "pogba"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "juventus",
+      "juve"
+    ]
+  },
+  {
+    "id": "manchester-united-400-c6",
+    "category": "Manchester United",
+    "value": 400,
+    "clue": "He was United's manager immediately before Sir Alex Ferguson.",
+    "answer": "Ron Atkinson",
+    "matchMode": "fuzzy",
+    "tags": [
+      "managers"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "ron atkinson",
+      "atkinson",
+      "big ron"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c1",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "The year Newton Heath became Manchester United.",
+    "answer": "1902",
+    "matchMode": "strict",
+    "tags": [
+      "newton-heath"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "1902"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c2",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "Newton Heath were formed by workers of this railway company.",
+    "answer": "Lancashire and Yorkshire Railway",
+    "matchMode": "fuzzy",
+    "tags": [
+      "newton-heath"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "lancashire and yorkshire railway",
+      "lancashire & yorkshire railway",
+      "lyr",
+      "lancashire and yorkshire"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c3",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "He scored United's first goal in the 1968 European Cup final.",
+    "answer": "Bobby Charlton",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1968-final"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "bobby charlton",
+      "charlton",
+      "sir bobby charlton"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c4",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "United's record victory was 10-0 in 1956 against this Belgian club.",
+    "answer": "Anderlecht",
+    "matchMode": "fuzzy",
+    "tags": [
+      "record-win"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "anderlecht",
+      "rsc anderlecht"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c5",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "United beat this club in the 1999 FA Cup final to complete the domestic double.",
+    "answer": "Newcastle United",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1999-fa-cup"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "newcastle",
+      "newcastle united"
+    ]
+  },
+  {
+    "id": "manchester-united-500-c6",
+    "category": "Manchester United",
+    "value": 500,
+    "clue": "He scored the winner in the 1990 FA Cup final replay, Ferguson's first trophy at United.",
+    "answer": "Lee Martin",
+    "matchMode": "fuzzy",
+    "tags": [
+      "1990-fa-cup"
+    ],
+    "check": "record",
+    "source": "club history",
+    "acceptedAnswers": [
+      "lee martin",
+      "martin"
     ]
   }
 ]

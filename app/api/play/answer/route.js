@@ -1,5 +1,5 @@
 import { QUESTIONS } from "@/lib/play/bank.js";
-import { applyAnswer, wheel } from "@/lib/play/game.js";
+import { applyAnswer, skipsLeft, wheel } from "@/lib/play/game.js";
 import { missingQuestion } from "@/lib/play/question-guard.js";
 import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, db, fail, limited, loadSession, noDb, noSession, ok, saveState } from "@/lib/play/session.js";
@@ -37,6 +37,7 @@ async function answerPost(req, deps = {}) {
     pointsChange: result.pointsChange,
     score: result.state.score,
     answered: result.state.answered,
+    skipsLeft: skipsLeft(result.state),
     answer: q.answer,
     wheel: wheel(result.state),
     next: result.next,

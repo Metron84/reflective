@@ -1,5 +1,5 @@
 import { QUESTIONS, answerSeconds } from "@/lib/play/bank.js";
-import { MAX_QUESTIONS, CONTINUE_AFTER, newState, wheel } from "@/lib/play/game.js";
+import { MAX_QUESTIONS, MAX_SKIPS, CONTINUE_AFTER, newState, wheel } from "@/lib/play/game.js";
 import { publicSession } from "@/lib/play/resume.js";
 import { playRoute } from "@/lib/play/route-guard.js";
 import { db, fail, limited, loadSession, noDb, noSession, ok, setCookie } from "@/lib/play/session.js";
@@ -40,6 +40,8 @@ export function POST(req) {
         score: 0,
         answered: 0,
         maxQuestions: MAX_QUESTIONS,
+        skipsUsed: 0,
+        maxSkips: MAX_SKIPS,
         continueAfter: CONTINUE_AFTER,
         answerSeconds: answerSeconds(),
         next: "spin",

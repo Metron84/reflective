@@ -16,6 +16,8 @@ export default function QuestionModal({
   busy,
   error,
   onSubmit,
+  skipsLeft,
+  onSkip,
   onNext,
   onContinue,
 }) {
@@ -57,6 +59,13 @@ export default function QuestionModal({
     if (submitted.current || busy) return;
     submitted.current = true;
     onSubmit(text, trap);
+  }
+
+  async function skip() {
+    if (submitted.current || busy || skipsLeft < 1) return;
+    submitted.current = true;
+    const handled = await onSkip();
+    if (!handled) submitted.current = false;
   }
 
   function speak() {
@@ -130,12 +139,20 @@ export default function QuestionModal({
                 </button>
               )}
             </div>
+            <button
+              type="button"
+              onClick={skip}
+              disabled={busy || skipsLeft < 1}
+              className={`${styles.secondary} ${styles.skip}`}
+            >
+              {skipsLeft < 1 ? "No skips left" : `Skip (${skipsLeft} left)`}
+            </button>
             {error && <p className={styles.error}>{error}</p>}
           </form>
         ) : (
           <div aria-live="polite">
             <p className={styles.verdict}>
-              {result.timedOut ? "Time is up" : result.correct ? "Correct" : "Not this time"}{" "}
+              {result.skipped ? "Skipped" : result.timedOut ? "Time is up" : result.correct ? "Correct" : "Not this time"}{" "}
               <span className={styles.gold}>
                 {result.pointsChange > 0 ? `+${result.pointsChange}` : result.pointsChange}
               </span>

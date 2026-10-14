@@ -1,5 +1,5 @@
 import { QUESTIONS, answerSeconds } from "@/lib/play/bank.js";
-import { applySpin, canSpin, pickSpin, wheel } from "@/lib/play/game.js";
+import { MAX_SKIPS, applySpin, canSpin, pickSpin, skipsLeft, wheel } from "@/lib/play/game.js";
 import { playRoute } from "@/lib/play/route-guard.js";
 import { conflict, fail, limited, loadSession, noDb, noSession, ok, saveState, db } from "@/lib/play/session.js";
 
@@ -32,6 +32,8 @@ export function POST(req) {
     wheel: wheel(state),
     score: state.score,
     answered: state.answered,
+    skipsLeft: skipsLeft(state),
+    maxSkips: MAX_SKIPS,
   });
   });
 }
