@@ -228,3 +228,17 @@ test("parseOverride accepts an id, a badge or colours and rejects junk", () => {
   assert.ok(parseOverride({ badge_url: "http://insecure/x.png" }).error);
   assert.ok(parseOverride({ sportmonks_id: 1, primary: "red" }).error);
 });
+
+test("the committed club media is complete and every club gets an AA palette", async () => {
+  const { readFileSync } = await import("node:fs");
+  const media = JSON.parse(readFileSync(new URL("../../lib/crest/club-media.json", import.meta.url), "utf8"));
+  for (const club of CLUBS) {
+    const m = media[club.slug];
+    assert.ok(m, `${club.slug} has no media entry`);
+    assert.match(m.primary, /^#[0-9A-F]{6}$/);
+    if (m.badge_url) assert.match(m.badge_url, /^https:\/\//, `${club.slug} badge`);
+    const p = leaguePalette(club.color, m);
+    assert.ok(contrast(p.primary, p.text) >= AA_TEXT, `${club.slug} text contrast`);
+    assert.ok(contrast(p.secondary, p.primary) >= AA_GRAPHIC, `${club.slug} accent contrast`);
+  }
+});

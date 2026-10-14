@@ -8,6 +8,24 @@
     "match_source": "league",
     "matched_name": "AC Milan"
   },
+  "afc-wimbledon": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1B2A5A",
+    "secondary": "#F5D130",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "ajax": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D2122E",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "alaves": {
     "sportmonks_id": 2975,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/31/2975.png",
@@ -98,6 +116,15 @@
     "match_source": "league",
     "matched_name": "FC Barcelona"
   },
+  "barnsley": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "bayer-leverkusen": {
     "sportmonks_id": 3321,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/25/3321.png",
@@ -115,6 +142,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "FC Bayern München"
+  },
+  "besiktas": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1A1A1A",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "birmingham-city": {
     "sportmonks_id": 12,
@@ -224,6 +260,33 @@
     "match_source": "league",
     "matched_name": "Brighton & Hove Albion"
   },
+  "bristol-city": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#E21A23",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "bromley": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1A1A1A",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "burton-albion": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#FDD835",
+    "secondary": "#1A1A1A",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "cagliari": {
     "sportmonks_id": 585,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/585.png",
@@ -232,6 +295,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Cagliari"
+  },
+  "cambridge-united": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#F7A600",
+    "secondary": "#1A1A1A",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "cardiff-city": {
     "sportmonks_id": 69,
@@ -250,6 +322,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Celta de Vigo"
+  },
+  "celtic": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#018749",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "charlton-athletic": {
     "sportmonks_id": 4,
@@ -305,6 +386,15 @@
     "match_source": "search",
     "matched_name": "Darmstadt 98"
   },
+  "deportivo-la-coruna": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#0067B1",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "derby-county": {
     "sportmonks_id": 24,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/24/24.png",
@@ -313,6 +403,33 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "Derby County"
+  },
+  "dinamo-zagreb": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#0050A0",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "doncaster-rovers": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#E31B23",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "dynamo-dresden": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#FFD500",
+    "secondary": "#1A1A1A",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "eintracht-braunschweig": {
     "sportmonks_id": 3565,
@@ -404,6 +521,24 @@
     "match_source": "league",
     "matched_name": "FC Köln"
   },
+  "fenerbahce": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#002A5C",
+    "secondary": "#FFED00",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "feyenoord": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#E4002B",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "fiorentina": {
     "sportmonks_id": 109,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/109.png",
@@ -430,6 +565,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Fulham"
+  },
+  "galatasaray": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#A90432",
+    "secondary": "#FDB912",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "genoa": {
     "sportmonks_id": 102,
@@ -493,6 +637,15 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "Hannover 96"
+  },
+  "heidenheim": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#E30613",
+    "secondary": "#003B7E",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "hellas-verona": {
     "sportmonks_id": 1123,
@@ -575,6 +728,15 @@
     "match_source": "league",
     "matched_name": "Juventus"
   },
+  "kaiserslautern": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D50F25",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "karlsruher-sc": {
     "sportmonks_id": 3114,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/3114.png",
@@ -583,6 +745,15 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "Karlsruher SC"
+  },
+  "las-palmas": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#FFE400",
+    "secondary": "#0057A8",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "lazio": {
     "sportmonks_id": 43,
@@ -656,6 +827,15 @@
     "match_source": "league",
     "matched_name": "Levante"
   },
+  "leyton-orient": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "lille": {
     "sportmonks_id": 690,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/690.png",
@@ -664,6 +844,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "LOSC Lille"
+  },
+  "lincoln-city": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "liverpool": {
     "sportmonks_id": 8,
@@ -701,6 +890,15 @@
     "match_source": "league",
     "matched_name": "Olympique Lyonnais"
   },
+  "magdeburg": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#0058A3",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "mainz-05": {
     "sportmonks_id": 794,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/794.png",
@@ -718,6 +916,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Málaga"
+  },
+  "mallorca": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#E20613",
+    "secondary": "#1A1A1A",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "manchester-city": {
     "sportmonks_id": 9,
@@ -737,6 +944,15 @@
     "match_source": "league",
     "matched_name": "Manchester United"
   },
+  "mansfield-town": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#F6A800",
+    "secondary": "#1F3C88",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "marseille": {
     "sportmonks_id": 44,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/44.png",
@@ -755,6 +971,24 @@
     "match_source": "search",
     "matched_name": "Middlesbrough"
   },
+  "millwall": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#001D5E",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "milton-keynes-dons": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1A1A1A",
+    "secondary": "#C9A227",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "monaco": {
     "sportmonks_id": 6789,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/6789.png",
@@ -763,6 +997,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Monaco"
+  },
+  "montpellier": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#002F6C",
+    "secondary": "#F26522",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "monza": {
     "sportmonks_id": 1628,
@@ -827,6 +1070,33 @@
     "match_source": "league",
     "matched_name": "Nottingham Forest"
   },
+  "notts-county": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1A1A1A",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "nurnberg": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#A6192E",
+    "secondary": "#1A1A1A",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "olympiacos": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "osasuna": {
     "sportmonks_id": 459,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/459.png",
@@ -836,6 +1106,15 @@
     "match_source": "league",
     "matched_name": "Osasuna"
   },
+  "oxford-united": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#FFDD00",
+    "secondary": "#002147",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "palermo": {
     "sportmonks_id": 1216,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/0/1216.png",
@@ -844,6 +1123,15 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "Palermo"
+  },
+  "panathinaikos": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#007A3D",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "paris-fc": {
     "sportmonks_id": 4508,
@@ -863,6 +1151,24 @@
     "match_source": "league",
     "matched_name": "Parma"
   },
+  "peterborough-united": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#0055A5",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "plymouth-argyle": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#00523F",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "portsmouth": {
     "sportmonks_id": 5,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/5.png",
@@ -872,6 +1178,15 @@
     "match_source": "search",
     "matched_name": "Portsmouth"
   },
+  "preston-north-end": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#001F5B",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "psg": {
     "sportmonks_id": 591,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/591.png",
@@ -880,6 +1195,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Paris Saint Germain"
+  },
+  "psv": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#ED1C24",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "queens-park-rangers": {
     "sportmonks_id": 47,
@@ -898,6 +1222,15 @@
     "colour_source": "badge",
     "match_source": "league",
     "matched_name": "Racing Santander"
+  },
+  "rangers": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#1B458F",
+    "secondary": "#D71920",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "rayo-vallecano": {
     "sportmonks_id": 377,
@@ -1052,6 +1385,24 @@
     "match_source": "search",
     "matched_name": "Sheffield United"
   },
+  "sheffield-wednesday": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#005BAC",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "slavia-prague": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "st-pauli": {
     "sportmonks_id": 353,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/353.png",
@@ -1060,6 +1411,24 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "St. Pauli"
+  },
+  "stevenage": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "stockport-county": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#003E9F",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   },
   "stoke-city": {
     "sportmonks_id": 26,
@@ -1187,6 +1556,24 @@
     "match_source": "search",
     "matched_name": "VfL Bochum 1848"
   },
+  "vfl-osnabruck": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#5B2C83",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
+  "vicenza": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#D71920",
+    "secondary": "#FFFFFF",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
+  },
   "villarreal": {
     "sportmonks_id": 3477,
     "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/3477.png",
@@ -1249,5 +1636,14 @@
     "colour_source": "badge",
     "match_source": "search",
     "matched_name": "VfL Wolfsburg"
+  },
+  "wycombe-wanderers": {
+    "sportmonks_id": null,
+    "badge_url": null,
+    "primary": "#6FB7E6",
+    "secondary": "#002D62",
+    "colour_source": "override",
+    "match_source": "override",
+    "matched_name": "manual override"
   }
 }
