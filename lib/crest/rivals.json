@@ -1,0 +1,410 @@
+{
+  "ac-milan": [
+    "inter-milan"
+  ],
+  "afc-wimbledon": [
+    "milton-keynes-dons"
+  ],
+  "ajax": [
+    "feyenoord",
+    "psv"
+  ],
+  "alaves": [
+    "athletic-bilbao"
+  ],
+  "arminia-bielefeld": [
+    "sc-paderborn-07"
+  ],
+  "arsenal": [
+    "chelsea",
+    "tottenham-hotspur"
+  ],
+  "aston-villa": [
+    "birmingham-city"
+  ],
+  "athletic-bilbao": [
+    "alaves",
+    "real-sociedad"
+  ],
+  "atletico-madrid": [
+    "real-madrid"
+  ],
+  "barcelona": [
+    "espanyol",
+    "real-madrid"
+  ],
+  "bayer-leverkusen": [
+    "fc-koln"
+  ],
+  "bayern-munich": [
+    "borussia-dortmund"
+  ],
+  "besiktas": [
+    "fenerbahce",
+    "galatasaray"
+  ],
+  "birmingham-city": [
+    "aston-villa"
+  ],
+  "blackpool": [
+    "preston-north-end"
+  ],
+  "bologna": [
+    "fiorentina"
+  ],
+  "bolton-wanderers": [
+    "wigan-athletic"
+  ],
+  "borussia-dortmund": [
+    "bayern-munich",
+    "schalke-04"
+  ],
+  "borussia-monchengladbach": [
+    "fc-koln"
+  ],
+  "bradford-city": [
+    "huddersfield-town",
+    "leeds-united"
+  ],
+  "brentford": [
+    "fulham",
+    "queens-park-rangers"
+  ],
+  "brighton": [
+    "crystal-palace"
+  ],
+  "bristol-city": [
+    "cardiff-city"
+  ],
+  "cambridge-united": [
+    "peterborough-united"
+  ],
+  "cardiff-city": [
+    "bristol-city",
+    "swansea-city"
+  ],
+  "celta-vigo": [
+    "deportivo-la-coruna"
+  ],
+  "celtic": [
+    "rangers"
+  ],
+  "charlton-athletic": [
+    "millwall"
+  ],
+  "chelsea": [
+    "arsenal",
+    "fulham",
+    "tottenham-hotspur"
+  ],
+  "coventry-city": [
+    "leicester-city"
+  ],
+  "crystal-palace": [
+    "brighton",
+    "millwall"
+  ],
+  "darmstadt-98": [
+    "eintracht-frankfurt"
+  ],
+  "deportivo-la-coruna": [
+    "celta-vigo"
+  ],
+  "derby-county": [
+    "nottingham-forest"
+  ],
+  "eintracht-braunschweig": [
+    "hannover-96",
+    "wolfsburg"
+  ],
+  "eintracht-frankfurt": [
+    "darmstadt-98"
+  ],
+  "empoli": [
+    "fiorentina"
+  ],
+  "espanyol": [
+    "barcelona"
+  ],
+  "everton": [
+    "liverpool"
+  ],
+  "fc-koln": [
+    "bayer-leverkusen",
+    "borussia-monchengladbach"
+  ],
+  "fenerbahce": [
+    "besiktas",
+    "galatasaray"
+  ],
+  "feyenoord": [
+    "ajax"
+  ],
+  "fiorentina": [
+    "bologna",
+    "empoli",
+    "juventus"
+  ],
+  "fulham": [
+    "brentford",
+    "chelsea",
+    "queens-park-rangers"
+  ],
+  "galatasaray": [
+    "besiktas",
+    "fenerbahce"
+  ],
+  "genoa": [
+    "sampdoria"
+  ],
+  "granada": [
+    "malaga"
+  ],
+  "greuther-furth": [
+    "nurnberg"
+  ],
+  "hamburger-sv": [
+    "st-pauli",
+    "werder-bremen"
+  ],
+  "hannover-96": [
+    "eintracht-braunschweig"
+  ],
+  "hellas-verona": [
+    "vicenza"
+  ],
+  "hertha-bsc": [
+    "union-berlin"
+  ],
+  "huddersfield-town": [
+    "bradford-city"
+  ],
+  "inter-milan": [
+    "ac-milan",
+    "juventus"
+  ],
+  "ipswich-town": [
+    "norwich-city"
+  ],
+  "juventus": [
+    "fiorentina",
+    "inter-milan",
+    "napoli",
+    "torino"
+  ],
+  "karlsruher-sc": [
+    "vfb-stuttgart"
+  ],
+  "lazio": [
+    "roma"
+  ],
+  "leeds-united": [
+    "bradford-city",
+    "manchester-united"
+  ],
+  "leicester-city": [
+    "coventry-city",
+    "nottingham-forest"
+  ],
+  "lens": [
+    "lille"
+  ],
+  "levante": [
+    "valencia"
+  ],
+  "lille": [
+    "lens"
+  ],
+  "liverpool": [
+    "everton",
+    "manchester-united"
+  ],
+  "luton-town": [
+    "watford"
+  ],
+  "lyon": [
+    "saint-etienne"
+  ],
+  "malaga": [
+    "granada"
+  ],
+  "manchester-city": [
+    "manchester-united"
+  ],
+  "manchester-united": [
+    "leeds-united",
+    "liverpool",
+    "manchester-city"
+  ],
+  "marseille": [
+    "psg"
+  ],
+  "middlesbrough": [
+    "sunderland"
+  ],
+  "millwall": [
+    "charlton-athletic",
+    "crystal-palace",
+    "west-ham-united"
+  ],
+  "milton-keynes-dons": [
+    "afc-wimbledon"
+  ],
+  "monaco": [
+    "nice"
+  ],
+  "nantes": [
+    "rennes"
+  ],
+  "napoli": [
+    "juventus",
+    "roma"
+  ],
+  "newcastle-united": [
+    "sunderland"
+  ],
+  "nice": [
+    "monaco"
+  ],
+  "norwich-city": [
+    "ipswich-town"
+  ],
+  "nottingham-forest": [
+    "derby-county",
+    "leicester-city",
+    "notts-county"
+  ],
+  "notts-county": [
+    "nottingham-forest"
+  ],
+  "nurnberg": [
+    "greuther-furth"
+  ],
+  "olympiacos": [
+    "panathinaikos"
+  ],
+  "oxford-united": [
+    "reading"
+  ],
+  "panathinaikos": [
+    "olympiacos"
+  ],
+  "paris-fc": [
+    "psg"
+  ],
+  "peterborough-united": [
+    "cambridge-united"
+  ],
+  "preston-north-end": [
+    "blackpool"
+  ],
+  "psg": [
+    "marseille",
+    "paris-fc"
+  ],
+  "psv": [
+    "ajax"
+  ],
+  "queens-park-rangers": [
+    "brentford",
+    "fulham"
+  ],
+  "rangers": [
+    "celtic"
+  ],
+  "reading": [
+    "oxford-united"
+  ],
+  "real-betis": [
+    "sevilla"
+  ],
+  "real-madrid": [
+    "atletico-madrid",
+    "barcelona"
+  ],
+  "real-sociedad": [
+    "athletic-bilbao"
+  ],
+  "rennes": [
+    "nantes"
+  ],
+  "roma": [
+    "lazio",
+    "napoli"
+  ],
+  "saint-etienne": [
+    "lyon"
+  ],
+  "sampdoria": [
+    "genoa"
+  ],
+  "sc-paderborn-07": [
+    "arminia-bielefeld"
+  ],
+  "schalke-04": [
+    "borussia-dortmund",
+    "vfl-bochum"
+  ],
+  "sevilla": [
+    "real-betis"
+  ],
+  "sheffield-united": [
+    "sheffield-wednesday"
+  ],
+  "sheffield-wednesday": [
+    "sheffield-united"
+  ],
+  "st-pauli": [
+    "hamburger-sv"
+  ],
+  "sunderland": [
+    "middlesbrough",
+    "newcastle-united"
+  ],
+  "swansea-city": [
+    "cardiff-city"
+  ],
+  "torino": [
+    "juventus"
+  ],
+  "tottenham-hotspur": [
+    "arsenal",
+    "chelsea",
+    "west-ham-united"
+  ],
+  "union-berlin": [
+    "hertha-bsc"
+  ],
+  "valencia": [
+    "levante",
+    "villarreal"
+  ],
+  "vfb-stuttgart": [
+    "karlsruher-sc"
+  ],
+  "vfl-bochum": [
+    "schalke-04"
+  ],
+  "vicenza": [
+    "hellas-verona"
+  ],
+  "villarreal": [
+    "valencia"
+  ],
+  "watford": [
+    "luton-town"
+  ],
+  "werder-bremen": [
+    "hamburger-sv"
+  ],
+  "west-ham-united": [
+    "millwall",
+    "tottenham-hotspur"
+  ],
+  "wigan-athletic": [
+    "bolton-wanderers"
+  ],
+  "wolfsburg": [
+    "eintracht-braunschweig"
+  ]
+}
