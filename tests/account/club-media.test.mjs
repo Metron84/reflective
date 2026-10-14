@@ -11,6 +11,9 @@ import {
   searchQueries,
   sportmonksColours,
   teamKey,
+  closestTeams,
+  isColourOnly,
+  similarity,
   unmatchedCategory,
 } from "@/lib/crest/media-match.js";
 import { CLUBS } from "@/lib/crest/clubs.js";
@@ -177,6 +180,41 @@ test("unmatchedCategory separates outside-plan from truly not found", () => {
   assert.equal(nf.category, "not_found");
   assert.match(nf.reason, /18 Eredivisie teams/);
   assert.equal(unmatchedCategory({ slug: "y", name: "Y" }, null, "").category, "no_competition");
+});
+
+test("a colour-only override is valid: primary and secondary, no id or badge", () => {
+  const ok = parseOverride({ primary: "#1b2a5a", secondary: "#f5d130" });
+  assert.deepEqual(ok.value, { primary: "#1B2A5A", secondary: "#F5D130" });
+  assert.equal(isColourOnly(ok.value), true);
+  assert.equal(isColourOnly(parseOverride({ primary: "#1B2A5A" }).value), true);
+  assert.equal(isColourOnly(parseOverride({ sportmonks_id: 5, primary: "#1B2A5A" }).value), false);
+  assert.ok(parseOverride({ secondary: "#F5D130" }).error);
+});
+
+test("not_found names the closest league teams, never [object Object]", () => {
+  const teams = [T(1, "Real Valladolid"), T(2, "Granada CF"), T(3, "Girona FC"), T(4, "Zaragoza")];
+  const club = { slug: "girona-x", name: "Girona", competition: "LaLiga 2" };
+  const r = unmatchedCategory(club, { status: "ok", teams }, "search: no candidates");
+  assert.equal(r.category, "not_found");
+  assert.doesNotMatch(r.reason, /\[object Object\]/);
+  assert.match(r.reason, /among 4 LaLiga 2 teams \(closest: Girona FC/);
+  assert.deepEqual(closestTeams(club, teams, 1), ["Girona FC"]);
+  assert.ok(similarity("girona", "girona") > similarity("girona", "zaragoza"));
+  // A plain count still works.
+  assert.match(unmatchedCategory(club, { status: "ok", teams: 22 }, "x").reason, /among 22 LaLiga 2 teams;/);
+});
+
+test("the committed overrides file is valid and every slug is a real club", async () => {
+  const { readFileSync } = await import("node:fs");
+  const overrides = JSON.parse(readFileSync(new URL("../../lib/crest/club-media-overrides.json", import.meta.url), "utf8"));
+  const slugs = new Set(CLUBS.map((c) => c.slug));
+  for (const [slug, raw] of Object.entries(overrides)) {
+    assert.ok(slugs.has(slug), `${slug} is not in CLUBS`);
+    assert.ok(parseOverride(raw).value, `${slug} is invalid`);
+    const p = leaguePalette("#000000", parseOverride(raw).value);
+    assert.ok(contrast(p.primary, p.text) >= AA_TEXT, `${slug} text contrast`);
+    assert.ok(contrast(p.secondary, p.primary) >= AA_GRAPHIC, `${slug} accent contrast`);
+  }
 });
 
 test("parseOverride accepts an id, a badge or colours and rejects junk", () => {

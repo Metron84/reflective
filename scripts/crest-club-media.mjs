@@ -3,6 +3,7 @@
  *
  *   node scripts/crest-club-media.mjs --refresh        # redo every club (use after a rework)
  *   node scripts/crest-club-media.mjs                  # only clubs not yet in the JSON
+ *   node scripts/crest-club-media.mjs --overrides-only # apply club-media-overrides.json only; no token, no network
  *   node scripts/crest-club-media.mjs --dry-run        # no writes
  *   node scripts/crest-club-media.mjs --slug=psg       # one club
  *   node scripts/crest-club-media.mjs --limit=10       # first ten clubs
@@ -18,7 +19,10 @@
  *      _SERIEA, _BUNDESLIGA, _LIGUE1), then every other competition discovered from /leagues,
  *      so Championship and the second tiers are used when the plan returns them.
  *   2. Fallback. /teams/search with common_name, then name, only for clubs still unmatched.
- *   3. Overrides. lib/crest/club-media-overrides.json is applied last and wins.
+ *   3. Overrides. lib/crest/club-media-overrides.json is applied last and wins. An entry is
+ *      sportmonks_id and/or badge_url (optional colours), or colours only: primary plus
+ *      optional secondary gives the club its colours with no badge. Colour-only entries
+ *      need no Sportmonks call, so --overrides-only runs without a token.
  * A club is matched only when one team is a clear winner. Nothing is guessed.
  *
  * Output:
@@ -34,6 +38,7 @@ import { fileURLToPath } from "node:url";
 import { CLUBS } from "../lib/crest/clubs.js";
 import {
   dominantColours,
+  isColourOnly,
   matchLeagueClubs,
   parseOverride,
   pickTeam,
@@ -66,10 +71,11 @@ function loadEnvLocal() {
 }
 
 function parseArgs(argv) {
-  const args = { dryRun: false, slug: null, limit: null, refresh: false };
+  const args = { dryRun: false, slug: null, limit: null, refresh: false, overridesOnly: false };
   for (const arg of argv.slice(2)) {
     if (arg === "--dry-run") args.dryRun = true;
     else if (arg === "--refresh") args.refresh = true;
+    else if (arg === "--overrides-only") args.overridesOnly = true;
     else if (arg.startsWith("--slug=")) args.slug = arg.slice(7);
     else if (arg.startsWith("--limit=")) args.limit = Number(arg.slice(8));
   }
@@ -198,11 +204,16 @@ function readJson(path, fallback) {
   return existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : fallback;
 }
 
-/** Manual overrides, applied last. Returns { applied: n, errors: [{slug, reason}] }. */
-async function applyOverrides(media, teamById) {
+/**
+ * Manual overrides, applied last. Colour-only entries never touch the network. Entries that
+ * need a Sportmonks lookup or badge colours are refused when `offline` is set.
+ * Returns { applied: n, errors: [{slug, reason}] }.
+ */
+async function applyOverrides(media, teamById, { offline = false } = {}) {
   const overrides = readJson(OVERRIDES_PATH, {});
   const errors = [];
   let applied = 0;
+  const needsNetwork = "needs Sportmonks (id lookup or badge colours); rerun without --overrides-only";
   for (const [slug, raw] of Object.entries(overrides)) {
     if (!CLUBS.some((c) => c.slug === slug)) {
       errors.push({ slug, reason: "override names a slug that is not in CLUBS" });
@@ -214,11 +225,34 @@ async function applyOverrides(media, teamById) {
       continue;
     }
     const o = parsed.value;
+    const base = media[slug] ?? {};
+
+    if (isColourOnly(o)) {
+      // Colours only. An existing badge is kept; a club with none stays badge-less.
+      media[slug] = {
+        sportmonks_id: base.sportmonks_id ?? null,
+        badge_url: base.badge_url ?? null,
+        primary: o.primary,
+        secondary: o.secondary ?? null,
+        colour_source: "override",
+        match_source: "override",
+        matched_name: base.matched_name ?? "manual override",
+      };
+      applied += 1;
+      continue;
+    }
+
     try {
-      const base = media[slug] ?? {};
       let team = null;
       if (o.sportmonks_id) {
-        team = teamById.get(o.sportmonks_id) ?? (await smGet(`/teams/${o.sportmonks_id}`)).data ?? null;
+        team = teamById.get(o.sportmonks_id) ?? null;
+        if (!team) {
+          if (offline) {
+            errors.push({ slug, reason: `override: ${needsNetwork}` });
+            continue;
+          }
+          team = (await smGet(`/teams/${o.sportmonks_id}`)).data ?? null;
+        }
       }
       const badge = o.badge_url ?? team?.image_path ?? base.badge_url ?? null;
       if (!badge) {
@@ -230,6 +264,10 @@ async function applyOverrides(media, teamById) {
       let colourSource = "override";
       if (!primary) {
         const keep = base.badge_url === badge && base.primary;
+        if (!keep && offline) {
+          errors.push({ slug, reason: `override: ${needsNetwork}` });
+          continue;
+        }
         const found = keep ? { primary: base.primary, secondary: base.secondary } : await coloursFromBadge(badge);
         if (!found) {
           errors.push({ slug, reason: "override badge has no usable colour; give primary" });
@@ -257,9 +295,49 @@ async function applyOverrides(media, teamById) {
   return { applied, errors };
 }
 
+/** Overrides only: no token, no network. Unmatched keeps its earlier categories. */
+async function runOverridesOnly(args) {
+  const media = readJson(MEDIA_PATH, {});
+  const overrides = await applyOverrides(media, new Map(), { offline: true });
+  const sorted = Object.fromEntries(Object.entries(media).sort(([a], [b]) => a.localeCompare(b)));
+  const previous = readJson(UNMATCHED_PATH, []);
+  const unmatched = [];
+  for (const club of CLUBS) {
+    if (sorted[club.slug]) continue;
+    const before = previous.find((u) => u.slug === club.slug);
+    const err = overrides.errors.find((e) => e.slug === club.slug);
+    unmatched.push({
+      slug: club.slug,
+      name: club.name,
+      competition: club.competition ?? null,
+      category: before?.category ?? "not_attempted",
+      reason: [before?.reason ?? "no earlier run recorded this club", err?.reason].filter(Boolean).join("; "),
+    });
+  }
+  const bySource = {};
+  for (const e of Object.values(sorted)) bySource[e.match_source ?? "previous run"] = (bySource[e.match_source ?? "previous run"] ?? 0) + 1;
+  console.log(`Overrides applied: ${overrides.applied}. Errors: ${overrides.errors.length}.`);
+  for (const e of overrides.errors) console.log(`  override error ${e.slug}: ${e.reason}`);
+  console.log(`Matched ${Object.keys(sorted).length} of ${CLUBS.length}. Sources: ${JSON.stringify(bySource)}.`);
+  const byCategory = {};
+  for (const u of unmatched) byCategory[u.category] = [...(byCategory[u.category] ?? []), u];
+  for (const [category, list] of Object.entries(byCategory)) {
+    console.log(`\n${category} (${list.length})`);
+    for (const u of list) console.log(`  ${u.slug}  [${u.competition ?? "none"}]  ${u.reason}`);
+  }
+  if (args.dryRun) {
+    console.log("\nDry run: nothing written.");
+    return;
+  }
+  writeFileSync(MEDIA_PATH, JSON.stringify(sorted, null, 2) + "\n");
+  writeFileSync(UNMATCHED_PATH, JSON.stringify(unmatched, null, 2) + "\n");
+  console.log(`\nWrote ${MEDIA_PATH}\nWrote ${UNMATCHED_PATH}`);
+}
+
 async function main() {
   loadEnvLocal();
   const args = parseArgs(process.argv);
+  if (args.overridesOnly) return runOverridesOnly(args);
   if (!sportmonksApiKey()) {
     console.error("SPORTMONKS_API_KEY is not set. Put the bare token in .env.local or the environment.");
     process.exit(1);
