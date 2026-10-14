@@ -38,21 +38,12 @@
   color: rgba(10, 17, 31, 0.65);
 }
 
-.adminLink {
-  margin: 1rem 0 0;
+.crestLine {
+  margin: 0.85rem 0 0;
   font-family: var(--font-body);
-  font-size: 0.8125rem;
-}
-
-.adminLink a {
-  color: rgba(10, 17, 31, 0.55);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-  transition: color 0.15s ease;
-}
-
-.adminLink a:hover {
-  color: #d8232a;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0a111f;
 }
 
 .rule {

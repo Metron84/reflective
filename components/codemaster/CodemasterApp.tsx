@@ -223,6 +223,7 @@ export default function CodemasterApp({
                 allPuzzles={allPuzzles}
                 alreadySolved={Boolean(progress.solved[puzzleId])}
                 hasNext={hasNext}
+                signedIn={signedIn}
                 onComplete={(result) => handleComplete(puzzleId, result)}
                 onNext={() => {
                   const nextId = chapter.puzzleIds[view.puzzleIndex + 1];

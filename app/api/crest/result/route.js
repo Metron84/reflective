@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { CLUBS } from "@/lib/crest/clubs";
 import { parseBallot, snapshotFromBallot } from "@/lib/crest/result-store";
+import { clearReveals } from "@/lib/account/crest-reveals";
 
 function clubView(slug) {
   const club = CLUBS.find((row) => row.slug === slug);
@@ -89,5 +90,7 @@ export async function PUT(request) {
   if (error || !data) {
     return NextResponse.json({ message: "Could not save." }, { status: 500 });
   }
+  // saved_at just changed, so the member starts the league reveals fresh.
+  await clearReveals(auth.user.id);
   return NextResponse.json(publicRow(data));
 }

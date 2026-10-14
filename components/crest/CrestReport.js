@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/engine";
+import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
 import { buildReport, trait, REPORT_PHRASES, roomPercent } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
@@ -18,7 +18,7 @@ const VIEW_CAPTION = {
 
 /**
  * @param {{
- *   answers: import("@/lib/crest/engine").CrestAnswer[],
+ *   answers: import("@/lib/crest/match").CrestAnswer[],
  *   group: string|null,
  *   colour: string|null,
  *   stake?: string|null,

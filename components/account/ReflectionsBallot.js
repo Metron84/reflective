@@ -6,7 +6,7 @@ export default function ReflectionsBallot({ ballot }) {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>The Reflectives — Your Ballot</h2>
+      <h2 className={styles.sectionTitle}>Your ballot</h2>
       <p className={styles.note}>
         {ballotNote ||
           (votingState === "closed"

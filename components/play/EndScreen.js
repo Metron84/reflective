@@ -37,7 +37,7 @@ function SaveBlock({ finish, onRetry, retrying }) {
   );
 }
 
-export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeaderboard }) {
+export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeaderboard, base = "" }) {
   const s = finish.summary;
   const stats = [
     ["Questions answered", s.answered],
@@ -72,6 +72,11 @@ export default function EndScreen({ finish, onAgain, onRetry, retrying, onLeader
       <button type="button" onClick={onLeaderboard} className={styles.secondary}>
         See the leaderboard
       </button>
+      {finish.signedIn !== false ? (
+        <a href={`${base}/account`} className={styles.secondary}>
+          See it in My Programme
+        </a>
+      ) : null}
       <p className={fans.line}>{FANS_LINE}</p>
       <FansButton className={styles.fansSlot} />
     </section>

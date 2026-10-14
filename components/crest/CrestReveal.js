@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/engine";
+import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
 import { roomPercent } from "@/lib/crest/report";
 import { bothText, cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import { stakeLine } from "@/lib/crest/stakes";
@@ -16,7 +16,7 @@ const TAP_GUARD_MS = 700;
  * share card.
  *
  * @param {{
- *   answers: import("@/lib/crest/engine").CrestAnswer[],
+ *   answers: import("@/lib/crest/match").CrestAnswer[],
  *   group: string|null,
  *   stake?: string|null,
  *   onDone: () => void,

@@ -1,0 +1,61 @@
+.section {
+  margin-top: 3rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: #0a111f;
+}
+
+.row {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(10, 17, 31, 0.18);
+  border-bottom: 1px solid rgba(10, 17, 31, 0.18);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0a111f;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.row[open] .summary::after {
+  content: "\2212";
+}
+
+.count {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(10, 17, 31, 0.65);
+}
+
+.summary:focus-visible {
+  outline: 2px solid #d8232a;
+  outline-offset: 2px;
+}
+
+.row > section {
+  margin-top: 0;
+  padding-bottom: 1.5rem;
+}

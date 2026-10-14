@@ -3,11 +3,13 @@ import { profileIsAdmin } from "@/lib/auth/admin";
 import { getAuthContext } from "@/lib/auth/session";
 import { getProgrammeData } from "@/lib/account/programme";
 import ProgrammeHeader from "@/components/account/ProgrammeHeader";
-import ProgrammeTodayLine from "@/components/account/ProgrammeTodayLine";
-import GuesserSection from "@/components/account/GuesserSection";
-import ReflectionsBallot from "@/components/account/ReflectionsBallot";
+import RevealsProvider from "@/components/account/RevealsProvider";
+import NextUp from "@/components/account/NextUp";
+import GamesSection from "@/components/account/GamesSection";
+import CrestTile from "@/components/account/CrestTile";
 import HonoursSection from "@/components/account/HonoursSection";
-import CrestSection from "@/components/account/CrestSection";
+import AdminBlock from "@/components/account/AdminBlock";
+import ArchiveSection from "@/components/account/ArchiveSection";
 import SettingsPanel from "@/components/account/SettingsPanel";
 import Breadcrumb from "@/components/Breadcrumb";
 import styles from "./page.module.css";
@@ -37,17 +39,25 @@ export default async function AccountPage() {
         <p className={styles.eyebrow}>My Programme</p>
         <ProgrammeHeader
           profile={programme.profile}
-          isAdmin={profileIsAdmin(auth.profile)}
+          crestClub={programme.crest?.clubName ?? null}
         />
 
-        <ProgrammeTodayLine todayLine={programme.todayLine} />
-        <GuesserSection
-          modeStats={programme.modeStats}
-          shareStats={programme.shareStats}
-        />
-        <ReflectionsBallot ballot={programme.ballot} />
-        <CrestSection crest={programme.crest} />
+        <RevealsProvider
+          key={`${programme.crestLeagues?.savedAt ?? "none"}|${programme.revealed.join(",")}`}
+          initial={programme.revealed}
+        >
+          <NextUp
+            quizOpen={programme.games.quiz.openToday}
+            codemasterInProgress={programme.games.codemaster.inProgress}
+            competitions={(programme.crestLeagues?.leagues ?? []).map((l) => l.competition)}
+          />
+          <GamesSection
+            games={programme.games}
+            crestTile={<CrestTile crest={programme.crest} leagues={programme.crestLeagues} />}
+          />
+        </RevealsProvider>
         <HonoursSection honours={programme.honours} />
+        <ArchiveSection ballot={programme.ballot} />
         <SettingsPanel
           key={`${programme.profile.preferredName}|${(programme.profile.clubs ?? []).join(",")}|${programme.profile.marketingConsent}`}
           initialName={programme.profile.preferredName}
@@ -56,6 +66,7 @@ export default async function AccountPage() {
           email={programme.email}
           clubOptions={programme.clubOptions}
         />
+        {profileIsAdmin(auth.profile) ? <AdminBlock /> : null}
       </div>
     </div>
   );
