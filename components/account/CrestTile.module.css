@@ -93,6 +93,35 @@
   border-left-width: 6px;
 }
 
+.revealed {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.copy {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+/* Cream chip so a badge never sinks into its own club colour. */
+.badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f2ede4;
+}
+
+.badge img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 .leagueName {
   font-size: 0.6875rem;
   font-weight: 700;

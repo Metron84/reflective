@@ -46,12 +46,18 @@ export default function CrestTile({ crest, leagues }) {
                           borderLeftColor: row.secondary,
                         }}
                       >
-                        <span className={styles.leagueName} style={{ color: row.text }}>
-                          {row.label}
-                        </span>
-                        <span className={styles.club}>{row.clubName}</span>
-                        <span className={styles.match}>
-                          {row.matchPct}% match
+                        {row.badge_url ? (
+                          <span className={styles.badge}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={row.badge_url} alt="" width={40} height={40} loading="lazy" decoding="async" />
+                          </span>
+                        ) : null}
+                        <span className={styles.copy}>
+                          <span className={styles.leagueName} style={{ color: row.text }}>
+                            {row.label}
+                          </span>
+                          <span className={styles.club}>{row.clubName}</span>
+                          <span className={styles.match}>{row.matchPct}% match</span>
                         </span>
                       </div>
                     ) : (
