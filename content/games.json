@@ -34,10 +34,10 @@
   {
     "slug": "the-guesser",
     "title": "The Guesser",
-    "hook": "One player a day. Six guesses. Five clues.",
+    "hook": "Clues reveal on a timer. Buzz in before the points drain.",
     "status": "live",
     "href": "/guesser",
-    "cover": null
+    "cover": "/games/the-guesser.svg"
   },
   {
     "slug": "ultima",

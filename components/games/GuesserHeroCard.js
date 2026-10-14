@@ -18,7 +18,8 @@ export default function GuesserHeroCard({ game }) {
         ) : (
           <GameCoverBySlug slug={game.slug} />
         )}
-        <div className={styles.coverScrim} aria-hidden />
+        {/* The Guesser art is flat navy, cream and red: a scrim would dull it. */}
+        {game.slug === "the-guesser" ? null : <div className={styles.coverScrim} aria-hidden />}
       </div>
       <div className={styles.body}>
         <h2 className={styles.title}>{game.title}</h2>

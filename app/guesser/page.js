@@ -15,6 +15,7 @@ export const metadata = {
     description: "Five players, twenty points, one buzzer. A new board every day.",
   },
   twitter: {
+    card: "summary_large_image",
     title: "The Guesser | The Reflective Football",
     description: "Five players, twenty points, one buzzer. A new board every day.",
   },
