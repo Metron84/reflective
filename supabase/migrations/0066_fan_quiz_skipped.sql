@@ -23,8 +23,10 @@ end $$;
 alter table public.fan_quiz_scores
   add constraint fan_quiz_scores_counts_check check (correct + incorrect + skipped = answered);
 
--- The claim function gains p_skipped, so the old signature goes.
+-- p_skipped is last so it can default to 0. The old 7-argument overload goes in
+-- the same migration, so a 7-argument call can never be ambiguous.
 drop function if exists public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, timestamptz);
+drop function if exists public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, integer, timestamptz);
 
 create or replace function public.fan_quiz_claim(
   p_user uuid,
@@ -33,8 +35,8 @@ create or replace function public.fan_quiz_claim(
   p_answered integer,
   p_correct integer,
   p_incorrect integer,
-  p_skipped integer,
-  p_completed timestamptz
+  p_completed timestamptz,
+  p_skipped integer default 0
 )
 returns table (
   out_score integer,
@@ -81,7 +83,7 @@ begin
 end;
 $$;
 
-revoke all on function public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, integer, timestamptz)
+revoke all on function public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, timestamptz, integer)
   from public, anon, authenticated;
-grant execute on function public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, integer, timestamptz)
+grant execute on function public.fan_quiz_claim(uuid, uuid, integer, integer, integer, integer, timestamptz, integer)
   to service_role;

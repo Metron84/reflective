@@ -180,10 +180,11 @@ test("the third skip is rejected and changes nothing", () => {
   assert.equal(spun.pending.questionId !== undefined, true);
 });
 
-test("a skip after the timer has expired is rejected, an answer then counts as wrong", () => {
+test("a skip inside the grace window works, one after it is rejected and an answer counts as wrong", () => {
   const qs = bank(["A", "B"]);
   const spun = open(qs, newState(qs), 1000);
-  const late = spun.pending.deadline + 1;
+  assert.equal(applySkip(qs, spun, spun.pending.deadline + GRACE_MS).error, undefined);
+  const late = spun.pending.deadline + GRACE_MS + 1;
   assert.deepEqual(applySkip(qs, spun, late), { error: "expired" });
   const q = qs.find((x) => x.id === spun.pending.questionId);
   const res = applyAnswer(qs, spun, q.acceptedAnswers[0], spun.pending.deadline + GRACE_MS + 1);
