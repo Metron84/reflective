@@ -1,1 +1,1253 @@
-{}
+{
+  "ac-milan": {
+    "sportmonks_id": 113,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/17/113.png",
+    "primary": "#E9061C",
+    "secondary": "#76020B",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "AC Milan"
+  },
+  "alaves": {
+    "sportmonks_id": 2975,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/31/2975.png",
+    "primary": "#0434A1",
+    "secondary": "#B8C6E7",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Deportivo Alavés"
+  },
+  "angers": {
+    "sportmonks_id": 776,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/8/776.png",
+    "primary": "#7B7978",
+    "secondary": "#3B3837",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Angers SCO"
+  },
+  "arminia-bielefeld": {
+    "sportmonks_id": 2927,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/2927.png",
+    "primary": "#5788B7",
+    "secondary": "#034B93",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "DSC Arminia Bielefeld"
+  },
+  "arsenal": {
+    "sportmonks_id": 19,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/19/19.png",
+    "primary": "#D2254D",
+    "secondary": "#968554",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Arsenal"
+  },
+  "aston-villa": {
+    "sportmonks_id": 15,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/15.png",
+    "primary": "#93BDE5",
+    "secondary": "#FEE604",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Aston Villa"
+  },
+  "atalanta": {
+    "sportmonks_id": 708,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/708.png",
+    "primary": "#165AA6",
+    "secondary": "#888888",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Atalanta"
+  },
+  "athletic-bilbao": {
+    "sportmonks_id": 13258,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/13258.png",
+    "primary": "#E20118",
+    "secondary": "#C4C4C4",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Athletic Club"
+  },
+  "atletico-madrid": {
+    "sportmonks_id": 7980,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/7980.png",
+    "primary": "#28296C",
+    "secondary": "#E6141D",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Atlético de Madrid"
+  },
+  "auxerre": {
+    "sportmonks_id": 3682,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/2/3682.png",
+    "primary": "#1B4E9B",
+    "secondary": "#8AA4CC",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Auxerre"
+  },
+  "barcelona": {
+    "sportmonks_id": 83,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/19/83.png",
+    "primary": "#DDB306",
+    "secondary": "#A31E4A",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FC Barcelona"
+  },
+  "bayer-leverkusen": {
+    "sportmonks_id": 3321,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/25/3321.png",
+    "primary": "#EB2125",
+    "secondary": "#FFFA12",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Bayer 04 Leverkusen"
+  },
+  "bayern-munich": {
+    "sportmonks_id": 503,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/23/503.png",
+    "primary": "#CD1C35",
+    "secondary": "#033C82",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FC Bayern München"
+  },
+  "birmingham-city": {
+    "sportmonks_id": 12,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/12.png",
+    "primary": "#1B2B47",
+    "secondary": "#D6D7D8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Birmingham City"
+  },
+  "blackburn-rovers": {
+    "sportmonks_id": 2,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/2/2.png",
+    "primary": "#009CE8",
+    "secondary": "#029535",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Blackburn Rovers"
+  },
+  "blackpool": {
+    "sportmonks_id": 28,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/28/28.png",
+    "primary": "#F78711",
+    "secondary": "#EA9657",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Blackpool"
+  },
+  "bologna": {
+    "sportmonks_id": 8513,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/8513.png",
+    "primary": "#A51C26",
+    "secondary": "#192E47",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Bologna"
+  },
+  "bolton-wanderers": {
+    "sportmonks_id": 16,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/16/16.png",
+    "primary": "#263B7D",
+    "secondary": "#DD0024",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Bolton Wanderers"
+  },
+  "borussia-dortmund": {
+    "sportmonks_id": 68,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/68.png",
+    "primary": "#FFF700",
+    "secondary": "#9B9400",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Borussia Dortmund"
+  },
+  "borussia-monchengladbach": {
+    "sportmonks_id": 683,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/683.png",
+    "primary": "#373737",
+    "secondary": "#B9B9B9",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Borussia Mönchengladbach"
+  },
+  "bournemouth": {
+    "sportmonks_id": 52,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/20/52.png",
+    "primary": "#C7161D",
+    "secondary": "#373737",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "AFC Bournemouth"
+  },
+  "bradford-city": {
+    "sportmonks_id": 137,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/137.png",
+    "primary": "#F69905",
+    "secondary": "#FDE8C6",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Bradford City"
+  },
+  "brentford": {
+    "sportmonks_id": 236,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/236.png",
+    "primary": "#990101",
+    "secondary": "#D7D7D8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Brentford"
+  },
+  "brest": {
+    "sportmonks_id": 266,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/266.png",
+    "primary": "#E91E25",
+    "secondary": "#F6C7C9",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Brest"
+  },
+  "brighton": {
+    "sportmonks_id": 78,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/78.png",
+    "primary": "#0154A6",
+    "secondary": "#699ACA",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Brighton & Hove Albion"
+  },
+  "cagliari": {
+    "sportmonks_id": 585,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/585.png",
+    "primary": "#02274B",
+    "secondary": "#AB0417",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Cagliari"
+  },
+  "cardiff-city": {
+    "sportmonks_id": 69,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/69.png",
+    "primary": "#2856B7",
+    "secondary": "#A7B9D8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Cardiff City"
+  },
+  "celta-vigo": {
+    "sportmonks_id": 36,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/36.png",
+    "primary": "#E5254E",
+    "secondary": "#89C2EE",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Celta de Vigo"
+  },
+  "charlton-athletic": {
+    "sportmonks_id": 4,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/4.png",
+    "primary": "#D4021C",
+    "secondary": "#373737",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Charlton Athletic"
+  },
+  "chelsea": {
+    "sportmonks_id": 18,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/18.png",
+    "primary": "#273A91",
+    "secondary": "#FEFBD8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Chelsea"
+  },
+  "como": {
+    "sportmonks_id": 268,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/268.png",
+    "primary": "#063963",
+    "secondary": "#7A94A8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Como"
+  },
+  "coventry-city": {
+    "sportmonks_id": 117,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/117.png",
+    "primary": "#B9B9B8",
+    "secondary": "#787776",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Coventry City"
+  },
+  "crystal-palace": {
+    "sportmonks_id": 51,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/19/51.png",
+    "primary": "#D7D7D7",
+    "secondary": "#0A3888",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Crystal Palace"
+  },
+  "darmstadt-98": {
+    "sportmonks_id": 482,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/2/482.png",
+    "primary": "#014A9C",
+    "secondary": "#C8D5E9",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Darmstadt 98"
+  },
+  "derby-county": {
+    "sportmonks_id": 24,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/24/24.png",
+    "primary": "#5A5758",
+    "secondary": "#A9A7A8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Derby County"
+  },
+  "eintracht-braunschweig": {
+    "sportmonks_id": 3565,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/3565.png",
+    "primary": "#FFC718",
+    "secondary": "#B8D5E8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Eintracht Braunschweig"
+  },
+  "eintracht-frankfurt": {
+    "sportmonks_id": 366,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/366.png",
+    "primary": "#CB0202",
+    "secondary": "#F4C8C8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Eintracht Frankfurt"
+  },
+  "elche": {
+    "sportmonks_id": 1099,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/1099.png",
+    "primary": "#E7C977",
+    "secondary": "#C5112E",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Elche"
+  },
+  "elversberg": {
+    "sportmonks_id": 3588,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/3588.png",
+    "primary": "#878787",
+    "secondary": "#D8D8D8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Elversberg"
+  },
+  "empoli": {
+    "sportmonks_id": 397,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/397.png",
+    "primary": "#014888",
+    "secondary": "#0084C7",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Empoli"
+  },
+  "energie-cottbus": {
+    "sportmonks_id": 3322,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/3322.png",
+    "primary": "#E91D32",
+    "secondary": "#FBD6D9",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Energie Cottbus"
+  },
+  "espanyol": {
+    "sportmonks_id": 528,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/16/528.png",
+    "primary": "#FE0917",
+    "secondary": "#1E6BC0",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Espanyol"
+  },
+  "everton": {
+    "sportmonks_id": 13,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/13.png",
+    "primary": "#274488",
+    "secondary": "#97A6C6",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Everton"
+  },
+  "fc-augsburg": {
+    "sportmonks_id": 90,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/90.png",
+    "primary": "#B42B31",
+    "secondary": "#D98329",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FC Augsburg"
+  },
+  "fc-koln": {
+    "sportmonks_id": 3320,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/24/3320.png",
+    "primary": "#EC1C24",
+    "secondary": "#676867",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FC Köln"
+  },
+  "fiorentina": {
+    "sportmonks_id": 109,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/13/109.png",
+    "primary": "#5B338C",
+    "secondary": "#E22419",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Fiorentina"
+  },
+  "frosinone": {
+    "sportmonks_id": 4070,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/6/4070.png",
+    "primary": "#2C56A6",
+    "secondary": "#A9C4E5",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Frosinone"
+  },
+  "fulham": {
+    "sportmonks_id": 11,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/11.png",
+    "primary": "#D60303",
+    "secondary": "#9A9B9B",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Fulham"
+  },
+  "genoa": {
+    "sportmonks_id": 102,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/6/102.png",
+    "primary": "#CC1312",
+    "secondary": "#01223C",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Genoa"
+  },
+  "getafe": {
+    "sportmonks_id": 106,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/106.png",
+    "primary": "#165CA3",
+    "secondary": "#66A926",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Getafe"
+  },
+  "girona": {
+    "sportmonks_id": 231,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/231.png",
+    "primary": "#CE142D",
+    "secondary": "#DC5769",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Girona"
+  },
+  "granada": {
+    "sportmonks_id": 103,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/103.png",
+    "primary": "#C2192B",
+    "secondary": "#D56A75",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Granada"
+  },
+  "greuther-furth": {
+    "sportmonks_id": 3431,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/3431.png",
+    "primary": "#019A32",
+    "secondary": "#B9E2C5",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "SpVgg Greuther Fürth"
+  },
+  "hamburger-sv": {
+    "sportmonks_id": 2708,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/20/2708.png",
+    "primary": "#0054A6",
+    "secondary": "#DAE7F2",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Hamburger SV"
+  },
+  "hannover-96": {
+    "sportmonks_id": 2554,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/2554.png",
+    "primary": "#1AAB4C",
+    "secondary": "#676767",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Hannover 96"
+  },
+  "hellas-verona": {
+    "sportmonks_id": 1123,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/3/1123.png",
+    "primary": "#F7DB23",
+    "secondary": null,
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Hellas Verona"
+  },
+  "hertha-bsc": {
+    "sportmonks_id": 3317,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/3317.png",
+    "primary": "#004C9D",
+    "secondary": "#C7C8CB",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Hertha BSC"
+  },
+  "hoffenheim": {
+    "sportmonks_id": 2726,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/6/2726.png",
+    "primary": "#175BA5",
+    "secondary": "#B5CBE4",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "TSG Hoffenheim"
+  },
+  "holstein-kiel": {
+    "sportmonks_id": 3611,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/27/3611.png",
+    "primary": "#256899",
+    "secondary": "#C8D9E5",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Holstein Kiel"
+  },
+  "huddersfield-town": {
+    "sportmonks_id": 251,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/27/251.png",
+    "primary": "#BBBBC5",
+    "secondary": "#055796",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Huddersfield Town"
+  },
+  "hull-city": {
+    "sportmonks_id": 22,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/22/22.png",
+    "primary": "#F48A03",
+    "secondary": "#593718",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Hull City"
+  },
+  "inter-milan": {
+    "sportmonks_id": 2930,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/2930.png",
+    "primary": "#01189D",
+    "secondary": "#455ABA",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Inter"
+  },
+  "ipswich-town": {
+    "sportmonks_id": 116,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/20/116.png",
+    "primary": "#3A66A4",
+    "secondary": "#E55B63",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Ipswich Town"
+  },
+  "juventus": {
+    "sportmonks_id": 625,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/17/625.png",
+    "primary": "#DCDCDC",
+    "secondary": "#484848",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Juventus"
+  },
+  "karlsruher-sc": {
+    "sportmonks_id": 3114,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/3114.png",
+    "primary": "#263882",
+    "secondary": "#D7DBE8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Karlsruher SC"
+  },
+  "lazio": {
+    "sportmonks_id": 43,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/43.png",
+    "primary": "#86D8F7",
+    "secondary": "#ECD796",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Lazio"
+  },
+  "le-havre": {
+    "sportmonks_id": 1055,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/31/1055.png",
+    "primary": "#193461",
+    "secondary": "#78BCE9",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Le Havre"
+  },
+  "le-mans": {
+    "sportmonks_id": 7758,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/7758.png",
+    "primary": "#EC1B24",
+    "secondary": "#ECBA19",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Le Mans"
+  },
+  "lecce": {
+    "sportmonks_id": 7790,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/7790.png",
+    "primary": "#096086",
+    "secondary": "#D7B791",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Lecce"
+  },
+  "leeds-united": {
+    "sportmonks_id": 71,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/71.png",
+    "primary": "#FFE302",
+    "secondary": "#0362A8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Leeds United"
+  },
+  "leicester-city": {
+    "sportmonks_id": 42,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/42.png",
+    "primary": "#A9B8D9",
+    "secondary": "#00288C",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Leicester City"
+  },
+  "lens": {
+    "sportmonks_id": 271,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/271.png",
+    "primary": "#FED603",
+    "secondary": "#C71D22",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Lens"
+  },
+  "levante": {
+    "sportmonks_id": 3457,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/3457.png",
+    "primary": "#B3043E",
+    "secondary": "#015BA6",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Levante"
+  },
+  "lille": {
+    "sportmonks_id": 690,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/690.png",
+    "primary": "#25226B",
+    "secondary": "#DF1509",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "LOSC Lille"
+  },
+  "liverpool": {
+    "sportmonks_id": 8,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/8/8.png",
+    "primary": "#E71B24",
+    "secondary": null,
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Liverpool"
+  },
+  "lorient": {
+    "sportmonks_id": 9257,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/9257.png",
+    "primary": "#F36D21",
+    "secondary": "#B8B8B8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Lorient"
+  },
+  "luton-town": {
+    "sportmonks_id": 115,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/19/115.png",
+    "primary": "#093267",
+    "secondary": "#B7B6B7",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Luton Town"
+  },
+  "lyon": {
+    "sportmonks_id": 79,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/79.png",
+    "primary": "#043C8A",
+    "secondary": "#D89B52",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Olympique Lyonnais"
+  },
+  "mainz-05": {
+    "sportmonks_id": 794,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/794.png",
+    "primary": "#C3141E",
+    "secondary": "#E4959A",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FSV Mainz 05"
+  },
+  "malaga": {
+    "sportmonks_id": 126,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/30/126.png",
+    "primary": "#C79601",
+    "secondary": "#014799",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Málaga"
+  },
+  "manchester-city": {
+    "sportmonks_id": 9,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/9.png",
+    "primary": "#001C54",
+    "secondary": "#A8B6C8",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Manchester City"
+  },
+  "manchester-united": {
+    "sportmonks_id": 14,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/14.png",
+    "primary": "#D7020E",
+    "secondary": "#FEE600",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Manchester United"
+  },
+  "marseille": {
+    "sportmonks_id": 44,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/44.png",
+    "primary": "#095BA4",
+    "secondary": "#C8D9E6",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Olympique Marseille"
+  },
+  "middlesbrough": {
+    "sportmonks_id": 7,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/7.png",
+    "primary": "#C41635",
+    "secondary": "#DD7688",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Middlesbrough"
+  },
+  "monaco": {
+    "sportmonks_id": 6789,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/6789.png",
+    "primary": "#F60302",
+    "secondary": "#D9A508",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Monaco"
+  },
+  "monza": {
+    "sportmonks_id": 1628,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/28/1628.png",
+    "primary": "#E3022B",
+    "secondary": "#EA4766",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Monza"
+  },
+  "nantes": {
+    "sportmonks_id": 59,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/27/59.png",
+    "primary": "#FEDC00",
+    "secondary": "#02A35B",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Nantes"
+  },
+  "napoli": {
+    "sportmonks_id": 597,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/597.png",
+    "primary": "#07284A",
+    "secondary": "#778899",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Napoli"
+  },
+  "newcastle-united": {
+    "sportmonks_id": 20,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/20/20.png",
+    "primary": "#D7D7D9",
+    "secondary": "#959598",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Newcastle United"
+  },
+  "nice": {
+    "sportmonks_id": 450,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/2/450.png",
+    "primary": "#BA9557",
+    "secondary": "#878787",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Nice"
+  },
+  "norwich-city": {
+    "sportmonks_id": 33,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/33.png",
+    "primary": "#0C8D3F",
+    "secondary": "#F8EA24",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Norwich City"
+  },
+  "nottingham-forest": {
+    "sportmonks_id": 63,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/31/63.png",
+    "primary": "#D5122D",
+    "secondary": null,
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Nottingham Forest"
+  },
+  "osasuna": {
+    "sportmonks_id": 459,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/459.png",
+    "primary": "#D91921",
+    "secondary": "#0B346F",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Osasuna"
+  },
+  "palermo": {
+    "sportmonks_id": 1216,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/0/1216.png",
+    "primary": "#F2C3CB",
+    "secondary": "#2E2B2F",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Palermo"
+  },
+  "paris-fc": {
+    "sportmonks_id": 4508,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/28/4508.png",
+    "primary": "#0B1637",
+    "secondary": "#1B89C7",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Paris"
+  },
+  "parma": {
+    "sportmonks_id": 398,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/398.png",
+    "primary": "#FED501",
+    "secondary": "#0D379D",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Parma"
+  },
+  "portsmouth": {
+    "sportmonks_id": 5,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/5.png",
+    "primary": "#03148B",
+    "secondary": "#D9D9EA",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Portsmouth"
+  },
+  "psg": {
+    "sportmonks_id": 591,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/591.png",
+    "primary": "#013568",
+    "secondary": "#0167A6",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Paris Saint Germain"
+  },
+  "queens-park-rangers": {
+    "sportmonks_id": 47,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/15/47.png",
+    "primary": "#0136F4",
+    "secondary": "#3864EA",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Queens Park Rangers"
+  },
+  "racing-santander": {
+    "sportmonks_id": 9818,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/9818.png",
+    "primary": "#259D52",
+    "secondary": "#686767",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Racing Santander"
+  },
+  "rayo-vallecano": {
+    "sportmonks_id": 377,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/25/377.png",
+    "primary": "#D8A83C",
+    "secondary": "#EA3539",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Rayo Vallecano"
+  },
+  "rb-leipzig": {
+    "sportmonks_id": 277,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/277.png",
+    "primary": "#DB0238",
+    "secondary": "#475978",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "RB Leipzig"
+  },
+  "reading": {
+    "sportmonks_id": 23,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/23/23.png",
+    "primary": "#DB1741",
+    "secondary": "#024595",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Reading"
+  },
+  "real-betis": {
+    "sportmonks_id": 485,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/485.png",
+    "primary": "#02934A",
+    "secondary": "#DD9501",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Real Betis"
+  },
+  "real-madrid": {
+    "sportmonks_id": 3468,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/3468.png",
+    "primary": "#FFC805",
+    "secondary": "#04539D",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Real Madrid"
+  },
+  "real-sociedad": {
+    "sportmonks_id": 594,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/594.png",
+    "primary": "#0257B6",
+    "secondary": "#D77723",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Real Sociedad"
+  },
+  "real-valladolid": {
+    "sportmonks_id": 361,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/9/361.png",
+    "primary": "#0D5636",
+    "secondary": "#E9221B",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Real Valladolid"
+  },
+  "rennes": {
+    "sportmonks_id": 598,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/22/598.png",
+    "primary": "#E23327",
+    "secondary": "#FFC714",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Rennes"
+  },
+  "roma": {
+    "sportmonks_id": 37,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/37.png",
+    "primary": "#970328",
+    "secondary": "#FABA00",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Roma"
+  },
+  "saint-etienne": {
+    "sportmonks_id": 108,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/12/108.png",
+    "primary": "#4A9761",
+    "secondary": "#C5B487",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Saint-Étienne"
+  },
+  "sampdoria": {
+    "sportmonks_id": 522,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/522.png",
+    "primary": "#02529D",
+    "secondary": "#7A7B7B",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Sampdoria"
+  },
+  "sassuolo": {
+    "sportmonks_id": 2714,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/2714.png",
+    "primary": "#33B95C",
+    "secondary": "#AAA8A9",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Sassuolo"
+  },
+  "sc-freiburg": {
+    "sportmonks_id": 3543,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/23/3543.png",
+    "primary": "#969696",
+    "secondary": "#474747",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "SC Freiburg"
+  },
+  "sc-paderborn-07": {
+    "sportmonks_id": 2642,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/2642.png",
+    "primary": "#0166B4",
+    "secondary": "#B7D1E5",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Paderborn"
+  },
+  "schalke-04": {
+    "sportmonks_id": 67,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/3/67.png",
+    "primary": "#085AA4",
+    "secondary": "#89B1D3",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Schalke 04"
+  },
+  "sevilla": {
+    "sportmonks_id": 676,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/4/676.png",
+    "primary": "#C90517",
+    "secondary": "#B87617",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Sevilla"
+  },
+  "sheffield-united": {
+    "sportmonks_id": 21,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/21.png",
+    "primary": "#EC2328",
+    "secondary": "#FDD7D8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Sheffield United"
+  },
+  "st-pauli": {
+    "sportmonks_id": 353,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/353.png",
+    "primary": "#EC1B24",
+    "secondary": "#F9B6B9",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "St. Pauli"
+  },
+  "stoke-city": {
+    "sportmonks_id": 26,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/26.png",
+    "primary": "#D6152C",
+    "secondary": "#E46B7B",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Stoke City"
+  },
+  "strasbourg": {
+    "sportmonks_id": 686,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/14/686.png",
+    "primary": "#01ABEE",
+    "secondary": "#C7161D",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Strasbourg"
+  },
+  "sunderland": {
+    "sportmonks_id": 3,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/3/3.png",
+    "primary": "#A78A27",
+    "secondary": "#EA182B",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Sunderland"
+  },
+  "swansea-city": {
+    "sportmonks_id": 30,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/30/30.png",
+    "primary": "#767676",
+    "secondary": "#C8C8C8",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Swansea City"
+  },
+  "torino": {
+    "sportmonks_id": 613,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/5/613.png",
+    "primary": "#7B1B21",
+    "secondary": "#FAB61B",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Torino"
+  },
+  "tottenham-hotspur": {
+    "sportmonks_id": 6,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/6/6.png",
+    "primary": "#0C1C47",
+    "secondary": "#8B93A9",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Tottenham Hotspur"
+  },
+  "toulouse": {
+    "sportmonks_id": 289,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/289.png",
+    "primary": "#412D52",
+    "secondary": "#DB0129",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Toulouse"
+  },
+  "troyes": {
+    "sportmonks_id": 7047,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/7047.png",
+    "primary": "#0566AC",
+    "secondary": "#013876",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Troyes"
+  },
+  "udinese": {
+    "sportmonks_id": 346,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/26/346.png",
+    "primary": "#B4B5B7",
+    "secondary": "#A2844D",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Udinese"
+  },
+  "union-berlin": {
+    "sportmonks_id": 1079,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/23/1079.png",
+    "primary": "#D21A24",
+    "secondary": "#EBCA3C",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "FC Union Berlin"
+  },
+  "valencia": {
+    "sportmonks_id": 214,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/22/214.png",
+    "primary": "#ED3724",
+    "secondary": "#FEE51B",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Valencia"
+  },
+  "venezia": {
+    "sportmonks_id": 267,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/11/267.png",
+    "primary": "#FF6801",
+    "secondary": "#016937",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Venezia"
+  },
+  "vfb-stuttgart": {
+    "sportmonks_id": 3319,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/23/3319.png",
+    "primary": "#D30328",
+    "secondary": "#FFE801",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "VfB Stuttgart"
+  },
+  "vfl-bochum": {
+    "sportmonks_id": 999,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/7/999.png",
+    "primary": "#0869B5",
+    "secondary": "#D6E6F2",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "VfL Bochum 1848"
+  },
+  "villarreal": {
+    "sportmonks_id": 3477,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/21/3477.png",
+    "primary": "#025288",
+    "secondary": "#FDE767",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Villarreal"
+  },
+  "watford": {
+    "sportmonks_id": 25,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/25/25.png",
+    "primary": "#F62328",
+    "secondary": "#FBED23",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Watford"
+  },
+  "werder-bremen": {
+    "sportmonks_id": 82,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/18/82.png",
+    "primary": "#1E9053",
+    "secondary": "#65B48A",
+    "colour_source": "badge",
+    "match_source": "league",
+    "matched_name": "Werder Bremen"
+  },
+  "west-bromwich-albion": {
+    "sportmonks_id": 10,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/10/10.png",
+    "primary": "#0A1554",
+    "secondary": "#C8CAD9",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "West Bromwich Albion"
+  },
+  "west-ham-united": {
+    "sportmonks_id": 1,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/1/1.png",
+    "primary": "#7C2B3B",
+    "secondary": "#28C7FE",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "West Ham United"
+  },
+  "wigan-athletic": {
+    "sportmonks_id": 17,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/17/17.png",
+    "primary": "#1654AD",
+    "secondary": "#016838",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "Wigan Athletic"
+  },
+  "wolfsburg": {
+    "sportmonks_id": 510,
+    "badge_url": "https://cdn.sportmonks.com/images/soccer/teams/30/510.png",
+    "primary": "#09633D",
+    "secondary": "#5D977E",
+    "colour_source": "badge",
+    "match_source": "search",
+    "matched_name": "VfL Wolfsburg"
+  }
+}
