@@ -12,6 +12,7 @@ export const metadata = {
 
 export default function CompetitionsPage() {
   const cards = [
+    TREBLE_CARD,
     {
       slug: "reflectives",
       title: "The Reflectives",
@@ -33,7 +34,6 @@ export default function CompetitionsPage() {
           },
         ]
       : []),
-    TREBLE_CARD,
   ];
 
   return (
