@@ -3,7 +3,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import FansButton from "@/components/play/FansButton";
 import PlayGame from "@/components/play/PlayGame";
-import { getRenderClient } from "@/lib/supabase/server";
+import { getServiceClient } from "@/lib/supabase";
 import { isPlayHost, mainSiteOrigin } from "@/lib/play/host.js";
 import { dubaiWeekStart, lastDubaiWeekStart, weekLabel } from "@/lib/play/week.js";
 import styles from "@/components/play/play.module.css";
@@ -60,13 +60,12 @@ export default async function PlayPage({ searchParams }) {
   // On the play host other site pages are not served, so links go to the main site.
   const playApp = isPlayHost(host);
   const base = playApp ? mainSiteOrigin(host) : "";
-  const supabase = await getRenderClient();
   const now = new Date();
   const thisWeek = dubaiWeekStart(now);
   const lastWeek = lastDubaiWeekStart(now);
   const [current, previous] = await Promise.all([
-    loadWeek(supabase, thisWeek),
-    loadWeek(supabase, lastWeek),
+    loadWeek(getServiceClient(), thisWeek),
+    loadWeek(getServiceClient(), lastWeek),
   ]);
 
   const board = (

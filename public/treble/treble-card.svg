@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="The Treble. Three legs.">
+  <rect width="1600" height="900" fill="#0A111F"/>
+  <text x="96" y="250" fill="#D8232A" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="6">A TRF COMPETITION</text>
+  <text x="96" y="420" fill="#F2EDE4" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="128">The Treble</text>
+  <g fill="#F2EDE4" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="3">
+    <rect x="96" y="520" width="72" height="8" fill="#D8232A"/>
+    <text x="96" y="580">THE PITCH</text>
+    <rect x="520" y="520" width="72" height="8" fill="#D8232A"/>
+    <text x="520" y="580">THE QUIZ</text>
+    <rect x="944" y="520" width="72" height="8" fill="#D8232A"/>
+    <text x="944" y="580">THE VOICE</text>
+  </g>
+</svg>

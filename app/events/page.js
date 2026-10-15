@@ -1,6 +1,7 @@
 import HubPage from "@/components/hub/HubPage";
 import { FATF_ENABLED } from "@/lib/config";
 import { FATF_PATH } from "@/lib/fatf";
+import { TREBLE_CARD } from "@/lib/treble";
 
 export const metadata = {
   title: "Events",
@@ -11,6 +12,7 @@ export const metadata = {
 
 export default function EventsPage() {
   const cards = [
+    TREBLE_CARD,
     ...(FATF_ENABLED
       ? [
           {
