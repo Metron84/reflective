@@ -24,6 +24,7 @@ export default function sitemap() {
     { path: "/codemaster", changeFrequency: "weekly", priority: 0.8 },
     { path: "/games", changeFrequency: "weekly", priority: 0.7 },
     { path: "/competitions", changeFrequency: "weekly", priority: 0.7 },
+    { path: "/treble", changeFrequency: "weekly", priority: 0.8 },
     { path: "/events", changeFrequency: "weekly", priority: 0.7 },
     ...(CREST_ENABLED
       ? [{ path: "/crest", changeFrequency: "weekly", priority: 0.8 }]

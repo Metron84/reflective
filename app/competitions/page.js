@@ -1,11 +1,12 @@
 import HubPage from "@/components/hub/HubPage";
 import { KOTB_ENABLED } from "@/lib/config";
 import { KOTB_PATH } from "@/lib/kotb";
+import { TREBLE_CARD } from "@/lib/treble";
 
 export const metadata = {
   title: "Competitions",
   description:
-    "The Reflectives and King of the Burgers. Competitions run by and for football fans.",
+    "The Reflectives, King of the Burgers, and The Treble. Competitions run by and for football fans.",
   alternates: { canonical: "/competitions" },
 };
 
@@ -32,6 +33,7 @@ export default function CompetitionsPage() {
           },
         ]
       : []),
+    TREBLE_CARD,
   ];
 
   return (
