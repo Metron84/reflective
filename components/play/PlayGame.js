@@ -451,40 +451,36 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
             target={target}
             spinId={spin?.questionId ?? null}
             onDone={wheelDone}
+            onSpin={doSpin}
+            spinning={spinning}
+            spinDisabled={busy || spinning || beat !== "idle" || stuck}
           />
           <div className={styles.reveal} aria-live="polite">
             {(beat === "team" || beat === "question") && spin && (
               <p className={styles.teamReveal}>{spin.category}</p>
             )}
           </div>
-          <button
-            onClick={doSpin}
-            disabled={busy || spinning || beat !== "idle" || stuck}
-            className={`${styles.primary} ${styles.pulse} ${styles.spin}`}
-          >
-            {spinning ? "Spinning" : "Spin"}
-          </button>
           {error && !stuck && <p className={styles.error}>{error}</p>}
         </div>
         <div className={styles.dock}>
-          {showQuestion ? (
-            <QuestionModal
-              key={spin.questionId}
-              question={spin}
-              result={result}
-              busy={busy}
-              error={stuck ? null : error}
-              onSubmit={submit}
-              skipsLeft={skipsLeft}
-              onSkip={skip}
-              onNext={next}
-              onContinue={onContinue}
-            />
-          ) : (
-            <p className={styles.dockEmpty}>Spin to draw a question.</p>
-          )}
+          {showQuestion ? null : <p className={styles.dockEmpty}>Spin to draw a question.</p>}
         </div>
       </section>
+
+      {showQuestion && !stuck ? (
+        <QuestionModal
+          key={spin.questionId}
+          question={spin}
+          result={result}
+          busy={busy}
+          error={error}
+          onSubmit={submit}
+          skipsLeft={skipsLeft}
+          onSkip={skip}
+          onNext={next}
+          onContinue={onContinue}
+        />
+      ) : null}
 
       {result && !result.skipped && <Feedback key={answered} result={result} />}
 

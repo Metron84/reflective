@@ -189,7 +189,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
       </div>
 
       <div className={styles.top}>
-        <span className={styles.brand}>The Crest</span>
+        <span className={styles.brand}>Find Your FC</span>
         <button type="button" className={styles.skip} onClick={onDone}>
           {index === last ? "See everything" : "Skip"}
         </button>

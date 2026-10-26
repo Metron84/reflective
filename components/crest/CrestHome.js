@@ -109,7 +109,7 @@ export default function CrestHome({
         ) : (
           <span />
         )}
-        <span className={styles.brand}>The Crest</span>
+        <span className={styles.brand}>Find Your FC</span>
       </header>
 
       <div className={styles.layout}>

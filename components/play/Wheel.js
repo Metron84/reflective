@@ -142,7 +142,15 @@ function playQuiet(name) {
 }
 
 /** `target` is the category the server picked, set after the spin request returns. */
-export default function Wheel({ segments, target, spinId = null, onDone }) {
+export default function Wheel({
+  segments,
+  target,
+  spinId = null,
+  onDone,
+  onSpin,
+  spinDisabled = false,
+  spinning = false,
+}) {
   const [rotation, setRotation] = useState(0);
   const [live, setLive] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -310,6 +318,20 @@ export default function Wheel({ segments, target, spinId = null, onDone }) {
           })}
         </svg>
         <div className={styles.pointer} />
+        {onSpin ? (
+          <button
+            id="play-spin"
+            type="button"
+            onClick={() => {
+              if (!spinDisabled) onSpin();
+            }}
+            disabled={spinDisabled}
+            aria-label={spinning ? "Spinning" : "Spin"}
+            className={`${styles.primary} ${styles.pulse} ${styles.hubSpin}${spinning ? ` ${styles.hubSpinBusy}` : ""}`}
+          >
+            {spinning ? "Spinning" : "Spin"}
+          </button>
+        ) : null}
       </div>
     </div>
   );

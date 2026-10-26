@@ -5,9 +5,8 @@ import { montserrat } from "./montserrat";
 import styles from "./page.module.css";
 
 export const metadata = {
-  title: "The Crest",
-  description:
-    "Eighteen swipes. One club. Find the football club that sounds like your heart, thinks like your mind and feels like your soul.",
+  title: "Find Your FC",
+  description: "Matched on heart, mind and soul",
   alternates: { canonical: "/crest" },
 };
 
