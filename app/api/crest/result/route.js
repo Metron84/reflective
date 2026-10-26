@@ -43,7 +43,7 @@ export async function GET() {
 
   const { data, error } = await auth.supabase
     .from("crest_results")
-    .select("answers, stake, scope, club_slug, room_pct, saved_at")
+    .select("answers, stake, scope, club_slug, room_pct, saved_at, fc_results")
     .eq("user_id", auth.user.id)
     .maybeSingle();
 
@@ -78,13 +78,14 @@ export async function PUT(request) {
     scope: parsed.scope,
     club_slug: snap.club_slug,
     room_pct: snap.room_pct,
+    fc_results: parsed.fc,
     saved_at: new Date().toISOString(),
   };
 
   const { data, error } = await auth.supabase
     .from("crest_results")
     .upsert(row, { onConflict: "user_id" })
-    .select("answers, stake, scope, club_slug, room_pct, saved_at")
+    .select("answers, stake, scope, club_slug, room_pct, saved_at, fc_results")
     .single();
 
   if (error || !data) {
