@@ -445,7 +445,7 @@ export default function PlayGame({ autoSave = false, board = null, base = "", le
         <Mute />
         <h1 className={styles.headline}>Are You Really a Fan?</h1>
         <ScoreBar score={score} answered={answered} max={max} streak={streak} />
-        <div className={styles.stage}>
+        <div className={showQuestion ? `${styles.stage} ${styles.stageBlur}` : styles.stage}>
           <Wheel
             segments={segments}
             target={target}
