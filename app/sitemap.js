@@ -4,6 +4,7 @@ import {
   KOTB_ENABLED,
   LALIGA_CAMPAIGN_ENABLED,
   OBSERVATORY_ENABLED,
+  CLOCKEND_PUBLIC,
   CREST_ENABLED,
   SITE_URL,
   STAND_ENABLED,
@@ -39,6 +40,9 @@ export default function sitemap() {
       : []),
     ...(LALIGA_CAMPAIGN_ENABLED
       ? [{ path: "/laliga", changeFrequency: "weekly", priority: 0.8 }]
+      : []),
+    ...(CLOCKEND_PUBLIC
+      ? [{ path: "/clockend", changeFrequency: "weekly", priority: 0.7 }]
       : []),
     ...(FATF_ENABLED && FATF_INDEXABLE
       ? [{ path: "/for-all-the-fans", changeFrequency: "daily", priority: 0.85 }]

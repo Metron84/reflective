@@ -1,0 +1,401 @@
+/* Clock End Dubai. Mobile-first; two columns from 1024px. */
+.page {
+  --ce-red: #a50010;
+  --ce-gold: #e2c47a;
+  --ce-ink: #1a1a1a;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ce-red);
+  color: #fff;
+  font-family: var(--font-archivo), sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.page button,
+.page input {
+  font-family: inherit;
+}
+
+/* Hero */
+.photo {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  flex: none;
+  background: var(--ce-red);
+}
+
+.photoImg {
+  object-fit: cover;
+  object-position: 30% 30%;
+}
+
+.fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  background: linear-gradient(to bottom, rgba(165, 0, 16, 0), var(--ce-red));
+}
+
+/* Content */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px 32px;
+}
+
+.column {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 900;
+  font-size: 52px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.gold {
+  color: var(--ce-gold);
+}
+
+.lead {
+  margin: 14px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Form */
+.form {
+  margin-top: 40px;
+}
+
+.formTitle {
+  margin: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.helper {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.section {
+  margin-top: 28px;
+}
+
+.sectionLabel {
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ce-gold);
+}
+
+.field {
+  margin-top: 22px;
+}
+
+.section .field:first-of-type {
+  margin-top: 0;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.field > .label + .helper {
+  margin: -4px 0 8px;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ce-ink);
+  font-size: 17px;
+}
+
+.input::placeholder {
+  color: #6b6b6b;
+}
+
+.input[aria-invalid="true"] {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.input:focus-visible,
+.choice:focus-visible,
+.check input:focus-visible,
+.submit:focus-visible,
+.thanksPrimary:focus-visible,
+.thanksOutline:focus-visible {
+  outline: 3px solid var(--ce-gold);
+  outline-offset: 2px;
+}
+
+.phone {
+  display: flex;
+}
+
+.prefix {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 56px;
+  border-radius: 6px 0 0 6px;
+  border-right: 1px solid #d0d0d0;
+  background: #fff;
+  color: var(--ce-ink);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.prefixOff {
+  opacity: 0.45;
+}
+
+.phoneInput {
+  border-radius: 0 6px 6px 0;
+}
+
+.field > .phone + .helper {
+  margin-top: 8px;
+}
+
+/* Choice buttons */
+.choices {
+  display: grid;
+  gap: 10px;
+}
+
+.cols2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cols4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.stack {
+  grid-template-columns: 1fr;
+}
+
+.choice {
+  min-height: 56px;
+  padding: 6px 10px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+}
+
+.stack .choice {
+  text-align: left;
+  padding-left: 16px;
+}
+
+.choiceOn {
+  border-color: #fff;
+  background: #fff;
+  color: var(--ce-red);
+  font-weight: 700;
+}
+
+.choice:disabled {
+  cursor: default;
+}
+
+/* Consent */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.check input {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Submit */
+.submit {
+  display: block;
+  width: 100%;
+  height: 64px;
+  margin-top: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ce-red);
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.never {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Thank-you */
+.bring {
+  margin: 28px 0 14px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.thanksPrimary,
+.thanksOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  margin-top: 12px;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.thanksPrimary {
+  background: #fff;
+  color: var(--ce-red);
+}
+
+.thanksOutline {
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+/* Footer */
+.footer {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wordmark {
+  margin: 10px 0 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 1024px) {
+  .page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .photo {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .fade {
+    display: none;
+  }
+
+  .content {
+    padding: 72px 56px 40px;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .column {
+    margin: 0;
+  }
+}
