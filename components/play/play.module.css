@@ -255,7 +255,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: min(100%, calc(100dvh - 16.5rem));
+  max-width: min(100%, calc(100dvh - 13.5rem));
 }
 
 .wheel {
@@ -284,6 +284,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1;
+  container-type: inline-size;
 }
 
 .drift,
@@ -342,6 +343,48 @@
   filter: drop-shadow(0 2px 0 #0a111f);
 }
 
+/* Centre hub. 27.8cqi matches the navy hub (diameter 100 / viewBox 360). 64px is the phone floor. */
+.hubSpin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 28%;
+  width: max(64px, 27.8cqi);
+  aspect-ratio: 1;
+  min-width: 64px;
+  min-height: 64px;
+  margin: 0;
+  padding: 0.35rem;
+  border: 3px solid var(--play-gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 5cqi, 1.2rem);
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.hubSpinBusy {
+  font-size: 0.62rem;
+  font-size: clamp(0.58rem, 3.5cqi, 0.85rem);
+}
+
+.hubSpin:active:not(:disabled) {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.hubSpin:focus-visible {
+  outline: 2px solid var(--play-cream);
+  outline-offset: 3px;
+}
+
 .winner {
   transform-box: fill-box;
   transform-origin: center;
@@ -391,11 +434,6 @@
   text-transform: uppercase;
 }
 
-.spin {
-  width: 100%;
-  max-width: 16rem;
-}
-
 .dock {
   width: 100%;
   max-width: 28rem;
@@ -405,28 +443,34 @@
   display: none;
 }
 
-.sheetBackdrop {
+.overlay {
   position: fixed;
-  inset: 0;
-  z-index: 30;
+  top: 0;
+  left: 0;
+  z-index: 210;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  background: rgba(10, 17, 31, 0.72);
-}
-
-.sheet {
-  width: 100%;
-  max-width: 28rem;
-  max-height: 92dvh;
-  overflow-y: auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   box-sizing: border-box;
-  padding: 1.15rem 1.1rem 1.4rem;
-  border: 1px solid rgba(242, 237, 228, 0.16);
-  border-radius: 1.25rem 1.25rem 0 0;
-  background: #121a2b;
+  width: 100%;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--play-navy);
+  padding:
+    max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(1.25rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
   color: var(--play-cream);
   font-family: var(--play-font);
+}
+
+.overlayPanel {
+  box-sizing: border-box;
+  width: 100%;
+  flex: 1 0 auto;
 }
 
 .sheetTop {
@@ -458,7 +502,7 @@
 
 .clue {
   margin: 1rem 0 0;
-  font-size: 1.25rem;
+  font-size: clamp(1.35rem, 5vw, 1.7rem);
   font-weight: 700;
   line-height: 1.3;
 }
@@ -466,7 +510,8 @@
 .field {
   width: 100%;
   box-sizing: border-box;
-  margin-top: 1rem;
+  min-height: 64px;
+  margin-top: 0;
   padding: 0.85rem 0.9rem;
   border: 1px solid rgba(242, 237, 228, 0.35);
   border-radius: 0.8rem;
@@ -479,6 +524,22 @@
 .field:focus {
   outline: 2px solid var(--play-red);
   outline-offset: 1px;
+}
+
+.answerGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.answerGrid > .field,
+.answerGrid > .primary,
+.answerGrid > .secondary {
+  width: 100%;
+  min-height: 64px;
+  margin-top: 0;
+  touch-action: manipulation;
 }
 
 .row {
@@ -525,7 +586,7 @@
 .alert {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 230;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -815,16 +876,35 @@
     text-transform: uppercase;
   }
 
-  .sheetBackdrop {
-    position: static;
-    display: block;
-    background: none;
-    z-index: auto;
+  .overlay {
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 17, 31, 0.78);
   }
 
-  .sheet {
-    max-height: none;
-    border-radius: 1rem;
+  .overlayPanel {
+    flex: none;
+    width: min(100%, 720px);
+    max-height: calc(100dvh - 3rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    padding: 2rem 2.25rem;
+    border: 1px solid rgba(242, 237, 228, 0.16);
+    border-radius: 1.25rem;
+    background: #121a2b;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  }
+
+  .overlay .clue {
+    font-size: clamp(1.7rem, 2.4vw, 2.15rem);
+  }
+
+  .answerGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+  }
+
+  .answerGrid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 
   .alert {
@@ -870,11 +950,11 @@
 
 /* Secondary action under the answer field. Quieter than Lock In so it never competes. */
 .skip {
-  min-height: 44px;
-  margin-top: 0.5rem;
-  padding: 0.6rem 1rem;
+  min-height: 64px;
+  margin-top: 0;
+  padding: 0.85rem 1rem;
   border-color: rgba(242, 237, 228, 0.2);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0;
   color: rgba(242, 237, 228, 0.75);

@@ -3,7 +3,7 @@
 .flash {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 220;
   pointer-events: none;
   opacity: 0;
   animation: flash 300ms ease-out both;
@@ -24,7 +24,7 @@
   position: fixed;
   top: 42%;
   left: 50%;
-  z-index: 61;
+  z-index: 221;
   width: 0;
   height: 0;
   pointer-events: none;
@@ -47,7 +47,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: 62;
+  z-index: 222;
   pointer-events: none;
   font-family: var(--font-body);
   font-size: 2.5rem;
