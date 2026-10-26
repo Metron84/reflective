@@ -22,6 +22,8 @@ const PUBLIC_PATHS = [
   "/auth/signout",
   "/privacy",
   "/about",
+  "/clockend",
+  "/api/clockend",
 ];
 
 function isPublicPath(pathname) {

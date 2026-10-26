@@ -117,7 +117,9 @@ export default async function RootLayout({ children }) {
   const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/") || isWatchWithHost(hdrs.get("host"));
   // The play host only ever shows the game, so site navigation would lead nowhere.
   const playApp = isPlayHost(hdrs.get("host"));
-  const hideChrome = ultimaApp || crestApp || playApp || watchWith;
+  // Clock End Dubai is a standalone sign-up page: no site header or footer.
+  const clockEnd = pathname === "/clockend" || pathname.startsWith("/clockend/");
+  const hideChrome = ultimaApp || crestApp || playApp || watchWith || clockEnd;
 
   return (
     <html
@@ -145,7 +147,7 @@ export default async function RootLayout({ children }) {
         {hideChrome ? null : <SiteHeader />}
         <main className="flex flex-1 flex-col">{children}</main>
         {hideChrome ? null : <SiteFooter />}
-        {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp ? null : <InstallHint />}
+        {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp || clockEnd ? null : <InstallHint />}
       </body>
     </html>
   );

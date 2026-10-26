@@ -1,5 +1,5 @@
 import HubPage from "@/components/hub/HubPage";
-import { FATF_ENABLED } from "@/lib/config";
+import { CLOCKEND_PUBLIC, FATF_ENABLED } from "@/lib/config";
 import { FATF_PATH } from "@/lib/fatf";
 import { TREBLE_CARD } from "@/lib/treble";
 
@@ -21,6 +21,19 @@ export default function EventsPage() {
             hook: "One night a month, the room goes to the people who work every matchday.",
             href: FATF_PATH,
             cover: "/fatf/hero.jpg",
+            statusLabel: null,
+          },
+        ]
+      : []),
+    ...(CLOCKEND_PUBLIC
+      ? [
+          {
+            slug: "clockend",
+            title: "Clock End Dubai",
+            hook: "Bring the noise. Keep your seat.",
+            href: "/clockend",
+            cover: "/clockend/hero.jpg",
+            coverFocus: "30% 30%",
             statusLabel: null,
           },
         ]
