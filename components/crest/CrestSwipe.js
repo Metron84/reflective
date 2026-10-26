@@ -5,6 +5,7 @@ import { allowsBoth, PART_LABEL, TOTAL } from "@/lib/crest/cards";
 import { DEFAULT_ALPHA, nextCard } from "@/lib/crest/match";
 import { parseBallot } from "@/lib/crest/result-store";
 import { decodeResume } from "@/lib/crest/resume";
+import { buildScopeResults } from "@/lib/crest/results";
 import {
   clearPendingSave,
   fetchCrestStatus,
@@ -33,6 +34,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   const [group, setGroup] = useState(null);
   const [stake, setStake] = useState(null);
   const [answers, setAnswers] = useState([]);
+  const [fcResults, setFcResults] = useState(null);
   const [drag, setDrag] = useState(0);
   const [saved, setSaved] = useState(null);
   const [saveState, setSaveState] = useState("idle");
@@ -73,6 +75,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
       }
 
       setAnswers(parsed.answers);
+      setFcResults(parsed.fc);
       setStake(parsed.stake);
       if (parsed.scope) {
         setGroup(parsed.scope);
@@ -147,7 +150,10 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
     const next = [...answers, { cardId: current.card.id, value }];
     setDrag(0);
     setAnswers(next);
-    if (next.length >= TOTAL) setStep("reveal");
+    if (next.length >= TOTAL) {
+      setFcResults(buildScopeResults(next, { group, stake }));
+      setStep("reveal");
+    }
   }
 
   function back() {
@@ -162,6 +168,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   function restart() {
     if (saved && !window.confirm("This replaces your saved crest.")) return;
     setAnswers([]);
+    setFcResults(null);
     setStake(null);
     setDrag(0);
     setSaveState("idle");
@@ -185,7 +192,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   }
 
   async function saveResults() {
-    const ballot = { answers, stake, scope: group };
+    const ballot = { answers, stake, scope: group, fc: fcResults };
     setSaveState("saving");
     setSaveMessage("");
     const put = await saveCrestResult(ballot);
@@ -246,7 +253,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
           saveState={saveState}
           saveMessage={saveMessage}
           signedIn={signedIn}
-          onKeepResult={() => writePendingSave({ answers, stake, scope: group })}
+          onKeepResult={() => writePendingSave({ answers, stake, scope: group, fc: fcResults })}
           onSave={saveResults}
           onOpenReport={() => setStep("report")}
           onRestart={restart}

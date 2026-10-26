@@ -20,7 +20,7 @@ export default function CrestWant({ onPick, onBack }) {
         <button type="button" className={`${home.back} ${styles.back}`} onClick={onBack} aria-label="Back">
           <ArrowLeft />
         </button>
-        <span className={home.brand}>The Crest</span>
+        <span className={home.brand}>Find Your FC</span>
         <span />
       </header>
 
