@@ -6,6 +6,7 @@ import {
   WATCH_STYLE_OPTIONS,
 } from "@/lib/clockend/options";
 import { normalizeInstagram, normalizeWhatsapp } from "@/lib/clockend/normalize";
+import { sendClockendSignupEmail } from "@/lib/clockend/notify";
 
 export const runtime = "nodejs";
 
@@ -70,15 +71,14 @@ export async function POST(request) {
 
   const attendanceIn = Array.isArray(body?.attendance) ? body.attendance : [];
   if (attendanceIn.some((v) => !ATTENDANCE.has(v))) return fail("choice-invalid");
-  const attendance = attendanceIn.includes("every_game")
-    ? ["every_game"]
-    : [...new Set(attendanceIn)];
+  const attendance = [...new Set(attendanceIn)];
 
   const groupSize = body?.group_size ?? null;
   if (groupSize !== null && !GROUP_SIZES.has(groupSize)) return fail("choice-invalid");
 
-  const watchStyle = body?.watch_style ?? null;
-  if (watchStyle !== null && !WATCH_STYLES.has(watchStyle)) return fail("choice-invalid");
+  const watchIn = Array.isArray(body?.watch_styles) ? body.watch_styles : [];
+  if (watchIn.some((v) => !WATCH_STYLES.has(v))) return fail("choice-invalid");
+  const watchStyles = [...new Set(watchIn)];
 
   const row = {
     full_name: fullName,
@@ -87,7 +87,7 @@ export async function POST(request) {
     arsenal_uae_member: asBoolOrNull(body?.arsenal_uae_member),
     attendance,
     group_size: groupSize,
-    watch_style: watchStyle,
+    watch_styles: watchStyles,
     film_consent: asBoolOrNull(body?.film_consent),
     contact_consent: true,
   };
@@ -98,7 +98,11 @@ export async function POST(request) {
     return NextResponse.json({ ok: true, simulated: true });
   }
 
-  const { error } = await supabase.from("clockend_signups").insert(row);
+  const { data, error } = await supabase
+    .from("clockend_signups")
+    .insert(row)
+    .select("created_at")
+    .single();
 
   if (error) {
     // Unique WhatsApp number: they are already on the list.
@@ -113,6 +117,23 @@ export async function POST(request) {
       return NextResponse.json({ ok: true, simulated: true });
     }
     return fail("server-error", 500);
+  }
+
+  const { count, error: countError } = await supabase
+    .from("clockend_signups")
+    .select("*", { count: "exact", head: true });
+  if (countError) {
+    console.error("[clockend/notify] count failed:", countError.message);
+  }
+
+  try {
+    await sendClockendSignupEmail({
+      ...row,
+      createdAt: data?.created_at,
+      total: count,
+    });
+  } catch (err) {
+    console.error("[clockend/notify] email failed:", err?.message || err);
   }
 
   return NextResponse.json({ ok: true });

@@ -102,7 +102,7 @@ export default function ClockEndSignup() {
   const [member, setMember] = useState(null);
   const [attendance, setAttendance] = useState([]);
   const [groupSize, setGroupSize] = useState(null);
-  const [watchStyle, setWatchStyle] = useState(null);
+  const [watchStyles, setWatchStyles] = useState([]);
   const [filmConsent, setFilmConsent] = useState(null);
   const [consent, setConsent] = useState(false);
   const [website, setWebsite] = useState("");
@@ -119,12 +119,10 @@ export default function ClockEndSignup() {
 
   const intl = /^\s*(\+|00)/.test(whatsapp);
 
-  function toggleAttendance(value) {
-    setAttendance((current) => {
-      if (current.includes(value)) return current.filter((v) => v !== value);
-      if (value === "every_game") return ["every_game"];
-      return [...current.filter((v) => v !== "every_game"), value];
-    });
+  function toggleList(setter, value) {
+    setter((current) =>
+      current.includes(value) ? current.filter((v) => v !== value) : [...current, value],
+    );
   }
 
   function pick(setter, value) {
@@ -169,7 +167,7 @@ export default function ClockEndSignup() {
           arsenal_uae_member: member,
           attendance,
           group_size: groupSize,
-          watch_style: watchStyle,
+          watch_styles: watchStyles,
           film_consent: filmConsent,
           contact_consent: consent,
           website,
@@ -379,7 +377,7 @@ export default function ClockEndSignup() {
                     <Choice
                       key={option.value}
                       selected={attendance.includes(option.value)}
-                      onClick={() => toggleAttendance(option.value)}
+                      onClick={() => toggleList(setAttendance, option.value)}
                       disabled={submitting}
                     >
                       {option.label}
@@ -406,16 +404,24 @@ export default function ClockEndSignup() {
                 </div>
               </div>
 
-              <div className={styles.field} role="group" aria-labelledby="ce-style-label">
+              <div
+                className={styles.field}
+                role="group"
+                aria-labelledby="ce-style-label"
+                aria-describedby="ce-style-help"
+              >
                 <span id="ce-style-label" className={styles.label}>
                   How do you like to watch?
                 </span>
+                <p id="ce-style-help" className={styles.helper}>
+                  Pick all that fit.
+                </p>
                 <div className={`${styles.choices} ${styles.stack}`}>
                   {WATCH_STYLE_OPTIONS.map((option) => (
                     <Choice
                       key={option.value}
-                      selected={watchStyle === option.value}
-                      onClick={() => pick(setWatchStyle, option.value)}
+                      selected={watchStyles.includes(option.value)}
+                      onClick={() => toggleList(setWatchStyles, option.value)}
                       disabled={submitting}
                     >
                       {option.label}
