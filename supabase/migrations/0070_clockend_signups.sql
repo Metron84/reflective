@@ -13,5 +13,6 @@ create table if not exists public.clockend_signups (
 );
 create unique index if not exists clockend_signups_whatsapp_key on public.clockend_signups (whatsapp);
 alter table public.clockend_signups enable row level security;
+drop policy if exists "clockend_insert_only" on public.clockend_signups;
 create policy "clockend_insert_only" on public.clockend_signups
   for insert to anon, authenticated with check (contact_consent = true);
