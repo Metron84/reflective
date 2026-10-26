@@ -7,7 +7,7 @@ import styles from "./CrestSection.module.css";
 export default function CrestSection({ crest }) {
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>The Crest</h2>
+      <h2 className={styles.sectionTitle}>Find Your FC</h2>
       {crest ? (
         <>
           <p className={styles.club}>{crest.clubName}</p>
