@@ -258,6 +258,10 @@
   max-width: min(100%, calc(100dvh - 13.5rem));
 }
 
+.stageBlur {
+  filter: blur(16px);
+}
+
 .wheel {
   position: relative;
   width: 100%;
@@ -444,6 +448,12 @@
 }
 
 .overlay {
+  --play-navy: #0a111f;
+  --play-red: #d8232a;
+  --play-cream: #f2ede4;
+  --play-gold: #f5c451;
+  --play-font: var(--font-archivo), "Archivo", sans-serif;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -457,7 +467,9 @@
   height: 100dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--play-navy);
+  background: rgba(10, 17, 31, 0.88);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
   padding:
     max(1rem, env(safe-area-inset-top))
     max(1rem, env(safe-area-inset-right))
