@@ -15,7 +15,7 @@ export default function ProgrammeHeader({ profile, crestClub = null }) {
         </ul>
       ) : null}
       {crestClub ? (
-        <p className={styles.crestLine}>The Crest says {crestClub}</p>
+        <p className={styles.crestLine}>Find Your FC says {crestClub}</p>
       ) : null}
       <div className={styles.rule} aria-hidden="true" />
     </header>

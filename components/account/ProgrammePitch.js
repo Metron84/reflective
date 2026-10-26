@@ -7,8 +7,8 @@ const HOLDS = [
     copy: "Your best scores in Are You Really a Fan?, Codemaster and The Guesser.",
   },
   {
-    title: "Crest leagues",
-    copy: "The club The Crest picks for you, and the club it finds for you in every league.",
+    title: "Find Your FC",
+    copy: "The club Find Your FC picks for you, and the club it finds for you in every league.",
   },
   {
     title: "Honours",
