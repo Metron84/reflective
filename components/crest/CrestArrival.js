@@ -122,25 +122,22 @@ export default function CrestArrival({
       ) : null}
 
       <h2 className={styles.subhead}>Your club in every league</h2>
-      {outcome.countries.map((country) => (
-        <section key={country.country}>
-          <h3 className={styles.colourName}>{country.country}</h3>
-          <ul className={styles.leagueList}>
-            {country.leagues.map((league) => {
-              const hit = league.top?.slug && league.top.slug === heroSlug;
-              return (
-                <li key={league.competition}>
-                  <div className={`${styles.leagueRow} ${hit ? styles.leagueRowOn : ""}`}>
-                    <span>{league.label}</span>
-                    <strong>{league.top ? league.top.name : "No clubs in this league yet"}</strong>
-                    <span>{league.top ? `${league.top.percentage}%` : ""}</span>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      ))}
+      <ul className={styles.leagueList}>
+        {outcome.countries.flatMap((country) => country.leagues).map((league) => {
+          const hit = league.top?.slug && league.top.slug === heroSlug;
+          return (
+            <li key={league.competition}>
+              <div className={`${styles.leagueRow} ${hit ? styles.leagueRowOn : ""}`}>
+                <span className={styles.leagueTitle}>{league.label}</span>
+                <strong className={styles.leagueClub}>
+                  {league.top ? league.top.name : "No clubs in this league yet"}
+                </strong>
+                <span className={styles.leaguePct}>{league.top ? `${league.top.percentage}%` : ""}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
 
       <div className={styles.next}>
         {signedIn && saveState !== "saved" && onSave ? (
@@ -177,7 +174,15 @@ function ResultCards({ outcome }) {
 
   if (!born) {
     const label = built.percentage >= CONFIDENT_ROOM_PCT ? "Your FC" : "Closest match";
-    return <ClubCard label={label} name={built.name} color={built.color} percentage={built.percentage} />;
+    return (
+      <ClubCard
+        label={label}
+        name={built.name}
+        league={built.league}
+        color={built.color}
+        percentage={built.percentage}
+      />
+    );
   }
 
   if (born.typed) {
@@ -185,7 +190,13 @@ function ResultCards({ outcome }) {
       <>
         <div className={styles.resultPair}>
           <ClubCard label="Born to" name={born.name} color={born.color} note="Not on our list yet" />
-          <ClubCard label="Built for" name={built.name} color={built.color} percentage={built.percentage} />
+          <ClubCard
+            label="Built for"
+            name={built.name}
+            league={built.league}
+            color={built.color}
+            percentage={built.percentage}
+          />
         </div>
         <p className={styles.line}>We can&apos;t score {born.name} yet, so your swipes decide.</p>
       </>
@@ -194,7 +205,13 @@ function ResultCards({ outcome }) {
 
   if (outcome.same) {
     return (
-      <ClubCard label="Your FC, by blood and by heart" name={built.name} color={built.color} percentage={built.percentage} />
+      <ClubCard
+        label="Your FC, by blood and by heart"
+        name={built.name}
+        league={built.league}
+        color={built.color}
+        percentage={built.percentage}
+      />
     );
   }
 
@@ -206,8 +223,20 @@ function ResultCards({ outcome }) {
   return (
     <>
       <div className={styles.resultPair}>
-        <ClubCard label="Born to" name={born.name} color={born.color} percentage={born.percentage} />
-        <ClubCard label="Built for" name={built.name} color={built.color} percentage={built.percentage} />
+        <ClubCard
+          label="Born to"
+          name={born.name}
+          league={born.league}
+          color={born.color}
+          percentage={born.percentage}
+        />
+        <ClubCard
+          label="Built for"
+          name={built.name}
+          league={built.league}
+          color={built.color}
+          percentage={built.percentage}
+        />
       </div>
       <p className={styles.line}>{line}</p>
     </>
@@ -215,13 +244,14 @@ function ResultCards({ outcome }) {
 }
 
 /**
- * @param {{ label: string, name: string, color?: string|null, percentage?: number|null, note?: string }} props
+ * @param {{ label: string, name: string, league?: string, color?: string|null, percentage?: number|null, note?: string }} props
  */
-function ClubCard({ label, name, color, percentage, note }) {
+function ClubCard({ label, name, league, color, percentage, note }) {
   return (
     <div className={styles.arrivalBand} style={{ "--club": color || "#D8232A" }}>
       <p className={styles.resultLabel}>{label}</p>
       <h1 className={styles.arrivalName}>{name}</h1>
+      {league ? <p className={styles.arrivalMeta}>{league}</p> : null}
       {note ? <p className={styles.arrivalMeta}>{note}</p> : null}
       {percentage != null ? <p className={styles.arrivalScore}>{percentage}% match</p> : null}
     </div>

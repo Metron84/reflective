@@ -50,7 +50,8 @@
 }
 
 .chip:hover,
-.chip:focus-visible {
+.chip:focus-visible,
+.chipOn {
   border-color: #d8232a;
   outline: none;
 }
