@@ -1126,6 +1126,75 @@
   }
 }
 
+.resultLabel {
+  margin: 0 0 8px;
+  font-family: var(--font-crest-head), var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.resultPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.resultPair .arrivalName {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+}
+
+.leagueList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leagueRow,
+.leagueSub li {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.8fr) 1.4fr auto;
+  gap: 8px;
+  align-items: baseline;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--edge);
+  background: rgba(242, 237, 228, 0.04);
+  color: var(--cream);
+  font: inherit;
+  text-align: left;
+}
+
+.leagueRow {
+  appearance: none;
+  cursor: pointer;
+}
+
+.leagueRowOn {
+  border-color: var(--red);
+}
+
+.leagueSub {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 0 0 0 12px;
+  list-style: none;
+}
+
+@media (max-width: 640px) {
+  .resultPair {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .board * {
     transition: none !important;

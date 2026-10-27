@@ -167,7 +167,7 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
       <div
         className={styles.card}
         role="group"
-        aria-label={`Card ${index + 1}. ${card.question}`}
+        aria-label={`Card ${index + 1}. ${card.q || card.question}`}
         style={{
           transform: `${translate} rotate(${rotate}deg)`,
           transition,
@@ -179,8 +179,8 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        <p className={styles.cardQuestion}>{card.question}</p>
-        {card.context ? <p className={styles.cardOnContext}>{card.context}</p> : null}
+        <p className={styles.cardQuestion}>{card.q || card.question}</p>
+        {card.s || card.context ? <p className={styles.cardOnContext}>{card.s || card.context}</p> : null}
         <div
           className={`${styles.stamp} ${styles.stampLeft}`}
           style={{ opacity: stamp("left") }}

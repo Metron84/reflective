@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
+import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/engine";
 import { roomPercent } from "@/lib/crest/report";
 import { bothText, cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import { stakeLine } from "@/lib/crest/stakes";
@@ -16,7 +16,7 @@ const TAP_GUARD_MS = 700;
  * share card.
  *
  * @param {{
- *   answers: import("@/lib/crest/match").CrestAnswer[],
+ *   answers: import("@/lib/crest/engine").CrestAnswer[],
  *   group: string|null,
  *   stake?: string|null,
  *   onDone: () => void,
@@ -39,7 +39,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
         key: "start",
         body: (
           <>
-            <p className={styles.small}>Eighteen swipes later</p>
+            <p className={styles.small}>Twenty swipes later</p>
             <h2 className={styles.big}>You told us who you are.</h2>
             <p className={styles.line}>{stakeLine(stake) || "Now meet the club that sounds like you."}</p>
           </>
@@ -108,12 +108,16 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
   const [reduce, setReduce] = useState(false);
   const [card, setCard] = useState({ blob: null, url: null });
   const [shareState, setShareState] = useState("idle");
-  const armedAt = useRef(0);
+  const armed = useRef(false);
   const last = slides.length - 1;
 
   useEffect(() => {
-    armedAt.current = Date.now() + TAP_GUARD_MS;
+    armed.current = false;
+    const id = window.setTimeout(() => {
+      armed.current = true;
+    }, TAP_GUARD_MS);
     setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    return () => window.clearTimeout(id);
   }, []);
 
   useEffect(() => {
@@ -134,7 +138,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
 
   const go = useCallback(
     (step) => {
-      if (Date.now() < armedAt.current) return;
+      if (!armed.current) return;
       setIndex((i) => Math.max(0, Math.min(last, i + step)));
     },
     [last],
@@ -171,7 +175,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
       style={{ "--tone": slide.tone || "transparent" }}
       data-tone={slide.tone ? "club" : "night"}
       aria-roledescription="story"
-      aria-label="Your Crest reveal"
+      aria-label="Your FC reveal"
     >
       <div className={styles.bars} aria-hidden="true">
         {slides.map((s, i) => (
@@ -207,7 +211,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
           </div>
           <div className={styles.shareActions}>
             <button type="button" className={styles.primary} onClick={share} disabled={!card.blob || shareState === "busy"}>
-              {shareState === "saved" ? "Card saved, link copied" : "Share your crest"}
+              {shareState === "saved" ? "Card saved, link copied" : "Share your FC"}
             </button>
             <button type="button" className={styles.secondary} onClick={onDone}>
               See everything

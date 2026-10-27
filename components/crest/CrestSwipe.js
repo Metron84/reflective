@@ -1,15 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { allowsBoth, PART_LABEL, TOTAL } from "@/lib/crest/cards";
+import { allowsBoth, PART_INDEX, PART_LABEL, TOTAL } from "@/lib/crest/cards";
 import { DEFAULT_ALPHA, nextCard } from "@/lib/crest/match";
 import { parseBallot } from "@/lib/crest/result-store";
 import { decodeResume } from "@/lib/crest/resume";
-import { buildScopeResults } from "@/lib/crest/results";
+import { EMPTY_ROOTS } from "@/lib/crest/roots";
 import {
   clearPendingSave,
   fetchCrestStatus,
-  loadCrestResult,
   readPendingSave,
   saveCrestResult,
   writePendingSave,
@@ -20,12 +19,15 @@ import CrestArrival from "./CrestArrival";
 import CrestHome, { readStoredScope, writeStoredScope } from "./CrestHome";
 import CrestReport from "./CrestReport";
 import CrestReveal from "./CrestReveal";
+import CrestRoots from "./CrestRoots";
 import CrestWant from "./CrestWant";
 import styles from "./CrestSwipe.module.css";
 
+const RUN_TOTAL = 4 + TOTAL;
+
 /**
- * The Crest. Standalone play: home, one want, eighteen cards, arrival, report.
- * Answers live in session state. One saved crest lives on the TRF account.
+ * Find Your FC on The Reflective. Scope, roots, one want, twenty cards.
+ * One saved result still lives on the account.
  *
  * @param {{embedded?: boolean, resumeToken?: string|null}} [props]
  */
@@ -33,13 +35,13 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   const [step, setStep] = useState("scope");
   const [group, setGroup] = useState(null);
   const [stake, setStake] = useState(null);
+  const [roots, setRoots] = useState(EMPTY_ROOTS);
   const [answers, setAnswers] = useState([]);
-  const [fcResults, setFcResults] = useState(null);
   const [drag, setDrag] = useState(0);
+  const [runId, setRunId] = useState(0);
   const [saved, setSaved] = useState(null);
   const [saveState, setSaveState] = useState("idle");
   const [saveMessage, setSaveMessage] = useState("");
-  // null until the first check answers; only a definite false shows the sign-up prompt.
   const [signedIn, setSignedIn] = useState(null);
   const boardRef = useRef(null);
   const booted = useRef(false);
@@ -75,7 +77,6 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
       }
 
       setAnswers(parsed.answers);
-      setFcResults(parsed.fc);
       setStake(parsed.stake);
       if (parsed.scope) {
         setGroup(parsed.scope);
@@ -124,10 +125,11 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   function startFresh() {
     setAnswers([]);
     setStake(null);
+    setRoots(EMPTY_ROOTS);
     setDrag(0);
     setSaveState("idle");
     setSaveMessage("");
-    setStep("want");
+    setStep("roots");
   }
 
   function start() {
@@ -145,13 +147,12 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   function answer(side) {
     if (!current) return;
     if (side === "both" && !allowsBoth(current.card)) return;
-    const value =
-      side === "both" ? 0 : side === "left" ? current.card.leftValue : -current.card.leftValue;
+    const value = side === "both" ? 0 : side === "left" ? current.card.leftValue : -current.card.leftValue;
     const next = [...answers, { cardId: current.card.id, value }];
     setDrag(0);
     setAnswers(next);
     if (next.length >= TOTAL) {
-      setFcResults(buildScopeResults(next, { group, stake }));
+      setRunId((id) => id + 1);
       setStep("reveal");
     }
   }
@@ -168,8 +169,8 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   function restart() {
     if (saved && !window.confirm("This replaces your saved crest.")) return;
     setAnswers([]);
-    setFcResults(null);
     setStake(null);
+    setRoots(EMPTY_ROOTS);
     setDrag(0);
     setSaveState("idle");
     setSaveMessage("");
@@ -186,13 +187,14 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
     if (parsed.error) return;
     setAnswers(parsed.answers);
     setStake(parsed.stake);
+    setRoots(EMPTY_ROOTS);
     if (parsed.scope) setGroup(parsed.scope);
     setSaveState("saved");
     setStep("arrival");
   }
 
   async function saveResults() {
-    const ballot = { answers, stake, scope: group, fc: fcResults };
+    const ballot = { answers, stake, scope: group };
     setSaveState("saving");
     setSaveMessage("");
     const put = await saveCrestResult(ballot);
@@ -204,7 +206,6 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
       return;
     }
     if (put.needSignIn) {
-      // The Programme CTA takes it from here: it keeps the result and signs the player up.
       writePendingSave(ballot);
       setSignedIn(false);
       setSaveState("idle");
@@ -238,9 +239,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   }
 
   if (step === "reveal") {
-    return (
-      <CrestReveal answers={answers} group={group} stake={stake} onDone={() => setStep("arrival")} />
-    );
+    return <CrestReveal answers={answers} group={group} stake={stake} onDone={() => setStep("arrival")} />;
   }
 
   if (step === "arrival") {
@@ -250,12 +249,13 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
           answers={answers}
           group={group}
           stake={stake}
+          roots={roots}
+          runId={runId}
           saveState={saveState}
           saveMessage={saveMessage}
           signedIn={signedIn}
-          onKeepResult={() => writePendingSave({ answers, stake, scope: group, fc: fcResults })}
+          onKeepResult={() => writePendingSave({ answers, stake, scope: group })}
           onSave={saveResults}
-          onOpenReport={() => setStep("report")}
           onRestart={restart}
         />
       </div>
@@ -263,7 +263,19 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   }
 
   if (step === "want") {
-    return <CrestWant onPick={pickStake} onBack={() => setStep("scope")} />;
+    return <CrestWant onPick={pickStake} onBack={() => setStep("roots")} />;
+  }
+
+  if (step === "roots") {
+    return (
+      <CrestRoots
+        onBack={() => setStep("scope")}
+        onDone={(next) => {
+          setRoots(next);
+          setStep("want");
+        }}
+      />
+    );
   }
 
   if (step === "scope" || !current) {
@@ -281,8 +293,9 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
 
   const index = answers.length;
   const card = current.card;
-  const percent = Math.round((index / TOTAL) * 100);
-  const showTurn = index === 5 && card.part !== 1;
+  const done = 4 + index;
+  const percent = Math.round((done / RUN_TOTAL) * 100);
+  const showTurn = card.part === "football" && index === 10;
   const chip = stakeLine(stake);
 
   return (
@@ -302,7 +315,10 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
             &larr;
           </button>
           <span className={styles.partLabel}>
-            {card.part} of 3 · {PART_LABEL[card.part]}
+            {PART_INDEX[card.part]} of 3 · {PART_LABEL[card.part]}
+            <span className={styles.chipLine}>
+              {done} of {RUN_TOTAL}
+            </span>
             {chip ? <span className={styles.chipLine}>{chip}</span> : null}
           </span>
           <button type="button" className={styles.restart} onClick={restart}>
@@ -313,8 +329,8 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
           className={styles.progressBar}
           role="progressbar"
           aria-valuemin={0}
-          aria-valuemax={TOTAL}
-          aria-valuenow={index}
+          aria-valuemax={RUN_TOTAL}
+          aria-valuenow={done}
         >
           <span style={{ width: `${percent}%` }} />
         </div>

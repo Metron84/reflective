@@ -1,0 +1,61 @@
+.shell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+  margin: 0 auto;
+  padding-bottom: 32px;
+}
+
+.explain {
+  margin: 8px 0 0;
+  color: #a3acbe;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 22px;
+}
+
+.crumb {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #a3acbe;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.search {
+  margin-top: 22px;
+}
+
+.search label {
+  display: block;
+  margin-bottom: 8px;
+  color: #f2ede4;
+  font-size: 0.95rem;
+}
+
+.search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #263048;
+  background: #131a2a;
+  color: #f2ede4;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.typed {
+  margin-top: 8px;
+}
