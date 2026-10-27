@@ -44,7 +44,6 @@ export default function CrestArrival({
 }) {
   const [ready, setReady] = useState(false);
   const [shareState, setShareState] = useState("idle");
-  const [worldOpen, setWorldOpen] = useState(false);
 
   const outcome = useMemo(
     () => buildOutcome(answers, { group, stake, roots }),
@@ -71,7 +70,12 @@ export default function CrestArrival({
       built: outcome.built,
       runnerUp: outcome.runnerUp,
       born: outcome.born,
-      regions: outcome.regions,
+      regions: outcome.countries.flatMap((country) =>
+        country.leagues.map((league) => ({
+          region: league.label,
+          top: league.top,
+        })),
+      ),
     });
   }, [runId, outcome, group, stake, roots, answers]);
 
@@ -118,42 +122,25 @@ export default function CrestArrival({
       ) : null}
 
       <h2 className={styles.subhead}>Your club in every league</h2>
-      <ul className={styles.leagueList}>
-        {outcome.regions.map((row) => {
-          const hit = row.top?.slug && row.top.slug === heroSlug;
-          const world = row.region === "Rest of the World";
-          return (
-            <li key={row.region}>
-              <button
-                type="button"
-                className={`${styles.leagueRow} ${hit ? styles.leagueRowOn : ""}`}
-                onClick={() => {
-                  if (world) setWorldOpen((open) => !open);
-                }}
-                aria-expanded={world ? worldOpen : undefined}
-              >
-                <span>{row.region}</span>
-                <strong>{row.top ? row.top.name : "None in this search"}</strong>
-                <span>{row.top ? `${row.top.percentage}%` : ""}</span>
-              </button>
-              {world && worldOpen ? (
-                <ul className={styles.leagueSub}>
-                  {(row.sub || []).map((sub) => {
-                    const subHit = sub.top?.slug && sub.top.slug === heroSlug;
-                    return (
-                      <li key={sub.subregion} className={subHit ? styles.leagueRowOn : undefined}>
-                        <span>{sub.subregion}</span>
-                        <strong>{sub.top ? sub.top.name : "None in this search"}</strong>
-                        <span>{sub.top ? `${sub.top.percentage}%` : ""}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
+      {outcome.countries.map((country) => (
+        <section key={country.country}>
+          <h3 className={styles.colourName}>{country.country}</h3>
+          <ul className={styles.leagueList}>
+            {country.leagues.map((league) => {
+              const hit = league.top?.slug && league.top.slug === heroSlug;
+              return (
+                <li key={league.competition}>
+                  <div className={`${styles.leagueRow} ${hit ? styles.leagueRowOn : ""}`}>
+                    <span>{league.label}</span>
+                    <strong>{league.top ? league.top.name : "No clubs in this league yet"}</strong>
+                    <span>{league.top ? `${league.top.percentage}%` : ""}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
 
       <div className={styles.next}>
         {signedIn && saveState !== "saved" && onSave ? (

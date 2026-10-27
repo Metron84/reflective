@@ -100,7 +100,7 @@ export default function CrestTile({ crest, leagues }) {
                           ) : null}
                         </div>
                       )
-                    ) : (
+                    ) : row.clubName ? (
                       <button
                         type="button"
                         className={styles.hidden}
@@ -109,6 +109,11 @@ export default function CrestTile({ crest, leagues }) {
                         <span className={styles.leagueName}>{row.label}</span>
                         <span className={styles.tap}>Tap to reveal your club in this league</span>
                       </button>
+                    ) : (
+                      <div className={styles.hidden}>
+                        <span className={styles.leagueName}>{row.label}</span>
+                        <span className={styles.tap}>No clubs in this league yet</span>
+                      </div>
                     )}
                   </li>
                 );
@@ -131,7 +136,7 @@ export default function CrestTile({ crest, leagues }) {
           ) : null}
         </>
       ) : (
-        <p className={styles.empty}>Swipe Find Your FC to unlock your regions</p>
+        <p className={styles.empty}>Swipe Find Your FC to unlock your leagues</p>
       )}
 
       <Link href="/crest" className={styles.cta}>
