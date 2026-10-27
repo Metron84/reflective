@@ -45,5 +45,5 @@ test("the observatory host rewrites the short urls and leaves the api alone", ()
   assert.deepEqual(observatoryHostAction("/"), { type: "rewrite", to: "/observatory" });
   assert.deepEqual(observatoryHostAction("/footballer-001"), { type: "rewrite", to: "/observatory/footballer-001" });
   assert.deepEqual(observatoryHostAction("/api/observatory/footballer-001/answer"), { type: "pass" });
-  assert.deepEqual(observatoryHostAction("/observatory"), { type: "redirect", to: "/", keepSearch: true });
+  assert.deepEqual(observatoryHostAction("/observatory"), { type: "pass" });
 });

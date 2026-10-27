@@ -6,15 +6,8 @@ import {
   authCookieNamesIn,
   duplicateAuthCookieNames,
 } from "@/lib/auth/stale-cookies";
-import {
-  isUltimaAppHost,
-  isUltimaAppLeaf,
-  isUltimaPassthrough,
-  withAuthCookieDomain,
-} from "@/lib/ultima/host";
-import { isPlayHost, playHostAction } from "@/lib/play/host";
-import { isObservatoryHost, observatoryHostAction } from "@/lib/observatory/host";
-import { isWatchWithHost, watchWithHostAction } from "@/lib/watch-with/host";
+import { hostAction } from "@/lib/hosts";
+import { withAuthCookieDomain } from "@/lib/ultima/host";
 
 const PUBLIC_PATHS = [
   "/signin",
@@ -71,71 +64,13 @@ function rewriteWithPath(request, url) {
   return NextResponse.rewrite(url, { request: { headers: forwardedHeaders(request) } });
 }
 
-function ultimaHostResponse(request) {
-  const pathname = request.nextUrl.pathname;
-  const url = request.nextUrl.clone();
-
-  if (pathname === "/manifest.webmanifest" || pathname === "/manifest.json") {
-    url.pathname = "/ultima/manifest.webmanifest";
-    return rewriteWithPath(request, url);
-  }
-
-  if (isUltimaPassthrough(pathname)) {
-    return null;
-  }
-
-  if (pathname === "/" || pathname === "") {
-    url.pathname = "/ultima";
-    return rewriteWithPath(request, url);
-  }
-
-  if (isUltimaAppLeaf(pathname)) {
-    url.pathname = `/ultima${pathname}`;
-    return rewriteWithPath(request, url);
-  }
-
-  url.pathname = "/";
-  url.search = "";
-  return NextResponse.redirect(url);
-}
-
-function playHostResponse(request) {
-  const action = playHostAction(request.nextUrl.pathname);
-  if (action.type === "pass") return null;
-  const url = request.nextUrl.clone();
-  url.pathname = action.to;
-  if (action.type === "rewrite") return rewriteWithPath(request, url);
-  if (!action.keepSearch) url.search = "";
-  return NextResponse.redirect(url);
-}
-
-function observatoryHostResponse(request) {
-  const action = observatoryHostAction(request.nextUrl.pathname);
-  if (action.type === "pass") return null;
-  const url = request.nextUrl.clone();
-  url.pathname = action.to;
-  if (action.type === "rewrite") return rewriteWithPath(request, url);
-  if (!action.keepSearch) url.search = "";
-  return NextResponse.redirect(url);
-}
-
-function watchWithHostResponse(request) {
-  const action = watchWithHostAction(request.nextUrl.pathname);
-  if (action.type === "pass") return null;
-  const url = request.nextUrl.clone();
-  url.pathname = action.to;
-  if (action.type === "rewrite") return rewriteWithPath(request, url);
-  if (!action.keepSearch) url.search = "";
-  return NextResponse.redirect(url);
-}
-
-/** Subdomain routing: Ultima, play, the observatory and watch-with each own a host. */
+/** Subdomain routing. Each app host rewrites into its own section. */
 function appHostResponse(request, host) {
-  if (isUltimaAppHost(host)) return ultimaHostResponse(request);
-  if (isPlayHost(host)) return playHostResponse(request);
-  if (isObservatoryHost(host)) return observatoryHostResponse(request);
-  if (isWatchWithHost(host)) return watchWithHostResponse(request);
-  return null;
+  const action = hostAction(host, request.nextUrl.pathname);
+  if (action.type !== "rewrite") return null;
+  const url = request.nextUrl.clone();
+  url.pathname = action.to;
+  return rewriteWithPath(request, url);
 }
 
 export async function middleware(request) {
