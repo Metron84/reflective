@@ -13,7 +13,7 @@ import {
   saveCrestResult,
   writePendingSave,
 } from "@/lib/crest/save-client";
-import { stakeLine } from "@/lib/crest/stakes";
+import { getStake } from "@/lib/crest/stakes";
 import SwipeCard from "./SwipeCard";
 import CrestArrival from "./CrestArrival";
 import CrestHome, { readStoredScope, writeStoredScope } from "./CrestHome";
@@ -263,7 +263,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   }
 
   if (step === "want") {
-    return <CrestWant onPick={pickStake} onBack={() => setStep("roots")} />;
+    return <CrestWant selected={stake} onPick={pickStake} onBack={() => setStep("roots")} />;
   }
 
   if (step === "roots") {
@@ -296,7 +296,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   const done = 4 + index;
   const percent = Math.round((done / RUN_TOTAL) * 100);
   const showTurn = card.part === "football" && index === 10;
-  const chip = stakeLine(stake);
+  const stakeName = getStake(stake)?.label || "";
 
   return (
     <div
@@ -319,12 +319,12 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
             <span className={styles.chipLine}>
               {done} of {RUN_TOTAL}
             </span>
-            {chip ? <span className={styles.chipLine}>{chip}</span> : null}
           </span>
           <button type="button" className={styles.restart} onClick={restart}>
             Restart
           </button>
         </div>
+        {stakeName ? <p className={styles.stakeTab}>{stakeName}</p> : null}
         <div
           className={styles.progressBar}
           role="progressbar"

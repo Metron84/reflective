@@ -10,9 +10,10 @@ import styles from "./CrestWant.module.css";
  * @param {{
  *   onPick: (stakeId: import("@/lib/crest/stakes").CrestStakeId) => void,
  *   onBack: () => void,
+ *   selected?: string|null,
  * }} props
  */
-export default function CrestWant({ onPick, onBack }) {
+export default function CrestWant({ onPick, onBack, selected = null }) {
   return (
     <div className={home.home}>
       <Road />
@@ -33,7 +34,12 @@ export default function CrestWant({ onPick, onBack }) {
         <ul className={styles.list}>
           {STAKES.map((stake) => (
             <li key={stake.id}>
-              <button type="button" className={styles.chip} onClick={() => onPick(stake.id)}>
+              <button
+                type="button"
+                className={stake.id === selected ? `${styles.chip} ${styles.chipOn}` : styles.chip}
+                aria-pressed={stake.id === selected}
+                onClick={() => onPick(stake.id)}
+              >
                 <span className={styles.label}>{stake.label}</span>
                 <span className={styles.line}>{stake.line}</span>
               </button>
