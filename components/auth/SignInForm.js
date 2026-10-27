@@ -94,7 +94,7 @@ export default function SignInForm({
       const { error: authError } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
-          emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+          emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}&host=${encodeURIComponent(window.location.host)}`,
         },
       });
       if (authError) {
@@ -126,7 +126,7 @@ export default function SignInForm({
       const { error: authError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
+          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}&host=${encodeURIComponent(window.location.host)}`,
         },
       });
       if (authError) setError("Google sign-in is unavailable right now.");
