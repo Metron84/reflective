@@ -5,6 +5,7 @@ import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
 import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
+import { appForHost, canonicalUrl } from "@/lib/hosts";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { isPlayHost } from "@/lib/play/host";
 import { isWatchWithHost } from "@/lib/watch-with/host";
@@ -62,11 +63,23 @@ const SITE_METADATA = {
 };
 
 export async function generateMetadata() {
-  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
-  if (!ultimaApp) return SITE_METADATA;
+  const hdrs = await headers();
+  const host = hdrs.get("host");
+  const pathname = hdrs.get("x-pathname") || "/";
+  const canonical = canonicalUrl(host, pathname);
+  const site = canonical
+    ? {
+        ...SITE_METADATA,
+        metadataBase: new URL("https://www.thereflectivefootball.com"),
+        alternates: { canonical },
+        openGraph: { ...SITE_METADATA.openGraph, url: canonical },
+      }
+    : SITE_METADATA;
+  const ultimaApp = isUltimaAppHost(host);
+  if (!ultimaApp) return site;
 
   return {
-    ...SITE_METADATA,
+    ...site,
     applicationName: "Ultima",
     title: {
       default: "Ultima",
@@ -111,15 +124,16 @@ export async function generateViewport() {
 
 export default async function RootLayout({ children }) {
   const hdrs = await headers();
-  const ultimaApp = isUltimaAppHost(hdrs.get("host"));
+  const host = hdrs.get("host");
+  const ultimaApp = isUltimaAppHost(host);
   const pathname = hdrs.get("x-pathname") || "";
   const crestApp = pathname === "/crest" || pathname.startsWith("/crest/");
-  const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/") || isWatchWithHost(hdrs.get("host"));
-  // The play host only ever shows the game, so site navigation would lead nowhere.
-  const playApp = isPlayHost(hdrs.get("host"));
+  const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/") || isWatchWithHost(host);
+  const playApp = isPlayHost(host);
+  const appHost = Boolean(appForHost(host));
   // Clock End Dubai is a standalone sign-up page: no site header or footer.
   const clockEnd = pathname === "/clockend" || pathname.startsWith("/clockend/");
-  const hideChrome = ultimaApp || crestApp || playApp || watchWith || clockEnd;
+  const hideChrome = appHost || crestApp || watchWith || clockEnd;
 
   return (
     <html
