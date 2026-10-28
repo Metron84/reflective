@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
-import { buildReport, trait, REPORT_PHRASES, roomPercent } from "@/lib/crest/report";
+import { buildReport, trait, REPORT_PHRASES, matchPercent } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestReport.module.css";
@@ -55,14 +55,14 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const meta = [place, club.stadium].filter(Boolean).join(" · ");
   const summary = arrivalSummary(answers, DEFAULT_ALPHA, { group, stake });
-  const roomPct = roomPercent(summary.probability);
-  const kicker = shareKicker(roomPct, summary.confident);
+  const agreement = matchPercent(summary.score);
+  const kicker = shareKicker(summary.confident);
 
   async function share() {
     if (shareState === "busy") return;
     setShareState("busy");
     try {
-      const blob = await renderShareCard(cardDataFrom(summary, roomPct, kicker));
+      const blob = await renderShareCard(cardDataFrom(summary, agreement, kicker));
       const outcome = await shareCard(blob, club.name);
       setShareState(outcome === "saved" ? "saved" : "idle");
     } catch {
@@ -84,7 +84,7 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
         {blend.stakeLine ? <p className={styles.meta}>{blend.stakeLine}</p> : null}
         <p className={styles.lead}>{blend.opener}</p>
         {blend.voiceLine ? <blockquote className={styles.voice}>{blend.voiceLine}</blockquote> : null}
-        <p className={styles.match}>{blend.roomPct}% match</p>
+        <p className={styles.match}>{agreement}% agreement</p>
       </section>
 
       <section className={styles.section}>
