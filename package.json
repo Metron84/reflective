@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "validate:play": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-play-questions.mjs",
+    "icons": "node scripts/build-icons.mjs",
     "test:play": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/play/*.test.mjs",
     "test:account": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/account/*.test.mjs",
     "test:ultima": "node --experimental-test-module-mocks --import ./tests/ultima/helpers/register.mjs --test tests/ultima/*.test.mjs",
