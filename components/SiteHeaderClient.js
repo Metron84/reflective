@@ -6,17 +6,18 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { DOORS, PARTNERS, SOCIALS, isActivePath } from "@/lib/nav";
+import { hubUrl } from "@/lib/hosts";
 import ProgrammeButton from "./ProgrammeButton";
 import { SOCIAL_ICONS } from "./nav/SocialIcons";
 
 const focusRing =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal";
 
-function Wordmark({ tone = "navy", onClick }) {
+function Wordmark({ tone = "navy", onClick, host }) {
   return (
     <Link
       prefetch={false}
-      href="/"
+      href={hubUrl("/", host)}
       onClick={onClick}
       className={`flex items-center gap-2.5 ${focusRing}`}
       aria-label="The Reflective Football, home"
@@ -67,7 +68,7 @@ function SocialIconLinks({ tone = "navy", className = "" }) {
   );
 }
 
-function UserMenu({ profile }) {
+function UserMenu({ profile, host }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const name = profile?.preferred_name ?? "Account";
@@ -102,7 +103,7 @@ function UserMenu({ profile }) {
         >
           <Link
             prefetch={false}
-            href="/account"
+            href={hubUrl("/account", host)}
             role="menuitem"
             className="block px-4 py-2.5 text-sm text-navy/80 transition-colors hover:bg-navy/5 hover:text-navy"
             onClick={() => setOpen(false)}
@@ -124,7 +125,7 @@ function UserMenu({ profile }) {
   );
 }
 
-function MenuSheet({ onClose, auth, pathname }) {
+function MenuSheet({ onClose, auth, pathname, host }) {
   const signedIn = auth?.isSignedIn && auth?.profile;
   const name = auth?.profile?.preferred_name ?? "Account";
   const closeRef = useRef(null);
@@ -146,7 +147,7 @@ function MenuSheet({ onClose, auth, pathname }) {
       aria-label="Site menu"
     >
       <div className="flex h-16 shrink-0 items-center justify-between border-b border-paper/10 px-4">
-        <Wordmark tone="cream" onClick={onClose} />
+        <Wordmark tone="cream" onClick={onClose} host={host} />
         <button
           ref={closeRef}
           type="button"
@@ -166,7 +167,7 @@ function MenuSheet({ onClose, auth, pathname }) {
               <li key={door.key} className="border-b border-paper/10">
                 <Link
                   prefetch={false}
-                  href={door.href}
+                  href={hubUrl(door.href, host)}
                   onClick={onClose}
                   aria-current={active ? "page" : undefined}
                   className={`flex min-h-[4.5rem] items-center justify-between px-6 font-display text-3xl uppercase tracking-wide text-paper transition-opacity active:opacity-70 ${focusRing}`}
@@ -196,7 +197,7 @@ function MenuSheet({ onClose, auth, pathname }) {
           <div className="space-y-3">
             <Link
               prefetch={false}
-              href="/account"
+              href={hubUrl("/account", host)}
               onClick={onClose}
               className={`block rounded-full border border-paper/30 py-3 text-center text-sm font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60 ${focusRing}`}
             >
@@ -212,10 +213,10 @@ function MenuSheet({ onClose, auth, pathname }) {
             </form>
           </div>
         ) : (
-          <Link
-            prefetch={false}
-            href="/account"
-            onClick={onClose}
+            <Link
+              prefetch={false}
+              href={hubUrl("/account", host)}
+              onClick={onClose}
             className={`block rounded-full border border-paper/30 py-3 text-center text-sm font-medium uppercase tracking-widest text-paper transition-colors hover:border-paper/60 ${focusRing}`}
           >
             Start your Programme
@@ -232,7 +233,7 @@ function MenuSheet({ onClose, auth, pathname }) {
   );
 }
 
-export default function SiteHeaderClient({ auth, programme = null }) {
+export default function SiteHeaderClient({ auth, programme = null, host = "" }) {
   const pathname = usePathname() ?? "";
   const [open, setOpen] = useState(false);
   const signedIn = auth?.isSignedIn && auth?.profile;
@@ -250,7 +251,7 @@ export default function SiteHeaderClient({ auth, programme = null }) {
     <header className="sticky top-0 z-40 border-b border-navy/10 bg-paper/90 backdrop-blur">
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[1fr_auto_1fr]">
         <div className="justify-self-start">
-          <Wordmark />
+          <Wordmark host={host} />
         </div>
 
         <nav aria-label="Main" className="hidden items-center lg:flex lg:gap-6 xl:gap-8">
@@ -260,7 +261,7 @@ export default function SiteHeaderClient({ auth, programme = null }) {
               <Link
                 prefetch={false}
                 key={door.key}
-                href={door.href}
+                href={hubUrl(door.href, host)}
                 aria-current={active ? "page" : undefined}
                 className={`relative py-1 text-sm font-semibold uppercase tracking-widest transition-colors hover:text-navy ${focusRing} ${
                   active ? "text-navy" : "text-navy/70"
@@ -288,7 +289,7 @@ export default function SiteHeaderClient({ auth, programme = null }) {
           <SocialIconLinks className="hidden lg:flex" />
           {signedIn ? (
             <div className="hidden lg:block">
-              <UserMenu profile={auth.profile} />
+              <UserMenu profile={auth.profile} host={host} />
             </div>
           ) : null}
           <a
@@ -317,6 +318,7 @@ export default function SiteHeaderClient({ auth, programme = null }) {
               onClose={() => setOpen(false)}
               auth={auth}
               pathname={pathname}
+              host={host}
             />,
             document.body,
           )

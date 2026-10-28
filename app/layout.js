@@ -1,10 +1,14 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { headers } from "next/headers";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
-import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
+import SwRegister from "@/components/SwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
+import { appForHost, canonicalUrl } from "@/lib/hosts";
+import { appForSubdomain, appIcon } from "@/lib/subdomains";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { isPlayHost } from "@/lib/play/host";
 import { isWatchWithHost } from "@/lib/watch-with/host";
@@ -55,46 +59,59 @@ const SITE_METADATA = {
     description: SITE_DESCRIPTION,
     images: ["/og-default.jpg"],
   },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: "/brand/favicon.ico",
     apple: "/brand/trf-icon-180.png",
   },
 };
 
+function hasIcon(src) {
+  return existsSync(path.join(process.cwd(), "public", src.replace(/^\//, "")));
+}
+
 export async function generateMetadata() {
-  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
-  if (!ultimaApp) return SITE_METADATA;
+  const hdrs = await headers();
+  const host = hdrs.get("host");
+  const pathname = hdrs.get("x-pathname") || "/";
+  const canonical = canonicalUrl(host, pathname);
+  const site = canonical
+    ? {
+        ...SITE_METADATA,
+        metadataBase: new URL("https://www.thereflectivefootball.com"),
+        alternates: { canonical },
+        openGraph: { ...SITE_METADATA.openGraph, url: canonical },
+      }
+    : SITE_METADATA;
+  const app = appForSubdomain(host);
+  if (!app) return site;
 
   return {
-    ...SITE_METADATA,
-    applicationName: "Ultima",
-    title: {
-      default: "Ultima",
-      template: "%s | Ultima",
-    },
-    description: "Draft Europe's top five. Invite only.",
-    manifest: "/manifest.webmanifest",
+    ...site,
+    applicationName: app.name,
+    description: app.description,
     appleWebApp: {
       capable: true,
-      statusBarStyle: "black-translucent",
-      title: "Ultima",
+      statusBarStyle: app.slug === "ultima" ? "black-translucent" : "default",
+      title: app.shortName,
     },
     icons: {
       icon: [
-        { url: "/ultima/icon-192.png", sizes: "192x192", type: "image/png" },
-        { url: "/ultima/icon-512.png", sizes: "512x512", type: "image/png" },
+        { url: appIcon(app.slug, "icon-192.png", hasIcon), sizes: "192x192", type: "image/png" },
+        { url: appIcon(app.slug, "icon-512.png", hasIcon), sizes: "512x512", type: "image/png" },
       ],
-      apple: "/ultima/apple-touch-icon.png",
+      apple: appIcon(app.slug, "apple-touch-icon.png", hasIcon),
     },
   };
 }
 
 export async function generateViewport() {
-  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
-  if (ultimaApp) {
+  const host = (await headers()).get("host");
+  const app = appForSubdomain(host);
+  if (app) {
     return {
-      themeColor: "#12151C",
-      colorScheme: "dark",
+      themeColor: app.themeColor,
+      colorScheme: app.slug === "ultima" ? "dark" : "light",
       viewportFit: "cover",
     };
   }
@@ -111,15 +128,16 @@ export async function generateViewport() {
 
 export default async function RootLayout({ children }) {
   const hdrs = await headers();
-  const ultimaApp = isUltimaAppHost(hdrs.get("host"));
+  const host = hdrs.get("host");
+  const ultimaApp = isUltimaAppHost(host);
   const pathname = hdrs.get("x-pathname") || "";
   const crestApp = pathname === "/crest" || pathname.startsWith("/crest/");
-  const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/") || isWatchWithHost(hdrs.get("host"));
-  // The play host only ever shows the game, so site navigation would lead nowhere.
-  const playApp = isPlayHost(hdrs.get("host"));
+  const watchWith = pathname === "/watch-with" || pathname.startsWith("/watch-with/") || isWatchWithHost(host);
+  const playApp = isPlayHost(host);
+  const appHost = Boolean(appForHost(host));
   // Clock End Dubai is a standalone sign-up page: no site header or footer.
   const clockEnd = pathname === "/clockend" || pathname.startsWith("/clockend/");
-  const hideChrome = ultimaApp || crestApp || playApp || watchWith || clockEnd;
+  const hideChrome = appHost || crestApp || watchWith || clockEnd;
 
   return (
     <html
@@ -147,7 +165,8 @@ export default async function RootLayout({ children }) {
         {hideChrome ? null : <SiteHeader />}
         <main className="flex flex-1 flex-col">{children}</main>
         {hideChrome ? null : <SiteFooter />}
-        {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp || clockEnd ? null : <InstallHint />}
+        {appHost && !playApp ? <SwRegister /> : null}
+        {ultimaApp || crestApp || playApp || clockEnd ? null : <InstallHint />}
       </body>
     </html>
   );

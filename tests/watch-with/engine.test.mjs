@@ -47,7 +47,7 @@ test("the watchwith host rewrites the short urls and leaves the api alone", () =
   assert.deepEqual(watchWithHostAction("/"), { type: "rewrite", to: "/watch-with" });
   assert.deepEqual(watchWithHostAction("/west-ham"), { type: "rewrite", to: "/watch-with/west-ham" });
   assert.deepEqual(watchWithHostAction("/west-ham/ranking"), { type: "rewrite", to: "/watch-with/west-ham/ranking" });
-  assert.deepEqual(watchWithHostAction("/ranking"), { type: "redirect", to: "/west-ham/ranking", keepSearch: true });
+  assert.deepEqual(watchWithHostAction("/ranking"), { type: "rewrite", to: "/watch-with/ranking" });
   assert.deepEqual(watchWithHostAction("/api/watch-with/west-ham/pick"), { type: "pass" });
   assert.deepEqual(watchWithHostAction("/_next/static/chunk.js"), { type: "pass" });
   assert.deepEqual(watchWithHostAction("/brand/trf-crest-transparent.png"), { type: "pass" });

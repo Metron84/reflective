@@ -23,7 +23,7 @@ test("root is rewritten to /play so the URL stays clean", () => {
 
 test("game API, auth, sign-in, next assets, static files and manifest pass through", () => {
   for (const p of [
-    "/api/play/session", "/api/play/claim", "/auth/callback", "/auth/signout", "/signin",
+    "/api/play/session", "/api/play/claim", "/api/other", "/auth/callback", "/auth/signout", "/signin",
     "/welcome", "/_next/static/chunks/a.js", "/_next/image", "/brand/trf-crest-transparent.png",
     "/favicon.ico", "/manifest.webmanifest", "/sw.js", "/robots.txt", "/images/x.webp", "/offline",
   ]) {
@@ -31,19 +31,26 @@ test("game API, auth, sign-in, next assets, static files and manifest pass throu
   }
 });
 
-test("every other page path redirects to the root", () => {
-  for (const p of ["/films", "/ultima", "/ultima/squad", "/guesser", "/account", "/api/other", "/api/playground", "/signinx", "/about"]) {
-    assert.deepEqual(playHostAction(p), { type: "redirect", to: "/", keepSearch: false }, p);
-  }
+test("a path outside the play section rewrites, and a hub page leaves", () => {
+  assert.deepEqual(playHostAction("/chapter/3"), { type: "rewrite", to: "/play/chapter/3" });
+  assert.deepEqual(playHostAction("/films"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/films",
+  });
+  assert.deepEqual(playHostAction("/guesser"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/guesser",
+  });
 });
 
-test("/play on the play host redirects to the root and keeps its query", () => {
-  assert.deepEqual(playHostAction("/play"), { type: "redirect", to: "/", keepSearch: true });
+test("a path already under /play is left alone", () => {
+  assert.deepEqual(playHostAction("/play"), { type: "pass" });
+  assert.deepEqual(playHostAction("/play/score"), { type: "pass" });
 });
 
 test("passthrough is exact about prefixes", () => {
   assert.equal(isPlayPassthrough("/api/play"), true);
-  assert.equal(isPlayPassthrough("/api/playground"), false);
+  assert.equal(isPlayPassthrough("/api/playground"), true);
   assert.equal(isPlayPassthrough("/authors"), false);
   assert.equal(isPlayPassthrough("/brandx"), false);
 });
@@ -55,6 +62,6 @@ test("sign-in returns to the host the player started on", () => {
 });
 
 test("links off the play host point at the main site", () => {
-  assert.equal(mainSiteOrigin("play.thereflectivefootball.com"), "https://thereflectivefootball.com");
+  assert.equal(mainSiteOrigin("play.thereflectivefootball.com"), "https://www.thereflectivefootball.com");
   assert.equal(mainSiteOrigin("play.localhost:4343"), "http://localhost:4343");
 });

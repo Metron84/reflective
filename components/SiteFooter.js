@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { TRAINING_ENABLED } from "@/lib/config";
+import { hubUrl } from "@/lib/hosts";
 import { DOORS, LINKEDIN, SOCIALS } from "@/lib/nav";
 import { SOCIAL_ICONS } from "./nav/SocialIcons";
 
@@ -14,7 +16,9 @@ const columnHeading =
 
 const MAIL = "partnerships@thereflectivefootball.com";
 
-export default function SiteFooter() {
+export default async function SiteFooter() {
+  const host = (await headers()).get("host") ?? "";
+  const to = (path) => hubUrl(path, host);
   const workWithUs = [
     {
       label: "For Venues",
@@ -28,11 +32,11 @@ export default function SiteFooter() {
       label: "Press & Licensing",
       href: "mailto:press@thereflectivefootball.com?subject=Press%20%26%20Licensing",
     },
-    ...(TRAINING_ENABLED ? [{ label: "Training", href: "/training" }] : []),
+    ...(TRAINING_ENABLED ? [{ label: "Training", href: to("/training") }] : []),
   ];
 
   const watch = [
-    { label: "Films", href: "/films" },
+    { label: "Films", href: to("/films") },
     ...SOCIALS.map(({ label, href }) => ({ label, href, external: true })),
   ];
 
@@ -65,7 +69,7 @@ export default function SiteFooter() {
             <ul className="flex flex-col gap-1">
               {DOORS.map((door) => (
                 <li key={door.key}>
-                  <Link href={door.href} className={footerLink}>
+                  <Link href={to(door.href)} className={footerLink}>
                     {door.label}
                   </Link>
                 </li>
@@ -161,13 +165,13 @@ export default function SiteFooter() {
           </p>
           <div className="flex items-center gap-5">
             <Link
-              href="/privacy"
+              href={to("/privacy")}
               className="text-xs text-paper/45 transition-colors hover:text-signal"
             >
               Privacy
             </Link>
             <Link
-              href="/terms"
+              href={to("/terms")}
               className="text-xs text-paper/45 transition-colors hover:text-signal"
             >
               Terms

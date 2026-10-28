@@ -9,6 +9,7 @@ import {
   isAuthCookieName,
 } from "@/lib/auth/stale-cookies";
 import { withAuthCookieDomain } from "@/lib/ultima/host";
+import { returnOrigin } from "@/lib/hosts";
 
 async function ensureProfile(user) {
   const service = getServiceClient();
@@ -31,7 +32,8 @@ export async function GET(request) {
   const host = request.headers.get("host") ?? "";
   const code = searchParams.get("code");
   const next = safeNextPath(searchParams.get("next"));
-  const fail = (reason) => NextResponse.redirect(`${origin}/signin?error=${reason}`);
+  const back = returnOrigin(searchParams.get("host") || host, origin);
+  const fail = (reason) => NextResponse.redirect(`${back}/signin?error=${reason}`);
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -80,12 +82,13 @@ export async function GET(request) {
       .maybeSingle();
 
     // The claim step runs first. It ends at /account, which sends first-timers to /welcome.
-    if (!profile?.welcome_completed && !next.startsWith("/auth/claim")) {
+    if (!profile?.welcome_completed && !next.startsWith("/auth/claim") && !next.startsWith("http")) {
       return finish(
-        NextResponse.redirect(`${origin}/welcome?next=${encodeURIComponent(next)}`),
+        NextResponse.redirect(`${back}/welcome?next=${encodeURIComponent(next)}`),
       );
     }
   }
 
-  return finish(NextResponse.redirect(`${origin}${next}`));
+  const target = next.startsWith("http://") || next.startsWith("https://") ? next : `${back}${next}`;
+  return finish(NextResponse.redirect(target));
 }
