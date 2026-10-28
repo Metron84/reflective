@@ -82,12 +82,13 @@ export async function GET(request) {
       .maybeSingle();
 
     // The claim step runs first. It ends at /account, which sends first-timers to /welcome.
-    if (!profile?.welcome_completed && !next.startsWith("/auth/claim")) {
+    if (!profile?.welcome_completed && !next.startsWith("/auth/claim") && !next.startsWith("http")) {
       return finish(
         NextResponse.redirect(`${back}/welcome?next=${encodeURIComponent(next)}`),
       );
     }
   }
 
-  return finish(NextResponse.redirect(`${back}${next}`));
+  const target = next.startsWith("http://") || next.startsWith("https://") ? next : `${back}${next}`;
+  return finish(NextResponse.redirect(target));
 }

@@ -19,7 +19,7 @@ const CASES = [
   ["crest", "/crest"],
   ["concierge", "/concierge"],
   ["events", "/events"],
-  ["compete", "/compete"],
+  ["compete", "/competitions"],
   ["observatory", "/observatory"],
   ["watchwith", "/watch-with"],
 ];
@@ -36,7 +36,18 @@ test("each app host rewrites its root onto its route", () => {
 test("a path already inside the app is not rewritten again", () => {
   assert.deepEqual(hostAction("crest.thereflectivefootball.com", "/crest"), { type: "pass" });
   assert.deepEqual(hostAction("ultima.thereflectivefootball.com", "/ultima/squad"), { type: "pass" });
-  assert.deepEqual(hostAction("play.thereflectivefootball.com", "/films"), { type: "rewrite", to: "/play/films" });
+  assert.deepEqual(hostAction("play.thereflectivefootball.com", "/chapter/3"), {
+    type: "rewrite",
+    to: "/play/chapter/3",
+  });
+  assert.deepEqual(hostAction("codemaster.thereflectivefootball.com", "/films"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/films",
+  });
+  assert.deepEqual(hostAction("crest.thereflectivefootball.com", "/account"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/account",
+  });
 });
 
 test("static, api, brand, manifest and the service worker pass through", () => {
@@ -63,33 +74,38 @@ test("subdomain canonicals use the www hub and the app path", () => {
   assert.equal(canonicalUrl("www.thereflectivefootball.com", "/films"), null);
 });
 
-test("a link that leaves an app is an absolute www url", () => {
-  assert.equal(hubUrl("/films", "events.thereflectivefootball.com"), "https://www.thereflectivefootball.com/films");
+test("a link that leaves an app stays relative so the host can 307 it", () => {
+  assert.equal(hubUrl("/films", "events.thereflectivefootball.com"), "/films");
   assert.equal(hubUrl("/events", "events.thereflectivefootball.com"), "/events");
   assert.equal(hubUrl("/films", "www.thereflectivefootball.com"), "/films");
 });
 
 test("manifest names follow the host and fall back to the TRF icons", () => {
   const play = manifestForHost("play.thereflectivefootball.com", () => false);
-  assert.equal(play.short_name, "Fan Quiz");
+  assert.equal(play.short_name, "Real Fan?");
+  assert.equal(play.id, "/play");
   assert.equal(play.start_url, "/");
   assert.equal(play.scope, "/");
   assert.equal(play.display, "standalone");
+  assert.equal(play.orientation, "portrait");
   assert.equal(play.theme_color, "#0A111F");
   assert.equal(play.background_color, "#F2EDE4");
   assert.equal(play.icons[0].src, "/brand/trf-icon-192.png");
 
-  const own = manifestForHost("crest.thereflectivefootball.com", (src) => src.includes("/brand/apps/crest-"));
+  const own = manifestForHost("crest.thereflectivefootball.com", (src) => src.startsWith("/icons/crest/"));
   assert.equal(own.short_name, "The Crest");
-  assert.equal(own.icons[0].src, "/brand/apps/crest-192.png");
-  assert.equal(own.icons[1].src, "/brand/apps/crest-maskable-192.png");
+  assert.equal(own.icons[0].src, "/icons/crest/icon-192.png");
+  assert.equal(own.icons[2].src, "/icons/crest/maskable-512.png");
 
   const ultima = manifestForHost("ultima.thereflectivefootball.com");
   assert.equal(ultima.short_name, "Ultima");
   assert.equal(ultima.theme_color, "#12151C");
   assert.equal(ultima.background_color, "#12151C");
 
-  assert.equal(manifestForHost("www.thereflectivefootball.com").short_name, "TRF");
+  const hub = manifestForHost("www.thereflectivefootball.com");
+  assert.equal(hub.short_name, "TRF");
+  assert.equal(hub.name, "The Reflective Football");
+  assert.equal(hub.id, undefined);
   assert.equal(HOST_MAP.length, CASES.length);
 });
 

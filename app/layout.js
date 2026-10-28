@@ -1,11 +1,14 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { headers } from "next/headers";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import InstallHint from "@/components/InstallHint";
 import NavigationProgress from "@/components/NavigationProgress";
-import UltimaSwRegister from "@/components/ultima/UltimaSwRegister";
+import SwRegister from "@/components/SwRegister";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import { appForHost, canonicalUrl } from "@/lib/hosts";
+import { appForSubdomain, appIcon } from "@/lib/subdomains";
 import { isUltimaAppHost } from "@/lib/ultima/host";
 import { isPlayHost } from "@/lib/play/host";
 import { isWatchWithHost } from "@/lib/watch-with/host";
@@ -56,11 +59,16 @@ const SITE_METADATA = {
     description: SITE_DESCRIPTION,
     images: ["/og-default.jpg"],
   },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: "/brand/favicon.ico",
     apple: "/brand/trf-icon-180.png",
   },
 };
+
+function hasIcon(src) {
+  return existsSync(path.join(process.cwd(), "public", src.replace(/^\//, "")));
+}
 
 export async function generateMetadata() {
   const hdrs = await headers();
@@ -75,39 +83,35 @@ export async function generateMetadata() {
         openGraph: { ...SITE_METADATA.openGraph, url: canonical },
       }
     : SITE_METADATA;
-  const ultimaApp = isUltimaAppHost(host);
-  if (!ultimaApp) return site;
+  const app = appForSubdomain(host);
+  if (!app) return site;
 
   return {
     ...site,
-    applicationName: "Ultima",
-    title: {
-      default: "Ultima",
-      template: "%s | Ultima",
-    },
-    description: "Draft Europe's top five. Invite only.",
-    manifest: "/manifest.webmanifest",
+    applicationName: app.name,
+    description: app.description,
     appleWebApp: {
       capable: true,
-      statusBarStyle: "black-translucent",
-      title: "Ultima",
+      statusBarStyle: app.slug === "ultima" ? "black-translucent" : "default",
+      title: app.shortName,
     },
     icons: {
       icon: [
-        { url: "/ultima/icon-192.png", sizes: "192x192", type: "image/png" },
-        { url: "/ultima/icon-512.png", sizes: "512x512", type: "image/png" },
+        { url: appIcon(app.slug, "icon-192.png", hasIcon), sizes: "192x192", type: "image/png" },
+        { url: appIcon(app.slug, "icon-512.png", hasIcon), sizes: "512x512", type: "image/png" },
       ],
-      apple: "/ultima/apple-touch-icon.png",
+      apple: appIcon(app.slug, "apple-touch-icon.png", hasIcon),
     },
   };
 }
 
 export async function generateViewport() {
-  const ultimaApp = isUltimaAppHost((await headers()).get("host"));
-  if (ultimaApp) {
+  const host = (await headers()).get("host");
+  const app = appForSubdomain(host);
+  if (app) {
     return {
-      themeColor: "#12151C",
-      colorScheme: "dark",
+      themeColor: app.themeColor,
+      colorScheme: app.slug === "ultima" ? "dark" : "light",
       viewportFit: "cover",
     };
   }
@@ -161,7 +165,8 @@ export default async function RootLayout({ children }) {
         {hideChrome ? null : <SiteHeader />}
         <main className="flex flex-1 flex-col">{children}</main>
         {hideChrome ? null : <SiteFooter />}
-        {ultimaApp ? <UltimaSwRegister /> : crestApp || playApp || clockEnd ? null : <InstallHint />}
+        {appHost && !playApp ? <SwRegister /> : null}
+        {ultimaApp || crestApp || playApp || clockEnd ? null : <InstallHint />}
       </body>
     </html>
   );

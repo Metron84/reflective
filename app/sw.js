@@ -10,7 +10,10 @@ import {
   ARCHIVE_JSON_URLS,
 } from "./sw-archive-meta";
 
-/** Bump when runtime cache strategy changes so clients drop old caches. */
+/**
+ * Bump when runtime cache strategy changes so clients drop old caches.
+ * Cache Storage is per origin, so the same name on two subdomains does not collide.
+ */
 const CACHE_VERSION = "net-v1";
 
 const NEVER_CACHE_API_PATHS = new Set([

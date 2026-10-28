@@ -6,7 +6,7 @@ import {
   authCookieNamesIn,
   duplicateAuthCookieNames,
 } from "@/lib/auth/stale-cookies";
-import { hostAction } from "@/lib/hosts";
+import { subdomainAction } from "@/lib/subdomains";
 import { withAuthCookieDomain } from "@/lib/ultima/host";
 
 const PUBLIC_PATHS = [
@@ -64,9 +64,14 @@ function rewriteWithPath(request, url) {
   return NextResponse.rewrite(url, { request: { headers: forwardedHeaders(request) } });
 }
 
-/** Subdomain routing. Each app host rewrites into its own section. */
+/** Subdomain routing. Each app host rewrites into its own section, or leaves it. */
 function appHostResponse(request, host) {
-  const action = hostAction(host, request.nextUrl.pathname);
+  const action = subdomainAction(host, request.nextUrl.pathname);
+  if (action.type === "redirect") {
+    const dest = new URL(action.to);
+    dest.search = request.nextUrl.search;
+    return NextResponse.redirect(dest, 307);
+  }
   if (action.type !== "rewrite") return null;
   const url = request.nextUrl.clone();
   url.pathname = action.to;
@@ -140,10 +145,10 @@ export async function middleware(request) {
     for (const { name, value } of originalCookies) request.cookies.set(name, value);
     cookieBag.length = 0;
   }
-  // A stale host-only copy next to the shared-domain cookie shadows it. Two
-  // copies of one name: expire the host-only ones. A rejected refresh token
-  // (400): the session is dead, expire every copy in both scopes so none is
-  // left to shadow the next sign-in.
+  // A lone host-only session, from before the shared cookie, is left in place
+  // so the parent-domain write can replace it. Two copies of one name means
+  // the host-only copy is shadowing the shared one: expire only that copy.
+  // A rejected refresh token (400): the session is dead, expire every copy.
   const staleHostOnly = refreshRejected ? [] : duplicateAuthCookieNames(rawCookie);
   const deadSession = refreshRejected ? authCookieNamesIn(rawCookie) : [];
   const finish = (res) => {

@@ -1,5 +1,8 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
 import { PROGRAMME_COPY } from "@/lib/programme/copy";
-import { ACCOUNT_PATH, programmeSignInHref } from "@/lib/programme/links";
+import { programmeAccountHref, programmeSignInHref } from "@/lib/programme/links";
 import styles from "./ProgrammeCTA.module.css";
 
 /**
@@ -34,8 +37,13 @@ export default function ProgrammeCTA({
   onStart,
   className = "",
 }) {
+  const host = useSyncExternalStore(
+    () => () => {},
+    () => window.location.host,
+    () => "",
+  );
   const href = signedIn
-    ? `${accountOrigin}${ACCOUNT_PATH}`
+    ? programmeAccountHref(host, accountOrigin)
     : (signInHref ?? programmeSignInHref({ claim, origin: signInOrigin }));
 
   return (

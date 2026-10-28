@@ -31,9 +31,16 @@ test("game API, auth, sign-in, next assets, static files and manifest pass throu
   }
 });
 
-test("a path outside the play section is rewritten under /play", () => {
-  assert.deepEqual(playHostAction("/films"), { type: "rewrite", to: "/play/films" });
-  assert.deepEqual(playHostAction("/guesser"), { type: "rewrite", to: "/play/guesser" });
+test("a path outside the play section rewrites, and a hub page leaves", () => {
+  assert.deepEqual(playHostAction("/chapter/3"), { type: "rewrite", to: "/play/chapter/3" });
+  assert.deepEqual(playHostAction("/films"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/films",
+  });
+  assert.deepEqual(playHostAction("/guesser"), {
+    type: "redirect",
+    to: "https://thereflectivefootball.com/guesser",
+  });
 });
 
 test("a path already under /play is left alone", () => {
