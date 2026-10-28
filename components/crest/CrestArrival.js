@@ -5,7 +5,6 @@ import Link from "next/link";
 import ProgrammeCTA from "@/components/ProgrammeCTA";
 import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
 import { buildOutcome } from "@/lib/crest/outcome";
-import { CONFIDENT_ROOM_PCT } from "@/lib/crest/report";
 import { logFinishedRun } from "@/lib/crest/runLog";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestSwipe.module.css";
@@ -87,7 +86,7 @@ export default function CrestArrival({
     if (!ready || shareState === "busy" || !built) return;
     setShareState("busy");
     try {
-      const kicker = shareKicker(built.percentage, !outcome.closeCall);
+      const kicker = shareKicker(!outcome.closeCall);
       const blob = await renderShareCard(cardDataFrom(summary, built.percentage, kicker));
       const shareName = hero?.name || built.name;
       const result = await shareCard(blob, shareName);
@@ -106,6 +105,10 @@ export default function CrestArrival({
       {outcome.closeCall && outcome.runnerUp ? (
         <p className={styles.line}>
           Close call: {outcome.runnerUp.name} is right behind at {outcome.runnerUp.percentage}%.
+        </p>
+      ) : outcome.runnerUp ? (
+        <p className={styles.line}>
+          {pointsAhead(built.percentage, outcome.runnerUp.percentage)} {outcome.runnerUp.name}.
         </p>
       ) : null}
 
@@ -173,7 +176,7 @@ function ResultCards({ outcome }) {
   if (!built) return null;
 
   if (!born) {
-    const label = built.percentage >= CONFIDENT_ROOM_PCT ? "Your FC" : "Closest match";
+    const label = outcome.closeCall ? "Closest match" : "Your FC";
     return (
       <ClubCard
         label={label}
@@ -253,9 +256,20 @@ function ClubCard({ label, name, league, color, percentage, note }) {
       <h1 className={styles.arrivalName}>{name}</h1>
       {league ? <p className={styles.arrivalMeta}>{league}</p> : null}
       {note ? <p className={styles.arrivalMeta}>{note}</p> : null}
-      {percentage != null ? <p className={styles.arrivalScore}>{percentage}% match</p> : null}
+      {percentage != null ? <p className={styles.arrivalScore}>{percentage}% agreement</p> : null}
     </div>
   );
+}
+
+/**
+ * How far the leader's agreement sits ahead of the next club.
+ *
+ * @param {number} leader
+ * @param {number} runner
+ */
+function pointsAhead(leader, runner) {
+  const gap = Math.max(0, leader - runner);
+  return `${gap} ${gap === 1 ? "point" : "points"} ahead of`;
 }
 
 /**

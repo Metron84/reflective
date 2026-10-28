@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/engine";
-import { roomPercent } from "@/lib/crest/report";
+import { matchPercent } from "@/lib/crest/report";
 import { bothText, cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import { stakeLine } from "@/lib/crest/stakes";
 import styles from "./CrestReveal.module.css";
@@ -27,9 +27,9 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
     () => arrivalSummary(answers, DEFAULT_ALPHA, { group, stake }),
     [answers, group, stake],
   );
-  const { club, probability, confident, runnerUp, greenFlags, rub } = summary;
-  const roomPct = roomPercent(probability);
-  const kicker = shareKicker(roomPct, confident);
+  const { club, confident, runnerUp, greenFlags, rub } = summary;
+  const agreement = matchPercent(summary.score);
+  const kicker = shareKicker(confident);
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const traits = greenFlags.map((f) => f.userPhrase).filter((p) => p && p !== "both");
 
@@ -95,13 +95,13 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
           <p className={styles.accent}>{kicker}</p>
           <h2 className={styles.clubName}>{club.name}</h2>
           {place ? <p className={styles.line}>{place}</p> : null}
-          <p className={styles.room}>{roomPct}% of the last room</p>
+          <p className={styles.room}>{agreement}% agreement</p>
         </>
       ),
     });
     list.push({ key: "share", share: true });
     return list;
-  }, [club, kicker, place, roomPct, rub, runnerUp, stake, traits]);
+  }, [club, kicker, place, agreement, rub, runnerUp, stake, traits]);
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -123,7 +123,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
   useEffect(() => {
     let url = null;
     let live = true;
-    renderShareCard(cardDataFrom(summary, roomPct, kicker))
+    renderShareCard(cardDataFrom(summary, agreement, kicker))
       .then((blob) => {
         if (!live) return;
         url = URL.createObjectURL(blob);
@@ -134,7 +134,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
       live = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [summary, roomPct, kicker]);
+  }, [summary, agreement, kicker]);
 
   const go = useCallback(
     (step) => {
@@ -204,7 +204,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
           <p className={styles.small}>Your card</p>
           <div className={styles.preview}>
             {card.url ? (
-              <img src={card.url} alt={`Share card: ${kicker}, ${club.name}, ${roomPct}% of the last room`} />
+              <img src={card.url} alt={`Share card: ${kicker}, ${club.name}, ${agreement}% agreement`} />
             ) : (
               <span className={styles.drawing}>Drawing your card</span>
             )}
