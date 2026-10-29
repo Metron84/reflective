@@ -719,11 +719,16 @@ export default function WatchGame({
       {showingResult && run.champion && !askingSide ? (
         <section className="relative mt-6 flex flex-1 flex-col gap-4">
           {celebrate ? <Confetti primary={primary} accent={accent} /> : null}
-          <article className="rounded-[14px] p-6" style={{ background: primary, color: inkOn(primary), boxShadow: `inset 0 0 0 2px #F2EDE4` }}>
-            <p className="inline-flex rounded-full bg-[#F2EDE4] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: primary }}>{categoryLabel(run.champion.category)}</p>
-            <p className="mt-4 text-sm font-semibold uppercase tracking-[0.14em]">Your matchday companion</p>
-            <h2 className="mt-2 text-5xl font-semibold leading-[0.95]">{run.champion.name}</h2>
-            <p className="mt-4 text-lg leading-snug">{run.champion.tagline}</p>
+          <article className="overflow-hidden rounded-[14px]" style={{ background: primary, color: inkOn(primary), boxShadow: `inset 0 0 0 2px #F2EDE4` }}>
+            {run.champion.image ? (
+              <img src={run.champion.image} alt="" className="h-72 w-full object-cover object-top" />
+            ) : null}
+            <div className="p-6">
+              <p className="inline-flex rounded-full bg-[#F2EDE4] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: primary }}>{categoryLabel(run.champion.category)}</p>
+              <p className="mt-4 text-sm font-semibold uppercase tracking-[0.14em]">Your matchday companion</p>
+              <h2 className="mt-2 text-5xl font-semibold leading-[0.95]">{run.champion.name}</h2>
+              <p className="mt-4 text-lg leading-snug">{run.champion.tagline}</p>
+            </div>
           </article>
           {run.social?.mode === "proof" ? (
             <p className="text-sm font-medium text-[#0A111F]">{run.social.pct}% of {fanLabel} also picked {run.champion.name}</p>
@@ -830,7 +835,7 @@ function Card({ card, side, accent, favored, dimmed, phase, entering, incumbent,
   else if (entering) animation = side === "left" ? "ww-in-left" : "ww-in-right";
   return (
     <article
-      className={`relative z-10 flex h-full min-h-[52dvh] flex-col justify-end rounded-[14px] border-2 p-4 ${animation}`}
+      className={`relative z-10 flex h-full min-h-[52dvh] flex-col justify-end overflow-hidden rounded-[14px] border-2 ${animation}`}
       style={{
         background: "#0A111F",
         borderColor: favored || winning ? accent : "#0A111F",
@@ -840,17 +845,22 @@ function Card({ card, side, accent, favored, dimmed, phase, entering, incumbent,
         boxShadow: favored || winning ? `0 0 28px ${accent}` : undefined,
       }}
     >
-      <div className="mb-auto flex flex-col items-start gap-2">
-        <p className="rounded-full bg-[#F2EDE4] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0A111F]">{categoryLabel(card.category)}</p>
-        {incumbent && streak >= 2 ? (
-          <p className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ background: accent, color: inkOn(accent) }}>
-            On the sofa
-            <span className="mt-0.5 block normal-case tracking-normal">Holding the seat: {streak} in a row</span>
-          </p>
-        ) : null}
+      {card.image ? (
+        <img src={card.image} alt="" className="absolute inset-x-0 top-0 h-[58%] w-full object-cover object-top" />
+      ) : null}
+      <div className="relative z-10 flex flex-col justify-end bg-gradient-to-t from-[#0A111F] via-[#0A111F] to-[#0A111F]/0 px-4 pb-4 pt-16">
+        <div className="mb-3 flex flex-col items-start gap-2">
+          <p className="rounded-full bg-[#F2EDE4] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0A111F]">{categoryLabel(card.category)}</p>
+          {incumbent && streak >= 2 ? (
+            <p className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ background: accent, color: inkOn(accent) }}>
+              On the sofa
+              <span className="mt-0.5 block normal-case tracking-normal">Holding the seat: {streak} in a row</span>
+            </p>
+          ) : null}
+        </div>
+        <h2 className="text-2xl font-semibold leading-tight md:text-4xl">{card.name}</h2>
+        <p className="mt-2 text-sm leading-snug opacity-90">{card.tagline}</p>
       </div>
-      <h2 className="mt-4 text-2xl font-semibold leading-tight md:text-4xl">{card.name}</h2>
-      <p className="mt-2 text-sm leading-snug opacity-90">{card.tagline}</p>
     </article>
   );
 }

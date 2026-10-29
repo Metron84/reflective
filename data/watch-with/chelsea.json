@@ -17,7 +17,8 @@
       "category": "player",
       "tagline": "Never panics, and has the clean sheet record to prove it.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_01_goalkeeper.jpg"
     },
     {
       "id": "chelsea-peter-osgood",
@@ -26,7 +27,8 @@
       "category": "player",
       "tagline": "King of the Bridge, so he expects the best seat.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_02_1970s-grin.jpg"
     },
     {
       "id": "chelsea-ngolo-kante",
@@ -35,7 +37,8 @@
       "category": "player",
       "tagline": "Quiet, smiling, and covers every inch of the room.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_03_small-smile.jpg"
     },
     {
       "id": "chelsea-ashley-cole",
@@ -44,7 +47,8 @@
       "category": "player",
       "tagline": "Sharp, serious, and never beaten down the left.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_04_focused-low.jpg"
     },
     {
       "id": "chelsea-dennis-wise",
@@ -53,7 +57,8 @@
       "category": "player",
       "tagline": "Wound up from kick-off and happy to start an argument.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_05_mischief-point.jpg"
     },
     {
       "id": "chelsea-frank-lampard",
@@ -62,7 +67,8 @@
       "category": "player",
       "tagline": "Counts every goal, 211 of them, and still wants one more.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_06_finger-count.jpg"
     },
     {
       "id": "chelsea-john-terry",
@@ -71,7 +77,8 @@
       "category": "player",
       "tagline": "Captain, leader, legend, and he will organise the whole pub.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_07_captain-organiser.jpg"
     },
     {
       "id": "chelsea-didier-drogba",
@@ -80,7 +87,8 @@
       "category": "player",
       "tagline": "Silent until the big moment, then he takes over the room.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_08_fist-raised.jpg"
     },
     {
       "id": "chelsea-eden-hazard",
@@ -89,7 +97,8 @@
       "category": "player",
       "tagline": "Glides through the game and tells you to relax.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_09_relax-hand.jpg"
     },
     {
       "id": "chelsea-gianfranco-zola",
@@ -98,7 +107,8 @@
       "category": "player",
       "tagline": "Smiles at every trick and wants everyone to enjoy the game.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_player_10_playful-eyes.jpg"
     },
     {
       "id": "chelsea-thomas-tuchel",
@@ -107,7 +117,8 @@
       "category": "manager",
       "tagline": "Intense, detailed, and has a plan for every set piece.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_01_play-shaper.jpg"
     },
     {
       "id": "chelsea-guus-hiddink",
@@ -116,7 +127,8 @@
       "category": "manager",
       "tagline": "Calm, kind, and the friendliest man in the room.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_02_warm-elder.jpg"
     },
     {
       "id": "chelsea-ruud-gullit",
@@ -125,7 +137,8 @@
       "category": "manager",
       "tagline": "Cool, stylish, and judges the football with a smile.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_03_dreadlocks-coat.jpg"
     },
     {
       "id": "chelsea-claudio-ranieri",
@@ -134,7 +147,8 @@
       "category": "manager",
       "tagline": "Changes his mind at half-time and makes it sound brilliant.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_04_plan-flipper.jpg"
     },
     {
       "id": "chelsea-emma-hayes",
@@ -143,7 +157,8 @@
       "category": "manager",
       "tagline": "Reads every phase of play and tells you what happens next.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_05_woman-pointing.jpg"
     },
     {
       "id": "chelsea-jose-mourinho",
@@ -152,7 +167,8 @@
       "category": "manager",
       "tagline": "Tells you he is the special one, then proves it.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_06_dark-coat-smirk.jpg"
     },
     {
       "id": "chelsea-carlo-ancelotti",
@@ -161,7 +177,8 @@
       "category": "manager",
       "tagline": "Raised eyebrow, relaxed shrug, and sees everything.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_07_white-hair-shrug.jpg"
     },
     {
       "id": "chelsea-antonio-conte",
@@ -170,7 +187,8 @@
       "category": "manager",
       "tagline": "Shouts every instruction from the sofa as if he were on the touchline.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_08_sofa-shouter.jpg"
     },
     {
       "id": "chelsea-roberto-di-matteo",
@@ -179,7 +197,8 @@
       "category": "manager",
       "tagline": "Quietly confident, and he has already won the big one.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_09_quiet-calm.jpg"
     },
     {
       "id": "chelsea-gianluca-vialli",
@@ -188,7 +207,8 @@
       "category": "manager",
       "tagline": "Warm, stylish, and treats every match as a celebration.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_manager_10_open-smile.jpg"
     },
     {
       "id": "chelsea-richard-attenborough",
@@ -197,7 +217,8 @@
       "category": "celebrity",
       "tagline": "Narrates the match like a classic film, and nobody interrupts.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_celebrity_01_narrator.jpg"
     },
     {
       "id": "chelsea-suggs",
@@ -206,7 +227,8 @@
       "category": "celebrity",
       "tagline": "Starts the singing and keeps it going until the final whistle.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_celebrity_02_porkpie-singer.jpg"
     },
     {
       "id": "chelsea-sebastian-coe",
@@ -215,7 +237,8 @@
       "category": "celebrity",
       "tagline": "Times every run, every substitution, and every final whistle.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_celebrity_03_stopwatch.jpg"
     },
     {
       "id": "chelsea-michael-caine",
@@ -224,7 +247,8 @@
       "category": "celebrity",
       "tagline": "Tells a story from the old days, and it is a good one.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/chelsea/chelsea_celebrity_04_storyteller.jpg"
     },
     {
       "id": "chelsea-damon-albarn",
@@ -234,7 +258,8 @@
       "tagline": "Hums the tune of every chant and adds a harmony.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/chelsea/chelsea_celebrity_05_humming.jpg"
     },
     {
       "id": "chelsea-emma-watson",
@@ -244,7 +269,8 @@
       "tagline": "Quietly knows more than she lets on, then makes a sharp point.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/chelsea/chelsea_celebrity_06_knowing-woman.jpg"
     },
     {
       "id": "chelsea-guy-ritchie",
@@ -254,7 +280,8 @@
       "tagline": "Plots every move like a film and wants a second take.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/chelsea/chelsea_celebrity_07_schemer.jpg"
     },
     {
       "id": "chelsea-jeremy-clarkson",
@@ -264,7 +291,8 @@
       "tagline": "Loud opinions, louder complaints, and a strong view on the referee.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/chelsea/chelsea_celebrity_08_complainer.jpg"
     },
     {
       "id": "chelsea-will-ferrell",
@@ -274,7 +302,8 @@
       "tagline": "Treats every corner like a scene and plays it for laughs.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/chelsea/chelsea_celebrity_09_comic-face.jpg"
     }
   ]
 }

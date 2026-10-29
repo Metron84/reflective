@@ -17,7 +17,8 @@
       "category": "player",
       "tagline": "Greatest ever Ranger, and he will not let you forget it.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_01_proud-jaw.jpg"
     },
     {
       "id": "rangers-ally-mccoist",
@@ -26,7 +27,8 @@
       "category": "player",
       "tagline": "Has a joke for every goal and a story for every miss.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_02_sparkle-grin.jpg"
     },
     {
       "id": "rangers-jim-baxter",
@@ -35,7 +37,8 @@
       "category": "player",
       "tagline": "Treats every dull moment as an excuse to show off.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_03_ball-at-foot.jpg"
     },
     {
       "id": "rangers-alan-morton",
@@ -44,7 +47,8 @@
       "category": "player",
       "tagline": "Small, quick, and always on the move.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_04_1920s-quick.jpg"
     },
     {
       "id": "rangers-steven-davis",
@@ -53,7 +57,8 @@
       "category": "player",
       "tagline": "Quiet, steady, and the calmest in the stand.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_05_steady-eyes.jpg"
     },
     {
       "id": "rangers-brian-laudrup",
@@ -62,7 +67,8 @@
       "category": "player",
       "tagline": "Elegant, relaxed, and always one step ahead.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_06_elegant.jpg"
     },
     {
       "id": "rangers-paul-gascoigne",
@@ -71,7 +77,8 @@
       "category": "player",
       "tagline": "Pure entertainment from the first minute to the last.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_07_mischief.jpg"
     },
     {
       "id": "rangers-richard-gough",
@@ -80,7 +87,8 @@
       "category": "player",
       "tagline": "Shouts instructions and leads the singing.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_08_captain-shout.jpg"
     },
     {
       "id": "rangers-barry-ferguson",
@@ -89,7 +97,8 @@
       "category": "player",
       "tagline": "Home-grown captain who takes every defeat personally.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_09_jaw-set.jpg"
     },
     {
       "id": "rangers-jorg-albertz",
@@ -98,7 +107,8 @@
       "category": "player",
       "tagline": "A thunderous left foot and a thunderous laugh.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_player_10_left-foot.jpg"
     },
     {
       "id": "rangers-bill-struth",
@@ -107,7 +117,8 @@
       "category": "manager",
       "tagline": "Won 18 league titles, so every opinion lands.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_01_bowler-hat.jpg"
     },
     {
       "id": "rangers-walter-smith",
@@ -116,7 +127,8 @@
       "category": "manager",
       "tagline": "Gravelly, honest, and always has a story from the Nine in a Row.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_02_gravel-cap.jpg"
     },
     {
       "id": "rangers-william-wilton",
@@ -125,7 +137,8 @@
       "category": "manager",
       "tagline": "The club's first manager and the proudest in the stand.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_03_edwardian-moustache.jpg"
     },
     {
       "id": "rangers-graeme-souness",
@@ -134,7 +147,8 @@
       "category": "manager",
       "tagline": "Fiery, blunt, and not afraid to tell you off.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_04_blunt-finger.jpg"
     },
     {
       "id": "rangers-jock-wallace",
@@ -143,7 +157,8 @@
       "category": "manager",
       "tagline": "Barks orders, trains hard, and wants you fit for the second half.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_05_barking.jpg"
     },
     {
       "id": "rangers-steven-gerrard",
@@ -152,7 +167,8 @@
       "category": "manager",
       "tagline": "Brings title-winning intensity and hates a draw.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_06_stare.jpg"
     },
     {
       "id": "rangers-alex-mcleish",
@@ -161,7 +177,8 @@
       "category": "manager",
       "tagline": "Big Eck stays calm and keeps the plan going.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_07_big-calm.jpg"
     },
     {
       "id": "rangers-dick-advocaat",
@@ -170,7 +187,8 @@
       "category": "manager",
       "tagline": "The Little General wants every detail planned.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_08_precise-glasses.jpg"
     },
     {
       "id": "rangers-scot-symon",
@@ -179,7 +197,8 @@
       "category": "manager",
       "tagline": "Quiet, steady, and always dressed for the occasion.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_09_midcentury.jpg"
     },
     {
       "id": "rangers-giovanni-van-bronckhorst",
@@ -188,7 +207,8 @@
       "category": "manager",
       "tagline": "Calm, classy, and still emotional about that European run.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_manager_10_classy.jpg"
     },
     {
       "id": "rangers-gordon-ramsay",
@@ -197,7 +217,8 @@
       "category": "celebrity",
       "tagline": "Shouts at the referee like he is in a kitchen.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_01_spiky-shout.jpg"
     },
     {
       "id": "rangers-angus-young",
@@ -206,7 +227,8 @@
       "category": "celebrity",
       "tagline": "Loud, fast, and plays air guitar through every chant.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_02_schoolboy-guitar.jpg"
     },
     {
       "id": "rangers-drew-mcintyre",
@@ -215,7 +237,8 @@
       "category": "celebrity",
       "tagline": "Brings the wrestling entrance to every goal.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_03_wrestler.jpg"
     },
     {
       "id": "rangers-colin-montgomerie",
@@ -224,7 +247,8 @@
       "category": "celebrity",
       "tagline": "Quiet, then very loud at the key moment.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_04_golf-cap.jpg"
     },
     {
       "id": "rangers-simon-neil",
@@ -233,7 +257,8 @@
       "category": "celebrity",
       "tagline": "Sings every chant like a stadium anthem.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_05_dark-singer.jpg"
     },
     {
       "id": "rangers-hugh-grant",
@@ -242,7 +267,8 @@
       "category": "celebrity",
       "tagline": "Charming and dry, and willing to do anything for a ticket.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_06_dry-charm.jpg"
     },
     {
       "id": "rangers-tom-stoltman",
@@ -251,7 +277,8 @@
       "category": "celebrity",
       "tagline": "Big enough to carry the whole row, and he might.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_07_strongman.jpg"
     },
     {
       "id": "rangers-amy-macdonald",
@@ -260,7 +287,8 @@
       "category": "celebrity",
       "tagline": "Sings every chant and knows every word.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_08_guitar-woman.jpg"
     },
     {
       "id": "rangers-robert-carlyle",
@@ -269,7 +297,8 @@
       "category": "celebrity",
       "tagline": "Intense, focused, and fully in character.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_09_narrow-intense.jpg"
     },
     {
       "id": "rangers-marti-pellow",
@@ -278,7 +307,8 @@
       "category": "celebrity",
       "tagline": "Sings loudest and loves the day most.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/rangers/rangers_celebrity_10_big-singer.jpg"
     }
   ]
 }

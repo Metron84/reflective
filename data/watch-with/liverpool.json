@@ -17,7 +17,8 @@
       "category": "player",
       "tagline": "Sees the pass before it happens and says nothing.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_01_calm-smile.jpg"
     },
     {
       "id": "liverpool-steven-gerrard",
@@ -26,7 +27,8 @@
       "category": "player",
       "tagline": "Never stops believing, especially at 3-0 down.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_02_clenched-fist.jpg"
     },
     {
       "id": "liverpool-ian-rush",
@@ -35,7 +37,8 @@
       "category": "player",
       "tagline": "Waits for the one chance, then settles it.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_03_thin-moustache.jpg"
     },
     {
       "id": "liverpool-john-barnes",
@@ -44,7 +47,8 @@
       "category": "player",
       "tagline": "Cool, smooth, and never flustered.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_04_cool-smile.jpg"
     },
     {
       "id": "liverpool-luis-suarez",
@@ -53,7 +57,8 @@
       "category": "player",
       "tagline": "Wins every duel and argues every decision.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_05_arguer.jpg"
     },
     {
       "id": "liverpool-mohamed-salah",
@@ -62,7 +67,8 @@
       "category": "player",
       "tagline": "Silent until the goal, then the whole room chants his name.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_06_curly-beard.jpg"
     },
     {
       "id": "liverpool-robbie-fowler",
@@ -71,7 +77,8 @@
       "category": "player",
       "tagline": "The fans call him God, and he celebrates like one.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_07_arms-out.jpg"
     },
     {
       "id": "liverpool-jamie-carragher",
@@ -80,7 +87,8 @@
       "category": "player",
       "tagline": "Shouts at every defender like he is still on the pitch.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_08_shouter.jpg"
     },
     {
       "id": "liverpool-virgil-van-dijk",
@@ -89,7 +97,8 @@
       "category": "player",
       "tagline": "Calm, composed, and never lunges.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_09_tall-calm.jpg"
     },
     {
       "id": "liverpool-roberto-firmino",
@@ -98,7 +107,8 @@
       "category": "player",
       "tagline": "Smiles, works harder than anyone, and wants everyone involved.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_player_10_busy-hands.jpg"
     },
     {
       "id": "liverpool-bill-shankly",
@@ -107,7 +117,8 @@
       "category": "manager",
       "tagline": "Makes you feel this match matters more than anything.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_01_flat-cap-passion.jpg"
     },
     {
       "id": "liverpool-bob-paisley",
@@ -116,7 +127,8 @@
       "category": "manager",
       "tagline": "Says very little and wins everything.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_02_flat-cap-quiet.jpg"
     },
     {
       "id": "liverpool-jurgen-klopp",
@@ -125,7 +137,8 @@
       "category": "manager",
       "tagline": "Hugs everyone at the final whistle, win or lose.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_03_hug-grin.jpg"
     },
     {
       "id": "liverpool-rafael-benitez",
@@ -134,7 +147,8 @@
       "category": "manager",
       "tagline": "Has a note for every set piece and shares it at half-time.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_04_paper-note.jpg"
     },
     {
       "id": "liverpool-gerard-houllier",
@@ -143,7 +157,8 @@
       "category": "manager",
       "tagline": "Calm, thoughtful, and happy to explain the long game.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_05_explainer.jpg"
     },
     {
       "id": "liverpool-joe-fagan",
@@ -152,7 +167,8 @@
       "category": "manager",
       "tagline": "Quiet, modest, and quietly wins a treble.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_06_modest-cap.jpg"
     },
     {
       "id": "liverpool-roy-evans",
@@ -161,7 +177,8 @@
       "category": "manager",
       "tagline": "Wants entertaining football and a good time after.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_07_open-collar.jpg"
     },
     {
       "id": "liverpool-brendan-rodgers",
@@ -170,7 +187,8 @@
       "category": "manager",
       "tagline": "Talks about the process through every near miss.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_08_earnest-talker.jpg"
     },
     {
       "id": "liverpool-ronnie-moran",
@@ -179,7 +197,8 @@
       "category": "manager",
       "tagline": "Has been at the club for decades and tells you every story.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_09_weathered.jpg"
     },
     {
       "id": "liverpool-phil-thompson",
@@ -188,7 +207,8 @@
       "category": "manager",
       "tagline": "Passionate, loud, and certain about every decision.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_manager_10_pointer.jpg"
     },
     {
       "id": "liverpool-daniel-craig",
@@ -197,7 +217,8 @@
       "category": "celebrity",
       "tagline": "Never spills his drink, however tense it gets.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_01_glass-holder.jpg"
     },
     {
       "id": "liverpool-lebron-james",
@@ -206,7 +227,8 @@
       "category": "celebrity",
       "tagline": "Studies every pass like it is a play from the playbook.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_02_play-mapper.jpg"
     },
     {
       "id": "liverpool-samuel-l-jackson",
@@ -215,7 +237,8 @@
       "category": "celebrity",
       "tagline": "Delivers every opinion at full volume and full conviction.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_03_full-volume.jpg"
     },
     {
       "id": "liverpool-liam-neeson",
@@ -224,7 +247,8 @@
       "category": "celebrity",
       "tagline": "Calm voice, intense stare, and a particular set of opinions.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_04_deep-stare.jpg"
     },
     {
       "id": "liverpool-mike-myers",
@@ -233,7 +257,8 @@
       "category": "celebrity",
       "tagline": "Does the voices, the chants, and the accents.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_05_comic-voice.jpg"
     },
     {
       "id": "liverpool-dr-dre",
@@ -242,7 +267,8 @@
       "category": "celebrity",
       "tagline": "Brings the music for the walk to the ground.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_06_headphones.jpg"
     },
     {
       "id": "liverpool-lana-del-rey",
@@ -251,7 +277,8 @@
       "category": "celebrity",
       "tagline": "Quiet, moody, and cheers only at the best moments.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_07_vintage-woman.jpg"
     },
     {
       "id": "liverpool-millie-bobby-brown",
@@ -260,7 +287,8 @@
       "category": "celebrity",
       "tagline": "Loud, excited, and thrilled to be there.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_08_excited-woman.jpg"
     },
     {
       "id": "liverpool-clive-owen",
@@ -269,7 +297,8 @@
       "category": "celebrity",
       "tagline": "Calm narrator, calm commentary, calm even at 90 minutes.",
       "supporter_verified": true,
-      "active": true
+      "active": true,
+      "image": "/watch-with/liverpool/liverpool_celebrity_09_narrow-calm.jpg"
     },
     {
       "id": "liverpool-angelina-jolie",
@@ -279,7 +308,8 @@
       "tagline": "Quiet, focused, and always has the best seat.",
       "supporter_verified": false,
       "active": false,
-      "source_note": "needs source before launch"
+      "source_note": "needs source before launch",
+      "image": "/watch-with/liverpool/liverpool_celebrity_10_quiet-woman.jpg"
     }
   ]
 }
