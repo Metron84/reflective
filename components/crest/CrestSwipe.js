@@ -26,7 +26,7 @@ import styles from "./CrestSwipe.module.css";
 const RUN_TOTAL = 4 + TOTAL;
 
 /**
- * Find Your FC on The Reflective. Scope, roots, one want, twenty cards.
+ * Find Your FC on The Reflective. Scope, roots, one want, ten cards.
  * One saved result still lives on the account.
  *
  * @param {{embedded?: boolean, resumeToken?: string|null}} [props]

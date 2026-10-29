@@ -81,12 +81,12 @@ if (competitionCounts.Championship !== 20) {
   console.log(`FAIL competitions: Championship has ${competitionCounts.Championship}, expected 20`);
 }
 
-if (TOTAL !== 8 || CARDS.length !== 40) {
+if (TOTAL !== 10 || CARDS.length !== 50) {
   failures++;
-  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 40 cards and a run of 8`);
+  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 50 cards and a run of 10`);
 }
 for (const [id, deck] of Object.entries(DECKS)) {
-  if (deck.length !== 8) {
+  if (deck.length !== 10) {
     failures++;
     console.log(`FAIL deck: ${id} has ${deck.length}`);
   }
@@ -120,9 +120,9 @@ if (categoryOf("slavia-prague") !== "belonging") {
 }
 
 const belongingAnswers = [
-  { cardId: 1, value: -1 },
-  { cardId: 3, value: -1 },
-  { cardId: 2, value: -1 },
+  { cardId: 9, value: -1 },
+  { cardId: 8, value: -1 },
+  { cardId: 7, value: -1 },
 ];
 const belongingRank = rankClubs(belongingAnswers, undefined, { stake: "belonging" });
 const millwall = belongingRank.find((row) => row.club.slug === "millwall");

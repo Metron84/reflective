@@ -13,7 +13,7 @@ import want from "./CrestWant.module.css";
 import swipe from "./CrestSwipe.module.css";
 import styles from "./CrestRoots.module.css";
 
-const RUN_TOTAL = 12;
+const RUN_TOTAL = 14;
 
 /**
  * @typedef {import("@/lib/crest/roots.js").RootClub} RootClub
