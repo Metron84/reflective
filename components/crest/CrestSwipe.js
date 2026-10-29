@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { allowsBoth, PART_INDEX, PART_LABEL, TOTAL } from "@/lib/crest/cards";
+import { allowsBoth, TOTAL } from "@/lib/crest/cards";
 import { DEFAULT_ALPHA, nextCard } from "@/lib/crest/match";
 import { parseBallot } from "@/lib/crest/result-store";
 import { decodeResume } from "@/lib/crest/resume";
@@ -295,7 +295,6 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
   const card = current.card;
   const done = 4 + index;
   const percent = Math.round((done / RUN_TOTAL) * 100);
-  const showTurn = card.part === "football" && index === 10;
   const stakeName = getStake(stake)?.label || "";
 
   return (
@@ -315,7 +314,7 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
             &larr;
           </button>
           <span className={styles.partLabel}>
-            {PART_INDEX[card.part]} of 3 · {PART_LABEL[card.part]}
+            {index + 1} of {TOTAL}
             <span className={styles.chipLine}>
               {done} of {RUN_TOTAL}
             </span>
@@ -337,7 +336,6 @@ export default function CrestSwipe({ embedded = false, resumeToken = null }) {
       </header>
 
       <section className={styles.play} aria-live="polite">
-        {showTurn ? <p className={styles.turn}>Now the club.</p> : null}
         <div className={styles.stage}>
           <SwipeCard key={card.id} card={card} index={index} onAnswer={answer} onDrag={onDrag} />
         </div>

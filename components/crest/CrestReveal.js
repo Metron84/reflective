@@ -39,7 +39,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
         key: "start",
         body: (
           <>
-            <p className={styles.small}>Twenty swipes later</p>
+            <p className={styles.small}>Eight swipes later</p>
             <h2 className={styles.big}>You told us who you are.</h2>
             <p className={styles.line}>{stakeLine(stake) || "Now meet the club that sounds like you."}</p>
           </>
