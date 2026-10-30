@@ -4,6 +4,7 @@ import NextUp from "@/components/home/NextUp";
 import ReachBand from "@/components/home/ReachBand";
 import BadgeStrip from "@/components/home/BadgeStrip";
 import ReportSection from "@/components/home/ReportSection";
+import FounderNote from "@/components/home/FounderNote";
 import { SITE_DESCRIPTION, SITE_URL, SOCIAL_LINKS } from "@/lib/config";
 import { BADGES_ENABLED, NEXT_UP } from "@/lib/home";
 import { getHomeBadges, getHomeDoors, getHomeHeroSrc } from "@/lib/homepage-status";
@@ -89,6 +90,7 @@ export default function Home() {
       <ReachBand />
       {BADGES_ENABLED ? <BadgeStrip badges={getHomeBadges()} /> : null}
       <ReportSection />
+      <FounderNote />
     </>
   );
 }
