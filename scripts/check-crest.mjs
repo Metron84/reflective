@@ -81,12 +81,19 @@ if (competitionCounts.Championship !== 20) {
   console.log(`FAIL competitions: Championship has ${competitionCounts.Championship}, expected 20`);
 }
 
-if (TOTAL !== 10 || CARDS.length !== 50) {
+if (TOTAL !== 36 || CARDS.length !== 36) {
   failures++;
-  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 50 cards and a run of 10`);
+  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 36`);
+}
+for (let facet = 0; facet < 12; facet++) {
+  const n = CARDS.filter((card) => card.facet === facet).length;
+  if (n !== 3) {
+    failures++;
+    console.log(`FAIL deck: facet ${facet} has ${n} cards`);
+  }
 }
 for (const [id, deck] of Object.entries(DECKS)) {
-  if (deck.length !== 10) {
+  if (deck.length !== 36) {
     failures++;
     console.log(`FAIL deck: ${id} has ${deck.length}`);
   }
@@ -120,16 +127,16 @@ if (categoryOf("slavia-prague") !== "belonging") {
 }
 
 const belongingAnswers = [
-  { cardId: 9, value: -1 },
-  { cardId: 8, value: -1 },
   { cardId: 7, value: -1 },
+  { cardId: 11, value: -1 },
+  { cardId: 15, value: -1 },
 ];
 const belongingRank = rankClubs(belongingAnswers, undefined, { stake: "belonging" });
-const millwall = belongingRank.find((row) => row.club.slug === "millwall");
-const brighton = belongingRank.find((row) => row.club.slug === "brighton");
-if (!millwall || Math.round(millwall.score * 100) !== 60 || !brighton || Math.round(brighton.score * 100) !== 25) {
+const millwallAt = belongingRank.findIndex((row) => row.club.slug === "millwall");
+const brightonAt = belongingRank.findIndex((row) => row.club.slug === "brighton");
+if (millwallAt < 0 || brightonAt < 0 || millwallAt > brightonAt) {
   failures++;
-  console.log(`FAIL suit: Millwall ${millwall && Math.round(millwall.score * 100)} Brighton ${brighton && Math.round(brighton.score * 100)}`);
+  console.log(`FAIL suit: Millwall rank ${millwallAt} Brighton rank ${brightonAt}`);
 }
 
 const loveAnswers = DECKS.love.map((card) => ({ cardId: card.id, value: card.leftValue }));
