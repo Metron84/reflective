@@ -33,6 +33,7 @@ export default function sitemap() {
     { path: "/concierge", changeFrequency: "weekly", priority: 0.8 },
     { path: "/archive", changeFrequency: "weekly", priority: 0.85 },
     { path: "/about", changeFrequency: "monthly", priority: 0.5 },
+    { path: "/your-say", changeFrequency: "weekly", priority: 0.7 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.2 },
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
     ...(STAND_ENABLED

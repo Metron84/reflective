@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminClient, badRequest } from "@/app/api/admin/tagging/_helpers";
+import { listConciergeMessages } from "@/lib/concierge/inbox";
 
 export const runtime = "nodejs";
 
@@ -15,22 +16,9 @@ export async function GET(request) {
     return badRequest("Invalid status filter.");
   }
 
-  let query = supabase
-    .from("concierge_messages")
-    .select(
-      "id, created_at, updated_at, name, email, topic, message, status, source_conversation"
-    )
-    .order("created_at", { ascending: false });
-
-  if (status === "new") {
-    query = query.eq("status", "new");
-  } else if (status === "handled") {
-    query = query.eq("status", "handled");
-  }
-
   const [{ data, error: listError }, { count: newCount, error: countError }] =
     await Promise.all([
-      query,
+      listConciergeMessages(supabase, status),
       supabase
         .from("concierge_messages")
         .select("id", { count: "exact", head: true })

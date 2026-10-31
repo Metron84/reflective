@@ -95,7 +95,14 @@ const archivePagesCache = `archive-pages-${CACHE_VERSION}-${ARCHIVE_CACHE_REVISI
 const archiveJsonCache = `archive-json-${CACHE_VERSION}-${ARCHIVE_CACHE_REVISION}`;
 
 /** High-traffic doors only — warmed into pages cache on activate. */
-const WARM_PAGE_ROUTES = ["/films", "/games", "/reflections", "/observatory", "/training"];
+const WARM_PAGE_ROUTES = [
+  "/films",
+  "/games",
+  "/reflections",
+  "/observatory",
+  "/training",
+  "/your-say",
+];
 
 const CURRENT_CACHE_NAMES = new Set([
   pagesCache,

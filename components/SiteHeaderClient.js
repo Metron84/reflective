@@ -13,6 +13,11 @@ import { SOCIAL_ICONS } from "./nav/SocialIcons";
 const focusRing =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal";
 
+const MOBILE_MENU = [
+  ...DOORS,
+  { key: "your-say", label: "Your Say", href: "/your-say" },
+];
+
 function Wordmark({ tone = "navy", onClick, host }) {
   return (
     <Link
@@ -161,7 +166,7 @@ function MenuSheet({ onClose, auth, pathname, host }) {
 
       <nav aria-label="Main" className="flex flex-1 flex-col justify-center">
         <ul>
-          {DOORS.map((door) => {
+          {MOBILE_MENU.map((door) => {
             const active = isActivePath(pathname, door.href);
             return (
               <li key={door.key} className="border-b border-paper/10">
@@ -300,14 +305,14 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
           </a>
           <button
             type="button"
-            onClick={() => setOpen(true)}
-            className={`flex h-11 w-11 flex-col items-center justify-center gap-1.5 lg:hidden ${focusRing}`}
-            aria-label="Open menu"
+            onClick={() => setOpen((current) => !current)}
+            className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center px-3 transition-opacity active:opacity-70 lg:hidden ${focusRing}`}
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
-            <span className="block h-0.5 w-5 bg-navy" />
-            <span className="block h-0.5 w-5 bg-navy" />
-            <span className="block h-0.5 w-5 bg-navy" />
+            <span className="font-body text-[13px] font-semibold uppercase leading-none tracking-[0.12em] text-navy underline decoration-2 decoration-signal underline-offset-4">
+              {open ? "CLOSE" : "MENU"}
+            </span>
           </button>
         </div>
       </div>

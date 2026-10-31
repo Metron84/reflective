@@ -1,4 +1,5 @@
 import { requireAdminPage } from "@/lib/auth/admin";
+import { listConciergeMessages } from "@/lib/concierge/inbox";
 import { getRenderClient } from "@/lib/supabase/server";
 import MessagesInbox from "@/components/admin/messages/MessagesInbox";
 
@@ -22,18 +23,8 @@ export default async function AdminMessagesPage({ searchParams }) {
   let newCount = 0;
 
   if (supabase) {
-    let query = supabase
-      .from("concierge_messages")
-      .select(
-        "id, created_at, updated_at, name, email, topic, message, status, source_conversation"
-      )
-      .order("created_at", { ascending: false });
-
-    if (filter === "new") query = query.eq("status", "new");
-    if (filter === "handled") query = query.eq("status", "handled");
-
     const [listRes, countRes] = await Promise.all([
-      query,
+      listConciergeMessages(supabase, filter),
       supabase
         .from("concierge_messages")
         .select("id", { count: "exact", head: true })

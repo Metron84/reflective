@@ -19,6 +19,13 @@ function firstLine(text) {
   return line.length > 100 ? `${line.slice(0, 97)}...` : line;
 }
 
+function yourSayLine(row) {
+  if (row?.source !== "your-say") return null;
+  const club = row.supporters_club?.trim() || "No supporters club";
+  const publish = row.publish_consent ? "Publish: yes" : "Publish: no";
+  return `${club} · ${publish}`;
+}
+
 function formatDate(value) {
   if (!value) return "";
   return new Date(value).toLocaleString("en-GB", {
@@ -167,6 +174,7 @@ export default function MessagesInbox({
             messages.map((row) => {
               const isNew = row.status === "new";
               const isSelected = selected?.id === row.id;
+              const say = yourSayLine(row);
               return (
                 <li key={row.id}>
                   <button
@@ -188,6 +196,7 @@ export default function MessagesInbox({
                     <span className={styles.sender}>
                       {row.name?.trim() || "Anonymous"}
                     </span>
+                    {say ? <span className={styles.clubMeta}>{say}</span> : null}
                     <span className={styles.preview}>{firstLine(row.message)}</span>
                     <span className={styles.date}>{formatDate(row.created_at)}</span>
                   </button>
@@ -209,6 +218,9 @@ export default function MessagesInbox({
               <p className={styles.detailName}>
                 {selected.name?.trim() || "Anonymous"}
               </p>
+              {yourSayLine(selected) ? (
+                <p className={styles.clubMeta}>{yourSayLine(selected)}</p>
+              ) : null}
               {selected.email ? (
                 <p className={styles.detailEmail}>
                   <a href={`mailto:${selected.email}`}>{selected.email}</a>

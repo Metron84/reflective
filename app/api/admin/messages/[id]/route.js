@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminClient, badRequest } from "@/app/api/admin/tagging/_helpers";
+import { updateConciergeMessageStatus } from "@/lib/concierge/inbox";
 
 export const runtime = "nodejs";
 
@@ -24,14 +25,11 @@ export async function PATCH(request, { params }) {
     return badRequest("Invalid status.");
   }
 
-  const { data, error: updateError } = await supabase
-    .from("concierge_messages")
-    .update({ status })
-    .eq("id", id)
-    .select(
-      "id, created_at, updated_at, name, email, topic, message, status, source_conversation"
-    )
-    .maybeSingle();
+  const { data, error: updateError } = await updateConciergeMessageStatus(
+    supabase,
+    id,
+    status
+  );
 
   if (updateError) {
     return NextResponse.json({ message: updateError.message }, { status: 500 });

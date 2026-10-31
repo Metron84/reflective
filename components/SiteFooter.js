@@ -74,6 +74,11 @@ export default async function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href={to("/your-say")} className={footerLink}>
+                  Your Say
+                </Link>
+              </li>
             </ul>
           </nav>
 

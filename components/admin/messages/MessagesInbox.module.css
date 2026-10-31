@@ -169,6 +169,13 @@
   font-size: 0.875rem;
 }
 
+.clubMeta {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(10, 17, 31, 0.72);
+}
+
 .preview {
   font-size: 0.8125rem;
   font-weight: 400;
