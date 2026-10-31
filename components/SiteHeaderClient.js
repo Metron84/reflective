@@ -282,6 +282,22 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
               </Link>
             );
           })}
+          <Link
+            prefetch={false}
+            href={hubUrl("/your-say", host)}
+            aria-current={isActivePath(pathname, "/your-say") ? "page" : undefined}
+            className={`relative py-1 text-sm font-semibold uppercase tracking-widest transition-colors hover:text-navy ${focusRing} ${
+              isActivePath(pathname, "/your-say") ? "text-navy" : "text-navy/70"
+            }`}
+          >
+            Your Say
+            {isActivePath(pathname, "/your-say") ? (
+              <span
+                className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-signal"
+                aria-hidden
+              />
+            ) : null}
+          </Link>
         </nav>
 
         <div className="flex items-center justify-self-end gap-1 lg:gap-3">
@@ -303,6 +319,13 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
           >
             {PARTNERS.label}
           </a>
+          <Link
+            prefetch={false}
+            href={hubUrl("/your-say", host)}
+            className={`relative py-1 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:text-navy/70 lg:hidden ${focusRing}`}
+          >
+            Your Say
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((current) => !current)}
