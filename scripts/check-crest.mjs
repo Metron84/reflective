@@ -79,9 +79,16 @@ if (competitionCounts.Championship !== 20) {
   console.log(`FAIL competitions: Championship has ${competitionCounts.Championship}, expected 20`);
 }
 
-if (CARDS.length !== TOTAL || TOTAL !== 18) {
+if (CARDS.length !== TOTAL || TOTAL !== 36) {
   failures++;
-  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 18`);
+  console.log(`FAIL deck: ${CARDS.length} cards, TOTAL ${TOTAL}, expected 36`);
+}
+for (let facet = 0; facet < 12; facet++) {
+  const n = CARDS.filter((row) => row.facet === facet).length;
+  if (n !== 3) {
+    failures++;
+    console.log(`FAIL deck: facet ${facet} has ${n} cards`);
+  }
 }
 const partCounts = { 1: 0, 2: 0, 3: 0 };
 const facetSeen = new Set();
@@ -89,9 +96,9 @@ for (const c of CARDS) {
   partCounts[c.part] += 1;
   facetSeen.add(c.facet);
 }
-if (partCounts[1] !== 5 || partCounts[2] !== 6 || partCounts[3] !== 7) {
+if (partCounts[1] !== 5 || partCounts[2] !== 15 || partCounts[3] !== 16) {
   failures++;
-  console.log(`FAIL deck: parts ${partCounts[1]}/${partCounts[2]}/${partCounts[3]}, expected 5/6/7`);
+  console.log(`FAIL deck: parts ${partCounts[1]}/${partCounts[2]}/${partCounts[3]}, expected 5/15/16`);
 }
 if (facetSeen.size !== 12) {
   failures++;

@@ -24,7 +24,7 @@ import CrestWant from "./CrestWant";
 import styles from "./CrestSwipe.module.css";
 
 /**
- * The Crest. Standalone play: home, one want, eighteen cards, arrival, report.
+ * The Crest. Standalone play: home, one want, thirty-six cards, arrival, report.
  * Answers live in session state. One saved crest lives on the TRF account.
  *
  * @param {{embedded?: boolean, resumeToken?: string|null}} [props]
