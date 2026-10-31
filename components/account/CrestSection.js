@@ -26,7 +26,7 @@ export default function CrestSection({ crest }) {
         </>
       ) : (
         <>
-          <p className={styles.empty}>Eighteen swipes. One club that sounds like you.</p>
+          <p className={styles.empty}>Thirty-six swipes. One club that sounds like you.</p>
           <Link href="/crest" className={styles.primary}>
             Find my club
           </Link>
