@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary, colourMap, leagueMap, userVector } from "@/lib/crest/match";
-import { buildReport, closeBehindReason, roomPercent, visibleRoomClubs } from "@/lib/crest/report";
+import { buildReport, closeBehindReason, visibleRoomClubs } from "@/lib/crest/report";
 import ProgrammeCTA from "@/components/ProgrammeCTA";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestSwipe.module.css";
@@ -79,8 +79,8 @@ export default function CrestArrival({
   );
   const user = useMemo(() => userVector(answers, stake), [answers, stake]);
 
-  const { club, probability, confident, runnerUp, greenFlags, rub } = summary;
-  const roomPct = roomPercent(probability);
+  const { club, fitPct, runnerUpFit, runnerUp, greenFlags, rub } = summary;
+  const roomPct = fitPct;
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const topName = club.name;
 
@@ -88,7 +88,7 @@ export default function CrestArrival({
     if (!ready || shareState === "busy") return;
     setShareState("busy");
     try {
-      const kicker = shareKicker(roomPct, confident);
+      const kicker = shareKicker(roomPct, runnerUpFit);
       const blob = await renderShareCard(cardDataFrom(summary, roomPct, kicker));
       const outcome = await shareCard(blob, club.name);
       setShareState(outcome === "saved" ? "saved" : "idle");
@@ -100,7 +100,7 @@ export default function CrestArrival({
   return (
     <section className={styles.arrival}>
       <p className={styles.kicker}>
-        {roomPct < 80 ? "Closest match" : confident ? "Your club" : "You sit between two"}
+        {shareKicker(roomPct, runnerUpFit)}
       </p>
 
       <div className={styles.arrivalBand} style={{ "--club": club.color || "#D8232A" }}>
@@ -110,7 +110,7 @@ export default function CrestArrival({
           {club.founded ? ` · ${club.founded}` : ""}
           {club.home ? ` · ${club.home}` : ""}
         </p>
-        <p className={styles.arrivalScore}>{roomPct}% of the last room</p>
+        <p className={styles.arrivalScore}>{roomPct}% match</p>
       </div>
 
       {!confident && runnerUp ? (
@@ -176,7 +176,7 @@ export default function CrestArrival({
                 <span className={styles.swatch} style={{ background: FAMILY_SWATCH[row.family] }} />
                 <span className={styles.colourName}>{FAMILY_LABEL[row.family]}</span>
                 <span className={styles.colourBest}>{best.club.name}</span>
-                <span className={styles.colourPct}>{roomPercent(best.probability)}%</span>
+                <span className={styles.colourPct}>{best.fitPct}%</span>
               </button>
               {canOpen ? (
                 <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
@@ -185,7 +185,7 @@ export default function CrestArrival({
                       <div key={entry.club.slug} className={styles.colourClub}>
                         <span>{i + 1}</span>
                         <span>{entry.club.name}</span>
-                        <span>{roomPercent(entry.probability)}%</span>
+                        <span>{entry.fitPct}%</span>
                         {entry.club.slug === club.slug ? null : (
                           <small>
                             {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}
@@ -222,7 +222,7 @@ export default function CrestArrival({
               >
                 <span className={styles.colourName}>{row.label}</span>
                 <span className={styles.colourBest}>{best.club.name}</span>
-                <span className={styles.colourPct}>{roomPercent(best.probability)}%</span>
+                <span className={styles.colourPct}>{best.fitPct}%</span>
               </button>
               {canOpen ? (
                 <div className={`${styles.colourExpand} ${open ? styles.colourExpandOpen : ""}`}>
@@ -231,7 +231,7 @@ export default function CrestArrival({
                       <div key={entry.club.slug} className={styles.colourClub}>
                         <span>{i + 1}</span>
                         <span>{entry.club.name}</span>
-                        <span>{roomPercent(entry.probability)}%</span>
+                        <span>{entry.fitPct}%</span>
                         {entry.club.slug === club.slug ? null : (
                           <small>
                             {closeBehindReason(user, club, entry.club, DEFAULT_ALPHA, topName)}

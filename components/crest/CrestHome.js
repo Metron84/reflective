@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
-import { TOTAL } from "@/lib/crest/cards";
+import { CARDS, TOTAL } from "@/lib/crest/cards";
 import { CLUBS, CREST_GROUP_LABEL, CREST_GROUPS } from "@/lib/crest/clubs";
 import styles from "./CrestHome.module.css";
 
@@ -115,7 +115,7 @@ export default function CrestHome({
 
       <div className={styles.layout}>
         <div className={styles.copy}>
-          <h1 className={styles.headline}>Eighteen swipes. One club that sounds like you.</h1>
+          <h1 className={styles.headline}>Thirty-six swipes. One club that sounds like you.</h1>
           <p className={styles.subline}>{CLUBS.length} clubs. Two minutes.</p>
         </div>
 
@@ -124,7 +124,7 @@ export default function CrestHome({
           <span className={`${styles.card} ${styles.backOne}`} aria-hidden="true" />
           <span key={hint} className={`${styles.card} ${styles.front}`}>
             <span className={styles.cardKicker}>Card 1 of {TOTAL}</span>
-            <span className={styles.cardQuestion}>Living is about fun, or work?</span>
+            <span className={styles.cardQuestion}>{CARDS[0].question}</span>
             <span className={styles.cardRow}>
               <span className={styles.cardLeft}>
                 <ArrowOut left />
@@ -142,7 +142,7 @@ export default function CrestHome({
           <div className={styles.saved} style={{ "--club": saved.clubColor || "#D8232A" }}>
             <p className={styles.savedKicker}>Your club</p>
             <p className={styles.savedName}>{saved.clubName}</p>
-            <p className={styles.savedPct}>{saved.roomPct}% of the last room</p>
+            <p className={styles.savedPct}>{saved.roomPct}% match</p>
             <div className={styles.savedRow}>
               <button type="button" className={styles.savedOpen} onClick={onOpenSaved}>
                 Open

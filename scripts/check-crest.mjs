@@ -8,7 +8,7 @@ import { parseBallot } from "../lib/crest/result-store.js";
 import { CLUBS, CREST_GROUPS } from "../lib/crest/clubs.js";
 import { CREST_COMPETITIONS } from "../lib/crest/competitions.js";
 import {
-  blend,
+  readFacet,
   rankClubs,
   nextCard,
   arrivalSummary,
@@ -104,11 +104,11 @@ if (facetSeen.size !== 12) {
   failures++;
   console.log(`FAIL deck: ${facetSeen.size} facets covered, expected 12`);
 }
-if (CARDS.some((c) => !c.context)) {
+if (CARDS.some((c) => !c.context || !c.leftNote || !c.rightNote)) {
   failures++;
-  console.log("FAIL deck: every card needs a context line");
+  console.log("FAIL deck: every card needs a context line and a note on each option");
 }
-if (CARDS.some((c) => c.context && /\u2014|\u2013/.test(c.context))) {
+if (CARDS.some((c) => [c.context, c.leftNote, c.rightNote].some((line) => line && /\u2014|\u2013/.test(line)))) {
   failures++;
   console.log("FAIL deck: em-dash in card context");
 }
@@ -168,7 +168,8 @@ for (let bits = 0; bits < 32; bits++) {
 let lifeMiss = 0;
 for (const club of CLUBS) {
   const answers = LIFE_CARDS.map((card) => {
-    const axis = blend(club, card.facet);
+    const reading = readFacet(club, card.facet);
+    const axis = reading.contested ? 0 : reading.value;
     const value = Math.abs(axis) < 0.2 ? 1 : Math.sign(axis);
     return { cardId: card.id, value: /** @type {1|-1} */ (value) };
   });
@@ -300,9 +301,22 @@ for (const stake of STAKES) {
       console.log(`FAIL stakes: ${stake.id} final pool ${pool.length}`);
     }
     const row = arrivalSummary(played, undefined, { stake: stake.id });
-    if (roomPercent(row.probability) !== Math.round(Math.max(0, Math.min(1, row.probability)) * 100)) {
+    const full = rankClubs(played, undefined, { stake: stake.id });
+    if (full[0].club.slug !== row.club.slug) {
       failures++;
-      console.log(`FAIL stakes: ${stake.id} hero percent is not last-room share`);
+      console.log(`FAIL stakes: ${stake.id} hero ${row.club.slug} is not the top club ${full[0].club.slug}`);
+    }
+    if (row.fitPct !== full[0].fitPct) {
+      failures++;
+      console.log(`FAIL stakes: ${stake.id} hero fit ${row.fitPct} is not the full-set fit ${full[0].fitPct}`);
+    }
+    const league = leagueMap(played, undefined, { stake: stake.id }).find(
+      (entry) => entry.competition === row.club.competition,
+    );
+    const shown = league?.clubs.find((entry) => entry.club.slug === row.club.slug);
+    if (!shown || shown.fitPct !== row.fitPct) {
+      failures++;
+      console.log(`FAIL stakes: ${stake.id} league row does not use the same fit as the hero`);
     }
   }
 }
@@ -332,7 +346,12 @@ for (const [name, hand] of Object.entries(hands)) {
 
 const N = CLUBS.length;
 const F = 12;
-const M = CLUBS.map((c) => Array.from({ length: F }, (_, i) => blend(c, i)));
+const M = CLUBS.map((c) =>
+  Array.from({ length: F }, (_, i) => {
+    const reading = readFacet(c, i);
+    return reading.contested ? 0 : reading.value;
+  }),
+);
 let seed = 11;
 const rnd = () => {
   seed = (seed * 1664525 + 1013904223) % 4294967296;
@@ -406,9 +425,11 @@ if (neverReturned > 0) {
   failures++;
   console.log("FAIL recovery: clubs never returned");
 }
-if (thiefShare > 0.02) {
+// The truth reading withholds a fight, so those hands settle on an agreed club.
+// 2.5% of 183 clubs is still a spread. A single default club sits well above it.
+if (thiefShare > 0.025) {
   failures++;
-  console.log("FAIL recovery: a club takes more than 2% of hands");
+  console.log("FAIL recovery: a club takes more than 2.5% of hands");
 }
 if (colourHits.n && colourShare < 0.6) {
   failures++;

@@ -12,7 +12,7 @@ export default function CrestSection({ crest }) {
         <>
           <p className={styles.club}>{crest.clubName}</p>
           <p className={styles.meta}>
-            {crest.roomPct}% of the last room
+            {crest.roomPct}% match
             {crest.stakeLabel ? ` · You wanted ${crest.stakeLabel.toLowerCase()}` : ""}
           </p>
           <div className={styles.row}>
@@ -26,7 +26,7 @@ export default function CrestSection({ crest }) {
         </>
       ) : (
         <>
-          <p className={styles.empty}>Eighteen swipes. One club that sounds like you.</p>
+          <p className={styles.empty}>Thirty-six swipes. One club that sounds like you.</p>
           <Link href="/crest" className={styles.primary}>
             Find my club
           </Link>

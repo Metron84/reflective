@@ -417,7 +417,10 @@
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 10px;
+  box-sizing: border-box;
+  height: 56px;
   min-height: 56px;
+  max-height: 56px;
   padding: 0 16px;
   border: 1px solid transparent;
   border-radius: 14px;

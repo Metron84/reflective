@@ -120,10 +120,18 @@
 }
 
 .youDot,
-.themRing {
+.themRing,
+.selfRing {
   width: 12px;
   height: 12px;
   border-radius: 999px;
+}
+
+.othersDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--red-text);
 }
 
 .youDot {
@@ -133,6 +141,12 @@
 .themRing {
   box-sizing: border-box;
   border: 2px solid var(--red-text);
+  background: transparent;
+}
+
+.selfRing {
+  box-sizing: border-box;
+  border: 2px solid var(--text);
   background: transparent;
 }
 
@@ -232,30 +246,58 @@
 }
 
 .youMark,
-.themMark {
+.themMark,
+.selfMark,
+.othersMark {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 12px;
-  height: 12px;
   border-radius: 999px;
   transform: translate(-50%, -50%);
 }
 
+.youMark,
+.themMark,
+.selfMark {
+  width: 12px;
+  height: 12px;
+}
+
+.othersMark {
+  width: 8px;
+  height: 8px;
+  z-index: 2;
+}
+
 .report[data-ready="true"] .youMark,
-.report[data-ready="true"] .themMark {
+.report[data-ready="true"] .themMark,
+.report[data-ready="true"] .selfMark,
+.report[data-ready="true"] .othersMark {
   left: var(--pos, 50%);
   transition: left 300ms ease-out;
 }
 
 .youMark {
+  z-index: 3;
   background: var(--text);
 }
 
-.themMark {
+.themMark,
+.selfMark {
   box-sizing: border-box;
-  border: 2px solid var(--red-text);
   background: transparent;
+}
+
+.themMark {
+  border: 2px solid var(--red-text);
+}
+
+.selfMark {
+  border: 2px solid var(--text);
+}
+
+.othersMark {
+  background: var(--red-text);
 }
 
 .poles {

@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
-import { roomPercent } from "@/lib/crest/report";
 import { bothText, cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import { stakeLine } from "@/lib/crest/stakes";
 import styles from "./CrestReveal.module.css";
@@ -27,9 +26,9 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
     () => arrivalSummary(answers, DEFAULT_ALPHA, { group, stake }),
     [answers, group, stake],
   );
-  const { club, probability, confident, runnerUp, greenFlags, rub } = summary;
-  const roomPct = roomPercent(probability);
-  const kicker = shareKicker(roomPct, confident);
+  const { club, fitPct, runnerUpFit, runnerUp, greenFlags, rub } = summary;
+  const roomPct = fitPct;
+  const kicker = shareKicker(roomPct, runnerUpFit);
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const traits = greenFlags.map((f) => f.userPhrase).filter((p) => p && p !== "both");
 
@@ -39,7 +38,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
         key: "start",
         body: (
           <>
-            <p className={styles.small}>Eighteen swipes later</p>
+            <p className={styles.small}>Thirty-six swipes later</p>
             <h2 className={styles.big}>You told us who you are.</h2>
             <p className={styles.line}>{stakeLine(stake) || "Now meet the club that sounds like you."}</p>
           </>
@@ -95,7 +94,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
           <p className={styles.accent}>{kicker}</p>
           <h2 className={styles.clubName}>{club.name}</h2>
           {place ? <p className={styles.line}>{place}</p> : null}
-          <p className={styles.room}>{roomPct}% of the last room</p>
+          <p className={styles.room}>{roomPct}% match</p>
         </>
       ),
     });
@@ -200,7 +199,7 @@ export default function CrestReveal({ answers, group, stake = null, onDone }) {
           <p className={styles.small}>Your card</p>
           <div className={styles.preview}>
             {card.url ? (
-              <img src={card.url} alt={`Share card: ${kicker}, ${club.name}, ${roomPct}% of the last room`} />
+              <img src={card.url} alt={`Share card: ${kicker}, ${club.name}, ${roomPct}% match`} />
             ) : (
               <span className={styles.drawing}>Drawing your card</span>
             )}

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_ALPHA, arrivalSummary } from "@/lib/crest/match";
-import { buildReport, trait, REPORT_PHRASES, roomPercent } from "@/lib/crest/report";
+import { buildReport, trait, REPORT_PHRASES } from "@/lib/crest/report";
 import { crestSignupHref } from "@/lib/crest/signup";
 import { cardDataFrom, renderShareCard, shareCard, shareKicker } from "@/lib/crest/shareCard";
 import styles from "./CrestReport.module.css";
@@ -11,9 +11,9 @@ import styles from "./CrestReport.module.css";
 const GROUPS = ["Heart", "Mind", "Soul"];
 
 const VIEW_CAPTION = {
-  blend: "60% how they see themselves, 40% how others see them.",
-  self: "Only the club's own voice.",
-  others: "Only rivals, press and neutrals.",
+  blend: "Where both voices agree. A fight stays a fight.",
+  self: "Only what the club says about itself.",
+  others: "Only what others say about them.",
 };
 
 /**
@@ -55,8 +55,8 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
   const place = [club.city, club.country].filter(Boolean).join(", ");
   const meta = [place, club.stadium].filter(Boolean).join(" · ");
   const summary = arrivalSummary(answers, DEFAULT_ALPHA, { group, stake });
-  const roomPct = roomPercent(summary.probability);
-  const kicker = shareKicker(roomPct, summary.confident);
+  const roomPct = summary.fitPct;
+  const kicker = shareKicker(roomPct, summary.runnerUpFit);
 
   async function share() {
     if (shareState === "busy") return;
@@ -94,9 +94,20 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
           <span>
             <i className={styles.youDot} /> You
           </span>
-          <span>
-            <i className={styles.themRing} /> {club.shortName}
-          </span>
+          {view === "blend" ? (
+            <>
+              <span>
+                <i className={styles.selfRing} /> Their words
+              </span>
+              <span>
+                <i className={styles.othersDot} /> Others
+              </span>
+            </>
+          ) : (
+            <span>
+              <i className={styles.themRing} /> {club.shortName}
+            </span>
+          )}
         </div>
         <div className={styles.groups}>
           {GROUPS.map((groupName) => {
@@ -106,7 +117,7 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
               <div key={groupName} className={styles.group}>
                 <h3 className={styles.groupTitle}>{groupName}</h3>
                 {rows.map((facet) => (
-                  <FacetTrack key={facet.id} facet={facet} clubName={club.shortName} />
+                  <FacetTrack key={facet.id} facet={facet} clubName={club.shortName} view={view} />
                 ))}
               </div>
             );
@@ -125,13 +136,13 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
           <h2 className={styles.headingSmall}>Whose view of the club?</h2>
           <div className={styles.segment} role="group" aria-label="Club voice">
             <ViewButton active={view === "blend"} onClick={() => setView("blend")}>
-              Blend
+              The truth
             </ViewButton>
             <ViewButton active={view === "self"} onClick={() => setView("self")}>
               Their words
             </ViewButton>
             <ViewButton active={view === "others"} onClick={() => setView("others")}>
-              Rival eyes
+              Others
             </ViewButton>
           </div>
           <div className={styles.captionRow}>
@@ -202,14 +213,19 @@ function ViewButton({ active, onClick, children }) {
   );
 }
 
-function FacetTrack({ facet, clubName }) {
+function FacetTrack({ facet, clubName, view }) {
   const phrase = REPORT_PHRASES[facet.index];
   const youLabel = trait(phrase, facet.you);
-  const themLabel = trait(phrase, facet.them);
-  const left = Math.min(facet.youPos, facet.themPos);
-  const width = Math.abs(facet.youPos - facet.themPos);
-  const gapClass =
-    facet.tag === "Shared" ? styles.gapShared : facet.tag === "The rub" ? styles.gapRub : styles.gap;
+  const themLabel = facet.them == null ? "split" : trait(phrase, facet.them);
+  const bothVoices = view === "blend" && facet.selfPos != null && facet.othersPos != null;
+  const split = bothVoices && facet.contested;
+  const anchor = facet.themPos == null ? facet.youPos : facet.themPos;
+  const left = split ? Math.min(facet.selfPos, facet.othersPos) : Math.min(facet.youPos, anchor);
+  const width = split ? Math.abs(facet.selfPos - facet.othersPos) : Math.abs(facet.youPos - anchor);
+  const gapClass = split || facet.tag === "The rub" ? styles.gapRub : facet.tag === "Shared" ? styles.gapShared : styles.gap;
+  const label = split
+    ? `${facet.name}: you ${youLabel}. They say ${trait(phrase, facet.self)}. Others say ${trait(phrase, facet.others)}.`
+    : `${facet.name}: you ${youLabel}, ${clubName} ${themLabel}`;
 
   return (
     <div className={styles.facet}>
@@ -217,7 +233,7 @@ function FacetTrack({ facet, clubName }) {
         <span className={styles.facetName}>{facet.name}</span>
         <span
           className={
-            facet.tag === "The rub"
+            facet.tag === "The rub" || facet.tag === "Split"
               ? styles.tagRub
               : facet.tag === "Shared"
                 ? styles.tagShared
@@ -227,32 +243,33 @@ function FacetTrack({ facet, clubName }) {
           {facet.tag}
         </span>
       </div>
-      <div
-        className={styles.track}
-        aria-label={`${facet.name}: you ${youLabel}, ${clubName} ${themLabel}`}
-      >
+      <div className={styles.track} aria-label={label}>
         <span className={styles.trackLine} aria-hidden="true" />
         <span className={styles.trackTick} aria-hidden="true" />
-        <span
-          className={gapClass}
-          aria-hidden="true"
-          style={{ left: `${left}%`, width: `${width}%` }}
-        />
-        <span
-          className={styles.themMark}
-          aria-hidden="true"
-          style={{ "--pos": `${facet.themPos}%` }}
-        />
-        <span
-          className={styles.youMark}
-          aria-hidden="true"
-          style={{ "--pos": `${facet.youPos}%` }}
-        />
+        <span className={gapClass} aria-hidden="true" style={{ left: `${left}%`, width: `${width}%` }} />
+        {view === "blend" ? (
+          <>
+            {facet.selfPos != null ? (
+              <span className={styles.selfMark} aria-hidden="true" style={{ "--pos": `${facet.selfPos}%` }} />
+            ) : null}
+            {facet.othersPos != null ? (
+              <span className={styles.othersMark} aria-hidden="true" style={{ "--pos": `${facet.othersPos}%` }} />
+            ) : null}
+          </>
+        ) : (
+          <span className={styles.themMark} aria-hidden="true" style={{ "--pos": `${facet.themPos ?? 50}%` }} />
+        )}
+        <span className={styles.youMark} aria-hidden="true" style={{ "--pos": `${facet.youPos}%` }} />
       </div>
       <div className={styles.poles}>
         <span>{facet.leftLabel}</span>
         <span>{facet.rightLabel}</span>
       </div>
+      {split ? (
+        <p className={styles.swipe}>
+          They say {trait(phrase, facet.self)}. Others say {trait(phrase, facet.others)}.
+        </p>
+      ) : null}
       {facet.swipeLine ? <p className={styles.swipe}>{facet.swipeLine}</p> : null}
     </div>
   );

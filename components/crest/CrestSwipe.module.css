@@ -308,8 +308,8 @@
   display: grid;
   place-items: center;
   flex: 1;
-  min-height: min(62svh, 560px);
-  padding: 18px 0 8px;
+  min-height: 0;
+  padding: 12px 0 8px;
 }
 
 .sideLabel {
@@ -358,8 +358,9 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  min-height: 280px;
-  padding: 28px 28px 56px;
+  height: auto;
+  min-height: 168px;
+  padding: 28px 24px 58px;
   border-radius: 20px;
   border: 1px solid #263048;
   overflow: hidden;
@@ -591,17 +592,20 @@
 
 .choiceBoth {
   appearance: none;
-  height: 44px;
-  padding: 8px 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid #3a4560;
   background: transparent;
   color: #f2ede4;
   font: inherit;
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -619,12 +623,15 @@
 
 .choice {
   appearance: none;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 48px;
-  padding: 10px 14px;
+  gap: 4px;
+  width: 100%;
+  min-height: 76px;
+  padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid #3a4560;
   background: transparent;
@@ -632,7 +639,26 @@
   font: inherit;
   font-weight: 600;
   font-size: 15px;
+  line-height: 1.15;
+  text-align: center;
   cursor: pointer;
+}
+
+.choiceName {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.choiceNote {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.25;
+  color: #c9ceda;
 }
 
 .choice:disabled {
