@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { allowsBoth } from "@/lib/crest/cards";
+import { allowsBoth, BOTH_NOTE } from "@/lib/crest/cards";
 import styles from "./CrestSwipe.module.css";
 
 const COMMIT_PX = 90;
@@ -12,7 +12,12 @@ const HINT_KEY = "crest:hintSeen";
 
 function labelOf(card, side) {
   if (side === "both") return "Both";
-  return side === "left" ? card.leftLabel || card.left : card.rightLabel || card.right;
+  return side === "left" ? card.L || card.leftLabel || card.left : card.R || card.rightLabel || card.right;
+}
+
+function noteOf(card, side) {
+  if (side === "both") return BOTH_NOTE;
+  return side === "left" ? card.leftNote : card.rightNote;
 }
 
 /**
@@ -167,7 +172,7 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
       <div
         className={styles.card}
         role="group"
-        aria-label={`Card ${index + 1}. ${card.q || card.question}`}
+        aria-label={`Card ${index + 1}. ${card.q || card.question} ${card.s || card.context || ""} ${labelOf(card, "left")}: ${noteOf(card, "left")}. ${labelOf(card, "right")}: ${noteOf(card, "right")}.`}
         style={{
           transform: `${translate} rotate(${rotate}deg)`,
           transition,
@@ -239,7 +244,8 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
             onClick={() => commit("both")}
             disabled={Boolean(flying)}
           >
-            Both
+            <span className={styles.choiceName}>Both</span>
+            <span className={styles.choiceNote}>{BOTH_NOTE}</span>
           </button>
         ) : null}
         <div className={styles.choiceRow}>
@@ -250,8 +256,11 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
             onClick={() => commit("left")}
             disabled={Boolean(flying)}
           >
-            <ArrowOut left />
-            {labelOf(card, "left")}
+            <span className={styles.choiceName}>
+              <ArrowOut left />
+              {labelOf(card, "left")}
+            </span>
+            <span className={styles.choiceNote}>{noteOf(card, "left")}</span>
           </button>
           <button
             type="button"
@@ -260,8 +269,11 @@ export default function SwipeCard({ card, index, onAnswer, onDrag }) {
             onClick={() => commit("right")}
             disabled={Boolean(flying)}
           >
-            {labelOf(card, "right")}
-            <ArrowOut />
+            <span className={styles.choiceName}>
+              {labelOf(card, "right")}
+              <ArrowOut />
+            </span>
+            <span className={styles.choiceNote}>{noteOf(card, "right")}</span>
           </button>
         </div>
       </div>

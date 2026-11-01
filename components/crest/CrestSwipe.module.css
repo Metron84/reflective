@@ -378,10 +378,9 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  height: 340px;
-  min-height: 340px;
-  max-height: 340px;
-  padding: 28px 28px 56px;
+  height: auto;
+  min-height: 168px;
+  padding: 28px 24px 58px;
   border-radius: 20px;
   border: 1px solid #263048;
   overflow: hidden;
@@ -614,20 +613,19 @@
 .choiceBoth {
   appearance: none;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   width: 100%;
-  height: 56px;
-  min-height: 56px;
-  max-height: 56px;
-  padding: 8px 14px;
+  min-height: 64px;
+  padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid #3a4560;
   background: transparent;
   color: #f2ede4;
   font: inherit;
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -639,7 +637,6 @@
 .choiceRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 56px;
   gap: 10px;
   width: 100%;
 }
@@ -648,17 +645,15 @@
   appearance: none;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   width: 100%;
-  height: 56px;
-  min-height: 56px;
-  max-height: 56px;
-  padding: 10px 14px;
+  min-height: 76px;
+  padding: 10px 12px;
   line-height: 1.15;
   text-align: center;
-  overflow: hidden;
   border-radius: 12px;
   border: 1px solid #3a4560;
   background: transparent;
@@ -667,6 +662,23 @@
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
+}
+
+.choiceName {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.choiceNote {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.25;
+  color: #c9ceda;
 }
 
 .choice:disabled {

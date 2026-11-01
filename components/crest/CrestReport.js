@@ -11,9 +11,9 @@ import styles from "./CrestReport.module.css";
 const GROUPS = ["Heart", "Mind", "Soul"];
 
 const VIEW_CAPTION = {
-  blend: "60% how they see themselves, 40% how others see them.",
-  self: "Only the club's own voice.",
-  others: "Only rivals, press and neutrals.",
+  blend: "Where both voices agree. A fight stays a fight.",
+  self: "Only what the club says about itself.",
+  others: "Only what others say about them.",
 };
 
 /**
@@ -125,13 +125,13 @@ export default function CrestReport({ answers, group, colour, stake = null, onBa
           <h2 className={styles.headingSmall}>Whose view of the club?</h2>
           <div className={styles.segment} role="group" aria-label="Club voice">
             <ViewButton active={view === "blend"} onClick={() => setView("blend")}>
-              Blend
+              The truth
             </ViewButton>
             <ViewButton active={view === "self"} onClick={() => setView("self")}>
               Their words
             </ViewButton>
             <ViewButton active={view === "others"} onClick={() => setView("others")}>
-              Rival eyes
+              Others
             </ViewButton>
           </div>
           <div className={styles.captionRow}>
