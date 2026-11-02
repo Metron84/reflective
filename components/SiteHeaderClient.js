@@ -24,7 +24,7 @@ function Wordmark({ tone = "navy", onClick, host }) {
       prefetch={false}
       href={hubUrl("/", host)}
       onClick={onClick}
-      className={`flex items-center gap-2.5 ${focusRing}`}
+      className={`flex min-w-max shrink-0 items-center gap-2.5 ${focusRing}`}
       aria-label="The Reflective Football, home"
     >
       <Image
@@ -36,7 +36,7 @@ function Wordmark({ tone = "navy", onClick, host }) {
         className="h-8 w-8 shrink-0"
       />
       <span
-        className={`font-display text-sm uppercase leading-none tracking-wide sm:text-base lg:hidden xl:block ${
+        className={`max-[359px]:hidden font-display text-sm uppercase leading-none tracking-wide sm:text-base lg:hidden xl:block ${
           tone === "cream" ? "text-paper" : "text-navy"
         }`}
       >
@@ -254,8 +254,8 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy/10 bg-paper/90 backdrop-blur">
-      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[1fr_auto_1fr]">
-        <div className="justify-self-start">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
+        <div className="min-w-max shrink-0 justify-self-start">
           <Wordmark host={host} />
         </div>
 
@@ -300,7 +300,7 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
           </Link>
         </nav>
 
-        <div className="flex items-center justify-self-end gap-1 lg:gap-3">
+        <div className="flex items-center justify-self-end gap-3">
           <ProgrammeButton
             signedIn={Boolean(signedIn)}
             initials={programme?.initials}
@@ -322,7 +322,7 @@ export default function SiteHeaderClient({ auth, programme = null, host = "" }) 
           <Link
             prefetch={false}
             href={hubUrl("/your-say", host)}
-            className={`relative py-1 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:text-navy/70 lg:hidden ${focusRing}`}
+            className={`relative hidden py-1 text-sm font-semibold uppercase tracking-widest text-navy transition-colors hover:text-navy/70 md:inline lg:hidden ${focusRing}`}
           >
             Your Say
           </Link>

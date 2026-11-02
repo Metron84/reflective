@@ -23,7 +23,7 @@ export default function ProgrammeButton({ signedIn, initials = "", memberNumber 
         aria-label="Join free"
         className={`flex h-11 shrink-0 items-center ${focusRing}`}
       >
-        <span className="flex h-9 items-center whitespace-nowrap rounded-full bg-signal px-3 text-sm font-medium leading-none text-paper min-[380px]:px-4">
+        <span className="flex shrink-0 items-center whitespace-nowrap rounded-full bg-signal px-[14px] py-2 text-[14px] font-medium leading-none text-paper md:h-9 md:px-4 md:py-0 md:text-sm">
           Join free
         </span>
       </Link>
