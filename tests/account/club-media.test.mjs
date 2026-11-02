@@ -171,16 +171,12 @@ test("two clubs on one team are both dropped", () => {
 test("resolveLeagues prefers Ultima env ids, then discovers by country and exact name", () => {
   const rows = [
     { id: 8, name: "Premier League", country: { name: "England" } },
-    { id: 9, name: "Championship", country: { name: "England" } },
     { id: 82, name: "Bundesliga", country: { name: "Germany" } },
-    { id: 83, name: "2. Bundesliga", country: { name: "Germany" } },
     { id: 70, name: "Premier League", country: { name: "Russia" } },
   ];
   const r = resolveLeagues(rows, { SPORTMONKS_LEAGUE_ID_PL: "777" });
   assert.deepEqual(r["Premier League"], { id: 777, name: "Premier League", source: "env" });
-  assert.equal(r.Championship.id, 9);
   assert.equal(r.Bundesliga.id, 82);
-  assert.equal(r["2. Bundesliga"].id, 83);
   assert.equal(r["Serie A"], null);
   assert.equal(resolveLeagues(rows, {})["Premier League"].id, 8);
 });

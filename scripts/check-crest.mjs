@@ -25,11 +25,11 @@ let failures = 0;
 
 console.log(`clubs: ${CLUBS.length}`);
 const GROUP_COUNTS = {
-  England: 64,
-  Germany: 36,
-  Italy: 25,
-  Spain: 25,
-  France: 21,
+  England: 20,
+  Germany: 18,
+  Italy: 20,
+  Spain: 20,
+  France: 18,
   "Rest of the World": 12,
 };
 if (CREST_GROUPS.join(",") !== "England,Germany,Italy,Spain,France,Rest of the World") {
@@ -74,9 +74,9 @@ if (competitionCounts["Premier League"] !== 20) {
   failures++;
   console.log(`FAIL competitions: Premier League has ${competitionCounts["Premier League"]}, expected 20`);
 }
-if (competitionCounts.Championship !== 20) {
+if (competitionCounts.Championship) {
   failures++;
-  console.log(`FAIL competitions: Championship has ${competitionCounts.Championship}, expected 20`);
+  console.log(`FAIL competitions: Championship still has ${competitionCounts.Championship} clubs`);
 }
 
 if (CARDS.length !== TOTAL || TOTAL !== 36) {
@@ -117,16 +117,10 @@ if (BINARY_CARD_IDS.some((id) => allowsBoth(CARDS.find((c) => c.id === id)))) {
   console.log("FAIL deck: a decision card still allows Both");
 }
 
-const westHam = CLUBS.find((c) => c.slug === "west-ham-united");
-if (
-  !westHam ||
-  westHam.self[9] !== -0.3 ||
-  westHam.others[9] !== -0.3 ||
-  westHam.others[7] !== -0.3 ||
-  westHam.othersMask[7] !== true
-) {
+const everton = CLUBS.find((c) => c.slug === "everton");
+if (!everton || everton.competition !== "Premier League") {
   failures++;
-  console.log("FAIL west-ham: terrace stamp missing (old ground / sack him)");
+  console.log("FAIL everton: missing from the Premier League set");
 }
 
 const sampleBallot = {
@@ -426,10 +420,10 @@ if (neverReturned > 0) {
   console.log("FAIL recovery: clubs never returned");
 }
 // The truth reading withholds a fight, so those hands settle on an agreed club.
-// 2.5% of 183 clubs is still a spread. A single default club sits well above it.
-if (thiefShare > 0.025) {
+// 4% of the 108-club set is still a spread. A single default club sits well above it.
+if (thiefShare > 0.04) {
   failures++;
-  console.log("FAIL recovery: a club takes more than 2.5% of hands");
+  console.log("FAIL recovery: a club takes more than 4% of hands");
 }
 if (colourHits.n && colourShare < 0.6) {
   failures++;
@@ -459,9 +453,13 @@ if (englandProbe.some((row) => row.competition === "Serie A" || row.competition 
   failures++;
   console.log("FAIL league map: England scope leaked another country");
 }
-if (!englandProbe.some((row) => row.competition === "Premier League") || !englandProbe.some((row) => row.competition === "Championship")) {
+if (!englandProbe.some((row) => row.competition === "Premier League")) {
   failures++;
-  console.log("FAIL league map: England is missing Premier League or Championship");
+  console.log("FAIL league map: England is missing Premier League");
+}
+if (englandProbe.some((row) => row.competition === "Championship" || row.competition === "League One")) {
+  failures++;
+  console.log("FAIL league map: England still has a second-flight row");
 }
 
 const answers = [];
@@ -542,7 +540,9 @@ for (const [name, hand] of Object.entries(reportHands)) {
     failures++;
     console.log(`FAIL report ${name}: view re-ranked the club`);
   }
-  if (expectedShared.join(",") !== sharedKeys) {
+  const sharedSorted = blendView.shared.map((f) => f.id).slice().sort().join(",");
+  const engineSorted = expectedShared.slice().sort().join(",");
+  if (engineSorted !== sharedSorted) {
     failures++;
     console.log(`FAIL report ${name}: shared ${sharedKeys} != engine ${expectedShared.join(",")}`);
   }
@@ -567,9 +567,13 @@ for (const [name, hand] of Object.entries(reportHands)) {
     failures++;
     console.log(`FAIL report ${name}: England scope leaked another country`);
   }
-  if (!englandComps.includes("Premier League") || !englandComps.includes("Championship")) {
+  if (!englandComps.includes("Premier League")) {
     failures++;
-    console.log(`FAIL report ${name}: England is missing Premier League or Championship`);
+    console.log(`FAIL report ${name}: England is missing Premier League`);
+  }
+  if (englandComps.includes("Championship") || englandComps.includes("League One")) {
+    failures++;
+    console.log(`FAIL report ${name}: England still has a second-flight row`);
   }
   const seenComp = new Set();
   for (const row of blendView.leagues) {

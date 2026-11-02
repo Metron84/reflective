@@ -9,13 +9,7 @@ export const OWNED_PICKER_LEAGUES = [
   { id: "serie-a", label: "Serie A" },
   { id: "bundesliga", label: "Bundesliga" },
   { id: "ligue-1", label: "Ligue 1" },
-  { id: "other-well-known", label: "Other well-known clubs" },
-  { id: "laliga-2", label: "LaLiga 2" },
-  { id: "serie-b", label: "Serie B" },
-  { id: "2-bundesliga", label: "2. Bundesliga" },
-  { id: "ligue-2", label: "Ligue 2" },
-  { id: "efl-championship", label: "EFL Championship" },
-  { id: "efl-league-one", label: "EFL League One" },
+  { id: "other-well-known", label: "Rest of the World" },
 ];
 
 /** @type {Record<string, string>} competition label → group id */
@@ -25,12 +19,6 @@ const COMPETITION_TO_GROUP = {
   "Serie A": "serie-a",
   Bundesliga: "bundesliga",
   "Ligue 1": "ligue-1",
-  "LaLiga 2": "laliga-2",
-  "Serie B": "serie-b",
-  "2. Bundesliga": "2-bundesliga",
-  "Ligue 2": "ligue-2",
-  "EFL Championship": "efl-championship",
-  "EFL League One": "efl-league-one",
 };
 
 /** Tier A clubs without competition on the bundle (slug → group id). */
@@ -52,7 +40,6 @@ export const TIER_A_PICKER_GROUP = {
   roma: "serie-a",
   "bayern-munich": "bundesliga",
   "borussia-dortmund": "bundesliga",
-  "st-pauli": "bundesliga",
   marseille: "ligue-1",
   ajax: "other-well-known",
   celtic: "other-well-known",

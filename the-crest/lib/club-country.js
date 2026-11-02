@@ -12,16 +12,10 @@ export const CREST_COUNTRIES = [
 /** @type {Record<string, CrestCountry>} */
 const BY_COMPETITION = {
   "Premier League": "england",
-  "EFL Championship": "england",
-  "EFL League One": "england",
   "Serie A": "italy",
-  "Serie B": "italy",
   "Ligue 1": "france",
-  "Ligue 2": "france",
   LaLiga: "spain",
-  "LaLiga 2": "spain",
   Bundesliga: "germany",
-  "2. Bundesliga": "germany",
 };
 
 /** @type {Record<string, CrestCountry>} */
