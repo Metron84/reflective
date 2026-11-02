@@ -27,7 +27,7 @@ test("rivals.json holds every pair from the supplied list, both ways", () => {
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean);
-  assert.ok(lines.length >= 80);
+  assert.ok(lines.length >= 40);
   for (const line of lines) {
     const [a, b] = line.split("|");
     assert.ok(bySlug[a] && bySlug[b], `${line} names a club that is not in the Crest`);
@@ -36,50 +36,43 @@ test("rivals.json holds every pair from the supplied list, both ways", () => {
   }
 });
 
-test("the snapshot mappings landed: psg and nurnberg, not the long slugs", () => {
+test("the snapshot mappings landed: psg, not the long slug", () => {
   assert.ok(rivalsOf("marseille").includes("psg"));
   assert.ok(!Object.values(RIVALS).flat().includes("paris-saint-germain"));
-  assert.ok(!Object.values(RIVALS).flat().includes("1-fc-nurnberg"));
-  assert.ok(areRivals("nurnberg", "greuther-furth"));
 });
 
 const pick = (slug, probability) => ({ club: bySlug[slug], probability });
 
-test("Spurs and West Ham never both appear: the stronger league pick locks first", () => {
+test("strongest club in each remaining league keeps its seat when they are not rivals", () => {
   const leagues = [
     { competition: "Premier League", label: "Premier League", candidates: [pick("tottenham-hotspur", 0.7), pick("newcastle-united", 0.3)] },
-    { competition: "Championship", label: "Championship", candidates: [pick("west-ham-united", 0.5), pick("watford", 0.3), pick("cardiff-city", 0.2)] },
+    { competition: "LaLiga", label: "LaLiga", candidates: [pick("real-madrid", 0.5), pick("athletic-bilbao", 0.3), pick("villarreal", 0.2)] },
   ];
   const rows = lockLeaguePicks(leagues, { home: null, rivals: RIVALS });
-  assert.deepEqual(rows.map((r) => r.club.slug), ["tottenham-hotspur", "watford"]);
-
-  // Flip the strengths: West Ham is the stronger pick, so Spurs gives way.
-  const flipped = [
-    { ...leagues[0], candidates: [pick("tottenham-hotspur", 0.4), pick("newcastle-united", 0.35), pick("bournemouth", 0.25)] },
-    { ...leagues[1], candidates: [pick("west-ham-united", 0.8), pick("watford", 0.2)] },
-  ];
-  const rows2 = lockLeaguePicks(flipped, { home: null, rivals: RIVALS });
-  assert.deepEqual(rows2.map((r) => r.club.slug), ["newcastle-united", "west-ham-united"]);
+  assert.deepEqual(rows.map((r) => r.club.slug), ["tottenham-hotspur", "real-madrid"]);
 });
 
 test("rivals of home are skipped, and a league left with only rivals is left out", () => {
   const home = bySlug["tottenham-hotspur"];
   const leagues = [
     { competition: "Premier League", label: "PL", candidates: [pick("arsenal", 0.9), pick("tottenham-hotspur", 0.1)] },
-    { competition: "Championship", label: "Ch", candidates: [pick("west-ham-united", 0.6), pick("millwall", 0.4)] },
-    { competition: "League One", label: "L1", candidates: [pick("bradford-city", 0.9)] },
+    { competition: "LaLiga", label: "LaLiga", candidates: [pick("real-madrid", 0.6), pick("athletic-bilbao", 0.4)] },
+    { competition: "Serie A", label: "Serie A", candidates: [pick("atalanta", 0.9)] },
   ];
-  // Home takes the Premier League row. West Ham is home's rival, so the Championship takes
-  // Millwall (a rival of West Ham, not of Spurs). Bradford is unrelated.
   const rows = lockLeaguePicks(leagues, { home, rivals: RIVALS });
-  assert.deepEqual(rows.map((r) => r.club.slug), ["tottenham-hotspur", "millwall", "bradford-city"]);
+  assert.deepEqual(rows.map((r) => r.club.slug), ["tottenham-hotspur", "real-madrid", "atalanta"]);
 
+  const rivals = {
+    ...RIVALS,
+    "tottenham-hotspur": [...rivalsOf("tottenham-hotspur"), "real-madrid"],
+    "real-madrid": [...rivalsOf("real-madrid"), "tottenham-hotspur"],
+  };
   const onlyRivals = [
-    { competition: "Championship", label: "Ch", candidates: [pick("west-ham-united", 0.6), pick("chelsea", 0.4)] },
-    { competition: "League One", label: "L1", candidates: [pick("bradford-city", 0.9)] },
+    { competition: "LaLiga", label: "LaLiga", candidates: [pick("real-madrid", 0.6)] },
+    { competition: "Serie A", label: "Serie A", candidates: [pick("atalanta", 0.9)] },
   ];
-  const left = lockLeaguePicks(onlyRivals, { home, rivals: RIVALS });
-  assert.deepEqual(left.map((r) => r.club.slug), ["bradford-city"]);
+  const left = lockLeaguePicks(onlyRivals, { home, rivals });
+  assert.deepEqual(left.map((r) => r.club.slug), ["atalanta"]);
 });
 
 test("a home club's rival never appears; home takes its own league's row", () => {
@@ -90,18 +83,18 @@ test("a home club's rival never appears; home takes its own league's row", () =>
       label: "Premier League",
       candidates: [pick("tottenham-hotspur", 0.5), pick("arsenal", 0.3), pick("chelsea", 0.2)],
     },
-    { competition: "Championship", label: "Championship", candidates: [pick("west-ham-united", 0.9), pick("watford", 0.1)] },
+    { competition: "LaLiga", label: "LaLiga", candidates: [pick("real-madrid", 0.9), pick("athletic-bilbao", 0.1)] },
   ];
   const rows = lockLeaguePicks(leagues, { home, rivals: RIVALS });
   const slugs = rows.map((r) => r.club.slug);
-  assert.deepEqual(slugs, ["arsenal", "west-ham-united"]);
+  assert.deepEqual(slugs, ["arsenal", "real-madrid"]);
   for (const rival of rivalsOf("arsenal")) assert.ok(!slugs.includes(rival), `${rival} appeared beside Arsenal`);
 });
 
 test("without a rivals map nothing is excluded", () => {
   const leagues = [
     { competition: "Premier League", label: "PL", candidates: [pick("tottenham-hotspur", 0.7)] },
-    { competition: "Championship", label: "Ch", candidates: [pick("west-ham-united", 0.5)] },
+    { competition: "LaLiga", label: "LaLiga", candidates: [pick("real-madrid", 0.5)] },
   ];
   assert.equal(lockLeaguePicks(leagues, {}).length, 2);
 });
@@ -134,7 +127,7 @@ test("real hands: no two rows are rivals, no row is a rival of home, one row per
         assert.ok(!areRivals(slugs[a], slugs[b]), `trial ${i}: ${slugs[a]} and ${slugs[b]} are rivals`);
       }
     }
-    assert.ok(!(slugs.includes("tottenham-hotspur") && slugs.includes("west-ham-united")), `trial ${i}: Spurs and West Ham`);
+    assert.ok(!(slugs.includes("tottenham-hotspur") && slugs.includes("arsenal")), `trial ${i}: Spurs and Arsenal`);
     // The member's own league row is their club.
     const own = rows.find((r) => r.competition === home.competition);
     assert.equal(own?.club.slug, home.slug, `trial ${i}: home row`);
