@@ -8,6 +8,7 @@ import {
   STUCK_FINAL_MS,
   allLeaguesSettled,
   anyLeagueKickoffStarted,
+  applyAllLeagueLockOverrides,
   applyLeagueLockOverride,
   computeAllLeagueMatchdayStates,
   computeLeagueMatchdayState,
@@ -144,6 +145,23 @@ test("commissioner unlock forces UPCOMING; relock forces LOCKED", () => {
   assert.equal(applyLeagueLockOverride(MATCHDAY_LIVE, null), MATCHDAY_LIVE);
 });
 
+test("league_lock_override: empty {} and unknown keys leave computed state alone", () => {
+  const computed = {
+    pl: MATCHDAY_DONE,
+    laliga: MATCHDAY_LIVE,
+    seriea: MATCHDAY_LOCKED,
+    bundesliga: MATCHDAY_UPCOMING,
+    ligue1: MATCHDAY_UPCOMING,
+  };
+  assert.deepEqual(applyAllLeagueLockOverrides(computed, {}), computed);
+  assert.deepEqual(
+    applyAllLeagueLockOverrides(computed, { nonsense: "unlocked", plx: "locked" }),
+    computed,
+  );
+  assert.equal(applyLeagueLockOverride(MATCHDAY_DONE, undefined), MATCHDAY_DONE);
+  assert.equal(applyLeagueLockOverride(MATCHDAY_DONE, "maybe"), MATCHDAY_DONE);
+});
+
 test("seed at DONE: empty next slots copy from current; filled next slots stay", () => {
   const current = [
     { slot: 1, slot_group: "pl", player_id: "pl1", is_captain: true },
@@ -191,4 +209,71 @@ test("seed at DONE: UPCOMING edits already on current are what get copied", () =
     league: "pl",
   });
   assert.equal(plan[0].player_id, "pl4");
+});
+
+test("seed at DONE: player no longer on the squad leaves the slot empty", () => {
+  const current = [
+    { slot: 1, slot_group: "pl", player_id: "pl1", is_captain: true },
+    { slot: 2, slot_group: "pl", player_id: "pl2" },
+    { slot: 3, slot_group: "pl", player_id: "traded-away", is_captain: false },
+  ];
+  const plan = planLeagueSeed({
+    currentRows: current,
+    nextRows: [],
+    league: "pl",
+    ownedPlayerIds: ["pl1", "pl2"],
+  });
+  assert.deepEqual(
+    plan.map((r) => [r.slot, r.player_id, r.is_captain]),
+    [
+      [1, "pl1", true],
+      [2, "pl2", false],
+      [3, null, false],
+    ],
+  );
+});
+
+test("seed at DONE: captains travel with the slot; filled n+1 slots keep their own", () => {
+  const current = [
+    { slot: 1, slot_group: "pl", player_id: "pl1", is_captain: true },
+    { slot: 2, slot_group: "pl", player_id: "pl2" },
+    { slot: 3, slot_group: "pl", player_id: "pl3" },
+  ];
+  // Manager already set slot 1 on n+1 (no captain). Seed must not overwrite it.
+  const next = [{ slot: 1, slot_group: "pl", player_id: "pl9", is_captain: false }];
+  const plan = planLeagueSeed({
+    currentRows: current,
+    nextRows: next,
+    league: "pl",
+    ownedPlayerIds: ["pl1", "pl2", "pl3"],
+  });
+  assert.deepEqual(
+    plan.map((r) => [r.slot, r.player_id, r.is_captain]),
+    [
+      [2, "pl2", false],
+      [3, "pl3", false],
+    ],
+  );
+});
+
+test("seed at DONE: departed captain does not keep the armband on an empty slot", () => {
+  const current = [
+    { slot: 1, slot_group: "pl", player_id: "gone", is_captain: true },
+    { slot: 2, slot_group: "pl", player_id: "pl2" },
+    { slot: 3, slot_group: "pl", player_id: "pl3" },
+  ];
+  const plan = planLeagueSeed({
+    currentRows: current,
+    nextRows: [],
+    league: "pl",
+    ownedPlayerIds: new Set(["pl2", "pl3"]),
+  });
+  assert.deepEqual(plan.find((r) => r.slot === 1), {
+    slot: 1,
+    slot_group: "pl",
+    player_id: null,
+    is_captain: false,
+    captain_off: false,
+  });
+  assert.equal(plan.find((r) => r.slot === 2).is_captain, false);
 });
