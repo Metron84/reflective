@@ -78,13 +78,12 @@ test("an empty gameweek has no captains and does not throw", () => {
 // Locking
 // ---------------------------------------------------------------------------
 
-test("captain lock follows the XV slot lock", () => {
-  const live = { state: "live", league_open_at: { pl: OPEN_PAST, laliga: OPEN_FUTURE } };
-  assert.equal(xvSlotLocked(live, "pl", NOW), true);
-  assert.equal(xvSlotLocked(live, "laliga", NOW), false);
-  assert.equal(xvSlotLocked({ state: "live", league_open_at: {} }, "ligue1", NOW), true);
-  assert.equal(xvSlotLocked({ state: "final", league_open_at: {} }, "pl", NOW), true);
-  assert.equal(xvSlotLocked({ state: "upcoming", league_open_at: {} }, "pl", NOW), false);
+test("captain lock follows the matchday state (LOCKED/LIVE only)", () => {
+  assert.equal(xvSlotLocked("LOCKED"), true);
+  assert.equal(xvSlotLocked("LIVE"), true);
+  assert.equal(xvSlotLocked("DONE"), false);
+  assert.equal(xvSlotLocked("UPCOMING"), false);
+  assert.equal(xvSlotLocked(null), false);
 });
 
 // ---------------------------------------------------------------------------
@@ -92,7 +91,12 @@ test("captain lock follows the XV slot lock", () => {
 // ---------------------------------------------------------------------------
 
 test("choosing a new captain replaces the old one in one step", () => {
-  const plan = planCaptainChange({ lineup: xv(cap("pl1")), playerId: "pl3", gameweek: gwAllOpen, now: NOW });
+  const plan = planCaptainChange({
+    lineup: xv(cap("pl1")),
+    playerId: "pl3",
+    gameweek: gwAllOpen,
+    leagueState: "UPCOMING",
+  });
   assert.equal(plan.ok, true);
   assert.equal(plan.previousPlayerId, "pl1");
   const flagged = plan.lineup.filter((r) => r.is_captain).map((r) => r.player_id);
@@ -100,7 +104,12 @@ test("choosing a new captain replaces the old one in one step", () => {
 });
 
 test("a change in one country leaves the other countries' captains alone", () => {
-  const plan = planCaptainChange({ lineup: xv(cap("pl1", "laliga2")), playerId: "pl2", gameweek: gwAllOpen, now: NOW });
+  const plan = planCaptainChange({
+    lineup: xv(cap("pl1", "laliga2")),
+    playerId: "pl2",
+    gameweek: gwAllOpen,
+    leagueState: "UPCOMING",
+  });
   assert.deepEqual(
     plan.lineup.filter((r) => r.is_captain).map((r) => r.player_id).sort(),
     ["laliga2", "pl2"],
@@ -110,38 +119,63 @@ test("a change in one country leaves the other countries' captains alone", () =>
 test("choosing two captains in one country never leaves two", () => {
   let lineup = xv();
   for (const id of ["pl1", "pl2", "pl3"]) {
-    lineup = planCaptainChange({ lineup, playerId: id, gameweek: gwAllOpen, now: NOW }).lineup;
+    lineup = planCaptainChange({
+      lineup,
+      playerId: id,
+      gameweek: gwAllOpen,
+      leagueState: "UPCOMING",
+    }).lineup;
     assert.equal(lineup.filter((r) => r.slot_group === "pl" && r.is_captain).length, 1);
   }
 });
 
 test("a locked country refuses the change; an open one still works", () => {
-  const gw = { state: "live", league_open_at: { ...gwAllOpen.league_open_at, pl: OPEN_PAST } };
-  const refused = planCaptainChange({ lineup: xv(cap("pl1")), playerId: "pl2", gameweek: gw, now: NOW });
+  const refused = planCaptainChange({
+    lineup: xv(cap("pl1")),
+    playerId: "pl2",
+    gameweek: gwAllOpen,
+    leagueState: "LOCKED",
+  });
   assert.deepEqual([refused.ok, refused.code], [false, "CAPTAIN_LOCKED"]);
-  const fine = planCaptainChange({ lineup: xv(), playerId: "laliga1", gameweek: gw, now: NOW });
+  const fine = planCaptainChange({
+    lineup: xv(),
+    playerId: "laliga1",
+    gameweek: gwAllOpen,
+    leagueState: "UPCOMING",
+  });
   assert.equal(fine.ok, true);
 });
 
-test("a live gameweek with no open time locks the country", () => {
+test("a league with no fixtures is UPCOMING and stays editable (no empty-openAt lock)", () => {
   const plan = planCaptainChange({
     lineup: xv(),
     playerId: "pl1",
     gameweek: { state: "live", league_open_at: {} },
-    now: NOW,
+    leagueState: "UPCOMING",
   });
-  assert.equal(plan.code, "CAPTAIN_LOCKED");
+  assert.equal(plan.ok, true);
 });
 
 test("only a player in the XV can captain; no gameweek is refused", () => {
   const benched = xv().map((r) => (r.player_id === "pl3" ? { ...r, player_id: null } : r));
-  assert.equal(planCaptainChange({ lineup: benched, playerId: "pl3", gameweek: gwAllOpen, now: NOW }).code, "NOT_IN_XV");
-  assert.equal(planCaptainChange({ lineup: [], playerId: "pl1", gameweek: gwAllOpen, now: NOW }).code, "NOT_IN_XV");
-  assert.equal(planCaptainChange({ lineup: xv(), playerId: "pl1", gameweek: null, now: NOW }).code, "NO_GAMEWEEK");
+  assert.equal(
+    planCaptainChange({ lineup: benched, playerId: "pl3", gameweek: gwAllOpen, leagueState: "UPCOMING" }).code,
+    "NOT_IN_XV",
+  );
+  assert.equal(
+    planCaptainChange({ lineup: [], playerId: "pl1", gameweek: gwAllOpen, leagueState: "UPCOMING" }).code,
+    "NOT_IN_XV",
+  );
+  assert.equal(planCaptainChange({ lineup: xv(), playerId: "pl1", gameweek: null }).code, "NO_GAMEWEEK");
 });
 
 test("choosing the current captain again is a no-op", () => {
-  const plan = planCaptainChange({ lineup: xv(cap("pl1")), playerId: "pl1", gameweek: gwAllOpen, now: NOW });
+  const plan = planCaptainChange({
+    lineup: xv(cap("pl1")),
+    playerId: "pl1",
+    gameweek: gwAllOpen,
+    leagueState: "UPCOMING",
+  });
   assert.equal(plan.ok && plan.noop, true);
 });
 
@@ -343,23 +377,44 @@ test("scoring run: an empty gameweek scores zero and does not throw", async () =
 
 mock.module("@/lib/ultima/server/events", { namedExports: { publishUltimaEvent: () => {} } });
 mock.module("@/lib/ultima/server/record-event", { namedExports: { recordUltimaEvent: async () => {} } });
+const openStates = Object.fromEntries(LEAGUES.map((l) => [l, "UPCOMING"]));
+let captainStates = { ...openStates };
+mock.module("@/lib/ultima/server/matchday-state", {
+  namedExports: {
+    getLeagueMatchdayState: async (_c, league) => captainStates[league] ?? "UPCOMING",
+    getGameweekLeagueStates: async () => ({ states: captainStates, fixtures: [] }),
+  },
+});
+mock.module("@/lib/ultima/server/bootstrap", {
+  namedExports: {
+    getNextGameweek: async () => ({ id: "g2", number: 2 }),
+  },
+});
 const { setCaptain } = await import("../../lib/ultima/server/lineup.js");
 
 const dbRows = (overrides) => xv(overrides).map((r) => ({ ...r, manager_id: "m1", gameweek_id: "g1", locked_at: null, auto_started: false }));
-const FUTURE = { id: "g1", state: "upcoming", league_open_at: Object.fromEntries(LEAGUES.map((l) => [l, "2099-01-01T00:00:00Z"])) };
+const FUTURE = {
+  id: "g1",
+  number: 1,
+  competition_id: "c1",
+  state: "upcoming",
+  league_open_at: Object.fromEntries(LEAGUES.map((l) => [l, "2099-01-01T00:00:00Z"])),
+};
 
 test("setCaptain: a locked country never reaches the database", async () => {
   world.calls = [];
   world.lineups = dbRows();
-  const gw = { ...FUTURE, league_open_at: { ...FUTURE.league_open_at, pl: "2000-01-01T00:00:00Z" } };
-  const res = await setCaptain({ managerId: "m1", gameweekId: "g1", gameweek: gw, playerId: "pl1" });
+  captainStates = { ...openStates, pl: "LOCKED" };
+  const res = await setCaptain({ managerId: "m1", gameweekId: "g1", gameweek: FUTURE, playerId: "pl1" });
   assert.equal(res.code, "CAPTAIN_LOCKED");
   assert.equal(world.calls.length, 0);
+  captainStates = { ...openStates };
 });
 
 test("setCaptain: one RPC call, and the result lists the new captains", async () => {
   world.calls = [];
   world.lineups = dbRows(cap("pl1"));
+  captainStates = { ...openStates };
   const res = await setCaptain({ managerId: "m1", gameweekId: "g1", gameweek: FUTURE, playerId: "pl2" });
   assert.equal(res.ok, true);
   assert.equal(world.calls.length, 1);

@@ -7319,6 +7319,12 @@ button.capCellLocked {
   color: var(--office-ink, #e6e1d8);
 }
 
+.mdLeagueState {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--office-muted, rgba(230, 225, 216, 0.58));
+}
+
 .mdEmpty {
   margin: 0;
   padding: 0.5rem 12px;

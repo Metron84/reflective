@@ -97,16 +97,11 @@ test("veto: nobody else to vote means no veto", () => {
   assert.equal(vetoReached([{ manager_id: "m1", veto: true }], []), false);
 });
 
-test("locks: a league is locked from its first kickoff to the window end", () => {
-  const gw = {
-    window_end: "2026-10-08T19:59:00Z",
-    league_open_at: { pl: "2026-10-03T11:30:00Z", laliga: "2026-10-04T10:00:00Z" },
-  };
-  const now = Date.parse("2026-10-03T12:00:00Z");
-  assert.deepEqual(lockedLeagues(gw, now), ["pl"]);
-  assert.deepEqual(lockedLeagues(gw, Date.parse("2026-10-04T12:00:00Z")), ["pl", "laliga"]);
-  assert.deepEqual(lockedLeagues(gw, Date.parse("2026-10-09T00:00:00Z")), []);
-  assert.deepEqual(lockedLeagues({ league_open_at: null }, now), []);
+test("locks: LOCKED/LIVE leagues only; DONE and UPCOMING clear the lock", () => {
+  assert.deepEqual(lockedLeagues({ pl: "LOCKED", laliga: "UPCOMING" }), ["pl"]);
+  assert.deepEqual(lockedLeagues({ pl: "LOCKED", laliga: "LIVE" }), ["pl", "laliga"]);
+  assert.deepEqual(lockedLeagues({ pl: "DONE", laliga: "DONE" }), []);
+  assert.deepEqual(lockedLeagues(null), []);
 });
 
 test("due: review and hold end at their own timestamps", () => {

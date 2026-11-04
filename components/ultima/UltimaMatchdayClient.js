@@ -18,6 +18,13 @@ const STATE_LABELS = {
   final: "Final",
 };
 
+const LEAGUE_STATE_LABELS = {
+  UPCOMING: "Upcoming",
+  LOCKED: "Locked",
+  LIVE: "Live",
+  DONE: "Done",
+};
+
 export default function UltimaMatchdayClient({ initial = null }) {
   const [data, setData] = useState(initial);
   const [failed, setFailed] = useState(!initial);
@@ -90,9 +97,13 @@ export default function UltimaMatchdayClient({ initial = null }) {
   }
 
   const you = data.you;
+  const leagueStatus = (data.fixtures ?? [])
+    .map((g) => LEAGUE_STATE_LABELS[g.state] ?? g.state)
+    .filter(Boolean)
+    .join(" · ");
   const stats = [
     { label: "Gameweek", value: String(data.gameweek.number) },
-    { label: "Status", value: STATE_LABELS[data.gameweek.state] ?? data.gameweek.state },
+    { label: "Status", value: leagueStatus || (STATE_LABELS[data.gameweek.state] ?? data.gameweek.state) },
     { label: "Your points", value: data.waitingForStats ? "Waiting for stats" : you ? String(you.total) : "-" },
     { label: "Your rank", value: you ? String(you.rank) : "-" },
   ];
@@ -103,7 +114,7 @@ export default function UltimaMatchdayClient({ initial = null }) {
       <p className={styles.mdNote}>
         {data.sample ? <span className={styles.sampleChip}>SAMPLE</span> : null}
         {" "}
-        Kickoffs in Dubai time. {STATE_LABELS[data.gameweek.state] ?? data.gameweek.state}.
+        Kickoffs in Dubai time.
         {data.updatedAt ? ` ${updatedAgo(data.updatedAt)}.` : ""}
         {failed ? " Could not refresh. Showing the last scores." : ""}
       </p>
@@ -145,6 +156,10 @@ export default function UltimaMatchdayClient({ initial = null }) {
               <div className={styles.mdLeagueHead}>
                 <UltimaCountryTag league={group.league} />
                 <span>{group.label}</span>
+                <span className={styles.mdLeagueState}>
+                  {LEAGUE_STATE_LABELS[group.state] ?? group.state}
+                  {group.state === "LIVE" ? <span className={styles.mdLive}> LIVE</span> : null}
+                </span>
               </div>
               {group.fixtures.length ? (
                 group.fixtures.map((f) => <FixtureRow key={f.id} fixture={f} />)

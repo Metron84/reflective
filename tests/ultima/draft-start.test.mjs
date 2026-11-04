@@ -68,6 +68,8 @@ for (const spec of ["@/lib/ultima/server/scoring-run", "@/lib/ultima/server/boot
       getStandings: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),
       getCurrentGameweek: async () => null,
+      getNextGameweek: async () => null,
+      getPreviousGameweek: async () => null,
     },
   });
 }

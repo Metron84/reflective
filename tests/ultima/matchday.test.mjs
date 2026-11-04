@@ -65,11 +65,15 @@ test("a league with no fixtures still appears, empty, and the page says so", () 
 });
 
 test("fixtures show kickoff in Dubai time, live score and status", () => {
-  const [pl] = groupFixtures([
-    { id: "f1", league: "pl", kickoff: "2026-10-10T14:00:00Z", status: "LIVE", home_club: "A", away_club: "B", home_score: 1, away_score: 0 },
-    { id: "f2", league: "pl", kickoff: "2026-10-10T16:30:00Z", status: "NS", home_club: "C", away_club: "D", home_score: null, away_score: null },
-    { id: "f3", league: "pl", kickoff: "2026-10-09T14:00:00Z", status: "FT", home_club: "E", away_club: "F", home_score: 2, away_score: 2 },
-  ]);
+  const [pl] = groupFixtures(
+    [
+      { id: "f1", league: "pl", kickoff: "2026-10-10T14:00:00Z", status: "LIVE", home_club: "A", away_club: "B", home_score: 1, away_score: 0 },
+      { id: "f2", league: "pl", kickoff: "2026-10-10T16:30:00Z", status: "NS", home_club: "C", away_club: "D", home_score: null, away_score: null },
+      { id: "f3", league: "pl", kickoff: "2026-10-09T14:00:00Z", status: "FT", home_club: "E", away_club: "F", home_score: 2, away_score: 2 },
+    ],
+    null,
+    NOW,
+  );
   assert.deepEqual(pl.fixtures.map((f) => f.id), ["f3", "f1", "f2"]); // by kickoff
   const live = pl.fixtures.find((f) => f.id === "f1");
   assert.equal(live.kickoff, "Sat 10 Oct, 18:00"); // 14:00Z is 18:00 in Dubai
@@ -145,22 +149,45 @@ test("no current gameweek is reported, not thrown", () => {
 // ---------------------------------------------------------------------------
 
 test("other managers' XV stays hidden for a country until its matchday opens", () => {
-  const view = build();
+  const view = build({
+    fixtures: [
+      {
+        id: "f1",
+        league: "pl",
+        kickoff_at: "2026-10-10T14:00:00Z",
+        status: "LIVE",
+        home_club: "A",
+        away_club: "B",
+        home_score: 1,
+        away_score: 0,
+      },
+      {
+        id: "f2",
+        league: "laliga",
+        kickoff_at: "2026-10-10T20:00:00Z",
+        status: "NS",
+        home_club: "C",
+        away_club: "D",
+        home_score: null,
+        away_score: null,
+      },
+    ],
+  });
   const other = view.managers.find((m) => m.id === "m2");
   const byLeague = Object.fromEntries(other.xv.countries.map((c) => [c.league, c]));
-  assert.equal(byLeague.pl.visible, true); // opened 14:00Z, now 16:00Z
-  assert.equal(byLeague.laliga.visible, false); // opens 20:00Z
+  assert.equal(byLeague.pl.visible, true); // LIVE at 14:00Z, now 16:00Z
+  assert.equal(byLeague.laliga.visible, false); // kickoff 20:00Z still UPCOMING
   assert.equal(byLeague.laliga.rows.length, 0);
   assert.equal(byLeague.laliga.hiddenCount, 3);
   // your own XV is always visible
   assert.ok(view.you.xv.countries.every((c) => c.visible));
 });
 
-test("a final gameweek shows every XV; a country with no open time in a live week counts as open", () => {
+test("a final gameweek shows every XV; idle leagues stay hidden while the week is live", () => {
   const final = build({ gameweek: { ...gw, state: "final" } });
   assert.ok(final.managers.find((m) => m.id === "m2").xv.countries.every((c) => c.visible));
-  const noTimes = build({ gameweek: { ...gw, league_open_at: {} } });
-  assert.ok(noTimes.managers.find((m) => m.id === "m2").xv.countries.every((c) => c.visible));
+  const idle = build({ fixtures: [] });
+  assert.ok(idle.managers.find((m) => m.id === "m2").xv.countries.every((c) => !c.visible));
 });
 
 test("a tie breaks by goals, then assists, then reverse draft slot, and equal totals share a rank", () => {

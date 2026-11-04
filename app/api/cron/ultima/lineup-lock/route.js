@@ -3,6 +3,8 @@ import { getActiveCompetition } from "@/lib/ultima/server/db";
 import { autoStartBotsForGameweek } from "@/lib/ultima/bots/lineup";
 import { publishUltimaEvent } from "@/lib/ultima/server/events";
 import { ULTIMA_LEAGUES } from "@/lib/ultima/constants";
+import { isMatchdayLocked } from "@/lib/ultima/matchday-state";
+import { getGameweekLeagueStates } from "@/lib/ultima/server/matchday-state";
 import { runGameweekSync, getActiveGameweek, getGameweeksToSync } from "@/lib/ultima/server/sync";
 import { runLineupReminders } from "@/lib/ultima/server/reminders";
 import { withReadContext } from "@/lib/ultima/server/strict-db";
@@ -25,17 +27,14 @@ async function handle(request) {
 
   const gameweek = await getActiveGameweek(competition.id);
 
-  const now = Date.now();
   const locked = [];
 
   if (gameweek) {
+    const { states } = await getGameweekLeagueStates(competition.id, gameweek.id);
     for (const league of ULTIMA_LEAGUES) {
-      const openAt = gameweek.league_open_at?.[league];
-      if (!openAt) continue;
-      if (now >= new Date(openAt).getTime()) {
-        locked.push(league);
-        publishUltimaEvent("lineup.lock", { league, gameweek_id: gameweek.id });
-      }
+      if (!isMatchdayLocked(states[league])) continue;
+      locked.push(league);
+      publishUltimaEvent("lineup.lock", { league, gameweek_id: gameweek.id, state: states[league] });
     }
 
     if (locked.length) {

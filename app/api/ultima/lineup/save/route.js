@@ -60,9 +60,20 @@ export async function POST(request) {
         return { status, body: err };
       }
 
-      await recomputeGameweekScores(competition.id, gameweek.id);
+      // Scoring reads the current gameweek only. DONE-league edits land on next GW.
+      if (!result.wroteNext) {
+        await recomputeGameweekScores(competition.id, gameweek.id);
+      }
 
-      return { status: 200, body: { ok: true, receipt: lineupReceipt() } };
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          receipt: lineupReceipt(),
+          gameweek_id: result.gameweekId ?? gameweek.id,
+          wrote_next: Boolean(result.wroteNext),
+        },
+      };
     },
   });
 }

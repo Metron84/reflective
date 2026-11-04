@@ -37,12 +37,17 @@ test("a gameweek goes final 24 hours after the last full time, not at the window
     window_start: "2026-10-10T20:00:00Z",
     window_end: "2026-10-11T12:00:00Z",
   };
-  const fixtures = [{ status: "FT", kickoff_at: "2026-10-10T16:00:00Z" }];
+  const fixtures = [{ league: "pl", status: "FT", kickoff_at: "2026-10-10T16:00:00Z" }];
   const fullTime = Date.parse("2026-10-10T18:00:00Z");
   assert.equal(nextGameweekState(gameweek, fixtures, fullTime + 23 * 60 * 60 * 1000), "provisional");
   assert.equal(nextGameweekState(gameweek, fixtures, fullTime + 24 * 60 * 60 * 1000), "final");
+  // Stuck NS past 4h counts as final, so the gameweek settles instead of staying live.
   assert.equal(
-    nextGameweekState(gameweek, [{ status: "NS", kickoff_at: "2026-10-10T16:00:00Z" }], fullTime + 48 * 60 * 60 * 1000),
-    "live",
+    nextGameweekState(
+      gameweek,
+      [{ league: "pl", status: "NS", kickoff_at: "2026-10-10T16:00:00Z" }],
+      fullTime + 48 * 60 * 60 * 1000,
+    ),
+    "final",
   );
 });

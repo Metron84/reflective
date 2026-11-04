@@ -81,6 +81,8 @@ for (const spec of [
       syncAllPlayersFromProvider: async () => [],
       bootstrapSampleGameweek: async () => ({ ok: false }),
       getCurrentGameweek: async () => null,
+      getNextGameweek: async () => null,
+      getPreviousGameweek: async () => null,
       publishUltimaEvent: () => {},
       subscribeUltimaEvents: () => () => {},
     },
