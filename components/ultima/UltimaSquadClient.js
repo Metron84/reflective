@@ -27,6 +27,13 @@ import styles from "./ultima.module.css";
 import { showUltimaReceipt } from "./UltimaReceipt";
 import { useUltimaAction } from "./useUltimaAction";
 
+const LEAGUE_STATE_LABELS = {
+  UPCOMING: "Upcoming",
+  LOCKED: "Locked",
+  LIVE: "Live",
+  DONE: "Done",
+};
+
 function normalizePlayer(player) {
   if (!player) return null;
   const nextFixture =
@@ -292,6 +299,12 @@ export default function UltimaSquadClient({
               const rows = (lineup ?? []).filter((row) => row.slot_group === league);
               const count = rows.filter((row) => row.player_id).length;
               const met = count >= ULTIMA_XI_FLOOR_PER_LEAGUE;
+              const leagueState = office?.leagueStates?.[league] ?? "UPCOMING";
+              const stateLabel = LEAGUE_STATE_LABELS[leagueState] ?? leagueState;
+              const editingNext =
+                leagueState === "DONE" && office?.nextGameweekNumber
+                  ? `Editing GW ${office.nextGameweekNumber}`
+                  : null;
               return (
                 <div key={league} className={met ? styles.sqGroup : styles.sqGroupShort}>
                   <div className={styles.sqGroupHead}>
@@ -300,6 +313,10 @@ export default function UltimaSquadClient({
                       value={`${count}/${ULTIMA_XI_FLOOR_PER_LEAGUE}`}
                       ratio={count / ULTIMA_XI_FLOOR_PER_LEAGUE}
                     />
+                    <span className={styles.sqLeagueState}>
+                      {stateLabel}
+                      {editingNext ? ` · ${editingNext}` : null}
+                    </span>
                   </div>
                   {rows.map((row) => {
                     const player = row.player_id ? rosterById.get(row.player_id) : null;

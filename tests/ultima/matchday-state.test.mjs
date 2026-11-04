@@ -8,10 +8,12 @@ import {
   STUCK_FINAL_MS,
   allLeaguesSettled,
   anyLeagueKickoffStarted,
+  applyLeagueLockOverride,
   computeAllLeagueMatchdayStates,
   computeLeagueMatchdayState,
   isMatchdayLocked,
   lockedLeagueIds,
+  planLeagueSeed,
 } from "../../lib/ultima/matchday-state.js";
 import { nextGameweekState } from "../../lib/ultima/gameweek-state.js";
 import { xvSlotLocked } from "../../lib/ultima/lineup/lock.js";
@@ -134,4 +136,59 @@ test("edit-after-DONE target: DONE is not locked so saves can route to next game
   assert.equal(isMatchdayLocked(MATCHDAY_DONE), false);
   assert.equal(xvSlotLocked(MATCHDAY_DONE), false);
   assert.deepEqual(lockedLeagues({ pl: MATCHDAY_DONE }), []);
+});
+
+test("commissioner unlock forces UPCOMING; relock forces LOCKED", () => {
+  assert.equal(applyLeagueLockOverride(MATCHDAY_DONE, "unlocked"), MATCHDAY_UPCOMING);
+  assert.equal(applyLeagueLockOverride(MATCHDAY_UPCOMING, "locked"), MATCHDAY_LOCKED);
+  assert.equal(applyLeagueLockOverride(MATCHDAY_LIVE, null), MATCHDAY_LIVE);
+});
+
+test("seed at DONE: empty next slots copy from current; filled next slots stay", () => {
+  const current = [
+    { slot: 1, slot_group: "pl", player_id: "pl1", is_captain: true },
+    { slot: 2, slot_group: "pl", player_id: "pl2" },
+    { slot: 3, slot_group: "pl", player_id: "pl3" },
+    { slot: 4, slot_group: "laliga", player_id: "la1" },
+  ];
+  const next = [
+    { slot: 1, slot_group: "pl", player_id: "pl9" }, // already edited
+    { slot: 2, slot_group: "pl", player_id: null },
+  ];
+  const plan = planLeagueSeed({ currentRows: current, nextRows: next, league: "pl" });
+  assert.deepEqual(
+    plan.map((r) => [r.slot, r.player_id, r.is_captain]),
+    [
+      [2, "pl2", false],
+      [3, "pl3", false],
+    ],
+  );
+});
+
+test("seed at DONE: a manager who never edited n+1 gets the full current league", () => {
+  const current = [
+    { slot: 1, slot_group: "pl", player_id: "a" },
+    { slot: 2, slot_group: "pl", player_id: "b" },
+    { slot: 3, slot_group: "pl", player_id: "c" },
+  ];
+  const plan = planLeagueSeed({ currentRows: current, nextRows: [], league: "pl" });
+  assert.deepEqual(
+    plan.map((r) => r.player_id),
+    ["a", "b", "c"],
+  );
+});
+
+test("seed at DONE: UPCOMING edits already on current are what get copied", () => {
+  // Manager changed PL on GW n while it was still UPCOMING (pl4), then PL went DONE.
+  const currentAfterUpcomingEdit = [
+    { slot: 1, slot_group: "pl", player_id: "pl4" },
+    { slot: 2, slot_group: "pl", player_id: "pl2" },
+    { slot: 3, slot_group: "pl", player_id: "pl3" },
+  ];
+  const plan = planLeagueSeed({
+    currentRows: currentAfterUpcomingEdit,
+    nextRows: [],
+    league: "pl",
+  });
+  assert.equal(plan[0].player_id, "pl4");
 });

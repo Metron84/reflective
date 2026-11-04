@@ -21,6 +21,7 @@ import {
   commissionerSyncFixtures,
   commissionerSyncStats,
   commissionerRecomputeGameweek,
+  commissionerSetLeagueLock,
   generateInviteCode,
   requireCommissioner,
 } from "@/lib/ultima/server/admin";
@@ -159,6 +160,13 @@ export async function POST(request) {
       break;
     case "recompute_gameweek":
       result = await commissionerRecomputeGameweek(competition.id, user.id, body.gameweek_id);
+      break;
+    case "league_lock":
+      result = await commissionerSetLeagueLock(competition.id, user.id, {
+        league: body.league,
+        mode: body.mode,
+        reason: body.reason,
+      });
       break;
     default:
       return NextResponse.json({ code: "INVALID", message: "Unknown action." }, { status: 400 });

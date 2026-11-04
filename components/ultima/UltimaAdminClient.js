@@ -47,6 +47,9 @@ export default function UltimaAdminClient({
   const [clock, setClock] = useState(desk.timerSeconds ?? timerSeconds);
   const [undoPick, setUndoPick] = useState("");
   const [undoReason, setUndoReason] = useState("");
+  const [lockLeague, setLockLeague] = useState(ULTIMA_LEAGUES[0]);
+  const [lockMode, setLockMode] = useState("unlocked");
+  const [lockReason, setLockReason] = useState("");
   const [overrideManager, setOverrideManager] = useState("");
   const [overrideGw, setOverrideGw] = useState("");
   const [overridePoints, setOverridePoints] = useState("");
@@ -479,6 +482,70 @@ export default function UltimaAdminClient({
         <div className={styles.utActions}>
           <button type="button" className={styles.secondaryBtn} onClick={() => setConfirm("undo")}>
             Undo pick
+          </button>
+        </div>
+      </UltimaPanel>
+
+      <UltimaPanel title="League lock override">
+        <p className={styles.utNote}>
+          Unlock or relock one league for the current gameweek. Cleared when the gameweek advances.
+        </p>
+        <div className={styles.utPad}>
+          {(ULTIMA_LEAGUES).map((league) => {
+            const state = desk.leagueStates?.[league] ?? "-";
+            const override = desk.leagueOverrides?.[league];
+            return (
+              <UltimaRow
+                key={league}
+                primary={ULTIMA_LEAGUE_SHORT[league]}
+                meta={override ? `${state} · override ${override}` : String(state)}
+              />
+            );
+          })}
+          <label className={styles.field}>
+            League
+            <select value={lockLeague} onChange={(e) => setLockLeague(e.target.value)}>
+              {ULTIMA_LEAGUES.map((league) => (
+                <option key={league} value={league}>
+                  {ULTIMA_LEAGUE_SHORT[league]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.field}>
+            Action
+            <select value={lockMode} onChange={(e) => setLockMode(e.target.value)}>
+              <option value="unlocked">Unlock</option>
+              <option value="locked">Relock</option>
+              <option value="clear">Clear override</option>
+            </select>
+          </label>
+          <label className={styles.field}>
+            Reason
+            <input
+              type="text"
+              value={lockReason}
+              onChange={(e) => setLockReason(e.target.value)}
+              placeholder="Why"
+            />
+          </label>
+        </div>
+        <div className={styles.utActions}>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            disabled={busy === "league_lock" || !desk.gameweekId}
+            onClick={async () => {
+              await act("league_lock", {
+                league: lockLeague,
+                mode: lockMode,
+                reason: lockReason,
+              });
+              setLockReason("");
+              router.refresh();
+            }}
+          >
+            {busy === "league_lock" ? "Saving…" : "Apply override"}
           </button>
         </div>
       </UltimaPanel>

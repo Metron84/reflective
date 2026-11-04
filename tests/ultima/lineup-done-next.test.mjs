@@ -40,8 +40,9 @@ function xvRows(gameweekId) {
   return rows;
 }
 
-const store = { g1: xvRows("g1"), g2: [] };
+const store = { g1: xvRows("g1"), g2: xvRows("g2") };
 const upserts = [];
+let nextGw = { id: "g2", number: 2, competition_id: "c1" };
 
 const fake = makeFakeDb((q) => {
   if (q.table === "ultima_rosters") {
@@ -86,11 +87,12 @@ mock.module("@/lib/ultima/server/matchday-state", {
       fixtures: [],
     }),
     getLeagueMatchdayState: async () => "DONE",
+    seedLeagueIntoNextGameweek: async () => ({ ok: true, seeded: 0 }),
   },
 });
 mock.module("@/lib/ultima/server/bootstrap", {
   namedExports: {
-    getNextGameweek: async () => ({ id: "g2", number: 2, competition_id: "c1" }),
+    getNextGameweek: async () => nextGw,
   },
 });
 
@@ -98,13 +100,13 @@ const { saveLineup } = await import("../../lib/ultima/server/lineup.js");
 
 test("edit after DONE writes PL slots to the next gameweek, not the current scored one", async () => {
   upserts.length = 0;
+  nextGw = { id: "g2", number: 2, competition_id: "c1" };
   store.g1 = xvRows("g1");
-  store.g2 = [];
+  store.g2 = xvRows("g2");
 
   const slots = store.g1.map((r) => ({
     slot: r.slot,
     slot_group: r.slot_group,
-    // Swap the PL captain slot to pl4 (still on roster).
     player_id: r.slot_group === "pl" && r.slot === 1 ? "pl4" : r.player_id,
   }));
 
@@ -118,15 +120,35 @@ test("edit after DONE writes PL slots to the next gameweek, not the current scor
   assert.equal(res.ok, true);
   assert.equal(res.wroteNext, true);
   assert.equal(res.gameweekId, "g2");
-
   assert.equal(
     upserts.filter((p) => p.gameweek_id === "g1" && p.slot_group === "pl").length,
     0,
-    "current GW PL rows stay frozen for scoring",
   );
-  assert.ok(
-    upserts.some((p) => p.gameweek_id === "g2" && p.slot === 1 && p.player_id === "pl4"),
-    "next GW receives the edited PL slot",
-  );
+  assert.ok(upserts.some((p) => p.gameweek_id === "g2" && p.slot === 1 && p.player_id === "pl4"));
+  assert.equal(store.g1.find((r) => r.slot === 1).player_id, "pl1");
+});
+
+test("DONE edit with no next gameweek refuses and does not write", async () => {
+  upserts.length = 0;
+  nextGw = null;
+  store.g1 = xvRows("g1");
+
+  const slots = store.g1.map((r) => ({
+    slot: r.slot,
+    slot_group: r.slot_group,
+    player_id: r.slot_group === "pl" && r.slot === 1 ? "pl4" : r.player_id,
+  }));
+
+  const res = await saveLineup({
+    managerId: "m1",
+    gameweekId: "g1",
+    gameweek: { id: "g1", number: 1, competition_id: "c1", state: "live" },
+    slots,
+  });
+
+  assert.equal(res.ok, false);
+  assert.equal(res.code, "NO_NEXT_GAMEWEEK");
+  assert.equal(res.message, "Next gameweek not open yet");
+  assert.equal(upserts.filter((p) => p.slot_group === "pl").length, 0);
   assert.equal(store.g1.find((r) => r.slot === 1).player_id, "pl1");
 });

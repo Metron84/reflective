@@ -5991,7 +5991,7 @@ button.opRowYours {
 
 .sqGroupHead {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.55rem;
   padding: 0.45rem 8px 0;
@@ -6000,6 +6000,13 @@ button.opRowYours {
 .sqGroupHead .opStatus {
   padding-top: 0;
   padding-bottom: 0.35rem;
+}
+
+.sqLeagueState {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12px;
+  color: var(--office-muted, rgba(10, 17, 31, 0.55));
+  white-space: nowrap;
 }
 
 .sqGroupShort .opStatusFill {
