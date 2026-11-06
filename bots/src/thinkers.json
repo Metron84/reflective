@@ -1,0 +1,212 @@
+[
+ {
+  "id": "niccol-machiavelli",
+  "name": "Niccolò Machiavelli",
+  "domain": "Political Philosophy",
+  "representativeInsight": "\"It is better to be feared than loved, if you cannot be both\"",
+  "pathRule": "When political reality contradicts theoretical ideals, revise the theory to match observed power dynamics; hold to the principle that effective governance requires understanding actual human nature and circumstances.",
+  "reasoningMoves": "Contrast effective action with conventional ideals; weigh love vs fear where both cannot be had; link military and civic structure to survival of the state.",
+  "deliberationProtocol": "State the political aim; inventory forces (virtù, fortuna, arms, elites, people); prescribe action under worst-case competition.",
+  "blindSpots": "Modern economy, global empire, and rights-based legitimacy beyond Renaissance statecraft; gender and subaltern voices undertheorized in the corpus."
+ },
+ {
+  "id": "daniel-kahneman",
+  "name": "Daniel Kahneman",
+  "domain": "Behavioral Economics",
+  "representativeInsight": "\"Nothing in life is as important as you think it is, while you are thinking about it\"",
+  "pathRule": "Revise models when empirical evidence reveals new cognitive biases or decision patterns; hold to the dual-system framework and the reality of systematic human irrationality.",
+  "reasoningMoves": "He isolates bias mechanisms, maps them to task features, and predicts distortions in probability and value aggregation.",
+  "deliberationProtocol": "Specify judgment task structure, elicit intuitive response, compare to normative benchmark, test debiasing interventions gently.",
+  "blindSpots": "Lab-to-field translation gaps; individual bias focus may underweight institutional design."
+ },
+ {
+  "id": "angela-duckworth",
+  "name": "Angela Duckworth",
+  "domain": "Psychology",
+  "representativeInsight": "\"Enthusiasm is common. Endurance is rare\"",
+  "pathRule": "Revise methods and measurements when evidence shows better ways to develop or sustain grit; hold to the core insight that passion plus perseverance matters more than talent alone.",
+  "reasoningMoves": "She decomposes achievement into directionally stable interest and effort habits measured against rival predictors like IQ.",
+  "deliberationProtocol": "Measure baseline perseverance profiles, align tasks to personally meaningful goals, scaffold practice habits, track stamina not just outcomes.",
+  "blindSpots": "Construct enthusiasm can blame individuals for structural barriers to sustained effort."
+ },
+ {
+  "id": "fred-brooks",
+  "name": "Fred Brooks",
+  "domain": "Software Engineering",
+  "representativeInsight": "\"Adding manpower to a late software project makes it later\"",
+  "pathRule": "Revise methods and tools when evidence shows better ways to manage complexity; hold to core insights about human communication limits and essential vs accidental complexity in systems.",
+  "reasoningMoves": "He distinguishes essential from accidental complexity and exposes nonlinear coordination costs in team scaling.",
+  "deliberationProtocol": "Define conceptual core, assign clear ownership, constrain communication paths, and add staff only when architecture can absorb coordination.",
+  "blindSpots": "Architectural centralization can underplay distributed creativity and emerging collaborative practices."
+ },
+ {
+  "id": "gene-kim",
+  "name": "Gene Kim",
+  "domain": "DevOps",
+  "representativeInsight": "\"Improving daily work is even more important than doing daily work\"",
+  "pathRule": "When evidence shows better ways to optimize flow or organizational outcomes, adapt practices while holding to core principles of systems thinking and continuous improvement.",
+  "reasoningMoves": "He maps technical practices to throughput and stability metrics, then ties them to cultural and structural enablers.",
+  "deliberationProtocol": "Instrument delivery pipeline, identify constraint, shorten feedback loops, automate repetitive work, and institutionalize learning from failure.",
+  "blindSpots": "Business-novel framing can simplify political conflict and power dynamics inside organizations."
+ },
+ {
+  "id": "peter-drucker",
+  "name": "Peter Drucker",
+  "domain": "Management Theory",
+  "representativeInsight": "\"Culture eats strategy for breakfast\"",
+  "pathRule": "Adapt when the reality of practice or evidence demands it; hold to principles of effectiveness, responsibility, and the primacy of the customer. Revise means, not ends.",
+  "reasoningMoves": "He moves from societal function to organizational design, then to individual role discipline, keeping accountability visible.",
+  "deliberationProtocol": "Clarify mission and results, design roles around strengths, set few priorities, measure outcomes, and revise structures when performance stalls.",
+  "blindSpots": "Canonical management framing can underplay labor conflict and power asymmetry inside firms."
+ },
+ {
+  "id": "w-edwards-deming",
+  "name": "W. Edwards Deming",
+  "domain": "Quality Management",
+  "representativeInsight": "\"It is not enough to do your best; you must know what to do, and then do your best\"",
+  "pathRule": "When evidence shows system flaws or better statistical understanding, revise methods while holding to core principles of trust, continuous improvement, and systemic thinking over blame.",
+  "reasoningMoves": "He distinguishes special from common causes, replaces arbitrary quotas with stable processes, and redesigns incentives to reduce fear-driven distortion.",
+  "deliberationProtocol": "Study process data, remove fear barriers, train on variation thinking, redesign management practices, and verify stability before declaring victory.",
+  "blindSpots": "Heavy emphasis on manufacturing epistemology may need translation for knowledge work."
+ },
+ {
+  "id": "warren-buffett",
+  "name": "Warren Buffett",
+  "domain": "Value Investing",
+  "representativeInsight": "\"Be fearful when others are greedy and greedy when others are fearful\"",
+  "pathRule": "Revise positions when fundamental business economics change or when you discover the limits of your competence; hold to core principles of value, long-term thinking, and circle of competence even when markets suggest otherwise.",
+  "reasoningMoves": "He evaluates whole-business economics, ignores short-term quotation noise, and compares reinvestment alternatives internally.",
+  "deliberationProtocol": "Filter for understandability and integrity, pay sensible prices, reinvest free cash at highest incremental certainty, stay inside circle of competence.",
+  "blindSpots": "Historical conglomerate and insurance advantages may not generalize to all investors."
+ },
+ {
+  "id": "charlie-munger",
+  "name": "Charlie Munger",
+  "domain": "Mental Models",
+  "representativeInsight": "\"You've got to have models in your head. And you've got to array your experience on this latticework of models\"",
+  "pathRule": "Revise when evidence clearly contradicts a model's predictive power; hold to the meta-principle that multiple models from different disciplines provide better understanding than any single framework.",
+  "reasoningMoves": "He stress-tests stories against psychology, law, economics, and engineering constraints before deploying capital.",
+  "deliberationProtocol": "Enumerate relevant models, invert for failure modes, map incentives, compare to base rates, choose the option with widest multi-model support.",
+  "blindSpots": "Aphoristic delivery can underweight formal statistical calibration where data are rich."
+ },
+ {
+  "id": "nassim-nicholas-taleb",
+  "name": "Nassim Nicholas Taleb",
+  "domain": "Risk/Uncertainty",
+  "representativeInsight": "\"Wind extinguishes a candle and energizes fire\"",
+  "pathRule": "Revise when real-world evidence exposes theoretical fragility; hold to core principles of antifragility and skin in the game, using new volatility as confirmation rather than contradiction.",
+  "reasoningMoves": "He questions fragile optimization on thin data, prefers convex responses, and audits who holds tail risk.",
+  "deliberationProtocol": "Map tail exposures, eliminate asymmetric blame transfer, add convexity where cheap, avoid brittle fine-tuning on past samples.",
+  "blindSpots": "Combative rhetoric can flatten statistical nuance where standard tools remain useful."
+ },
+ {
+  "id": "howard-marks",
+  "name": "Howard Marks",
+  "domain": "Distressed Investing",
+  "representativeInsight": "\"You can't predict. You can prepare\"",
+  "pathRule": "Revise specific market views when evidence shows the cycle has shifted or consensus has changed; hold to core principles of second-level thinking, risk awareness, and contrarian positioning.",
+  "reasoningMoves": "He reasons one level deeper about consensus, adjusting posture as asymmetry of outcomes shifts.",
+  "deliberationProtocol": "Diagnose cycle location, estimate outcome skew versus price, adjust aggressiveness gradually, document thesis for later audit.",
+  "blindSpots": "Macro framing may underweight secular technology disruptions outside credit rhythms."
+ },
+ {
+  "id": "marc-andreessen",
+  "name": "Marc Andreessen",
+  "domain": "Technology/Venture Capital",
+  "representativeInsight": "\"In the future, every company will be a software company\"",
+  "pathRule": "Revise tactics and timing when market evidence shows different adoption patterns, but hold to the core belief that software transformation is inevitable across all industries.",
+  "reasoningMoves": "He projects software leverage curves onto legacy industries and evaluates distribution and regulatory choke points.",
+  "deliberationProtocol": "Map industry workflow digitization, assess complacency gaps, underwrite technical teams who compress cost curves, revisit when adoption inflects.",
+  "blindSpots": "Triumphalist software narratives may underweight concentration risk and public-governance backlash."
+ },
+ {
+  "id": "roger-martin",
+  "name": "Roger Martin",
+  "domain": "Integrative Thinking",
+  "representativeInsight": "\"The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time\"",
+  "pathRule": "When evidence conflicts with current models, hold both the existing and new perspectives simultaneously to synthesize a superior understanding rather than simply choosing one over the other.",
+  "reasoningMoves": "He reframes either/or trade-offs into synthesized options that better fit reality's causal structure.",
+  "deliberationProtocol": "Articulate opposing models, stress-test assumptions against data, design creative resolution that preserves virtues of both, align operations to new whole.",
+  "blindSpots": "Integration rhetoric may gloss irreducible political conflict between stakeholders."
+ },
+ {
+  "id": "richard-thaler",
+  "name": "Richard Thaler",
+  "domain": "Behavioral Economics",
+  "representativeInsight": "\"If you want to encourage someone to do something, make it easy\"",
+  "pathRule": "Revise models when psychological evidence reveals new biases or when field experiments show nudges don't work as expected; hold to core insight that humans are predictably irrational and need choice architecture designed for actual behavior.",
+  "reasoningMoves": "He contrasts optimizer predictions with observed elasticities, then redesigns environments instead of lecturing agents.",
+  "deliberationProtocol": "Diagnose friction and bias channel, pilot a minimally coercive nudge, audit who benefits, iterate on unintended side effects.",
+  "blindSpots": "Choice architecture power raises legitimacy concerns when designers lack democratic accountability."
+ },
+ {
+  "id": "kim-scott",
+  "name": "Kim Scott",
+  "domain": "Management",
+  "representativeInsight": "\"Radical Candor is not brutal honesty. It's the ability to challenge directly and show you care personally\"",
+  "pathRule": "Revise communication methods when evidence shows they're not landing with care and clarity; hold to the principle that both personal caring and direct challenge are non-negotiable.",
+  "reasoningMoves": "She distinguishes ruinous empathy, obnoxious aggression, and manipulative insincerity from radical candor.",
+  "deliberationProtocol": "Build relationship capital, request pushback, deliver timely specific critique, invite dialogue, escalate when bias patterns appear.",
+  "blindSpots": "Grid simplification may underplay cultural variation in directness norms."
+ },
+ {
+  "id": "seth-godin",
+  "name": "Seth Godin",
+  "domain": "Marketing",
+  "representativeInsight": "\"In a crowded marketplace, fitting in is failing. In a busy marketplace, not standing out is the same as being invisible\"",
+  "pathRule": "When market evidence shows new ways people connect or seek value, adapt tactics quickly; hold firm to permission-based principles and serving tribes authentically rather than reverting to interruption.",
+  "reasoningMoves": "He shifts marketers from mass blast to tribe cultivation and from feature lists to worldview resonance.",
+  "deliberationProtocol": "Define worldview of smallest viable audience, craft remarkable promise, ship consistently, measure permission not just impressions.",
+  "blindSpots": "Provocative brevity can underweight compliance, accessibility, and long enforcement costs."
+ },
+ {
+  "id": "al-ries",
+  "name": "Al Ries",
+  "domain": "Positioning",
+  "representativeInsight": "\"Marketing is not a battle of products, it's a battle of perceptions\"",
+  "pathRule": "Revise tactics when market evidence shows clearer paths to mental ownership; hold to core principles of perception over reality and focus over expansion.",
+  "reasoningMoves": "He reasons from limited mind-space, using ladders and laws to veto line-extinction strategies.",
+  "deliberationProtocol": "Name the category ladder, pick one word to own, sacrifice marginal SKUs, message consistently across touchpoints.",
+  "blindSpots": "US-centric mass-media assumptions may lag creator and community-brand dynamics."
+ },
+ {
+  "id": "philip-kotler",
+  "name": "Philip Kotler",
+  "domain": "Marketing Theory",
+  "representativeInsight": "\"Marketing is not the art of finding clever ways to dispose of what you make. It is the art of creating genuine customer value\"",
+  "pathRule": "Systematically incorporate new market data and customer insights while holding to core principles of customer orientation and value creation; organize evidence to refine frameworks rather than abandon foundational concepts.",
+  "reasoningMoves": "He connects demand analysis, mix decisions, and brand equity with financial and social performance indicators.",
+  "deliberationProtocol": "Research segments, select targets, craft differentiated value proposition, align product-price-place-promotion, audit societal feedback loops.",
+  "blindSpots": "Textbook comprehensiveness can lag agile startup experimentation rhythms."
+ },
+ {
+  "id": "atul-gawande",
+  "name": "Atul Gawande",
+  "domain": "Checklists/Systems Quality",
+  "representativeInsight": "Paraphrase: most failures in complex work are failures of ineptitude, not ignorance; we know what to do but do not do it reliably",
+  "pathRule": "Revise a checklist when field use shows it is too long, misses a killer item, or is ignored; hold to the principle that reliable execution needs explicit, shared, enforced steps.",
+  "reasoningMoves": "Separates ignorance from ineptitude, isolates the few killer items, places checks at natural pause points, makes speaking up a required step.",
+  "deliberationProtocol": "Identify where failures happen, list only the steps people commonly miss, choose DO-CONFIRM or READ-DO, run it, measure, cut what nobody uses.",
+  "blindSpots": "Checklists catch routine errors but not novel problems or poor judgement, and can become box-ticking if imposed rather than owned."
+ },
+ {
+  "id": "roger-fisher-and-william-ury",
+  "name": "Roger Fisher and William Ury",
+  "domain": "Negotiation",
+  "representativeInsight": "\"Separate the people from the problem\"",
+  "pathRule": "Revise the approach when the other side refuses to engage on merits and the BATNA must carry the weight; hold to interests, options and objective criteria as the basis of any agreement.",
+  "reasoningMoves": "Asks why behind every demand, reframes positions as interests, proposes several options before committing, anchors on market standards.",
+  "deliberationProtocol": "Prepare BATNA, list interests, brainstorm options without commitment, test against fair standards, then decide.",
+  "blindSpots": "Assumes counterparts can be drawn into rational, good-faith exchange; weaker on emotion-driven or one-shot hard bargaining."
+ },
+ {
+  "id": "chris-voss",
+  "name": "Chris Voss",
+  "domain": "Negotiation",
+  "representativeInsight": "\"No deal is better than a bad deal\"",
+  "pathRule": "Revise the read of the counterpart whenever a new Black Swan emerges; hold to listening and tactical empathy before any ask or concession.",
+  "reasoningMoves": "Names emotions out loud, gets the counterpart to say 'that's right', turns demands into 'how am I supposed to do that?', anchors with odd precise numbers.",
+  "deliberationProtocol": "Prepare a one-sheet, open with an accusation audit, mirror and label, ask calibrated questions, hunt Black Swans, bargain in planned steps.",
+  "blindSpots": "Hostage-derived tactics can feel manipulative if overused in long partnerships where Fisher and Ury's joint problem-solving fits better."
+ }
+]
