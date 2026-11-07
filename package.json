@@ -25,7 +25,8 @@
     "validate:stand-chapter": "node scripts/validate-stand-chapter.mjs",
     "validate:stand-titles": "node scripts/validate-stand-titles.mjs",
     "validate:stand-all": "node scripts/validate-stand-all.mjs",
-    "check:crest": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-crest.mjs"
+    "check:crest": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-crest.mjs",
+    "test:crest-panel": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./tests/ultima/helpers/register.mjs --test tests/crest/panel-engine.test.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.12.0",

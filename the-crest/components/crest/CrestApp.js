@@ -1,8 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
-import Arrival from "@the-crest/components/Arrival";
-import GroundFinale from "@the-crest/components/GroundFinale";
+import { useCallback, useEffect, useMemo, useReducer } from "react";
 import Starfield from "@the-crest/components/Starfield";
 import {
   destinationGlowColors,
@@ -24,13 +22,9 @@ import JourneyShell from "./JourneyShell";
 import OpeningScreen from "./OpeningScreen";
 import OwnedClubScreen from "./OwnedClubScreen";
 import QuestionScreen from "./QuestionScreen";
+import ResultScreen from "./ResultScreen";
 import ScopeScreen from "./ScopeScreen";
 import styles from "./CrestApp.module.css";
-
-function skipArrivalOnLoad() {
-  const loaded = loadPersistedState();
-  return Boolean(loaded && loaded.step === "complete" && isQuizComplete(loaded));
-}
 
 /**
  * @param {{ clubs: object[] }} props
@@ -42,28 +36,14 @@ export default function CrestApp({ clubs }) {
     () => loadPersistedState() ?? initialState(),
   );
 
-  const [arrivalDone, setArrivalDone] = useState(skipArrivalOnLoad);
-  const [starfieldControl, setStarfieldControl] = useState(() =>
-    skipArrivalOnLoad()
-      ? { opacity: 0, running: false, warpMultiplier: 1, streak: false }
-      : { opacity: 1, running: true, warpMultiplier: 1, streak: false },
-  );
-
   useEffect(() => {
     persistState(state);
   }, [state]);
 
-  useEffect(() => {
-    if (state.step !== "complete") {
-      setArrivalDone(false);
-      setStarfieldControl({
-        opacity: 1,
-        running: true,
-        warpMultiplier: 1,
-        streak: false,
-      });
-    }
-  }, [state.step]);
+  const showResult = state.step === "complete" && isQuizComplete(state);
+  const starfieldControl = showResult
+    ? { opacity: 0, running: false, warpMultiplier: 1, streak: false }
+    : { opacity: 1, running: true, warpMultiplier: 1, streak: false };
 
   const screenKey = `${state.step}-${state.quizIndex}`;
 
@@ -71,49 +51,27 @@ export default function CrestApp({ clubs }) {
   const journeyProgress =
     TOTAL_QUIZ_QUESTIONS > 0 ? answeredCount / TOTAL_QUIZ_QUESTIONS : 0;
 
-  const quizComplete = state.step === "complete" && isQuizComplete(state);
-
   const provisional = useMemo(
     () => provisionalDestination(state, clubs),
-    [
-      state.scores,
-      state.pillar,
-      state.ownedSlugs,
-      state.hatedColors,
-      state.character,
-      state.leagueScope,
-      state.sensesAnswers,
-      clubs,
-    ],
+    [state, clubs],
   );
 
   const finalResult = useMemo(() => {
-    if (!quizComplete || !state.pillar) return null;
+    if (!showResult || !state.pillar) return null;
     return selectMatches(
       /** @type {number[]} */ (state.scores),
       clubs,
       state.pillar,
       state.ownedSlugs,
-      state.hatedColors,
-      state.character,
+      null,
+      null,
       state.leagueScope,
-      state.sensesAnswers,
+      null,
     );
-  }, [
-    quizComplete,
-    state.scores,
-    state.pillar,
-    state.ownedSlugs,
-    state.hatedColors,
-    state.character,
-    state.leagueScope,
-    state.sensesAnswers,
-    clubs,
-  ]);
+  }, [showResult, state, clubs]);
 
-  const finalClub = finalResult?.primary?.club ?? null;
-
-  const destinationClub = finalClub ?? provisional?.club ?? null;
+  const destinationClub =
+    finalResult?.primary?.club ?? provisional?.club ?? null;
 
   const glow = useMemo(() => {
     if (destinationClub) return destinationGlowColors(destinationClub);
@@ -124,12 +82,7 @@ export default function CrestApp({ clubs }) {
   }, [destinationClub, state.leagueScope]);
 
   const section = state.step === "quiz" ? sectionAt(state.quizIndex) : "heart";
-  const approach =
-    state.step === "complete" || section === "soul"
-      ? 2
-      : section === "senses"
-        ? 1
-        : 0;
+  const approach = state.step === "complete" || section === "soul" ? 2 : 0;
 
   const destinationMix = useMemo(() => {
     if (destinationClub) {
@@ -138,47 +91,22 @@ export default function CrestApp({ clubs }) {
     }
     if (state.leagueScope && state.leagueScope !== "all") return 1;
     return 0;
-  }, [
-    destinationClub,
-    journeyProgress,
-    provisional?.raw,
-    state.leagueScope,
-  ]);
+  }, [destinationClub, journeyProgress, provisional?.raw, state.leagueScope]);
 
   const starfieldProgress = useMemo(() => {
     const fit = provisional?.raw ?? 0;
     return Math.min(1, journeyProgress * 0.9 + fit * 0.12);
   }, [journeyProgress, provisional?.raw]);
 
-  const patchStarfield = useCallback((patch) => {
-    setStarfieldControl((prev) => ({ ...prev, ...patch }));
-  }, []);
-
-  const onArrivalComplete = useCallback(() => {
-    setArrivalDone(true);
-  }, []);
-
   const handleRestart = useCallback(() => {
     dispatch({ type: "RESTART" });
-  }, []);
-
-  const handleRemap = useCallback((scope) => {
-    dispatch({ type: "REMAP", payload: scope });
-    setArrivalDone(false);
-    setStarfieldControl({
-      opacity: 1,
-      running: true,
-      warpMultiplier: 1,
-      streak: false,
-    });
   }, []);
 
   const showLanding = state.step === "start";
   const showJourney =
     state.step === "scope" || state.step === "owned" || state.step === "quiz";
-  const showArrival = quizComplete && !arrivalDone;
-  const showGroundFinale = quizComplete && arrivalDone;
-  const showStarfield = !showGroundFinale;
+  const showResultScreen = Boolean(showResult && finalResult);
+  const showStarfield = !showResultScreen;
 
   return (
     <>
@@ -196,24 +124,11 @@ export default function CrestApp({ clubs }) {
           approach={approach}
         />
       ) : null}
-      {showArrival ? (
-        <Arrival
-          key={`${destinationClub?.slug ?? "none"}-${state.leagueScope}`}
-          club={destinationClub}
-          onComplete={onArrivalComplete}
-          onStarfield={patchStarfield}
-        />
-      ) : null}
-      {showGroundFinale ? (
-        <GroundFinale
-          club={destinationClub}
-          match={finalResult?.primary ?? null}
-          countryFits={finalResult?.byCountry ?? []}
-          sensesAnswers={state.sensesAnswers}
-          scores={state.scores}
-          leagueScope={state.leagueScope}
+      {showResultScreen ? (
+        <ResultScreen
+          scores={/** @type {number[]} */ (state.scores)}
+          result={finalResult}
           onRestart={handleRestart}
-          onRemap={handleRemap}
         />
       ) : null}
       {showLanding ? (
@@ -258,32 +173,14 @@ export default function CrestApp({ clubs }) {
                 <QuestionScreen
                   quizIndex={state.quizIndex}
                   scores={state.scores}
-                  character={state.character}
-                  hatedColors={state.hatedColors}
-                  sensesAnswers={state.sensesAnswers}
                   onAnswerDimension={(index, value) =>
                     dispatch({
                       type: "ANSWER_DIMENSION",
                       payload: { index, value },
                     })
                   }
-                  onAnswerSense={(index, value) =>
-                    dispatch({
-                      type: "ANSWER_SENSE",
-                      payload: { index, value },
-                    })
-                  }
-                  onAnswerCharacter={(key, value) =>
-                    dispatch({
-                      type: "ANSWER_CHARACTER",
-                      payload: { key, value },
-                    })
-                  }
                   onAnswerPillar={(w) =>
                     dispatch({ type: "ANSWER_PILLAR", payload: w })
-                  }
-                  onAnswerColor={(color) =>
-                    dispatch({ type: "ANSWER_COLOR", payload: color })
                   }
                   onBack={() => dispatch({ type: "BACK" })}
                   journey

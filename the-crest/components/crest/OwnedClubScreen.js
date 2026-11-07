@@ -23,10 +23,8 @@ export default function OwnedClubScreen({
 
   return (
     <section className={styles.screen}>
-      <h2 className={styles.q}>Do you already have a club?</h2>
-      <p className={styles.hint}>
-        We will not match you to a club you already carry.
-      </p>
+      <h2 className={styles.q}>Do you already follow a club?</h2>
+      <p className={styles.hint}>We will not ask you to leave it.</p>
 
       <button type="button" className={styles.noClub} onClick={onNoClub}>
         No club yet

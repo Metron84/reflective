@@ -16,9 +16,12 @@ export default function OpeningScreen({ onStart }) {
           <h1 className={styles.mark}>
             The <em>Crest</em>
           </h1>
-          <p className={styles.line}>The club that sounds like you.</p>
+          <p className={styles.line}>
+            Find the club that sounds like your heart, thinks like your mind and
+            feels like your soul.
+          </p>
           <button type="button" className={styles.start} onClick={onStart}>
-            Begin the journey
+            Begin
           </button>
         </Reveal>
       </div>

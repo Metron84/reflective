@@ -7,6 +7,16 @@
   width: 100%;
 }
 
+.crestLive {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 10px;
+}
+
+.crestLive :global(svg) {
+  width: min(42vw, 160px);
+}
+
 .split {
   display: flex;
   flex-direction: column;

@@ -1,14 +1,11 @@
 import { countryForClub } from "./club-country.js";
-import {
-  COLOR3_PENALTY,
-  isColor3Club,
-} from "./colour-veto.js";
 import { hexToRgb } from "./color-utils.js";
 import { resolveClubGround } from "./club-ground-meta.js";
-import { buildCandidateSet } from "./candidates.js";
-import { compositionFit } from "./fit.js";
-import { comparePathEntries, getDimensionWeights } from "./scoring.js";
-import { inBestStratum } from "./survival.js";
+import { clubsForScope, normalizeLeagueScope } from "./scope.js";
+import {
+  getDimensionWeights,
+  rankPartial,
+} from "./scoring.js";
 import { tierOf, TIER_B_PRIMARY_MARGIN } from "./tier.js";
 
 /** @type {{ Heart: number; Mind: number; Soul: number }} */
@@ -16,15 +13,12 @@ export const DEFAULT_PILLAR = { Heart: 0.34, Mind: 0.33, Soul: 0.33 };
 
 /**
  * @param {object[]} ranked
- * @param {Set<string>} owned
  */
-function pickPrimaryClub(ranked, owned) {
-  const eligible = ranked.filter((r) => !owned.has(r.club.slug));
-  if (!eligible.length) return null;
+function pickPrimaryClub(ranked) {
+  if (!ranked.length) return null;
 
-  const stratum = inBestStratum(eligible);
-  let primaryEntry = stratum[0];
-  const bestTierA = stratum.find((r) => tierOf(r.club) === "A");
+  let primaryEntry = ranked[0];
+  const bestTierA = ranked.find((r) => tierOf(r.club) === "A");
 
   if (
     bestTierA &&
@@ -38,8 +32,9 @@ function pickPrimaryClub(ranked, owned) {
 }
 
 /**
- * Leading club while the quiz is in progress (updates after each affinity or character answer).
- * @param {{ scores: (number|null)[]; pillar: object|null; ownedSlugs: string[]; hatedColors?: string[]|null; hatedColor?: string|null; character?: object|null }} state
+ * Leading club while the quiz is in progress (updates after each affinity answer).
+ * Phase 1: flat rawFitPartial only. Colour / veto / senses ignored.
+ * @param {{ scores: (number|null)[]; pillar: object|null; ownedSlugs: string[]; leagueScope?: string }} state
  * @param {object[]} clubs
  * @returns {{ club: object; raw: number } | null}
  */
@@ -48,35 +43,17 @@ export function provisionalDestination(state, clubs) {
   const hasAffinity = state.scores.some((s) => s != null);
   if (!hasAffinity) return null;
 
-  const { list, color2Kept, colors } = buildCandidateSet(clubs, {
-    leagueScope: state.leagueScope,
-    ownedSlugs: state.ownedSlugs,
-    hatedColors: state.hatedColors ?? state.hatedColor ?? null,
-    scores: state.scores,
-  });
+  const scope = normalizeLeagueScope(state.leagueScope);
+  const owned = new Set(state.ownedSlugs ?? []);
+  const list = clubsForScope(clubs, scope).filter((c) => !owned.has(c.slug));
   if (!list.length) return null;
 
+  const pillar = state.pillar ?? DEFAULT_PILLAR;
   const dimWeights = getDimensionWeights(clubs);
-  const ranked = list
-    .map((club) => {
-      const composed = compositionFit(
-        state.scores,
-        club,
-        dimWeights,
-        state.sensesAnswers,
-      );
-      let raw = composed.fit;
-      if (isColor3Club(club, colors)) raw *= COLOR3_PENALTY;
-      return {
-        club,
-        raw,
-        percent: composed.percent,
-        vetoCount: color2Kept.has(club.slug) ? 1 : 0,
-      };
-    })
-    .sort(comparePathEntries)
-    .filter((r) => countryForClub(r.club));
-  const club = pickPrimaryClub(ranked, new Set());
+  const ranked = rankPartial(state.scores, list, pillar, dimWeights).filter(
+    (r) => countryForClub(r.club),
+  );
+  const club = pickPrimaryClub(ranked);
   if (!club) return null;
   const entry = ranked.find((r) => r.club.slug === club.slug);
   return { club, raw: entry?.raw ?? 0 };
