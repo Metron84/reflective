@@ -74,11 +74,11 @@ export default function InstallPrompt({ show }) {
     <div className={styles.wrap} role="dialog" aria-labelledby="install-title">
       <div className={styles.card}>
         <h2 id="install-title" className={styles.title}>
-          Install The Crest
+          Add The Crest to your home screen.
         </h2>
         <p className={styles.body}>
           {iosHint
-            ? "Add to your home screen to play offline. Tap Share, then Add to Home Screen."
+            ? "Tap Share, then Add to Home Screen. It works offline after the first visit."
             : "Keep The Crest on your home screen. It works offline after the first visit."}
         </p>
         <div className={styles.actions}>
