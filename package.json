@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4343",
+    "dev": "npm run thinkers:pull && npm run thinkers:archive && next dev -p 4343",
     "validate:archive": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-archive.ts",
     "generate:archive-lenses": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-lenses.ts",
     "export:checklist": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/export-checklist.ts",
-    "build": "npm run validate:archive && npm run validate:play && next build --webpack",
+    "build": "npm run thinkers:pull && npm run thinkers:archive && npm run validate:archive && npm run validate:play && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "validate:play": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/validate-play-questions.mjs",
@@ -26,7 +26,9 @@
     "validate:stand-titles": "node scripts/validate-stand-titles.mjs",
     "validate:stand-all": "node scripts/validate-stand-all.mjs",
     "check:crest": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-crest.mjs",
-    "test:crest-panel": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./tests/ultima/helpers/register.mjs --test tests/crest/panel-engine.test.mjs"
+    "test:crest-panel": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./tests/ultima/helpers/register.mjs --test tests/crest/panel-engine.test.mjs",
+    "thinkers:pull": "node scripts/pull-thinkers.mjs",
+    "thinkers:archive": "node scripts/build-archive-thinkers.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.12.0",

@@ -10,6 +10,7 @@ import ArchiveCard from "@/components/archive/ArchiveCard";
 import ArchiveContribute from "@/components/archive/ArchiveContribute";
 import ArchiveEmbed from "@/components/archive/ArchiveEmbed";
 import ArchiveLens from "@/components/archive/ArchiveLens";
+import ArchiveThinkers from "@/components/archive/ArchiveThinkers";
 import ArchiveVisual from "@/components/archive/ArchiveVisual";
 import styles from "./page.module.css";
 
@@ -138,6 +139,7 @@ export default async function ArchiveEntryPage({ params }: PageProps) {
         <p className={styles.why}>{entry.whyItMatters}</p>
 
         <ArchiveLens entryId={entry.id} />
+        <ArchiveThinkers entryId={entry.id} />
 
         <FactsStrip entry={entry} />
 
