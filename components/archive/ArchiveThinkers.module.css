@@ -1,0 +1,41 @@
+.name {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: #0a111f;
+}
+
+.domain {
+  margin-left: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 17, 31, 0.55);
+}
+
+.line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #0a111f;
+}
+
+.maker {
+  margin-bottom: 0.25rem;
+}
+
+.breaks {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(10, 17, 31, 0.75);
+}
+
+.label {
+  font-weight: 600;
+  color: #0a111f;
+}
