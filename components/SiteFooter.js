@@ -38,6 +38,11 @@ export default async function SiteFooter() {
   const watch = [
     { label: "Films", href: to("/films") },
     ...SOCIALS.map(({ label, href }) => ({ label, href, external: true })),
+    {
+      label: "Music",
+      href: "https://music.thereflectivefootball.com",
+      external: true,
+    },
   ];
 
   return (
@@ -82,8 +87,8 @@ export default async function SiteFooter() {
             </ul>
           </nav>
 
-          <nav aria-label="Watch" className="flex flex-col gap-3">
-            <p className={columnHeading}>Watch</p>
+          <nav aria-label="Watch and listen" className="flex flex-col gap-3">
+            <p className={columnHeading}>Watch &amp; Listen</p>
             <ul className="flex flex-col gap-1">
               {watch.map((item) => (
                 <li key={item.label}>
